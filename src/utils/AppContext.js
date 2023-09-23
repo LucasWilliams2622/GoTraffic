@@ -24,7 +24,6 @@ export const AppContextProvider = (props) => {
             const userInfoString = await AsyncStorage.getItem('userInfo');
             if (userInfoString !== null) {
                 const userInfo = JSON.parse(userInfoString);
-                // Sử dụng thông tin đã lưu ở đây
                 setInfoUser(userInfo)
                 setIdUser(userInfo._id)
             }
