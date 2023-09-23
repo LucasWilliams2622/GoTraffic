@@ -12,9 +12,12 @@ To start Metro, run the following command from the _root_ of your React Native p
 
 ```bash
 # using npm
-npm start
+npm i and npm start
 
 # OR using Yarn
+yarn install
+cd ios
+pod install
 yarn start
 ```
 
