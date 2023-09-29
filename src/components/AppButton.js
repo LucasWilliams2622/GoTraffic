@@ -1,19 +1,26 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { COLOR } from '../constants/Theme'
-
-const ButtonApp = (props) => {
-    const { backgroundColor, borderWidth, borderRadius, borderColor,
+import FastImage from 'react-native-fast-image'
+const AppButton = (props) => {
+    const {
+        // BUTTON
+        backgroundColor, borderWidth, borderRadius, borderColor,
         paddingVertical, paddingHorizontal, width,
+        // ICON
+        iconWidth, iconHeight, iconColor, icon,
+        // CLICK
         disabled, onPress,
-        textAlign, textColor, fontSize, fontStyle, title
+        // TITLE
+        textAlign, textColor, fontSize, fontStyle, title, fontWeight,
     } = props;
+    console.log("icon", icon);
     return (
         <TouchableOpacity style={[styles.button, {
             backgroundColor: backgroundColor == null ? COLOR.bgButton : backgroundColor,
 
             borderWidth: borderWidth == null ? 1 : borderWidth,
-            borderRadius: borderRadius == null ? 1 : borderRadius,
+            borderRadius: borderRadius == null ? 8 : borderRadius,
             borderColor: borderColor == null ? COLOR.borderButton : borderColor,
 
             paddingVertical: paddingVertical == null ? 12 : paddingVertical,
@@ -22,10 +29,19 @@ const ButtonApp = (props) => {
 
         }]} disabled={disabled == null ? false : true}
             onPress={onPress}>
+            <FastImage
+                style={{ 
+                    width: iconWidth == null ? 16 : iconWidth, 
+                    height: iconHeight == null ? 16 : iconHeight,
+                    marginRight:8
+                 }}
+                source={icon}
+                tintColor={iconColor == null ? 'white' : iconColor}
+                resizeMode={FastImage.resizeMode.contain} />
             <Text style={[styles.title, {
                 textAlign: textAlign == null ? "center" : textAlign,
                 color: textColor == null ? COLOR.titleButton : textColor,
-                
+
                 fontWeight: fontWeight == null ? '500' : fontWeight,
                 fontSize: fontSize == null ? 14 : fontSize,
                 fontStyle: fontStyle == null ? 'normal' : fontStyle,
@@ -35,13 +51,13 @@ const ButtonApp = (props) => {
     )
 }
 
-export default ButtonApp
+export default AppButton
 
 const styles = StyleSheet.create({
     button: {
         justifyContent: 'center',
         alignItems: 'center',
-
+        flexDirection: 'row',
         shadowColor: "#000000",
         shadowOffset: {
             width: 0,

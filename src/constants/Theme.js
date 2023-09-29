@@ -1,20 +1,23 @@
 export const COLOR = {
-    primary: '#ffffff',
-    secondary: '#ffffff',
-    third: '#ffffff',
+    primary: '#219EBC',
+    secondary: '#8ECAE6',
+    third: '#FFB703',
 
     background: "#ffffff",
     main: "#ffffff",
 
-    focus: "#f26f25",
+    focus: "#219EBC",
     notFocus: "#000000",
     // ============| Button |=============
-    bgButton: "#ffffff",
+    bgButton: "#41cff2",
     borderButton: '#ffffff',
     titleButton: '#ffffff',
 
-    text: '#000000',
-    title: '#000000',
+    text: '#023047',
+    title: '#023047',
+    text2: '#595959',
+    textWarn:'#FF0303',
+
 
     // find color : https://colorhunt.co
     white: '#ffffff',
