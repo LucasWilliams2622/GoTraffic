@@ -10,9 +10,11 @@ export const COLOR = {
     notFocus: "#000000",
     // ============| Button |=============
     bgButton: "#41cff2",
-    borderButton: '#ffffff',
+    borderButton: '#41cff2',
     titleButton: '#ffffff',
-
+    borderColor:'#787878',
+    placeholder:'#595959',
+    
     text: '#023047',
     title: '#023047',
     text2: '#595959',
