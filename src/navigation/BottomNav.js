@@ -6,8 +6,11 @@ import { ICON, COLOR } from '../constants/Theme'
 import * as Animatable from 'react-native-animatable';
 import { AppContext } from "../utils/AppContext";
 import Login from '../screens/Begin/Login';
-import Home from '../screens/Main/Home';
-import Profile from '../screens/Main/Profile';
+import Home from '../screens/Main/HomeTab/Home';
+import Profile from '../screens/Main/ProfileTab/Profile';
+import Notification from '../screens/Main/NotificationTab/Notification'
+import Support from '../screens/Main/SupportTab/Support'
+import Trip from '../screens/Main/TripTab/Trip'
 
 
 
@@ -27,6 +30,31 @@ const StackHome = () => {
     return (
         <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Home" component={Home} />
+
+        </Stack.Navigator>
+    )
+}
+
+const StackNotification = () => {
+    return (
+        <Stack.Navigator initialRouteName="Notification" screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Notification" component={Notification} />
+
+        </Stack.Navigator>
+    )
+}
+const StackTrip = () => {
+    return (
+        <Stack.Navigator initialRouteName="Trip" screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Trip" component={Trip} />
+
+        </Stack.Navigator>
+    )
+}
+const StackSupport = () => {
+    return (
+        <Stack.Navigator initialRouteName="Support" screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Support" component={Support} />
 
         </Stack.Navigator>
     )
@@ -52,19 +80,19 @@ const Main = () => {
                         if (route.name === 'StackHome') {
                             iconName = focused ? ICON.HomeFocus : ICON.Home
                             label = 'Trang chủ'
-                        } else if (route.name === 'StackSchedule') {
-                            iconName = focused ? ICON.ScheduleFocus : ICON.Schedule;
-                            label = 'Lịch'
-                        } else if (route.name === 'StackGoFPT') {
-                            iconName = focused ? ICON.Walk : ICON.Walk;
-                            label = 'Go FPT'
-                        } else if (route.name === 'StackNews') {
+                        } else if (route.name === 'StackNotification') {
                             iconName = focused ? ICON.NotificationFocus : ICON.Notification;
-                            label = 'Tin tức'
+                            label = 'Thông báo'
+                        } else if (route.name === 'StackTrip') {
+                            iconName = focused ? ICON.TripFocus : ICON.Trip;
+                            label = 'Chuyến đi'
+                        } else if (route.name === 'StackSupport') {
+                            iconName = focused ? ICON.SupportFocus : ICON.Support;
+                            label = 'Hỗ trợ'
                         }
                         else if (route.name === 'StackProfile') {
                             iconName = focused ? ICON.ProfileFocus : ICON.Profile;
-                            label = 'Hồ sơ'
+                            label = 'Cá nhân'
                         }
                         // You can return any component that you like here!
                         return <View style={{
@@ -79,8 +107,8 @@ const Main = () => {
                                 duration={2000}>
                                 <Image source={iconName}
                                     style={{
-                                        width: focused ? 28 : 24,
-                                        height: focused ? 28 : 24,
+                                        width: focused ? 26 : 24,
+                                        height: focused ? 26 : 24,
 
                                         resizeMode: 'stretch',
                                         tintColor: focused ? COLOR.focus : COLOR.notFocus,
@@ -109,6 +137,9 @@ const Main = () => {
                 })}
         >
             <Tab.Screen name="StackHome" component={StackHome} />
+            <Tab.Screen name="StackNotification" component={StackNotification} />
+            <Tab.Screen name="StackTrip" component={StackTrip} />
+            <Tab.Screen name="StackSupport" component={StackSupport} />
             <Tab.Screen name="StackProfile" component={StackProfile} />
         </Tab.Navigator>
     )
