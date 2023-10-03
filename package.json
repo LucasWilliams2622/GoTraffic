@@ -72,6 +72,7 @@
     "react-native-screens": "^3.25.0",
     "react-native-share": "^9.4.1",
     "react-native-skeleton-placeholder": "^5.2.4",
+    "react-native-status-bar-height": "^2.6.0",
     "react-native-stock-star-rating": "^1.0.6",
     "react-native-svg": "^13.14.0",
     "react-native-swipe-list-view": "^3.2.9",

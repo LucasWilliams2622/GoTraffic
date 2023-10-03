@@ -1,21 +1,23 @@
 export const COLOR = {
-    primary: '#219EBC',
+    primary: '#41cff2',
     secondary: '#8ECAE6',
     third: '#FFB703',
 
     background: "#ffffff",
     main: "#ffffff",
 
-    focus: "#219EBC",
+    focus: "#41cff2",
     notFocus: "#000000",
     // ============| Button |=============
     bgButton: "#41cff2",
     borderButton: '#41cff2',
     titleButton: '#ffffff',
+    titleButton2: '#41cff2',
+
     borderColor:'#787878',
     placeholder:'#595959',
     
-    text: '#023047',
+    text: '#000000',
     title: '#023047',
     text2: '#595959',
     textWarn:'#FF0303',

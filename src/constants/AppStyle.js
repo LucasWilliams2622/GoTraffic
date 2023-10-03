@@ -22,7 +22,7 @@ export const appStyle = StyleSheet.create({
     main: {
         flex: 1,
         backgroundColor: COLOR.main,
-        paddingHorizontal: 16,
+        paddingHorizontal: 12,
     },
 
     // =============| ICON - IMAGE |===================
@@ -64,6 +64,7 @@ export const appStyle = StyleSheet.create({
         fontWeight: '400',
         fontStyle: 'normal',
         letterSpacing: 0.5,
+        color: COLOR.text,
 
     },
     text12: {
@@ -71,6 +72,7 @@ export const appStyle = StyleSheet.create({
         fontWeight: '400',
         fontStyle: 'normal',
         letterSpacing: 0.5,
+        color: COLOR.text,
 
     },
     text14: {
@@ -78,6 +80,7 @@ export const appStyle = StyleSheet.create({
         fontWeight: '400',
         fontStyle: 'normal',
         letterSpacing: 0.5,
+        color: COLOR.text,
 
     },
     text16: {
@@ -85,6 +88,7 @@ export const appStyle = StyleSheet.create({
         fontWeight: '400',
         fontStyle: 'normal',
         letterSpacing: 0.5,
+        color: COLOR.text,
 
     },
     text18: {
@@ -92,6 +96,7 @@ export const appStyle = StyleSheet.create({
         fontWeight: '400',
         fontStyle: 'normal',
         letterSpacing: 0.5,
+        color: COLOR.text,
 
     },
     text20: {
@@ -99,6 +104,7 @@ export const appStyle = StyleSheet.create({
         fontWeight: '400',
         fontStyle: 'normal',
         letterSpacing: 0.5,
+        color: COLOR.text,
 
     },
     text24: {
@@ -106,6 +112,7 @@ export const appStyle = StyleSheet.create({
         fontWeight: '400',
         fontStyle: 'normal',
         letterSpacing: 0.5,
+        color: COLOR.text,
 
     },
     text30: {
@@ -113,6 +120,7 @@ export const appStyle = StyleSheet.create({
         fontWeight: '400',
         fontStyle: 'normal',
         letterSpacing: 0.5,
+        color: COLOR.text,
 
     },
 

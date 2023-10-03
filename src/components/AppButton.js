@@ -44,7 +44,7 @@ const AppButton = (props) => {
                 textAlign: textAlign == null ? "center" : textAlign,
                 color: textColor == null ? COLOR.titleButton : textColor,
 
-                fontWeight: fontWeight == null ? '500' : fontWeight,
+                fontWeight: fontWeight == null ? '600' : fontWeight,
                 fontSize: fontSize == null ? 14 : fontSize,
                 fontStyle: fontStyle == null ? 'normal' : fontStyle,
 
