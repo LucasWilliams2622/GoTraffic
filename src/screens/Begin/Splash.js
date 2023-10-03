@@ -5,7 +5,7 @@ import LottieView from 'lottie-react-native';
 export default function Splash({ setIsLoading }) {
   return (<View style={styles.splash}>
     <LottieView source={require('../../assets/json/initiativeCompany.json')} autoPlay loop={false} resizeMode="cover" onAnimationFinish={() => {
-          console.log('animation finished');
+          // console.log('animation finished');
           setIsLoading(false);
       }}/>
   </View>);

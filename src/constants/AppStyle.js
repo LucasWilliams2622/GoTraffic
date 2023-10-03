@@ -14,7 +14,6 @@ const scaleHeightSize = (size) => Math.round(PixelRatio.roundToNearestPixel(size
 const widthScaled = scaleSize(100);
 const heightScaled = scaleHeightSize(200);
 
-console.log(widthScaled, heightScaled);
 export const appStyle = StyleSheet.create({
     container: {
         flex: 1,

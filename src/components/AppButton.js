@@ -14,7 +14,6 @@ const AppButton = (props) => {
         // TITLE
         textAlign, textColor, fontSize, fontStyle, title, fontWeight,
     } = props;
-    console.log("icon", icon);
     return (
         <TouchableOpacity style={[styles.button, {
             backgroundColor: backgroundColor == null ? COLOR.bgButton : backgroundColor,
@@ -29,15 +28,18 @@ const AppButton = (props) => {
 
         }]} disabled={disabled == null ? false : true}
             onPress={onPress}>
-            <FastImage
-                style={{ 
-                    width: iconWidth == null ? 16 : iconWidth, 
-                    height: iconHeight == null ? 16 : iconHeight,
-                    marginRight:8
-                 }}
-                source={icon}
-                tintColor={iconColor == null ? 'white' : iconColor}
-                resizeMode={FastImage.resizeMode.contain} />
+            {
+                icon == null ? (<></>)
+                    : (<FastImage
+                        style={{
+                            width: iconWidth == null ? 16 : iconWidth,
+                            height: iconHeight == null ? 16 : iconHeight,
+                            marginRight: 8
+                        }}
+                        source={icon}
+                        tintColor={iconColor == null ? 'white' : iconColor}
+                        resizeMode={FastImage.resizeMode.contain} />)
+            }
             <Text style={[styles.title, {
                 textAlign: textAlign == null ? "center" : textAlign,
                 color: textColor == null ? COLOR.titleButton : textColor,

@@ -3,6 +3,7 @@ import React from 'react'
 import { COLOR } from '../../../constants/Theme'
 import { appStyle } from '../../../constants/AppStyle'
 import AppInput from '../../../components/AppInput'
+import AppButton from '../../../components/AppButton'
 
 const Home = () => {
     return (
@@ -10,7 +11,6 @@ const Home = () => {
             <View style={styles.headBg}>
                 <Text>Home</Text>
             </View>
-            <AppInput isPassword  />
         </SafeAreaView>
     )
 }
