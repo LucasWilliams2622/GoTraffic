@@ -38,7 +38,7 @@ const AppButton = (props) => {
                         }}
                         source={icon}
                         tintColor={iconColor == null ? 'white' : iconColor}
-                        resizeMode={FastImage.resizeMode.contain} />)
+                     />)
             }
             <Text style={[styles.title, {
                 textAlign: textAlign == null ? "center" : textAlign,
