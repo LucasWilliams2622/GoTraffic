@@ -50,6 +50,21 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
+
+	<key>CFBundleURLTypes</key>
+	<array>
+	<dict>
+		<key>CFBundleURLSchemes</key>
+		<array>
+		<string>fb248850361474761</string>
+		</array>
+	</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>248850361474761</string>
+	<key>FacebookDisplayName</key>
+	<string>GoTraffic</string>
+
 	<false/>
 </dict>
 </plist>

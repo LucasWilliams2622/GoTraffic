@@ -35,9 +35,20 @@ const DATA = [
   },
 ]
 
-
 const Support = () => {
-  //CALL PHONE
+
+  //===========================| ONPEN FANPAGE |==================
+  const openFanpage = () => {
+    Linking.openURL(`https://www.facebook.com/profile.php?id=61552015982879`)
+      .catch(err => {
+        console.error('Không thể mở fanpage:', err);
+        // Nếu không thể mở ứng dụng Facebook, mở fanpage trong trình duyệt
+        Linking.openURL(`https://www.facebook.com/profile.php?id=100092619379347`)
+          .catch(err => console.error('Không thể mở fanpage:', err));
+      });
+  };
+
+  //=========================| CALL PHONE |==============================
   const handleCall = () => {
     const phoneNumber = '0337744148';
     const args = {
@@ -46,6 +57,7 @@ const Support = () => {
     };
     call(args).catch(console.error);
   };
+
   return (
     <View style={appStyle.container}>
       <View style={styles.bgHeader} />
@@ -55,7 +67,7 @@ const Support = () => {
 
           <View style={[appStyle.rowBetween, { marginTop: 12, }]}>
             <AppButton title={"Gọi"} width={'49%'} backgroundColor={COLOR.background} textColor={COLOR.titleButton2} icon={require('../../../assets/icon/ic_phone_outline.png')} iconColor={COLOR.titleButton2}
-            onPress={()=>{handleCall()}} />
+              onPress={() => { handleCall() }} />
             <AppButton title={"Gửi tin nhắn"} width={'49%'} icon={require('../../../assets/icon/ic_chat_room.png')} />
           </View>
         </View>
