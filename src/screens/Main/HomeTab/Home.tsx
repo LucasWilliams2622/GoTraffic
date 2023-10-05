@@ -7,8 +7,10 @@ import {
   ScrollView,
 } from 'react-native';
 import React from 'react';
-import {COLOR} from '../../../constants/Theme';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {COLOR, ICON} from '../../../constants/Theme';
 import {appStyle} from '../../../constants/AppStyle';
+import {Row, Column} from 'native-base';
 import AppInput from '../../../components/AppInput';
 import AppButton from '../../../components/AppButton';
 
@@ -16,7 +18,21 @@ const Home = () => {
   return (
     <SafeAreaView style={appStyle.container}>
       <View style={styles.headBg}>
-        <Text>Home</Text>
+        <Row style={{alignItems: 'center'}}>
+          <Column style={[styles.iconBG, {marginRight: 10}]}>
+            <Icon name="user" color={COLOR.forth} size={23}></Icon>
+          </Column>
+          <Column>
+            <Text style={appStyle.text16Bold}>Lê Hoàng Gia Khánh</Text>
+            <Row style={{alignItems: 'center'}}>
+              <Icon
+                name="star"
+                color={COLOR.third}
+                style={{marginRight: 5}}></Icon>
+              <Text style={appStyle.text12Bold}>Điểm thưởng</Text>
+            </Row>
+          </Column>
+        </Row>
       </View>
     </SafeAreaView>
   );
@@ -31,5 +47,14 @@ const styles = StyleSheet.create({
     height: '30%',
     borderBottomLeftRadius: 12,
     borderBottomRightRadius: 12,
+  },
+
+  iconBG: {
+    backgroundColor: COLOR.white,
+    width: 40,
+    height: 40,
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
