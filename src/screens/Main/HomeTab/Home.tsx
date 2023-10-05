@@ -16,9 +16,9 @@ import AppButton from '../../../components/AppButton';
 
 const Home = () => {
   return (
-    <SafeAreaView style={appStyle.container}>
-      <View style={styles.headBg}>
-        <Row style={{alignItems: 'center'}}>
+    <View style={appStyle.container}>
+      <View style={[styles.headBg]}>
+        <Row style={{alignItems: 'center', marginTop: 100, marginLeft: 15}}>
           <Column style={[styles.iconBG, {marginRight: 10}]}>
             <Icon name="user" color={COLOR.forth} size={23}></Icon>
           </Column>
@@ -34,7 +34,7 @@ const Home = () => {
           </Column>
         </Row>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -45,8 +45,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLOR.secondary,
     width: '100%',
     height: '30%',
-    borderBottomLeftRadius: 12,
-    borderBottomRightRadius: 12,
+    borderBottomLeftRadius: 40,
+    borderBottomRightRadius: 40,
   },
 
   iconBG: {
