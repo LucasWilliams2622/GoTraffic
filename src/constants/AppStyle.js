@@ -45,9 +45,13 @@ export const appStyle = StyleSheet.create({
 
 
     avatar: {
-        width: 50,
-        height: 50,
-        borderRadius: 999,
+        width: 120,
+        height: 120,
+        alignSelf: 'center',
+        justifyContent: 'center',
+        borderRadius: 60,
+        borderColor: COLOR.borderColor,
+        borderWidth: 1
     },
     portrait: {
         height: 160, width: 130, borderRadius: 8,
@@ -214,5 +218,6 @@ export const appStyle = StyleSheet.create({
 
         elevation: 15,
     },
+    
 
 })

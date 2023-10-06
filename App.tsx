@@ -3,7 +3,6 @@ import React, { useState, useRef } from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { AppContextProvider } from './src/utils/AppContext'
 import BottomTabs from './src/navigation/BottomNav';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import Splash from './src/screens/Begin/Splash';
 
 LogBox.ignoreLogs([

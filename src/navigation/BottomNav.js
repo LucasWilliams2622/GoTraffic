@@ -8,9 +8,17 @@ import { AppContext } from "../utils/AppContext";
 import Login from '../screens/Begin/Login';
 import Home from '../screens/Main/HomeTab/Home';
 import Profile from '../screens/Main/ProfileTab/Profile';
+import Account from '../screens/Main/ProfileTab/Account';
 import Notification from '../screens/Main/NotificationTab/Notification'
 import Support from '../screens/Main/SupportTab/Support'
 import Trip from '../screens/Main/TripTab/Trip'
+import Policy from '../screens/Main/ProfileTab/Policy';
+import FavouriteCar from '../screens/Main/ProfileTab/FavouriteCar';
+import MyCar from '../screens/Main/ProfileTab/MyCar';
+import MyAddress from '../screens/Main/ProfileTab/MyAddress';
+import ShareWithFriend from '../screens/Main/ProfileTab/ShareWithFriend';
+import ChangePassword from '../screens/Main/ProfileTab/ChangePassword';
+import UpdateProfile from '../screens/Main/ProfileTab/UpdateProfile';
 
 
 
@@ -63,10 +71,19 @@ const StackProfile = () => {
     return (
         <Stack.Navigator initialRouteName="Profile" screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Profile" component={Profile} />
-
+            <Stack.Screen name="Account" component={Account} />
+            <Stack.Screen name="FavouriteCar" component={FavouriteCar} />
+            <Stack.Screen name="MyCar" component={MyCar} />
+            <Stack.Screen name="MyAddress" component={MyAddress} />
+            <Stack.Screen name="ShareWithFriend" component={ShareWithFriend}/> 
+            <Stack.Screen name="Policy" component={Policy}/> 
+            <Stack.Screen name="ChangePassword" component={ChangePassword} />
+            <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
         </Stack.Navigator>
     )
 }
+
+
 const Main = () => {
     const { infoUser, idUser, showWebView, setShowWebView } = useContext(AppContext);
 

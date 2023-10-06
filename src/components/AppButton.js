@@ -6,7 +6,7 @@ const AppButton = (props) => {
     const {
         // BUTTON
         backgroundColor, borderWidth, borderRadius, borderColor,
-        paddingVertical, paddingHorizontal, width,
+        paddingVertical, paddingHorizontal, width, marginTop,
         // ICON
         iconWidth, iconHeight, iconColor, icon,
         // CLICK
@@ -25,6 +25,7 @@ const AppButton = (props) => {
             paddingVertical: paddingVertical == null ? 12 : paddingVertical,
             paddingHorizontal: paddingHorizontal == null ? 14 : paddingHorizontal,
             width: width == null ? '100%' : width,
+            marginTop: marginTop == null ? 0 : marginTop,
 
         }]} disabled={disabled == null ? false : true}
             onPress={onPress}>
@@ -67,7 +68,8 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.17,
         shadowRadius: 2.54,
-        elevation: 3
+        elevation: 3,
+        
     },
     title: {
 
