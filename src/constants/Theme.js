@@ -50,4 +50,5 @@ export const ICON = {
   TripFocus: require('../assets/icon/ic_car_focus.png'),
   SupportFocus: require('../assets/icon/ic_message_focus.png'),
   ProfileFocus: require('../assets/icon/ic_user_focus.png'),
+  SteeringWheel: require('../assets/icon/ic_steering_wheel.png'),
 };
