@@ -9,11 +9,13 @@ import Test2 from './src/test/Test2'
 LogBox.ignoreLogs([
   'Require cycle:',
 ]);
+import { FacebookSDK } from 'react-native-fbsdk';
+FacebookSDK.sdkInitialize();
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
-return(
-  <Test2/>
-)
+// return(
+//   <Test2/>
+// )
   return (
     <AppContextProvider>
       <NavigationContainer>
