@@ -25,7 +25,7 @@ const AppButton = (props) => {
             paddingVertical: paddingVertical == null ? 12 : paddingVertical,
             paddingHorizontal: paddingHorizontal == null ? 14 : paddingHorizontal,
             width: width == null ? '100%' : width,
-
+            
         }]} disabled={disabled == null ? false : true}
             onPress={onPress}>
             {

@@ -11,6 +11,7 @@ import Profile from '../screens/Main/ProfileTab/Profile';
 import Notification from '../screens/Main/NotificationTab/Notification';
 import Support from '../screens/Main/SupportTab/Support';
 import Trip from '../screens/Main/TripTab/Trip';
+import Register from '../screens/Begin/Register';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -21,6 +22,7 @@ const StackBegin = () => {
       initialRouteName="Login"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="BottomNav" component={BottomTabNav} />
     </Stack.Navigator>
   );
@@ -156,6 +158,6 @@ const BottomTabNav = () => {
   return <>{isLogin == false ? <StackBegin /> : <Main />}</>;
 };
 //ADMIN
-export default BottomTabNav;
+export default StackBegin;
 
 const styles = StyleSheet.create({});
