@@ -11,9 +11,9 @@ LogBox.ignoreLogs([
 ]);
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
-return(
-  <Test2/>
-)
+// return(
+//   <Test2/>
+// )
   return (
     <AppContextProvider>
       <NavigationContainer>
