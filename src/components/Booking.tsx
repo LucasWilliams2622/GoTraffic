@@ -5,15 +5,39 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import {COLOR} from '../constants/Theme';
 import {Row, Radio, HStack} from 'native-base';
 import AppButton from './AppButton';
 import SteeringWheel from '../assets/icon/ic_steering_wheel';
 
+interface ButtonProps {
+  isSelfDriving: boolean;
+  setIsSelfDriving: React.Dispatch<React.SetStateAction<boolean>>;
+  value: boolean;
+  children: React.ReactNode;
+  side: string;
+}
+
 const Booking = () => {
-  const [isSelfDriving, setIsSelfDriving] = useState(true);
+  const [isSelfDriving, setIsSelfDriving] = useState<boolean>(true);
+
+  const [currentDay, setCurrentDay] = useState<Date>(new Date());
+  const [tomorrow, setTomorrow] = useState<Date>(new Date());
+
+  useEffect(() => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    setTomorrow(tomorrow);
+  }, []);
+  const currentDayString = `${currentDay.getHours()}:00, ${currentDay.getDate()}/${
+    currentDay.getMonth() + 1
+  }`;
+  const tomorrowString = `${
+    tomorrow.getHours() + 1
+  }:00, ${tomorrow.getDate()}/${tomorrow.getMonth() + 1}`;
+  const timeString = `${currentDayString} - ${tomorrowString}`;
 
   return (
     <View style={styles.outerContainer}>
@@ -51,7 +75,11 @@ const Booking = () => {
       </View>
       <View style={styles.contentWrapper}>
         <View style={styles.contentContainer}>
-          {isSelfDriving === true ? <SelfDrivingView /> : <DriverView />}
+          {isSelfDriving === true ? (
+            <SelfDrivingView timeString={timeString} />
+          ) : (
+            <DriverView timeString={timeString} />
+          )}
 
           <AppButton title="Tìm xe" backgroundColor={COLOR.fifth} />
         </View>
@@ -60,10 +88,16 @@ const Booking = () => {
   );
 };
 
-const getTextStyle = isActive =>
+const getTextStyle = (isActive: boolean) =>
   isActive ? {color: COLOR.white} : {color: COLOR.forth};
 
-const Button = ({isSelfDriving, setIsSelfDriving, value, children, side}) => (
+const Button = ({
+  isSelfDriving,
+  setIsSelfDriving,
+  value,
+  children,
+  side,
+}: ButtonProps) => (
   <TouchableOpacity
     style={[
       isSelfDriving === value
@@ -76,7 +110,11 @@ const Button = ({isSelfDriving, setIsSelfDriving, value, children, side}) => (
   </TouchableOpacity>
 );
 
-const SelfDrivingView = () => (
+interface ViewProps {
+  timeString: string;
+}
+
+const SelfDrivingView = ({timeString}: ViewProps) => (
   <View>
     <View>
       <Row style={{alignItems: 'center', marginBottom: 10}}>
@@ -99,14 +137,14 @@ const SelfDrivingView = () => (
       </Row>
       <TextInput
         placeholder="Nhập thời gian thuê"
-        value="21:00, 01/10 - 20:00, 02/10"
+        value={timeString}
         style={[styles.heroInput]}
       />
     </View>
   </View>
 );
 
-const DriverView = () => {
+const DriverView = ({timeString}: ViewProps) => {
   const [tripType, setTripType] = useState('lien-tinh');
   return (
     <View>
@@ -175,7 +213,7 @@ const DriverView = () => {
         </Row>
         <TextInput
           placeholder="Nhập thời gian thuê"
-          value="21:00, 01/10 - 20:00, 02/10"
+          value={timeString}
           style={[styles.heroInput]}
         />
       </View>
