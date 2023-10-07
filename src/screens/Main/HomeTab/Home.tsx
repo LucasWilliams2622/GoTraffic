@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   headBg: {
     backgroundColor: COLOR.secondary,
     width: '100%',
-    height: '35%',
+    height: '30%',
     borderBottomLeftRadius: 40,
     borderBottomRightRadius: 40,
   },
