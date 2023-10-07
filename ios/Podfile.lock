@@ -93,6 +93,10 @@ PODS:
     - lottie-ios (~> 4.3.0)
     - React-Core
   - OpenSSL-Universal (1.1.1100)
+  - Permission-LocationAlways (3.9.2):
+    - RNPermissions
+  - Permission-LocationWhenInUse (3.9.2):
+    - RNPermissions
   - RCT-Folly (2021.07.22.00):
     - boost
     - DoubleConversion
@@ -578,8 +582,8 @@ PODS:
     - React-RCTImage
   - RNShare (9.4.1):
     - React-Core
-  - RNSVG (12.1.1):
-    - React
+  - RNSVG (13.14.0):
+    - React-Core
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
   - SDWebImage/Core (5.11.1)
@@ -623,6 +627,8 @@ DEPENDENCIES:
   - libevent (~> 2.1.12)
   - lottie-react-native (from `../node_modules/lottie-react-native`)
   - OpenSSL-Universal (= 1.1.1100)
+  - Permission-LocationAlways (from `../node_modules/react-native-permissions/ios/LocationAlways/Permission-LocationAlways.podspec`)
+  - Permission-LocationWhenInUse (from `../node_modules/react-native-permissions/ios/LocationWhenInUse/Permission-LocationWhenInUse.podspec`)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -719,6 +725,10 @@ EXTERNAL SOURCES:
     :tag: hermes-2023-08-07-RNv0.72.4-813b2def12bc9df02654b3e3653ae4a68d0572e0
   lottie-react-native:
     :path: "../node_modules/lottie-react-native"
+  Permission-LocationAlways:
+    :path: "../node_modules/react-native-permissions/ios/LocationAlways/Permission-LocationAlways.podspec"
+  Permission-LocationWhenInUse:
+    :path: "../node_modules/react-native-permissions/ios/LocationWhenInUse/Permission-LocationWhenInUse.podspec"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -849,6 +859,8 @@ SPEC CHECKSUMS:
   lottie-ios: 25e7b2675dad5c3ddad369ac9baab03560c5bfdd
   lottie-react-native: c9f1db4f4124dcce9f8159e65d8dc6e8bcb11fb4
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
+  Permission-LocationAlways: 2a1a4cfdb9fbed5e8160cc9cb4b061bf672c705a
+  Permission-LocationWhenInUse: 864516b65f94533a24a2d6fd2139a714a1e0a516
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
   RCTRequired: c0569ecc035894e4a68baecb30fe6a7ea6e399f9
   RCTTypeSafety: e90354072c21236e0bcf1699011e39acd25fea2f
@@ -900,7 +912,7 @@ SPEC CHECKSUMS:
   RNReanimated: ab2e96c6d5591c3dfbb38a464f54c8d17fb34a87
   RNScreens: 85d3880b52d34db7b8eeebe2f1a0e807c05e69fa
   RNShare: 32e97adc8d8c97d4a26bcdd3c45516882184f8b6
-  RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
+  RNSVG: d00c8f91c3cbf6d476451313a18f04d220d4f396
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
@@ -908,6 +920,6 @@ SPEC CHECKSUMS:
   Yoga: 3efc43e0d48686ce2e8c60f99d4e6bd349aff981
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 8cf3e1b0dea1552fbf5857557309ca548b899e09
+PODFILE CHECKSUM: 8d866b941d0fac6b4a5fc133dddbf87f94e7e691
 
 COCOAPODS: 1.11.3
