@@ -2,12 +2,13 @@ import { StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import { COLOR } from '../constants/Theme';
 import { Dropdown } from 'react-native-element-dropdown';
+import { windowHeight, windowWidth } from '../constants/AppStyle';
 
 
 const AppDropdown = (props) => {
     const { onChange, value, onBlur,
         fontSize, width, backgroundColor, borderWidth, borderRadius, paddingVertical, paddingHorizontal, borderColor,
-        placeholder,placeholderStyle, searchPlaceholder,  placeholderTextColor,
+        placeholder, placeholderStyle, searchPlaceholder, placeholderTextColor,
         data, labelField, valueField } = props;
 
     const [isFocused, setIsFocused] = useState(false);
@@ -34,7 +35,15 @@ const AppDropdown = (props) => {
                 inputSearchStyle={styles.inputSearchStyle}
                 data={data}
                 search
+                mode='modal'
                 maxHeight={300}
+                containerStyle={{
+                    width: windowWidth,
+                    height: windowHeight * .5,
+                    marginTop: windowHeight * .5,
+                    borderTopRightRadius:16,
+                    borderTopLeftRadius:16
+                }}
                 labelField={labelField}
                 valueField={valueField}
                 placeholder={placeholder == null ? 'Nhập placeholder đi má' : placeholder}
