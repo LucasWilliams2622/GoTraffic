@@ -8,7 +8,7 @@ const AppInput = (props) => {
         placeholder, textColor, placeholderTextColor, keyboardAppearance, returnKeyType, autoCapitalize,
         width, keyboardType,
         editable, autoCorrect, multiline, fontSize,
-        onChangeText, value,
+        onChangeText, value, onBlur,
 
         isPassword } = props
 
@@ -40,10 +40,10 @@ const AppInput = (props) => {
             paddingHorizontal: paddingHorizontal == null ? 8 : paddingHorizontal,
         }]}>
             <TextInput
-                style={[styles.textInput, {
+                style={[styles.textInput,  {
                     color: textColor ? '#000000' : textColor,
                     maxWidth: '90%',
-                    fontSize: fontSize == null ? 14 : fontSize,
+                    fontSize: fontSize == null ? 16 : fontSize,
                 }]}
                 onChangeText={onChangeText}
                 value={value}
@@ -60,7 +60,7 @@ const AppInput = (props) => {
                 keyboardAppearance={keyboardAppearance ? 'light' : 'dark'}
                 returnKeyType={returnKeyType == 'next' ? 'next' : returnKeyType == 'done' ? "done" : returnKeyType == 'search' ? "search" : 'done'}
                 onFocus={() => handleFocus()}
-                onBlur={() => handleBlur()}
+                onBlur={onBlur}
                 editable={editable}
                 autoCorrect={autoCorrect}
                 passwordRules={'string'}
@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         flexDirection: 'row',
+        marginTop: 5
     },
     textInput: {
         paddingVertical: 0,

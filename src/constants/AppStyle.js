@@ -4,7 +4,7 @@ import {
   Dimensions,
   PixelRatio,
 } from 'react-native';
-import {COLOR} from './Theme';
+import { COLOR } from './Theme';
 
 export const windowWidth = Dimensions.get('window').width;
 export const windowHeight = Dimensions.get('window').height;
@@ -51,19 +51,22 @@ export const appStyle = StyleSheet.create({
   },
 
   avatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 999,
+    width: 120,
+    height: 120,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    borderRadius: 60,
+    borderColor: COLOR.borderColor,
+    borderWidth: 1
   },
   portrait: {
-    height: 160,
-    width: 130,
-    borderRadius: 8,
+    height: 160, width: 130, borderRadius: 8,
   },
   logo: {
-    width: 24,
-    height: 24,
+    width: 40,
+    height: 40,
   },
+
 
   //=====================| TEXT - TITLE |============================
   text8: {
@@ -271,4 +274,3 @@ export const appStyle = StyleSheet.create({
 
     elevation: 15,
   },
-});
