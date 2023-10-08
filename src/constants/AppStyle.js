@@ -61,8 +61,8 @@ export const appStyle = StyleSheet.create({
     borderRadius: 8,
   },
   logo: {
-    width: 40,
-    height: 40,
+    width: 24,
+    height: 24,
   },
 
   //=====================| TEXT - TITLE |============================
@@ -240,13 +240,12 @@ export const appStyle = StyleSheet.create({
     borderRadius: 16,
   },
   modalContentBottom: {
-    backgroundColor: 'white',
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    width: '100%',
+    backgroundColor: COLOR.background,
+    paddingHorizontal: 12,
+    paddingVertical: 20,
     alignItems: 'flex-start',
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
   },
   //==================| SOMETHING ESLE |======================
   boxCenter: {
