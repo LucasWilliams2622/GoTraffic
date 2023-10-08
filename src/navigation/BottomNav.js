@@ -22,10 +22,6 @@ import NewAddress from '../screens/Main/ProfileTab/NewAddress';
 import Account from '../screens/Main/ProfileTab/Account';
 import Register from '../screens/Begin/Register';
 import Verified from '../screens/Begin/Verified';
-
-import Notification from '../screens/Main/NotificationTab/Notification';
-import Support from '../screens/Main/SupportTab/Support';
-import Trip from '../screens/Main/TripTab/Trip';
 import LocationPicking from '../screens/Main/HomeTab/LocationPicking';
 import TimePicking from '../screens/Main/HomeTab/TimePicking';
 
