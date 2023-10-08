@@ -1,19 +1,29 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { COLOR } from '../constants/Theme';
+import { COLOR, ICON } from '../constants/Theme';
 import FastImage from 'react-native-fast-image';
 import { appStyle } from '../constants/AppStyle';
 
 const Address = (props) => {
-    const {title, text, icon, onPress } = props;
+    // const {title, text, icon, onPress, dulieu } = props;
+    const { dulieu, onPress } = props;
+
+    // Trích xuất thông tin từ dulieu
+    const { type, nickName, address } = dulieu || {};
+    console.log(dulieu);
     return (
         <TouchableOpacity onPress={onPress}>
             <View style={styles.container}>
                 <View style={styles.content}>
-                    <FastImage style={[appStyle.iconBig, {alignSelf:'center'}]} source={icon} />
-                    <View style={{marginLeft: 16}}>
-                        <Text style={[appStyle.text16,{fontWeight:'600'}]}>{title}</Text>
-                        <Text style={[appStyle.text14]}>{text}</Text>
+                    {/* <FastImage style={[appStyle.iconBig, { alignSelf: 'center' }]}
+                        source={icon} /> */}
+                    <FastImage
+                        style={[appStyle.iconBig, { alignSelf: 'center' }]}
+                        source={type === 'Nhà riêng' ? ICON.Home : ICON.Company}
+                    />
+                    <View style={{ marginLeft: 16 }}>
+                        <Text style={[appStyle.text16, { fontWeight: '600' }]}>{nickName}</Text>
+                        <Text style={[appStyle.text14]}>{address}</Text>
                     </View>
                 </View>
                 <FastImage style={appStyle.iconMedium} source={require('../assets/icon/ic_right.png')} />

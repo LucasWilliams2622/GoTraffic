@@ -6,7 +6,7 @@ const AppButton = (props) => {
     const {
         // BUTTON
         backgroundColor, borderWidth, borderRadius, borderColor,
-        paddingVertical, paddingHorizontal, width, marginTop,
+        paddingVertical, paddingHorizontal, width, marginTop,marginBottom, position,
         // ICON
         iconWidth, iconHeight, iconColor, icon,
         // CLICK
@@ -26,6 +26,8 @@ const AppButton = (props) => {
             paddingHorizontal: paddingHorizontal == null ? 14 : paddingHorizontal,
             width: width == null ? '100%' : width,
             marginTop: marginTop == null ? 0 : marginTop,
+            marginBottom: marginBottom == null ? 0 : marginBottom,
+            
 
         }]} disabled={disabled == null ? false : true}
             onPress={onPress}>

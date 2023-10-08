@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import { COLOR, ICON } from '../../../constants/Theme';
 import FastImage from 'react-native-fast-image';
 import { appStyle } from '../../../constants/AppStyle';
-import { useRoute } from '@react-navigation/native';
 
 const Account = (props) => {
   const { navigation, route } = props;
@@ -165,7 +164,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignSelf: 'center',
-
   },
   viewEdit: {
     width: 345,

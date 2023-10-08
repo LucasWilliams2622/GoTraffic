@@ -1,30 +1,52 @@
-import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { appStyle } from '../../../constants/AppStyle'
 import Header from '../../../components/Header'
 import { COLOR, ICON } from '../../../constants/Theme'
-import FastImage from 'react-native-fast-image'
 import ButtonSelected from '../../../components/ButtonSelected'
 import AppInput from '../../../components/AppInput'
 import SwitchToggle from "react-native-switch-toggle";
 import AppButton from '../../../components/AppButton'
-import { Dropdown } from 'react-native-element-dropdown';
 import AppDropdown from '../../../components/AppDropdown'
 import axios from 'axios';
-
-
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 const NewAddress = (props) => {
     const { navigation } = props;
     const [isSelected, setisSelected] = useState(null);
     const [onSwitch, setonSwitch] = useState(false);
-    const [value, setValue] = useState(null);
+    const [nickName, setNickName] = useState(null);
     const [provinces, setProvinces] = useState([]);
     const [selectedProvince, setSelectedProvince] = useState(null);
     const [districts, setDistricts] = useState([]);
     const [selectedDistrict, setSelectedDistrict] = useState(null);
     const [wards, setWards] = useState([]);
     const [selectedWard, setSelectedWard] = useState(null);
+    const [address, setAddress] = useState(null);
+    const [addresses, setAddresses] = useState([]);
+
+
+    const handleSaveButtonPress = () => {
+        // Lấy thông tin từ các trường nhập liệu
+        const newAddress = {
+            type: isSelected,
+            nickName: nickName,
+            province: selectedProvince?.name,
+            district: selectedDistrict?.name,
+            ward: selectedWard?.name,
+            address: address,
+            isDefault: onSwitch,
+        };
+        const updatedAddresses = [...addresses];
+
+        // Thêm địa chỉ mới vào danh sách
+        updatedAddresses.push(newAddress);
+        // Cập nhật danh sách địa chỉ
+        setAddresses(updatedAddresses);
+        console.log(newAddress);
+        // Sau đó, chuyển đến trang MyAddress
+        navigation.navigate('MyAddress', {updatedAddresses: [newAddress]});
+    };
 
     useEffect(() => {
         // Gọi API để lấy danh sách tỉnh/thành phố và set nó vào state 'provinces'
@@ -70,17 +92,6 @@ const NewAddress = (props) => {
         }
     }, [selectedDistrict]);
 
-    // const data = [
-    //     { label: 'Item 1', value: '1' },
-    //     { label: 'Item 2', value: '2' },
-    //     { label: 'Item 3', value: '3' },
-    //     { label: 'Item 4', value: '4' },
-    //     { label: 'Item 5', value: '5' },
-    //     { label: 'Item 6', value: '6' },
-    //     { label: 'Item 7', value: '7' },
-    //     { label: 'Item 8', value: '8' },
-    // ];
-
     const handleSwitchToggle = () => {
         setonSwitch(!onSwitch); // Thay đổi giá trị của state khi SwitchToggle được bật/tắt
     };
@@ -101,27 +112,28 @@ const NewAddress = (props) => {
                 <ButtonSelected
                     text="Nhà riêng"
                     icon={ICON.Home}
-
-                    isSelected={isSelected === 'button1'}
-                    onPress={() => handleButtonPress('button1')}
+                    isSelected={isSelected === 'Nhà riêng'}
+                    onPress={() => handleButtonPress('Nhà riêng')}
                 />
                 <ButtonSelected
                     text="Công ty"
                     icon={ICON.Company}
-                    isSelected={isSelected === 'button2'}
-                    onPress={() => handleButtonPress('button2')}
+                    isSelected={isSelected === 'Công ty'}
+                    onPress={() => handleButtonPress('Công ty')}
                 />
                 <ButtonSelected
                     text="Khác"
                     icon={ICON.Other}
-                    isSelected={isSelected === 'button3'}
-                    onPress={() => handleButtonPress('button3')}
+                    isSelected={isSelected === 'Khác'}
+                    onPress={() => handleButtonPress('Khác')}
                 />
             </View>
             <Text style={[appStyle.text18, { fontWeight: '500', marginTop: 10 }]}>Tên gợi nhớ</Text>
             <AppInput
                 placeholder="Nhập tên cho địa chỉ"
                 placeholderStyle={{ fontSize: 14 }}
+                value={nickName}
+                onChangeText={(text) => setNickName(text)}
             />
             <Text style={[appStyle.text18, { fontWeight: '500', marginTop: 10 }]}>Tỉnh/Thành phố</Text>
             <AppDropdown
@@ -166,10 +178,12 @@ const NewAddress = (props) => {
             <Text style={[appStyle.text18, { fontWeight: '500', marginTop: 10 }]}>Địa chỉ</Text>
             <AppInput
                 placeholder="Nhập tên cho địa chỉ"
+                placeholderStyle={{ fontSize: 14 }}
+                value={address}
+                onChangeText={(text) => setAddress(text)}
             />
             <View style={{ flexDirection: 'row', marginTop: 20, justifyContent: 'space-between' }}>
                 <Text style={[appStyle.text14, { fontWeight: '500' }]}>Đặt làm địa chỉ mặc định</Text>
-
                 <SwitchToggle
                     switchOn={onSwitch}
                     onPress={handleSwitchToggle}
@@ -193,30 +207,11 @@ const NewAddress = (props) => {
             <AppButton
                 title="Lưu"
                 marginTop={30}
-                onPress={() => navigation.navigate('MyAddress')}
+                onPress={() => handleSaveButtonPress()}
             />
         </SafeAreaView>
     )
 }
 
 export default NewAddress
-
-const styles = StyleSheet.create({
-    dropdown: {
-        height: 50,
-        maxWidth: '100%',
-        borderBottomColor: 'gray',
-        borderWidth: 0.5,
-        borderRadius: 6
-    },
-    placeholderStyle: {
-        fontSize: 16,
-    },
-    selectedTextStyle: {
-        fontSize: 16,
-    },
-    inputSearchStyle: {
-        height: 40,
-        fontSize: 16,
-    },
-})
+const styles = StyleSheet.create({})
