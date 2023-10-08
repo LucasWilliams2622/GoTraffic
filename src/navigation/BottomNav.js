@@ -19,6 +19,7 @@ import MyAddress from '../screens/Main/ProfileTab/MyAddress';
 import ShareWithFriend from '../screens/Main/ProfileTab/ShareWithFriend';
 import ChangePassword from '../screens/Main/ProfileTab/ChangePassword';
 import UpdateProfile from '../screens/Main/ProfileTab/UpdateProfile';
+import NewAddress from '../screens/Main/ProfileTab/NewAddress';
 
 
 
@@ -79,6 +80,8 @@ const StackProfile = () => {
             <Stack.Screen name="Policy" component={Policy}/> 
             <Stack.Screen name="ChangePassword" component={ChangePassword} />
             <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
+            <Stack.Screen name="NewAddress" component={NewAddress} />
+
         </Stack.Navigator>
     )
 }

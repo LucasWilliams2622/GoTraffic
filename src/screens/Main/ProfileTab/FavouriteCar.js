@@ -30,7 +30,7 @@ const FavouriteCar = (props) => {
         // Hiển thị hình ảnh khi không có xe yêu thích
         <FastImage
           source={require('../../../assets/image/guide/img_favourite_car.png')}
-          style={{ width: '80%', height: '80%', alignSelf: 'center' }}
+          style={{ width: '80%', height: '75%', alignSelf: 'center', justifyContent:'center' }}
         />
       )}
     </SafeAreaView>

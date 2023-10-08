@@ -35,7 +35,7 @@ export const COLOR = {
     green: '#339900',
     violet: '#660066',
     orange: '#ff6600',
-    lightBlue:'#BDE1F2',
+    lightBlue:'#8ce0f5',
     lightYellow: '#FFE29D',
     lightGreen: '#C0EBC5',
     exit: '#F25F57'
@@ -70,7 +70,9 @@ export const ICON = {
     Location: require('../assets/icon/ic_location.png'),
     Share: require('../assets/icon/ic_share.png'),
     Policy: require('../assets/icon/ic_interrogation.png'),
-    Key: require('../assets/icon/ic_key.png')
+    Key: require('../assets/icon/ic_key.png'),
+    Company: require('../assets/icon/ic_company.png'),
+    Other: require('../assets/icon/ic_bookmark.png'),
 
 
 }
