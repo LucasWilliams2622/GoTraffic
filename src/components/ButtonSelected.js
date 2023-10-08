@@ -13,7 +13,7 @@ const ButtonSelected = (props) => {
                    {backgroundColor: isSelected ? COLOR.lightBlue : 'transparent'}
                 ]}
                 onPress={onPress}>
-                <FastImage source={icon} style={[appStyle.iconMedium, {marginRight: 5 }]} />
+                <FastImage source={icon} resizeMode='stretch' style={[appStyle.iconMedium, {marginRight: 5 }]} />
                 <Text style={appStyle.text14}>{text}</Text>
             </TouchableOpacity>
         </View>

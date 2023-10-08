@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
+import { KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { appStyle } from '../../../constants/AppStyle'
 import Header from '../../../components/Header'
@@ -10,6 +10,7 @@ import AppButton from '../../../components/AppButton'
 import AppDropdown from '../../../components/AppDropdown'
 import axios from 'axios';
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const NewAddress = (props) => {
     const { navigation } = props;
@@ -45,7 +46,7 @@ const NewAddress = (props) => {
         setAddresses(updatedAddresses);
         console.log(newAddress);
         // Sau đó, chuyển đến trang MyAddress
-        navigation.navigate('MyAddress', {updatedAddresses: [newAddress]});
+        navigation.navigate('MyAddress', { updatedAddresses: [newAddress] });
     };
 
     useEffect(() => {
@@ -107,6 +108,7 @@ const NewAddress = (props) => {
                 marginLeft={90}
                 onPress={() => navigation.navigate('MyAddress')}
             />
+
             <Text style={[appStyle.text18, { fontWeight: '600' }]}>Loại địa chỉ</Text>
             <View style={{ flexDirection: 'row' }}>
                 <ButtonSelected
@@ -128,60 +130,64 @@ const NewAddress = (props) => {
                     onPress={() => handleButtonPress('Khác')}
                 />
             </View>
-            <Text style={[appStyle.text18, { fontWeight: '500', marginTop: 10 }]}>Tên gợi nhớ</Text>
-            <AppInput
-                placeholder="Nhập tên cho địa chỉ"
-                placeholderStyle={{ fontSize: 14 }}
-                value={nickName}
-                onChangeText={(text) => setNickName(text)}
-            />
-            <Text style={[appStyle.text18, { fontWeight: '500', marginTop: 10 }]}>Tỉnh/Thành phố</Text>
-            <AppDropdown
-                placeholderStyle={{ fontSize: 14 }}
-                fontSize={16}
-                labelField="name"
-                valueField="name"
-                placeholder="Tỉnh/Thành phố"
-                data={provinces}
-                value={selectedProvince?.name}
-                onChange={(val) => {
-                    setSelectedProvince(val);
-                    setSelectedDistrict(null);
-                    setSelectedWard(null);
-                }}
-            />
-            <Text style={[appStyle.text18, { fontWeight: '500', marginTop: 10 }]}>Quận Huyện</Text>
-            <AppDropdown
-                placeholderStyle={{ fontSize: 14 }}
-                fontSize={16}
-                labelField="name"
-                valueField="name"
-                placeholder="Quận Huyện"
-                data={districts}
-                value={selectedDistrict?.name}
-                onChange={(val) => {
-                    setSelectedDistrict(val);
-                    setSelectedWard(null);
-                }}
-            />
-            <Text style={[appStyle.text18, { fontWeight: '500', marginTop: 10 }]}>Phường Xã</Text>
-            <AppDropdown
-                labelField="name"
-                valueField="name"
-                placeholder="Phường Xã"
-                data={wards}
-                value={selectedWard?.name}
-                onChange={(val) => {
-                    setSelectedWard(val);
-                }}
-            />
-            <Text style={[appStyle.text18, { fontWeight: '500', marginTop: 10 }]}>Địa chỉ</Text>
-            <AppInput
-                placeholder="Nhập tên cho địa chỉ"
-                placeholderStyle={{ fontSize: 14 }}
-                value={address}
-                onChangeText={(text) => setAddress(text)}
-            />
+            <KeyboardAwareScrollView
+                style={{ borderWidth: 2, }}
+                behavior='padding'>
+
+                <Text style={[appStyle.text18, { fontWeight: '500', marginTop: 10 }]}>Tên gợi nhớ</Text>
+                <AppInput
+                    placeholder="Nhập tên cho địa chỉ"
+                    placeholderStyle={{ fontSize: 14 }}
+                    value={nickName}
+                    onChangeText={(text) => setNickName(text)}
+                />
+                <Text style={[appStyle.text18, { fontWeight: '500', marginTop: 10 }]}>Tỉnh/Thành phố</Text>
+                <AppDropdown
+                    placeholderStyle={{ fontSize: 14 }}
+                    fontSize={16}
+                    labelField="name"
+                    valueField="name"
+                    placeholder="Tỉnh/Thành phố"
+                    data={provinces}
+                    value={selectedProvince?.name}
+                    onChange={(val) => {
+                        setSelectedProvince(val);
+                        setSelectedDistrict(null);
+                        setSelectedWard(null);
+                    }}
+                />
+                <Text style={[appStyle.text18, { fontWeight: '500', marginTop: 10 }]}>Quận Huyện</Text>
+                <AppDropdown
+                    placeholderStyle={{ fontSize: 14 }}
+                    fontSize={16}
+                    labelField="name"
+                    valueField="name"
+                    placeholder="Quận Huyện"
+                    data={districts}
+                    value={selectedDistrict?.name}
+                    onChange={(val) => {
+                        setSelectedDistrict(val);
+                        setSelectedWard(null);
+                    }}
+                />
+                <Text style={[appStyle.text18, { fontWeight: '500', marginTop: 10 }]}>Phường Xã</Text>
+                <AppDropdown
+                    labelField="name"
+                    valueField="name"
+                    placeholder="Phường Xã"
+                    data={wards}
+                    value={selectedWard?.name}
+                    onChange={(val) => {
+                        setSelectedWard(val);
+                    }}
+                />
+                <Text style={[appStyle.text18, { fontWeight: '500', marginTop: 10 }]}>Địa chỉ</Text>
+                <AppInput
+                    placeholder="Nhập tên cho địa chỉ"
+                    placeholderStyle={{ fontSize: 14 }}
+                    value={address}
+                    onChangeText={(text) => setAddress(text)}
+                />
             <View style={{ flexDirection: 'row', marginTop: 20, justifyContent: 'space-between' }}>
                 <Text style={[appStyle.text14, { fontWeight: '500' }]}>Đặt làm địa chỉ mặc định</Text>
                 <SwitchToggle
@@ -209,6 +215,8 @@ const NewAddress = (props) => {
                 marginTop={30}
                 onPress={() => handleSaveButtonPress()}
             />
+            </KeyboardAwareScrollView>
+
         </SafeAreaView>
     )
 }

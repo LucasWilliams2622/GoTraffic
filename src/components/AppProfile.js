@@ -10,7 +10,7 @@ const AppProfile = (props) => {
     <TouchableOpacity onPress={onPress}>
       <View style={styles.container}>
         <View style={styles.content}>
-          <FastImage style={appStyle.iconBig} source={icon} />
+          <FastImage style={appStyle.iconBig} source={icon} resizeMode='stretch' />
           <Text style={[appStyle.text16, { marginLeft: 16 }]}>{text}</Text>
         </View>
         <FastImage style={appStyle.iconMedium} source={require('../assets/icon/ic_right.png')} />
@@ -24,11 +24,11 @@ export default AppProfile
 const styles = StyleSheet.create({
   container: {
     backgroundColor: COLOR.background,
-    width: 340,
+    width: '100%',
     height: 50,
     alignSelf: 'center',
-    borderBottomColor: 'black',
-    borderBottomWidth: 0.5,
+    borderBottomColor: '#efefef',
+    borderBottomWidth: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
