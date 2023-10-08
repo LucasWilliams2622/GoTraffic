@@ -18,6 +18,7 @@ export const COLOR = {
 
   borderColor: '#787878',
   placeholder: '#595959',
+  placeholder10: '#59595933',
 
   text: '#000000',
   title: '#023047',

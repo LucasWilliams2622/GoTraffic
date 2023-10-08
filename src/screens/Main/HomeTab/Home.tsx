@@ -16,11 +16,11 @@ import {Row, Column} from 'native-base';
 import AppInput from '../../../components/AppInput';
 import AppButton from '../../../components/AppButton';
 import SteeringWheel from '../../../assets/icon/ic_steering_wheel';
+import Booking from '../../../components/Booking';
 
 const Home = () => {
   return (
     <View style={appStyle.container}>
-      {/* User name and point */}
       <View style={[styles.headBg]}>
         <Row style={{alignItems: 'center', marginTop: 100, marginLeft: 15}}>
           <Column style={[styles.iconBG, {marginRight: 10}]}>
@@ -38,51 +38,7 @@ const Home = () => {
           </Column>
         </Row>
       </View>
-
-      <View>
-        <Row>
-          <TouchableOpacity>
-            <Row>
-              <Icon name="car" color={COLOR.secondary} size={16}></Icon>
-              <Text>Xe tự lái</Text>
-            </Row>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Row>
-              <SteeringWheel color={COLOR.secondary} />
-              <Text>Xe có tài xế</Text>
-            </Row>
-          </TouchableOpacity>
-        </Row>
-
-        <View>
-          <View>
-            <View>
-              <Row>
-                <Icon
-                  name="map-marker"
-                  color={COLOR.secondary}
-                  size={23}></Icon>
-                <Text>Địa điểm</Text>
-              </Row>
-            </View>
-            <AppInput placeholder="Nhập địa điểm" />
-          </View>
-          <View>
-            <View>
-              <Row>
-                <Icon name="calendar" color={COLOR.secondary} size={23}></Icon>
-                <Text>Thời gian thuê</Text>
-              </Row>
-            </View>
-            <AppInput
-              placeholder="Nhập thời gian thuê"
-              value="21:00, 01/10 - 20:00, 02/10"
-            />
-          </View>
-          <AppButton title="Tìm xe" color={COLOR.secondary} />
-        </View>
-      </View>
+      <Booking />
     </View>
   );
 };
