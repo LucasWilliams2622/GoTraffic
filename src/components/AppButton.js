@@ -6,13 +6,14 @@ const AppButton = (props) => {
     const {
         // BUTTON
         backgroundColor, borderWidth, borderRadius, borderColor,
-        paddingVertical, paddingHorizontal, width,
+        paddingVertical, paddingHorizontal, width, noShadow,
         // ICON
         iconWidth, iconHeight, iconColor, icon,
         // CLICK
         disabled, onPress,
         // TITLE
         textAlign, textColor, fontSize, fontStyle, title, fontWeight,
+
     } = props;
     return (
         <TouchableOpacity style={[styles.button, {
@@ -25,6 +26,8 @@ const AppButton = (props) => {
             paddingVertical: paddingVertical == null ? 12 : paddingVertical,
             paddingHorizontal: paddingHorizontal == null ? 14 : paddingHorizontal,
             width: width == null ? '100%' : width,
+            elevation: noShadow == null ? 3 : 0
+
 
         }]} disabled={disabled == null ? false : true}
             onPress={onPress}>
@@ -38,7 +41,7 @@ const AppButton = (props) => {
                         }}
                         source={icon}
                         tintColor={iconColor == null ? 'white' : iconColor}
-                     />)
+                    />)
             }
             <Text style={[styles.title, {
                 textAlign: textAlign == null ? "center" : textAlign,
@@ -67,7 +70,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.17,
         shadowRadius: 2.54,
-        elevation: 3
     },
     title: {
 
