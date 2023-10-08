@@ -2,17 +2,14 @@ import React, { useState, useRef } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { AppContextProvider } from './src/utils/AppContext';
 import BottomTabs from './src/navigation/BottomNav';
-//import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import Splash from './src/screens/Begin/Splash';
 import { NativeBaseProvider } from 'native-base';
-//import Test2 from './src/test/Test2'
 import { Text, LogBox } from 'react-native';
 
 LogBox.ignoreLogs([
   'Require cycle:',
 ]);
-import { FacebookSDK } from 'react-native-fbsdk';
-FacebookSDK.sdkInitialize();
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
 // return(
