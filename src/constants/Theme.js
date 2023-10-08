@@ -17,6 +17,7 @@ export const COLOR = {
   titleButton2: '#41cff2',
 
   borderColor: '#787878',
+  borderColor2: '#9E9898',
   placeholder: '#595959',
   placeholder10: '#59595933',
 
@@ -32,12 +33,21 @@ export const COLOR = {
   redOrange: '#ff3300',
   blue: '#003399',
 
+  blueHeader:'#d9f3ff',
+  blueHeader2:'#c4ecff',
   blueViolet: '#000066',
   yellow: '#ffff00',
   green: '#339900',
   violet: '#660066',
   orange: '#ff6600',
-};
+  lightBlue: '#8ce0f5',
+  lightYellow: '#FFE29D',
+  lightGreen: '#C0EBC5',
+  exit: '#F25F57'
+
+
+
+}
 
 export const ICON = {
   Home: require('../assets/icon/ic_home.png'),
@@ -52,4 +62,20 @@ export const ICON = {
   SupportFocus: require('../assets/icon/ic_message_focus.png'),
   ProfileFocus: require('../assets/icon/ic_user_focus.png'),
   SteeringWheel: require('../assets/icon/ic_steering_wheel.png'),
-};
+  Exit: require('../assets/icon/ic_exit.png'),
+  Back: require('../assets/icon/ic_left.png'),
+  Next: require('../assets/icon/ic_right.png'),
+  Edit: require('../assets/icon/ic_edit.png'),
+  Warning: require('../assets/icon/ic_warning.png'),
+  Check: require('../assets/icon/ic_check.png'),
+  Close: require('../assets/icon/ic_close.png'),
+  Camera: require('../assets/icon/ic_camera.png'),
+  Heart: require('../assets/icon/ic_heart.png'),
+  Location: require('../assets/icon/ic_location.png'),
+  Share: require('../assets/icon/ic_share.png'),
+  Policy: require('../assets/icon/ic_interrogation.png'),
+  Key: require('../assets/icon/ic_key.png'),
+  Company: require('../assets/icon/ic_company.png'),
+  Other: require('../assets/icon/ic_bookmark.png'),
+
+}

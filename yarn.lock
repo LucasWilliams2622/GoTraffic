@@ -2249,6 +2249,11 @@
   dependencies:
     merge-options "^3.0.4"
 
+"@react-native-clipboard/clipboard@*":
+  version "1.12.1"
+  resolved "https://registry.npmjs.org/@react-native-clipboard/clipboard/-/clipboard-1.12.1.tgz"
+  integrity sha512-+PNk8kflpGte0W1Nz61/Dp8gHTxyuRjkVyRYBawymSIGTDHCC/zOJSbig6kGIkD8MeaGHC2vGYQJyUyCrgVPBQ==
+
 "@react-native-community/cli-clean@11.3.6":
   version "11.3.6"
   resolved "https://registry.npmjs.org/@react-native-community/cli-clean/-/cli-clean-11.3.6.tgz"
@@ -2577,7 +2582,7 @@
     prompts "^2.4.0"
     semver "^7.5.2"
 
-"@react-native-community/clipboard@^1.5.1":
+"@react-native-community/clipboard@^1.2.2", "@react-native-community/clipboard@^1.5.1":
   version "1.5.1"
   resolved "https://registry.npmjs.org/@react-native-community/clipboard/-/clipboard-1.5.1.tgz"
   integrity sha512-AHAmrkLEH5UtPaDiRqoULERHh3oNv7Dgs0bTC0hO5Z2GdNokAMPT5w8ci8aMcRemcwbtdHjxChgtjbeA38GBdA==
@@ -3246,6 +3251,13 @@
   dependencies:
     "@tufjs/canonical-json" "2.0.0"
     minimatch "^9.0.3"
+
+"@twotalltotems/react-native-otp-input@^1.3.11":
+  version "1.3.11"
+  resolved "https://registry.npmjs.org/@twotalltotems/react-native-otp-input/-/react-native-otp-input-1.3.11.tgz"
+  integrity sha512-xSsEMa8llYHITKgx1FGwU3uK56Kk6+abgkJpo57pLnUpYC2CZpvhkvRKhFa7Ui6BhdRuh0Ob1O7q234d3CksRg==
+  dependencies:
+    "@react-native-community/clipboard" "^1.2.2"
 
 "@types/babel__core@^7.1.14":
   version "7.20.2"
@@ -4870,6 +4882,11 @@ domutils@^3.0.1:
     dom-serializer "^2.0.0"
     domelementtype "^2.3.0"
     domhandler "^5.0.3"
+
+dooboolab-welcome@^1.3.0:
+  version "1.3.2"
+  resolved "https://registry.npmjs.org/dooboolab-welcome/-/dooboolab-welcome-1.3.2.tgz"
+  integrity sha512-2NbMaIIURElxEf/UAoVUFlXrO+7n/FRhLCiQlk4fkbGRh9cJ3/f8VEMPveR9m4Ug2l2Zey+UCXjd6EcBqHJ5bw==
 
 duplexer@^0.1.1, duplexer@~0.1.1:
   version "0.1.2"
@@ -9122,9 +9139,9 @@ postcss-value-parser@^4.0.0, postcss-value-parser@^4.0.2, postcss-value-parser@^
   integrity sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==
 
 postcss@^8.0.0, postcss@^8.2.14, postcss@^8.4.21, postcss@^8.4.23, postcss@>=8.0.9:
-  version "8.4.30"
-  resolved "https://registry.npmjs.org/postcss/-/postcss-8.4.30.tgz"
-  integrity sha512-7ZEao1g4kd68l97aWG/etQKPKq07us0ieSZ2TnFDk11i0ZfDW2AwKHYU8qv4MZKqN2fdBfg+7q0ES06UA73C1g==
+  version "8.4.31"
+  resolved "https://registry.npmjs.org/postcss/-/postcss-8.4.31.tgz"
+  integrity sha512-PS08Iboia9mts/2ygV3eLpY5ghnUcfLV/EXTOW1E2qYxJKGGBUtNjN76FYHnMs36RmARn41bC0AZmn+rR0OVpQ==
   dependencies:
     nanoid "^3.3.6"
     picocolors "^1.0.0"
@@ -9637,6 +9654,11 @@ react-native-modal@^13.0.1:
     prop-types "^15.6.2"
     react-native-animatable "1.3.3"
 
+react-native-otp-inputs@^7.4.0:
+  version "7.4.0"
+  resolved "https://registry.npmjs.org/react-native-otp-inputs/-/react-native-otp-inputs-7.4.0.tgz"
+  integrity sha512-+phHrlcQQ63VuOrHaOZze7LP9WmzUGxGMlQx2A/jhPhYkCi/5hXDjxNcWyPXCy/RFRoLX+70HNpGqTgo0mDg7Q==
+
 react-native-otp-textinput@^1.1.3:
   version "1.1.3"
   resolved "https://registry.npmjs.org/react-native-otp-textinput/-/react-native-otp-textinput-1.1.3.tgz"
@@ -9800,6 +9822,13 @@ react-native-swipe-list-view@^3.2.9:
   resolved "https://registry.npmjs.org/react-native-swipe-list-view/-/react-native-swipe-list-view-3.2.9.tgz"
   integrity sha512-SjAEuHc/D6ovp+RjDUhfNmw6NYOntdT7+GFhfMGfP/BSLMuMWynpzJy9GKQeyB8sI78T6Lzip21TVbongOg1Mw==
 
+react-native-switch-toggle@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.npmjs.org/react-native-switch-toggle/-/react-native-switch-toggle-2.2.1.tgz"
+  integrity sha512-Y/RQ1Pb/KDVZhBSNjc16LKtUi7MGZb0MYxouZLj/THpiSQLsy5pUyTwbIKRjNuZDNSxmMDXyRX1QfLt+oup4Uw==
+  dependencies:
+    dooboolab-welcome "^1.3.0"
+
 react-native-tab-view@^3.5.2, "react-native-tab-view@>= 3.0.0":
   version "3.5.2"
   resolved "https://registry.npmjs.org/react-native-tab-view/-/react-native-tab-view-3.5.2.tgz"
@@ -9874,7 +9903,7 @@ react-native-webview@^13.6.2:
     escape-string-regexp "2.0.0"
     invariant "2.2.4"
 
-react-native@*, "react-native@^0.0.0-0 || 0.60 - 0.72 || 1000.0.0", react-native@^0.72.4, "react-native@>= 0.30.0", "react-native@>= 0.59", "react-native@>= 0.64.3", react-native@>=0.11, react-native@>=0.23.1, react-native@>=0.35, react-native@>=0.40.0, react-native@>=0.42.0, react-native@>=0.46, react-native@>=0.48.4, react-native@>=0.50.1, react-native@>=0.57, react-native@>=0.57.0, react-native@>=0.59, react-native@>=0.60.0, react-native@>=0.61.0, react-native@>=0.63.3, react-native@>=0.63.4, react-native@>=0.64.0, react-native@>=0.65.0, react-native@0.72.4:
+react-native@*, "react-native@^0.0.0-0 || 0.60 - 0.72 || 1000.0.0", react-native@^0.72.4, "react-native@>= 0.30.0", "react-native@>= 0.59", "react-native@>= 0.64.3", react-native@>=0.11, react-native@>=0.23.1, react-native@>=0.35, react-native@>=0.40.0, react-native@>=0.42.0, react-native@>=0.46, react-native@>=0.48.4, react-native@>=0.50.1, react-native@>=0.57, react-native@>=0.57.0, react-native@>=0.58, react-native@>=0.59, react-native@>=0.60.0, react-native@>=0.61.0, react-native@>=0.63.3, react-native@>=0.63.4, react-native@>=0.64.0, react-native@>=0.65.0, react-native@0.72.4:
   version "0.72.4"
   resolved "https://registry.npmjs.org/react-native/-/react-native-0.72.4.tgz"
   integrity sha512-+vrObi0wZR+NeqL09KihAAdVlQ9IdplwznJWtYrjnQ4UbCW6rkzZJebRsugwUneSOKNFaHFEo1uKU89HsgtYBg==
@@ -9938,7 +9967,7 @@ react-test-renderer@18.2.0:
     react-shallow-renderer "^16.15.0"
     scheduler "^0.23.0"
 
-react@*, "react@^16.0.0 || ^17.0.0 || ^18.0.0", react@^16.13.1, react@^16.3.0, "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17.0.0-rc.1", "react@^16.8.0 || ^17.0.0-rc.1 || ^18.0.0", "react@^17 || ^18", react@^18.0.0, react@^18.2.0, "react@>= 15.2.1", "react@>= 17.0.1", react@>=0.14.8, react@>=16, react@>=16.0, react@>=16.13.1, react@>=16.3.0, react@>=16.8, "react@>=16.8 || ^17.0.0 || ^18.0.0", react@>=16.8.0, react@>=16.8.6, react@>=17.0.0, react@16.x.x, react@18.2.0:
+react@*, "react@^16.0.0 || ^17.0.0 || ^18.0.0", react@^16.13.1, react@^16.3.0, "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17.0.0-rc.1", "react@^16.8.0 || ^17.0.0-rc.1 || ^18.0.0", "react@^17 || ^18", react@^18.0.0, react@^18.2.0, "react@>= 15.2.1", "react@>= 17.0.1", react@>=0.14.8, react@>=16, react@>=16.0, react@>=16.13.1, react@>=16.3.0, react@>=16.8, "react@>=16.8 || ^17.0.0 || ^18.0.0", react@>=16.8.0, react@>=16.8.6, react@>=16.9, react@>=17.0.0, react@16.x.x, react@18.2.0:
   version "18.2.0"
   resolved "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   integrity sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==
