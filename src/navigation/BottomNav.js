@@ -12,6 +12,7 @@ import Notification from '../screens/Main/NotificationTab/Notification';
 import Support from '../screens/Main/SupportTab/Support';
 import Trip from '../screens/Main/TripTab/Trip';
 import Register from '../screens/Begin/Register';
+import Verified from '../screens/Begin/Verified';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -19,9 +20,10 @@ const Stack = createNativeStackNavigator();
 const StackBegin = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Login"
+      initialRouteName="Verified"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Verified" component={Verified} />
       <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="BottomNav" component={BottomTabNav} />
     </Stack.Navigator>
@@ -158,6 +160,6 @@ const BottomTabNav = () => {
   return <>{isLogin == false ? <StackBegin /> : <Main />}</>;
 };
 //ADMIN
-export default StackBegin;
+export default BottomTabNav;
 
 const styles = StyleSheet.create({});
