@@ -17,6 +17,7 @@ export const COLOR = {
   titleButton2: '#41cff2',
 
   borderColor: '#787878',
+  borderColor2: '#9E9898',
   placeholder: '#595959',
 
   text: '#000000',

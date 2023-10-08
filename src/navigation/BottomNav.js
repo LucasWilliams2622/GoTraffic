@@ -20,7 +20,7 @@ const Stack = createNativeStackNavigator();
 const StackBegin = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Verified"
+      initialRouteName="Login"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Verified" component={Verified} />
@@ -160,6 +160,6 @@ const BottomTabNav = () => {
   return <>{isLogin == false ? <StackBegin /> : <Main />}</>;
 };
 //ADMIN
-export default BottomTabNav;
+export default StackBegin;
 
 const styles = StyleSheet.create({});
