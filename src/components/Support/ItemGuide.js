@@ -17,7 +17,7 @@ export default ItemGuide
 
 const styles = StyleSheet.create({
     image: {
-        width: windowWidth*0.8,
+        width: windowWidth * 0.8,
         height: 200,
         borderRadius: 16
     }

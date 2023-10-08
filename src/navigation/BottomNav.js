@@ -160,6 +160,6 @@ const BottomTabNav = () => {
   return <>{isLogin == false ? <StackBegin /> : <Main />}</>;
 };
 //ADMIN
-export default StackBegin;
+export default BottomTabNav;
 
 const styles = StyleSheet.create({});
