@@ -274,3 +274,5 @@ export const appStyle = StyleSheet.create({
 
     elevation: 15,
   },
+
+})

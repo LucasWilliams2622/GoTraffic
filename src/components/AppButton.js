@@ -7,7 +7,7 @@ const AppButton = (props) => {
         // BUTTON
         backgroundColor, borderWidth, borderRadius, borderColor,
         paddingVertical, paddingHorizontal, width,
-        marginTop,marginBottom, position,
+        marginTop,marginBottom, position,noShadow,
         // ICON
         iconWidth, iconHeight, iconColor, icon,
         // CLICK
