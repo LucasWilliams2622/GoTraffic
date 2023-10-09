@@ -40,35 +40,44 @@ const Login = props => {
     setVisible3(!visible3);
   };
   const validationSchema = Yup.object().shape({
-    phoneNumber: Yup.string().required('Số điện thoại không được để trống'),
-    password: Yup.string().required('Password không được để trống'),
+    phoneNumber: Yup.number()
+      .typeError('Không phải định dạng số điện thoại')
+      .positive('Số điện thoại không được có dấu trừ')
+      .integer('Số điện thoại không có dấu thập phân')
+      .min(8)
+      .required('Số điện thoại không được để trống'),
+    password: Yup.string()
+      .required('Password không được để trống')
+      .min(8, 'Password quá ngắn ít nhất phải 8 kí tự')
+      .matches(/[a-zA-Z]/, 'Mật khẩu chỉ chứa các chữ các latinh'),
   });
   return (
     <SafeAreaView style={appStyle.container}>
       <View style={[appStyle.main, {justifyContent: 'space-evenly'}]}>
-        <View>
+        <View style={{marginTop:-100}}>
           <FastImage
             source={require('../../assets/image/logo_go_traffic.png')}
             style={styles.image}
           />
           <Text style={styles.text1}>Đăng nhập</Text>
-          <KeyboardAvoidingView behavior="padding">
-            <Formik
-              initialValues={{phoneNumber: '', password: ''}}
-              validationSchema={validationSchema}
-              onSubmit={values => {
-                setIsLogin(true);
-                console.log(values);
-              }}>
-              {({
-                handleChange,
-                handleBlur,
-                handleSubmit,
-                values,
-                errors,
-                touched,
-              }) => (
-                <View>
+
+          <Formik
+            initialValues={{phoneNumber: '', password: ''}}
+            validationSchema={validationSchema}
+            onSubmit={values => {
+              setIsLogin(true);
+              console.log(values);
+            }}>
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              values,
+              errors,
+              touched,
+            }) => (
+              <View>
+                <KeyboardAvoidingView behavior="padding">
                   <View>
                     <View style={styles.viewItem}>
                       <Text style={styles.text2}>Số điện thoại</Text>
@@ -103,50 +112,53 @@ const Login = props => {
                   {touched.password && errors.password && (
                     <Text style={styles.textError}>{errors.password}</Text>
                   )}
-                </View>
-              )}
-            </Formik>
-          </KeyboardAvoidingView>
+                  <Text
+                    style={styles.text3}
+                    onPress={() => {
+                      toggleBottomNavigationView();
+                    }}>
+                    Quên mật khẩu
+                  </Text>
+                  <View style={styles.view1}></View>
+                  <View style={styles.itemLoginSocial}>
+                    <TouchableOpacity style={styles.button}>
+                      <FastImage
+                        style={styles.logo}
+                        source={require('../../assets/image/logo-gg.png')}
+                      />
+                      <Text style={styles.text5}>Google</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button}>
+                      <FastImage
+                        style={styles.logo}
+                        source={require('../../assets/image/logo-fb.png')}
+                      />
+                      <Text style={styles.text5}>Facebook</Text>
+                    </TouchableOpacity>
+                  </View>
 
-          <Text
-            style={styles.text3}
-            onPress={() => {
-              toggleBottomNavigationView();
-            }}>
-            Quên mật khẩu
-          </Text>
-
-          <View style={styles.view1}></View>
-          <View style={styles.itemLoginSocial}>
-            <TouchableOpacity style={styles.button}>
-              <FastImage
-                style={styles.logo}
-                source={require('../../assets/image/logo-gg.png')}
-              />
-              <Text style={styles.text5}>Google</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
-              <FastImage
-                style={styles.logo}
-                source={require('../../assets/image/logo-fb.png')}
-              />
-              <Text style={styles.text5}>Facebook</Text>
-            </TouchableOpacity>
-          </View>
-
-          <Text style={styles.text4}>
-            Bạn chưa là thành viên?
-            <Text
-              style={{fontWeight: 'bold'}}
-              onPress={() => {
-                goRegister();
-              }}>
-              {' '}
-              Hãy đăng ký
-            </Text>
-          </Text>
+                  <Text style={styles.text4}>
+                    Bạn chưa là thành viên?
+                    <Text
+                      style={{fontWeight: 'bold'}}
+                      onPress={() => {
+                        goRegister();
+                      }}>
+                      {' '}
+                      Hãy đăng ký
+                    </Text>
+                  </Text>
+                </KeyboardAvoidingView>
+                <AppButton
+                  title="Đăng nhập"
+                  color={COLOR.secondary}
+                  fontSize={18}
+                  onPress={handleSubmit}
+                />
+              </View>
+            )}
+          </Formik>
         </View>
-        <AppButton title="Đăng nhập" color={COLOR.secondary} fontSize={18} />
       </View>
 
       {/*Bottom Sheet FORGOT PASSWORD*/}
@@ -289,8 +301,9 @@ const styles = StyleSheet.create({
   text4: {
     fontSize: 16,
     color: 'black',
-    marginBottom: 6,
+    marginBottom: 50,
     textAlign: 'center',
+    
   },
   text5: {
     fontSize: 16,

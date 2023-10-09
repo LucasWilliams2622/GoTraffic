@@ -6,11 +6,30 @@ import AppInput from '../../components/AppInput';
 import AppButton from '../../components/AppButton';
 import {COLOR} from '../../constants/Theme';
 import FastImage from 'react-native-fast-image';
-
+import * as Yup from 'yup';
+import {Formik} from 'formik';
+import {KeyboardAvoidingView} from 'native-base';
 const Register = () => {
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required('Tên không được để trống'),
+    phoneNumber: Yup.number()
+      .typeError('Không phải định dạng số điện thoại')
+      .positive('Số điện thoại không được có dấu trừ')
+      .integer('Số điện thoại không có dấu thập phân')
+      .min(8)
+      .required('Số điện thoại không được để trống'),
+    password: Yup.string()
+      .required('Password không được để trống')
+      .min(8, 'Password quá ngắn ít nhất phải 8 kí tự')
+      .matches(/[a-zA-Z]/, 'Mật khẩu chỉ chứa các chữ các latinh'),
+    rePassword: Yup.string()
+      .required('Password không được để trống')
+      .min(8, 'Password quá ngắn ít nhất phải 8 kí tự')
+      .matches(/[a-zA-Z]/, 'Mật khẩu chỉ chứa các chữ các latinh'),
+  });
   return (
-    <SafeAreaView style={appStyle.main}>
-      <View style={{flex:1}}>
+    <SafeAreaView style={appStyle.container}>
+      <View style={[appStyle.main, {justifyContent: 'space-evenly'}]}>
         <FastImage
           source={require('../../assets/image/logo_go_traffic.png')}
           style={styles.image}
@@ -18,25 +37,98 @@ const Register = () => {
         <Text style={styles.text1}>Đăng kí</Text>
         <View style={styles.view1}></View>
 
-        <View style={styles.viewItem}>
-          <Text style={styles.text2}>Tên hiển thị</Text>
-          <AppInput placeholder={'Nhập tên hiển thị'} />
-        </View>
-        <View style={styles.viewItem}>
-          <Text style={styles.text2}>Số điện thoại</Text>
-          <AppInput placeholder={'Nhập số điện thoại '} />
-        </View>
-        <View style={styles.viewItem}>
-          <Text style={styles.text2}>Mật khẩu</Text>
-          <AppInput placeholder={'Nhập mật khảu'} isPassword />
-        </View>
-        <View style={styles.viewItem}>
-          <Text style={styles.text2}>Xác nhận lại mật khẩu</Text>
-          <AppInput placeholder={'Nhập mật khảu'} isPassword />
-        </View>
-      </View>
-      <View style={{marginBottom: 50}}>
-        <AppButton title="Đăng ki" color={COLOR.secondary} fontSize={18} />
+        <Formik
+          initialValues={{
+            name: '',
+            phoneNumber: '',
+            password: '',
+            rePassword: '',
+          }}
+          validationSchema={validationSchema}
+          onSubmit={values => {
+            setIsLogin(true);
+            console.log(values);
+          }}>
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            errors,
+            touched,
+          }) => (
+            <View>
+              <KeyboardAvoidingView behavior="padding">
+                <View style={styles.viewItem}>
+                  <Text style={styles.text2}>Tên hiện thị</Text>
+                  <AppInput
+                    returnKeyType={'next'}
+                    placeholder={'Nhập tên của bạn'}
+                    onChangeText={handleChange('name')}
+                    onBlur={handleBlur('name')}
+                    value={values.name}
+                  />
+                </View>
+                {touched.name && errors.name && (
+                  <Text style={styles.textError}>{errors.name}</Text>
+                )}
+
+                <View style={styles.viewItem}>
+                  <Text style={styles.text2}>Số điện thoại</Text>
+                  <AppInput
+                    keyboardType={'phone-pad'}
+                    returnKeyType={'next'}
+                    placeholder={'Nhập số điện thoại của bạn'}
+                    onChangeText={handleChange('phoneNumber')}
+                    onBlur={handleBlur('phoneNumber')}
+                    value={values.phoneNumber}
+                  />
+                </View>
+
+                {touched.phoneNumber && errors.phoneNumber && (
+                  <Text style={styles.textError}>{errors.phoneNumber}</Text>
+                )}
+
+                <View style={styles.viewItem}>
+                  <Text style={styles.text2}>Mật khẩu</Text>
+                  <AppInput
+                    returnKeyType={'done'}
+                    placeholder={'Nhập mật khảu'}
+                    isPassword
+                    secureTextEntry
+                    onChangeText={handleChange('password')}
+                    onBlur={handleBlur('password')}
+                    value={values.password}
+                  />
+                </View>
+                {touched.password && errors.password && (
+                  <Text style={styles.textError}>{errors.password}</Text>
+                )}
+                <View style={styles.viewItem}>
+                  <Text style={styles.text2}>Xác nhận lại mật khẩu</Text>
+                  <AppInput
+                    returnKeyType={'done'}
+                    placeholder={'Xác nhận lại mật khẩu'}
+                    isPassword
+                    secureTextEntry
+                    onChangeText={handleChange('rePassword')}
+                    onBlur={handleBlur('rePassword')}
+                    value={values.rePassword}
+                  />
+                </View>
+                {touched.rePassword && errors.rePassword && (
+                  <Text style={styles.textError}>{errors.rePassword}</Text>
+                )}
+              </KeyboardAvoidingView>
+              <AppButton
+                title="Đăng kí"
+                color={COLOR.secondary}
+                fontSize={18}
+                onPress={handleSubmit}
+              />
+            </View>
+          )}
+        </Formik>
       </View>
     </SafeAreaView>
   );
@@ -74,5 +166,10 @@ const styles = StyleSheet.create({
   },
   viewItem: {
     marginBottom: 16,
+  },
+  textError: {
+    color: COLOR.red,
+    marginBottom: 10,
+    marginTop: -10,
   },
 });
