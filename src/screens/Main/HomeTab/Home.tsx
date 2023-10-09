@@ -11,47 +11,19 @@ import Icon from 'react-native-vector-icons/FontAwesome6';
 import {COLOR} from '../../../constants/Theme';
 import {appStyle} from '../../../constants/AppStyle';
 import {Row, Column} from 'native-base';
-import Booking from '../../../components/Booking';
+import Booking from '../../../components/Home/Booking';
 import {useNavigation} from '@react-navigation/native';
-import Promotion from '../../../components/Promotion';
-import CarCardItem, {CarCardItemProps} from '../../../components/CarCardItem';
+import Promotion from '../../../components/Home/Promotion';
+import CarCardItem from '../../../components/Home/CarCardItem';
+import FeaturedLocation from '../../../components/Home/FeaturedLocation';
 
-interface PromotionData {
-  id: number;
-  image: string;
-}
-
-interface RenderPromotionListProps {
-  data: PromotionData[];
-  renderItem: ({item}: {item: PromotionData}) => JSX.Element;
+interface RenderListProps<T> {
+  data: T[];
+  renderItem: ({item}: {item: T}) => JSX.Element;
   snapToInterval: number;
 }
 
-const RenderPromotionList: React.FC<RenderPromotionListProps> = ({
-  data,
-  renderItem,
-  snapToInterval,
-}) => (
-  <FlatList
-    showsHorizontalScrollIndicator={false}
-    data={data}
-    keyExtractor={item => item.id.toString()}
-    horizontal={true}
-    renderItem={renderItem}
-    snapToAlignment="start"
-    decelerationRate={'fast'}
-    snapToInterval={snapToInterval}
-    contentContainerStyle={{paddingLeft: 20}}
-  />
-);
-
-interface RenderCarListProps {
-  data: CarCardItemProps[];
-  renderItem: ({item}: {item: CarCardItemProps}) => JSX.Element;
-  snapToInterval: number;
-}
-
-const RenderCarList: React.FC<RenderCarListProps> = ({
+const RenderList: React.FC<RenderListProps<any>> = ({
   data,
   renderItem,
   snapToInterval,
@@ -131,10 +103,49 @@ const Home: React.FC = () => {
       totalRide: 15,
     },
   ];
+
+  const featuredLocationData = [
+    {
+      id: 1,
+      title: 'Sài Gòn',
+      image: 'https://i.imgur.com/UYiroysl.jpg',
+      totalCar: 3250,
+    },
+    {
+      id: 2,
+      title: 'Hà Nội',
+      image: 'https://i.imgur.com/UPrs1EWl.jpg',
+      totalCar: 1432,
+    },
+    {
+      id: 3,
+      title: 'Đà Nẵng',
+      image: 'https://i.imgur.com/MABUbpDl.jpg',
+      totalCar: 865,
+    },
+    {
+      id: 4,
+      title: 'Nha Trang',
+      image: 'https://i.imgur.com/KZsmUi2l.jpg',
+      totalCar: 721,
+    },
+    {
+      id: 5,
+      title: 'Hải Phòng',
+      image: 'https://i.imgur.com/2nCt3Sbl.jpg',
+      totalCar: 598,
+    },
+  ];
+
   return (
     <ScrollView style={[appStyle.container]}>
       <View style={[styles.headBg]}>
-        <Row style={{alignItems: 'center', marginTop: 100, marginLeft: 15}}>
+        <Row
+          style={{
+            alignItems: 'center',
+            marginTop: Dimensions.get('window').height / 10,
+            marginLeft: 15,
+          }}>
           <Column style={[styles.iconBG, {marginRight: 10}]}>
             <Icon name="user" color={COLOR.forth} size={23}></Icon>
           </Column>
@@ -157,7 +168,7 @@ const Home: React.FC = () => {
         <View style={{paddingLeft: 20, marginBottom: 10}}>
           <Text style={appStyle.text18Bold}>Chương trình khuyến mãi</Text>
         </View>
-        <RenderPromotionList
+        <RenderList
           data={promotionData}
           renderItem={({item}) => <Promotion image={item.image} />}
           snapToInterval={320}
@@ -167,7 +178,7 @@ const Home: React.FC = () => {
         <View style={{paddingLeft: 20, marginBottom: 10}}>
           <Text style={appStyle.text18Bold}>Xe dành cho bạn</Text>
         </View>
-        <RenderCarList
+        <RenderList
           data={carData}
           renderItem={({item}) => <CarCardItem {...item} />}
           snapToInterval={330}
@@ -177,9 +188,19 @@ const Home: React.FC = () => {
         <View style={{paddingLeft: 20, marginBottom: 10}}>
           <Text style={appStyle.text18Bold}>Xe đã xem</Text>
         </View>
-        <RenderCarList
+        <RenderList
           data={carData}
           renderItem={({item}) => <CarCardItem {...item} />}
+          snapToInterval={330}
+        />
+      </View>
+      <View style={{marginTop: 20}}>
+        <View style={{paddingLeft: 20, marginBottom: 10}}>
+          <Text style={appStyle.text18Bold}>Xe đã xem</Text>
+        </View>
+        <RenderList
+          data={featuredLocationData}
+          renderItem={({item}) => <FeaturedLocation {...item} />}
           snapToInterval={330}
         />
       </View>
@@ -201,6 +222,7 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height / 3,
     borderBottomLeftRadius: 40,
     borderBottomRightRadius: 40,
+    marginBottom: 20,
   },
 
   iconBG: {

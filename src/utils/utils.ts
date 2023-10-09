@@ -23,3 +23,13 @@ export const calculateDiscount = (originalPrice: number, price: number) => {
   const discountPercent = (discount / originalPrice) * 100;
   return discountPercent.toFixed(0);
 };
+
+export const convertTotalNumber = (num: number) => {
+  // Round down to the nearest hundred
+  const rounded = Math.floor(num / 100) * 100;
+
+  // Convert to string and add '+'
+  const result = rounded.toLocaleString() + '+';
+
+  return result;
+};
