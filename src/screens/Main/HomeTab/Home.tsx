@@ -37,7 +37,7 @@ const RenderList: React.FC<RenderListProps<any>> = ({
     snapToAlignment="start"
     decelerationRate={'fast'}
     snapToInterval={snapToInterval}
-    contentContainerStyle={{paddingLeft: 20}}
+    contentContainerStyle={styles.contentContainer}
   />
 );
 
@@ -140,13 +140,8 @@ const Home: React.FC = () => {
   return (
     <ScrollView style={[appStyle.container]}>
       <View style={[styles.headBg]}>
-        <Row
-          style={{
-            alignItems: 'center',
-            marginTop: Dimensions.get('window').height / 10,
-            marginLeft: 15,
-          }}>
-          <Column style={[styles.iconBG, {marginRight: 10}]}>
+        <Row style={styles.nameAndPointWrapper}>
+          <Column style={[styles.iconBG, styles.iconMarginRight]}>
             <Icon name="user" color={COLOR.forth} size={23}></Icon>
           </Column>
           <Column>
@@ -164,8 +159,8 @@ const Home: React.FC = () => {
       </View>
       <Booking navigation={navigation} />
 
-      <View style={{marginTop: 20}}>
-        <View style={{paddingLeft: 20, marginBottom: 10}}>
+      <View style={styles.mt20}>
+        <View style={[styles.contentContainer]}>
           <Text style={appStyle.text18Bold}>Chương trình khuyến mãi</Text>
         </View>
         <RenderList
@@ -174,8 +169,8 @@ const Home: React.FC = () => {
           snapToInterval={320}
         />
       </View>
-      <View style={{marginTop: 20}}>
-        <View style={{paddingLeft: 20, marginBottom: 10}}>
+      <View style={styles.mt20}>
+        <View style={[styles.contentContainer]}>
           <Text style={appStyle.text18Bold}>Xe dành cho bạn</Text>
         </View>
         <RenderList
@@ -184,8 +179,8 @@ const Home: React.FC = () => {
           snapToInterval={330}
         />
       </View>
-      <View style={{marginTop: 20}}>
-        <View style={{paddingLeft: 20, marginBottom: 10}}>
+      <View style={styles.mt20}>
+        <View style={[styles.contentContainer]}>
           <Text style={appStyle.text18Bold}>Xe đã xem</Text>
         </View>
         <RenderList
@@ -194,8 +189,8 @@ const Home: React.FC = () => {
           snapToInterval={330}
         />
       </View>
-      <View style={{marginTop: 20}}>
-        <View style={{paddingLeft: 20, marginBottom: 10}}>
+      <View style={styles.mt20}>
+        <View style={[styles.contentContainer]}>
           <Text style={appStyle.text18Bold}>Xe đã xem</Text>
         </View>
         <RenderList
@@ -225,6 +220,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 
+  nameAndPointWrapper: {
+    alignItems: 'center',
+    marginTop: Dimensions.get('window').height / 10,
+    marginLeft: 15,
+  },
+
   iconBG: {
     backgroundColor: COLOR.white,
     width: 40,
@@ -232,5 +233,22 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+
+  iconMarginRight: {
+    marginRight: 10,
+  },
+
+  alignItemsCenter: {
+    alignItems: 'center',
+  },
+
+  mt20: {
+    marginTop: 20,
+  },
+
+  contentContainer: {
+    paddingLeft: 20,
+    marginBottom: 10,
   },
 });
