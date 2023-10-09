@@ -1,15 +1,15 @@
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import React, {useMemo} from 'react';
 import FastImage from 'react-native-fast-image';
-import {COLOR} from '../constants/Theme';
-import {appStyle} from '../constants/AppStyle';
+import {COLOR} from '../../constants/Theme';
+import {appStyle} from '../../constants/AppStyle';
 import {Column, Row} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome6';
-import ShieldIcon from '../assets/icon/ic_shield_verified';
-import SuitcaseIcon from '../assets/icon/ic_suitcase';
-import {formatPrice, getTotalPrice, calculateDiscount} from '../utils/utils';
+import ShieldIcon from '../../assets/icon/ic_shield_verified';
+import SuitcaseIcon from '../../assets/icon/ic_suitcase';
+import {formatPrice, getTotalPrice, calculateDiscount} from '../../utils/utils';
 
-export interface CarCardItemProps {
+interface CarCardItemProps {
   id: number;
   title: string;
   image: string;

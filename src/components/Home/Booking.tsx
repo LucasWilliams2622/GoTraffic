@@ -8,10 +8,10 @@ import {
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome6';
-import {COLOR} from '../constants/Theme';
+import {COLOR} from '../../constants/Theme';
 import {Row, Radio, HStack} from 'native-base';
-import AppButton from './AppButton';
-import SteeringWheel from '../assets/icon/ic_steering_wheel';
+import AppButton from '../AppButton';
+import SteeringWheel from '../../assets/icon/ic_steering_wheel';
 
 interface ButtonProps {
   isSelfDriving: boolean;
