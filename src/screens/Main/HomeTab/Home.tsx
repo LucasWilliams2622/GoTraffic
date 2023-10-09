@@ -16,6 +16,7 @@ import {useNavigation} from '@react-navigation/native';
 import Promotion from '../../../components/Home/Promotion';
 import CarCardItem from '../../../components/Home/CarCardItem';
 import FeaturedLocation from '../../../components/Home/FeaturedLocation';
+import AirportPicking from '../../../components/Home/AirportPicking';
 
 interface RenderListProps<T> {
   data: T[];
@@ -137,6 +138,62 @@ const Home: React.FC = () => {
     },
   ];
 
+  const AirportData = [
+    {
+      id: 1,
+      title: 'Tân Sơn Nhất',
+      image: 'https://i.imgur.com/UYiroysl.jpg',
+      totalCar: 3250,
+    },
+    {
+      id: 2,
+      title: 'Nội Bài',
+      image: 'https://i.imgur.com/UPrs1EWl.jpg',
+      totalCar: 1432,
+    },
+    {
+      id: 3,
+      title: 'Đà Nẵng',
+      image: 'https://i.imgur.com/MABUbpDl.jpg',
+      totalCar: 865,
+    },
+    {
+      id: 4,
+      title: 'Nha Trang',
+      image: 'https://i.imgur.com/KZsmUi2l.jpg',
+      totalCar: 721,
+    },
+    {
+      id: 5,
+      title: 'Hải Phòng',
+      image: 'https://i.imgur.com/2nCt3Sbl.jpg',
+      totalCar: 598,
+    },
+  ];
+
+  const benefitData = [
+    {
+      id: 1,
+      image: 'https://i.imgur.com/2nCt3Sbl.jpg',
+    },
+    {
+      id: 2,
+      image: 'https://i.imgur.com/2nCt3Sbl.jpg',
+    },
+    {
+      id: 3,
+      image: 'https://i.imgur.com/2nCt3Sbl.jpg',
+    },
+    {
+      id: 4,
+      image: 'https://i.imgur.com/2nCt3Sbl.jpg',
+    },
+    {
+      id: 5,
+      image: 'https://i.imgur.com/2nCt3Sbl.jpg',
+    },
+  ];
+
   return (
     <ScrollView style={[appStyle.container]}>
       <View style={[styles.headBg]}>
@@ -165,7 +222,9 @@ const Home: React.FC = () => {
         </View>
         <RenderList
           data={promotionData}
-          renderItem={({item}) => <Promotion image={item.image} />}
+          renderItem={({item}) => (
+            <Promotion image={item.image} width={300} height={200} />
+          )}
           snapToInterval={320}
         />
       </View>
@@ -199,10 +258,32 @@ const Home: React.FC = () => {
           snapToInterval={330}
         />
       </View>
+      <View style={styles.mt20}>
+        <View style={[styles.contentContainer]}>
+          <Text style={appStyle.text18Bold}>Xe đã xem</Text>
+        </View>
+        <RenderList
+          data={AirportData}
+          renderItem={({item}) => <AirportPicking {...item} />}
+          snapToInterval={330}
+        />
+      </View>
+      <View style={styles.mt20}>
+        <View style={styles.contentContainer}>
+          <Text style={appStyle.text18Bold}>Ưu điểm của Go Traffic</Text>
+        </View>
+        <RenderList
+          data={benefitData}
+          renderItem={({item}) => (
+            <Promotion image={item.image} width={345} height={130} />
+          )}
+          snapToInterval={365}
+        />
+      </View>
       <View
         style={{
           marginTop: 20,
-          height: 300,
+          height: 70,
         }}></View>
     </ScrollView>
   );
