@@ -313,7 +313,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   view1: {
-    height: 1,
+    height: 0.5,
     width: '100%',
     backgroundColor: COLOR.borderColor2,
     marginBottom: 16,
