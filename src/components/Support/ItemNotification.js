@@ -23,12 +23,12 @@ export default ItemNotification;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#DAFFF2',
+    backgroundColor: '#ecfff8',
     height: 108,
     flexDirection: 'row',
     padding: 10,
-    borderBottomWidth:1,
-    borderBottomColor:COLOR.borderColor
+    borderBottomWidth: 1,
+    borderBottomColor: COLOR.borderColor,
   },
   logo: {
     width: 36,
@@ -39,14 +39,16 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     color: COLOR.black,
+    marginTop:-4
   },
   content: {
     fontSize: 12,
     color: COLOR.black,
+    lineHeight:18
   },
-  time:{
-    position:'absolute',
-    bottom:2,
-    fontSize:11
-  }
+  time: {
+    position: 'absolute',
+    bottom: 1,
+    fontSize: 12,
+  },
 });

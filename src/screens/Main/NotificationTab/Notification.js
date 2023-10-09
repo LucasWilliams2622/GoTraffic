@@ -41,7 +41,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: COLOR.black,
     fontWeight: 'bold',
-    marginBottom:20
+    marginBottom:20,
+    marginTop:14
   },
   text1: {
     color: COLOR.black,
