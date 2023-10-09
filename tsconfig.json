@@ -1,12 +1,7 @@
 {
   "compilerOptions": {
-      "jsx": "react"
+      "jsx": "react",
+      "esModuleInterop": true
   },
-  "compilerOptions": {
-      "jsx": "react"
-  },
-  "compilerOptions": {
-      "jsx": "react"
-  },
-  "extends": "@tsconfig/react-native/tsconfig.json"
+  "extends": "@tsconfig/react-native/tsconfig.json",
 }
