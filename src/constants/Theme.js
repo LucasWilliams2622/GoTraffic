@@ -4,6 +4,9 @@ export const COLOR = {
   third: '#FFB703',
   forth: '#023047',
   fifth: '#219EBC',
+  sixth: '#EFFAF3',
+  seventh: '#FCE0D3',
+  eighth: '#F26A2B',
 
   background: '#ffffff',
   main: '#ffffff',
