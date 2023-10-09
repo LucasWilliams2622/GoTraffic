@@ -4,45 +4,61 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {COLOR} from '../../../constants/Theme';
 import {FlatList, ScrollView} from 'native-base';
 import ItemNotification from '../../../components/Support/ItemNotification';
+import {appStyle} from '../../../constants/AppStyle';
 
 const Notification = () => {
   return (
-    <ScrollView>
-      <Text style={styles.title}>Thông báo</Text>
-      <View style={styles.line1}>
-        <Text style={styles.text1}>Mới</Text>
+    <SafeAreaView style={appStyle.container}>
+      <View style={styles.viewTitle}>
+        <Text style={styles.title}>Thông báo</Text>
       </View>
-      <FlatList
-        style={{width: '100%'}}
-        data={DATA}
-        renderItem={({item}) => <ItemNotification data={item} />}
-        keyExtractor={item => item._id}
-        showsVerticalScrollIndicator={false}
-      />
-      <View style={styles.line1}>
-        <Text style={styles.text1}>Trước đó</Text>
-      </View>
-      <FlatList
-        style={{width: '100%',marginBottom:65}}
-        data={DATA}
-        renderItem={({item}) => <ItemNotification data={item} />}
-        keyExtractor={item => item._id}
-        showsVerticalScrollIndicator={false}
-      />
-    </ScrollView>
+
+      <ScrollView>
+        <View style={styles.line1}>
+          <Text style={styles.text1}>Mới</Text>
+        </View>
+        <FlatList
+          style={{width: '100%'}}
+          data={DATA}
+          renderItem={({item}) => <ItemNotification data={item} />}
+          keyExtractor={item => item._id}
+          showsVerticalScrollIndicator={false}
+        />
+        <View style={styles.line1}>
+          <Text style={styles.text1}>Trước đó</Text>
+        </View>
+        <FlatList
+          style={{width: '100%', marginBottom: 65}}
+          data={DATA}
+          renderItem={({item}) => <ItemNotification data={item} />}
+          keyExtractor={item => item._id}
+          showsVerticalScrollIndicator={false}
+        />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 export default Notification;
 
 const styles = StyleSheet.create({
+  viewTitle: {
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 11.27,
+    elevation: 14,
+  },
   title: {
     fontSize: 24,
     textAlign: 'center',
     color: COLOR.black,
-    fontWeight: 'bold',
-    marginBottom:20,
-    marginTop:14
+    fontWeight: '400',
+    marginBottom: 20,
+    marginTop: 14,
   },
   text1: {
     color: COLOR.black,
