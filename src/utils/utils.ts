@@ -8,7 +8,7 @@ export const formatPrice = (price: number) => {
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
-  return addComma + (formattedNum >= 1000 ? 'K' : 'K');
+  return addComma + 'K';
 };
 
 export const getTotalPrice = (price: number) => {
