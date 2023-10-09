@@ -196,6 +196,7 @@ const styles = StyleSheet.create({
   separator: {
     height: 0.5,
     backgroundColor: COLOR.borderColor,
+    opacity: 0.3,
     width: '100%',
     alignSelf: 'center',
     marginTop: 10,

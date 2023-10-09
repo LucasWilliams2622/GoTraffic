@@ -244,7 +244,7 @@ export default Booking;
 
 const styles = StyleSheet.create({
   outerContainer: {
-    marginTop: -100,
+    marginTop: -130,
     alignSelf: 'center',
   },
   heroBtns: {
