@@ -181,7 +181,7 @@ const UpdateProfile = (props) => {
                                 <AppButton
                                     marginTop={30}
                                     title="Lưu"
-                                    onPress={() => {
+                                    onPress={(values) => {
                                         if (isValid) {
                                             navigation.navigate('Account', {
                                                 newName: values.name,
