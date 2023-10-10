@@ -25,7 +25,7 @@ const MyAddress = (props) => {
 
 
   return (
-    <SafeAreaView style={[appStyle.container, { alignItems: 'center', padding: 15 }]}>
+    <SafeAreaView style={[appStyle.container]}>
       <Header
         icon={ICON.Back}
         text="Địa chỉ của tôi"
@@ -39,30 +39,33 @@ const MyAddress = (props) => {
         />
 
       </View> */}
-      <View style={{ height: '75%' }}>
-        {hasAddress ? (
-          <FlatList
-            style={styles.styleFlat}
-            data={addresses}
-            renderItem={({ item }) => <Address dulieu={item} />}
-            keyExtractor={(item, index) => index.toString()}
-            showsVerticalScrollIndicator={false}
-          />
+      <View style={{ padding: 15, width: '100%', alignItems: 'center' }}>
+        <View style={{ height: '80%' }}>
+          {hasAddress ? (
+            <FlatList
+              style={styles.styleFlat}
+              data={addresses}
+              renderItem={({ item }) => <Address dulieu={item} />}
+              keyExtractor={(item, index) => index.toString()}
+              showsVerticalScrollIndicator={false}
+            />
 
-        ) : (
-          <FastImage
-            source={require('../../../assets/image/guide/img_address.png')}
-            onLoad={() => console.log('Hình ảnh đã được tải thành công')}
-            onError={(error) => console.error('Lỗi khi tải hình ảnh:', error)}
-            style={{ width: '80%', height: '75%', alignSelf: 'center', justifyContent: 'center' }}
-          />
-
-        )}
+          ) : (
+            <FastImage
+              source={require('../../../assets/image/guide/img_address.png')}
+              onLoad={() => console.log('Hình ảnh đã được tải thành công')}
+              onError={(error) => console.error('Lỗi khi tải hình ảnh:', error)}
+              style={{ width: '80%', height: '80%', alignSelf: 'center', justifyContent: 'center' }}
+            />
+          )}
+        </View>
+        <AppButton
+          title="+ Thêm địa chỉ"
+          marginTop={45}
+          onPress={() => navigation.navigate('NewAddress')}
+        />
       </View>
-      <AppButton
-        title="+ Thêm địa chỉ"
-        onPress={() => navigation.navigate('NewAddress')}
-      />
+
     </SafeAreaView>
   )
 }

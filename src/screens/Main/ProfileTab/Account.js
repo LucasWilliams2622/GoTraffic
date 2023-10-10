@@ -2,7 +2,7 @@ import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-na
 import React, { useEffect, useState } from 'react'
 import { COLOR, ICON } from '../../../constants/Theme';
 import FastImage from 'react-native-fast-image';
-import { appStyle } from '../../../constants/AppStyle';
+import { appStyle, windowHeight, windowWidth } from '../../../constants/AppStyle';
 
 const Account = (props) => {
   const { navigation, route } = props;
@@ -32,124 +32,137 @@ const Account = (props) => {
     }
   }, [route.params?.newName, route.params?.newDob, route.params?.sex])
   return (
-    <SafeAreaView style={[appStyle.container, { alignItems: 'center', padding: 15 }]}>
+    <SafeAreaView style={[appStyle.container]}>
       <View style={styles.header}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Profile',{
+          onPress={() => navigation.navigate('Profile', {
             newName: name,
           })}>
           <FastImage
             source={ICON.Back}
-            style={[appStyle.iconBig]} />
+            style={[appStyle.icon]} />
         </TouchableOpacity>
-        <Text style={[appStyle.text20,]}>Tài khoản của tôi</Text>
+        <Text style={[appStyle.text20, { fontWeight: '500' }]}>Tài khoản của tôi</Text>
         <TouchableOpacity onPress={() => navigation.navigate('UpdateProfile')}>
           <FastImage
             source={ICON.Edit}
-            style={[appStyle.iconBig, { marginRight: 5 }]} />
+            style={[appStyle.icon, { marginRight: 5 }]} />
         </TouchableOpacity>
       </View>
 
-      <FastImage source={require('../../../assets/image/guide/img_book.jpg')} style={[appStyle.avatar]}></FastImage>
-      <Text style={[appStyle.text20, { marginTop: 10 }]}>{name}</Text>
-      <View style={{ flexDirection: 'row' }}>
-        <Text style={[appStyle.text14]}>
-          Tham gia vào 11/09/2023 -
-        </Text>
-        <Text style={[appStyle.text14, { fontWeight: 'bold' }]}> 2 chuyến</Text>
-      </View>
-      <View style={styles.viewEdit}>
-        <View style={styles.viewText}>
-          <Text style={appStyle.text16}>Ngày sinh</Text>
-          <Text style={appStyle.text16}>{dob}</Text>
+      <View style={{ width: '100%', alignItems: 'center', padding: 15 }}>
+        <FastImage source={require('../../../assets/image/guide/img_book.jpg')} style={[appStyle.avatar, { marginTop: 20 }]}></FastImage>
+        <Text style={[appStyle.text24Bold, { marginTop: 12 }]}>{name}</Text>
+        <View style={{ flexDirection: 'row' }}>
+          <Text style={[appStyle.text12]}>
+            Tham gia: 11/09/2023</Text>
         </View>
-        <View style={[styles.viewText, { marginTop: 10 }]}>
-          <Text style={appStyle.text16}>Giới tính</Text>
-          <Text style={appStyle.text16}>{sex}</Text>
+        <View style={styles.viewEdit}>
+          <View style={styles.viewText}>
+            <Text style={appStyle.text14}>Ngày sinh</Text>
+            <Text style={appStyle.text14}>{dob}</Text>
+          </View>
+          <View style={[styles.viewText, { marginTop: 8 }]}>
+            <Text style={appStyle.text14}>Giới tính</Text>
+            <Text style={appStyle.text14}>{sex}</Text>
+          </View>
         </View>
-      </View>
 
-      {/* Giấy phép lái xe */}
-      <View style={styles.viewItem}>
-        <Text style={appStyle.text16}>Giấy phép lái xe</Text>
-        <View>
+        {/* Giấy phép lái xe */}
+        <View style={[styles.viewItem, {borderTopWidth: 2, borderTopColor: '#efefef', marginTop: 12}]}>
+          <View style={styles.viewChild}>
+            <Text style={appStyle.text14}>Giấy phép lái xe</Text>
+            <View style={styles.alert}>
+              <FastImage
+                style={[appStyle.iconSmall]}
+                source={ICON.Warning} />
+              <Text style={[appStyle.text105, { marginStart: 5 }]}>Chưa xác thực</Text>
+            </View>
+          </View>
           <View style={styles.link}>
-            <Text style={appStyle.text14}>Xác thực ngay</Text>
+            <Text style={[appStyle.text12Bold, { marginRight: 5 }]}>Xác thực ngay</Text>
             <FastImage
               style={[appStyle.iconSmall, { marginTop: 3 }]}
               source={ICON.Next} />
           </View>
-          <View style={styles.alert}>
-            <FastImage
-              style={[appStyle.iconSmall]}
-              source={ICON.Warning} />
-            <Text style={[appStyle.text12, { marginStart: 5 }]}>Chưa xác thực</Text>
-          </View>
         </View>
-      </View>
 
-      {/* Số điện thoại */}
-      <View style={styles.viewItem}>
-        <Text style={appStyle.text16}>Số điện thoại</Text>
-        <View>
+        {/* Số điện thoại */}
+        <View style={styles.viewItem}>
+          <View style={styles.viewChild}>
+            <Text style={appStyle.text14}>Số điện thoại</Text>
+            <View style={[styles.alert, { backgroundColor: COLOR.lightGreen }]}>
+              <FastImage
+                style={[appStyle.iconSmall]}
+                source={ICON.Check} />
+              <Text style={[appStyle.text105, { marginStart: 5 }]}>Đã xác thực</Text>
+            </View>
+          </View>
           <View style={styles.link}>
-            <Text style={appStyle.text14}>Thay đổi</Text>
             <FastImage
               style={[appStyle.iconSmall]}
               source={ICON.Next} />
           </View>
-          <View style={[styles.alert, { backgroundColor: COLOR.lightGreen }]}>
-            <FastImage
-              style={[appStyle.iconSmall]}
-              source={ICON.Check} />
-            <Text style={[appStyle.text12, { marginStart: 5 }]}>Đã xác thực</Text>
-          </View>
         </View>
-      </View>
 
-      {/* Email */}
-      <View style={styles.viewItem}>
-        <Text style={appStyle.text16}>Email</Text>
-        <View>
-          <View style={styles.link}>
-            <Text style={appStyle.text14}>Xác thực ngay</Text>
-            <FastImage style={[appStyle.iconSmall, { marginTop: 3 }]} source={ICON.Next}></FastImage>
+        {/* Email */}
+        <View style={styles.viewItem}>
+          <View style={styles.viewChild}>
+            <Text style={appStyle.text14}>Email</Text>
+            <View style={styles.alert}>
+              <FastImage
+                style={[appStyle.iconSmall]}
+                source={ICON.Warning} />
+              <Text style={[appStyle.text105, { marginStart: 5 }]}>Chưa liên kết</Text>
+            </View>
           </View>
-          <View style={styles.alert}>
-            <FastImage
-              style={[appStyle.iconSmall]}
-              source={ICON.Warning} />
-            <Text style={[appStyle.text12, { marginStart: 5 }]}>Chưa xác thực</Text>
-          </View>
-        </View>
-      </View>
-
-      {/* Facebook */}
-      <View style={styles.viewItem}>
-        <Text style={appStyle.text16}>Facebook</Text>
-        <View>
           <View style={styles.link}>
-            <Text style={appStyle.text14}>Liên kết ngay</Text>
+            <Text style={[appStyle.text12Bold, { marginRight: 5 }]}>Liên kết ngay</Text>
             <FastImage
               style={[appStyle.iconSmall, { marginTop: 3 }]}
-              source={ICON.Next}></FastImage>
+              source={ICON.Next} />
           </View>
         </View>
 
-      </View>
-
-      {/* Google */}
-      <View style={styles.viewItem}>
-        <Text style={appStyle.text16}>Google</Text>
-        <View>
+        {/* Facebook */}
+        <View style={styles.viewItem}>
+          <View style={styles.viewChild}>
+            <Text style={appStyle.text14}>Facebook</Text>
+            <View style={styles.alert}>
+              <FastImage
+                style={[appStyle.iconSmall]}
+                source={ICON.Warning} />
+              <Text style={[appStyle.text105, { marginStart: 5 }]}>Chưa liên kết</Text>
+            </View>
+          </View>
           <View style={styles.link}>
-            <Text style={appStyle.text14}>Liên kết ngay</Text>
+            <Text style={[appStyle.text12Bold, { marginRight: 5 }]}>Liên kết ngay</Text>
             <FastImage
               style={[appStyle.iconSmall, { marginTop: 3 }]}
-              source={ICON.Next}></FastImage>
+              source={ICON.Next} />
+          </View>
+        </View>
+
+        {/* Google */}
+        <View style={styles.viewItem}>
+          <View style={styles.viewChild}>
+            <Text style={appStyle.text14}>Google</Text>
+            <View style={styles.alert}>
+              <FastImage
+                style={[appStyle.iconSmall]}
+                source={ICON.Warning} />
+              <Text style={[appStyle.text105, { marginStart: 5 }]}>Chưa liên kết</Text>
+            </View>
+          </View>
+          <View style={styles.link}>
+            <Text style={[appStyle.text12Bold, { marginRight: 5 }]}>Liên kết ngay</Text>
+            <FastImage
+              style={[appStyle.iconSmall, { marginTop: 3 }]}
+              source={ICON.Next} />
           </View>
         </View>
       </View>
+
     </SafeAreaView>
   )
 }
@@ -159,19 +172,24 @@ export default Account
 const styles = StyleSheet.create({
   header: {
     width: '100%',
-    height: 50,
+    height: windowHeight * 0.05,
     backgroundColor: COLOR.background,
+    // backgroundColor:'blue',    
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignSelf: 'center',
+    paddingHorizontal: 10,
+    alignItems: 'center',
+    paddingTop: 10
   },
   viewEdit: {
-    width: 345,
-    height: 82,
-    backgroundColor: '#F8F7F4',
+    width: '100%',
+    height: windowHeight * 0.1,
+    backgroundColor: COLOR.gray,
     borderRadius: 10,
     alignSelf: 'center',
-    marginTop: 10,
+    justifyContent: 'center',
+    marginTop: 50,
     padding: 10
   },
   viewText: {
@@ -179,10 +197,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   viewItem: {
-    width: 345,
-    height: 66,
-    borderBottomColor: COLOR.borderColor,
-    borderBottomWidth: 0.5,
+    width: '100%',
+    height: windowHeight * 0.07,
+    borderBottomColor: '#efefef',
+    borderBottomWidth: 2,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between'
@@ -194,12 +212,19 @@ const styles = StyleSheet.create({
   },
   alert: {
     width: 'auto',
-    height: 23,
+    height: '35%',
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: COLOR.lightYellow,
     borderRadius: 18,
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     paddingHorizontal: 5,
+    marginLeft: 5
+  },
+  viewChild: {
+    flexDirection: 'row',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })

@@ -22,8 +22,10 @@ import NewAddress from '../screens/Main/ProfileTab/NewAddress';
 import Account from '../screens/Main/ProfileTab/Account';
 import Register from '../screens/Begin/Register';
 import Verified from '../screens/Begin/Verified';
-import LocationPicking from '../screens/Main/HomeTab/LocationPicking';
+import MyCard from '../screens/Main/ProfileTab/MyCard';
 import TimePicking from '../screens/Main/HomeTab/TimePicking';
+import LocationPicking from '../screens/Main/HomeTab/LocationPicking';
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -92,23 +94,23 @@ const StackSupport = () => {
   );
 };
 const StackProfile = () => {
-  return (
-    <Stack.Navigator
-      initialRouteName="Profile"
-      screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="Account" component={Account} />
-      <Stack.Screen name="FavouriteCar" component={FavouriteCar} />
-      <Stack.Screen name="MyCar" component={MyCar} />
-      <Stack.Screen name="MyAddress" component={MyAddress} />
-      <Stack.Screen name="ShareWithFriend" component={ShareWithFriend} />
-      <Stack.Screen name="Policy" component={Policy} />
-      <Stack.Screen name="ChangePassword" component={ChangePassword} />
-      <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
-      <Stack.Screen name="NewAddress" component={NewAddress} />
-    </Stack.Navigator>
-  );
-};
+    return (
+        <Stack.Navigator initialRouteName="Profile" screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Profile" component={Profile} />
+            <Stack.Screen name="Account" component={Account} />
+            <Stack.Screen name="FavouriteCar" component={FavouriteCar} />
+            <Stack.Screen name="MyCar" component={MyCar} />
+            <Stack.Screen name="MyAddress" component={MyAddress} />
+            <Stack.Screen name="ShareWithFriend" component={ShareWithFriend}/> 
+            <Stack.Screen name="Policy" component={Policy}/> 
+            <Stack.Screen name="ChangePassword" component={ChangePassword} />
+            <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
+            <Stack.Screen name="NewAddress" component={NewAddress} />
+            <Stack.Screen name="MyCard" component={MyCard} />
+
+        </Stack.Navigator>
+    )
+}
 const Main = () => {
   const {infoUser, idUser, showWebView, setShowWebView} =
     useContext(AppContext);

@@ -39,6 +39,7 @@ export const COLOR = {
   redOrange: '#ff3300',
   blue: '#003399',
 
+  gray: '#F6F6F6',
   blueHeader:'#d9f3ff',
   blueHeader2:'#c4ecff',
   blueViolet: '#000066',
@@ -47,8 +48,8 @@ export const COLOR = {
   violet: '#660066',
   orange: '#ff6600',
   lightBlue: '#8ce0f5',
-  lightYellow: '#FFE29D',
-  lightGreen: '#C0EBC5',
+  lightYellow: '#FFEEDB',
+  lightGreen: '#D8F2E1',
   exit: '#F25F57'
 
 
@@ -83,5 +84,8 @@ export const ICON = {
   Key: require('../assets/icon/ic_key.png'),
   Company: require('../assets/icon/ic_company.png'),
   Other: require('../assets/icon/ic_bookmark.png'),
+  Address: require('../assets/icon/ic_address.png'),
+  Card: require('../assets/icon/ic_card.png'),
+  Wallet: require('../assets/icon/ic_wallet.png'),
 
 }

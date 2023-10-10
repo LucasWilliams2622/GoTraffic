@@ -1,22 +1,24 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native'
 import React from 'react'
 import { COLOR } from '../constants/Theme';
 import FastImage from 'react-native-fast-image';
-import { appStyle } from '../constants/AppStyle';
+import { appStyle, windowHeight } from '../constants/AppStyle';
 
 const Header = (props) => {
-    const { text, icon, onPress, marginLeft } = props;
+    const { text, icon, onPress } = props;
     return (
         <View style={styles.header}>
             <TouchableOpacity onPress={onPress}>
                 <FastImage
                     source={icon}
-                    style={[appStyle.iconBig]}
+                    style={[appStyle.icon]}
                 />
             </TouchableOpacity>
-            <Text style={[appStyle.text20,{
-                marginLeft: marginLeft == null ? 70 : marginLeft
-            }]}>{text}</Text>
+            <View style={styles.textContainer}>
+                <Text style={[appStyle.text20, { fontWeight: '500'}]}>
+                    {text}
+                </Text>
+            </View>
         </View>
     )
 }
@@ -26,11 +28,16 @@ export default Header
 const styles = StyleSheet.create({
     header: {
         width: '100%',
-        height: 50,
+        height: windowHeight * 0.05,
         backgroundColor: COLOR.background,
+    //  backgroundColor:'blue',
         flexDirection: 'row',
-        //alignItems: 'center',
-        paddingHorizontal: 0,
-        justifyContent: 'flex-start'
+        paddingHorizontal: 10,
+        paddingTop: 10,
+        alignItems: 'center',
+    },
+    textContainer: {
+        flex: 1,
+        alignItems: 'center'
     },
 })

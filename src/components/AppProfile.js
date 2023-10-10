@@ -5,15 +5,18 @@ import { COLOR } from '../constants/Theme';
 import FastImage from 'react-native-fast-image';
 
 const AppProfile = (props) => {
-  const { text, icon, onPress } = props;
+  const { text, icon, onPress, borderBottomWidth } = props;
   return (
     <TouchableOpacity onPress={onPress}>
-      <View style={styles.container}>
-        <View style={styles.content}>
-          <FastImage style={appStyle.iconBig} source={icon} resizeMode='stretch' />
-          <Text style={[appStyle.text16, { marginLeft: 16 }]}>{text}</Text>
+      <View style={{ flexDirection: 'row', alignItems: 'center' ,width: '100%',
+    height: 50}}>
+        <FastImage style={[appStyle.icon, {marginRight: 10}]} source={icon} resizeMode='stretch' />
+        <View style={[styles.container, {
+          borderBottomWidth: borderBottomWidth == null ? 2 : borderBottomWidth
+        }]}>
+          <Text style={[appStyle.text500]}>{text}</Text>
+          <FastImage style={appStyle.iconMedium} source={require('../assets/icon/ic_right.png')} />
         </View>
-        <FastImage style={appStyle.iconMedium} source={require('../assets/icon/ic_right.png')} />
       </View>
     </TouchableOpacity>
   )
@@ -24,18 +27,12 @@ export default AppProfile
 const styles = StyleSheet.create({
   container: {
     backgroundColor: COLOR.background,
-    width: '100%',
+    width: '90%',
     height: 50,
     alignSelf: 'center',
     borderBottomColor: '#efefef',
-    borderBottomWidth: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 10,
-  },
-  content: {
-    flexDirection: 'row',
-    justifyContent: 'center',
   },
 })

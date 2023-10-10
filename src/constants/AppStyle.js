@@ -56,8 +56,8 @@ export const appStyle = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     borderRadius: 60,
-    borderColor: COLOR.borderColor,
-    borderWidth: 1,
+    borderColor: COLOR.background,
+    borderWidth: 2
   },
   portrait: {
     height: 160,
@@ -91,10 +91,9 @@ export const appStyle = StyleSheet.create({
     letterSpacing: 0.5,
     color: COLOR.text,
   },
-
-  text10Bold: {
+  text105: {
     fontSize: 10,
-    fontWeight: 'bold',
+    fontWeight: '500',
     fontStyle: 'normal',
     letterSpacing: 0.5,
     color: COLOR.text,
@@ -107,6 +106,8 @@ export const appStyle = StyleSheet.create({
     letterSpacing: 0.5,
     color: COLOR.text,
   },
+
+
   text12Bold: {
     fontSize: 12,
     fontWeight: 'bold',
@@ -200,6 +201,13 @@ export const appStyle = StyleSheet.create({
   text30Bold: {
     fontSize: 30,
     fontWeight: 'bold',
+    fontStyle: 'normal',
+    letterSpacing: 0.5,
+    color: COLOR.text,
+  },
+  text500:{
+    fontSize: 16,
+    fontWeight:'500',
     fontStyle: 'normal',
     letterSpacing: 0.5,
     color: COLOR.text,
