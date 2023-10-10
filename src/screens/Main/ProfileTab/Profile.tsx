@@ -84,7 +84,7 @@ export default Profile
 
 const styles = StyleSheet.create({
   headBg: {
-    backgroundColor: COLOR.blueHeader,
+    backgroundColor: COLOR.bgHeader,
     width: '100%',
     height: windowHeight * 0.15,
     borderBottomLeftRadius: 16,

@@ -20,7 +20,7 @@ const FeaturedLocation = ({title, image, totalCar}: FeaturedLocationProps) => {
   return (
     <View
       style={{
-        marginRight: 20,
+        marginRight: 8,
       }}>
       <View style={styles.textWrapper}>
         <Text style={[appStyle.text16Bold, {color: COLOR.white}]}>{title}</Text>

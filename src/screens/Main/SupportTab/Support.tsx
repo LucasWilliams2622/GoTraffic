@@ -96,7 +96,7 @@ export default Support
 
 const styles = StyleSheet.create({
   bgHeader: {
-    backgroundColor: '#aaeafa',
+    backgroundColor:COLOR.bgHeader,
     width: '100%',
     height: windowHeight * 0.25,
     borderBottomLeftRadius: 16,

@@ -6,12 +6,13 @@ import {
   TextInput,
   Pressable,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome6';
-import {COLOR} from '../../constants/Theme';
-import {Row, Radio, HStack} from 'native-base';
+import { COLOR } from '../../constants/Theme';
+import { Row, Radio, HStack } from 'native-base';
 import AppButton from '../AppButton';
 import SteeringWheel from '../../assets/icon/ic_steering_wheel';
+import { appStyle, windowHeight, windowWidth } from '../../constants/AppStyle';
 
 interface ButtonProps {
   isSelfDriving: boolean;
@@ -21,7 +22,7 @@ interface ButtonProps {
   side: string;
 }
 
-const Booking = ({navigation}: any) => {
+const Booking = ({ navigation }: any) => {
   const [isSelfDriving, setIsSelfDriving] = useState<boolean>(true);
 
   const [currentDay, setCurrentDay] = useState<Date>(new Date());
@@ -32,48 +33,52 @@ const Booking = ({navigation}: any) => {
     tomorrow.setDate(tomorrow.getDate() + 1);
     setTomorrow(tomorrow);
   }, []);
-  const currentDayString = `${currentDay.getHours()}:00, ${currentDay.getDate()}/${
-    currentDay.getMonth() + 1
-  }`;
-  const tomorrowString = `${
-    tomorrow.getHours() + 1
-  }:00, ${tomorrow.getDate()}/${tomorrow.getMonth() + 1}`;
+  const currentDayString = `${currentDay.getHours()}:00, ${currentDay.getDate()}/${currentDay.getMonth() + 1
+    }`;
+  const tomorrowString = `${tomorrow.getHours() + 1
+    }:00, ${tomorrow.getDate()}/${tomorrow.getMonth() + 1}`;
   const timeString = `${currentDayString} - ${tomorrowString}`;
 
   return (
     <View style={styles.outerContainer}>
       <View style={styles.heroBtns}>
-        <Row style={styles.alignCenter}>
+        <View style={appStyle.rowBetween}>
           <Button
             isSelfDriving={isSelfDriving}
             setIsSelfDriving={setIsSelfDriving}
             value={true}
             side="left">
-            <Icon
-              name="car"
-              color={isSelfDriving === true ? COLOR.white : COLOR.forth}
-              size={16}
-            />
-            <Text
-              style={[getTextStyle(isSelfDriving === true), {marginLeft: 10}]}>
-              Xe tự lái
-            </Text>
+            <View style={[appStyle.rowCenter, { justifyContent: 'center',}]}>
+              <Icon
+                name="car"
+                color={isSelfDriving === true ? COLOR.white : COLOR.forth}
+                size={16}
+              />
+              <Text
+                style={[getTextStyle(isSelfDriving === true), { marginLeft: 10 }]}>
+                Xe tự lái
+              </Text>
+            </View>
           </Button>
+
           <Button
             isSelfDriving={isSelfDriving}
             setIsSelfDriving={setIsSelfDriving}
             value={false}
             side="right">
-            <SteeringWheel
-              color={isSelfDriving === false ? COLOR.white : COLOR.forth}
-            />
-            <Text
-              style={[getTextStyle(isSelfDriving === false), {marginLeft: 10}]}>
-              Xe có tài xế
-            </Text>
+            <View style={[appStyle.rowCenter, { justifyContent: 'center' }]}>
+              <SteeringWheel
+                color={isSelfDriving === false ? COLOR.white : COLOR.forth}
+              />
+              <Text
+                style={[getTextStyle(isSelfDriving === false), { marginLeft: 10 }]}>
+                Xe có tài xế
+              </Text>
+            </View>
           </Button>
-        </Row>
+        </View>
       </View>
+
       <View style={styles.contentWrapper}>
         <View style={styles.contentContainer}>
           {isSelfDriving === true ? (
@@ -82,7 +87,7 @@ const Booking = ({navigation}: any) => {
             <DriverView timeString={timeString} navigation={navigation} />
           )}
 
-          <AppButton title="Tìm xe" backgroundColor={COLOR.fifth} />
+          <AppButton title="Tìm xe" />
         </View>
       </View>
     </View>
@@ -90,7 +95,7 @@ const Booking = ({navigation}: any) => {
 };
 
 const getTextStyle = (isActive: boolean) =>
-  isActive ? {color: COLOR.white} : {color: COLOR.forth};
+  isActive ? { color: COLOR.white } : { color: COLOR.forth };
 
 const Button = ({
   isSelfDriving,
@@ -102,9 +107,10 @@ const Button = ({
   <TouchableOpacity
     style={[
       isSelfDriving === value
-        ? {backgroundColor: COLOR.fifth}
-        : {backgroundColor: COLOR.secondary},
-      side === 'left' ? {borderTopLeftRadius: 34} : {borderTopRightRadius: 34},
+        ? { backgroundColor: COLOR.primary, justifyContent: 'center', alignItems: 'center' }
+        : { backgroundColor: COLOR.sixth, justifyContent: 'center', alignItems: 'center' },
+      side === 'left' ? { borderTopLeftRadius: 16 } : { borderTopRightRadius: 16 },
+
     ]}
     onPress={() => setIsSelfDriving(value)}>
     <Row style={styles.buttonContent}>{children}</Row>
@@ -116,13 +122,13 @@ interface ViewProps {
   navigation?: any;
 }
 
-const SelfDrivingView = ({timeString, navigation}: ViewProps) => {
+const SelfDrivingView = ({ timeString, navigation }: ViewProps) => {
   return (
     <View>
       <View>
-        <Row style={{alignItems: 'center', marginBottom: 10}}>
+        <Row style={{ alignItems: 'center', marginBottom: 10 }}>
           <Icon name="location-dot" color={COLOR.borderColor} size={15} />
-          <Text style={{color: COLOR.borderColor, marginLeft: 10}}>
+          <Text style={{ color: COLOR.borderColor, marginLeft: 10 }}>
             Địa điểm
           </Text>
         </Row>
@@ -132,7 +138,7 @@ const SelfDrivingView = ({timeString, navigation}: ViewProps) => {
           onPressIn={() => navigation.navigate('LocationPicking')}
         />
       </View>
-      <View style={{marginBottom: 35}}>
+      <View style={{ marginBottom: 35 }}>
         <Row
           style={{
             alignItems: 'center',
@@ -140,7 +146,7 @@ const SelfDrivingView = ({timeString, navigation}: ViewProps) => {
             marginTop: 20,
           }}>
           <Icon name="calendar" color={COLOR.borderColor} size={15} />
-          <Text style={{color: COLOR.borderColor, marginLeft: 10}}>
+          <Text style={{ color: COLOR.borderColor, marginLeft: 10 }}>
             Thời gian thuê
           </Text>
         </Row>
@@ -155,14 +161,14 @@ const SelfDrivingView = ({timeString, navigation}: ViewProps) => {
   );
 };
 
-const DriverView = ({timeString, navigation}: ViewProps) => {
+const DriverView = ({ timeString, navigation }: ViewProps) => {
   const [tripType, setTripType] = useState('lien-tinh');
   return (
     <View>
-      <Text style={{fontSize: 16, fontWeight: 'bold', marginBottom: 10}}>
+      <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 10 }}>
         Lộ trình
       </Text>
-      <View style={{alignItems: 'center'}}>
+      <View style={{ alignItems: 'center' }}>
         <Radio.Group
           name="myRadioGroup"
           value={tripType}
@@ -171,25 +177,25 @@ const DriverView = ({timeString, navigation}: ViewProps) => {
           }}>
           <HStack space={2} alignItems="center">
             <Radio value="lien-tinh" my="1" size="sm">
-              <Text style={{fontSize: 12}}>Liên tỉnh</Text>
+              <Text style={{ fontSize: 12 }}>Liên tỉnh</Text>
             </Radio>
             <Radio value="lien-tinh-1-chieu" my="1" size="sm">
-              <Text style={{fontSize: 12}}>Liên tỉnh (1 chiều)</Text>
+              <Text style={{ fontSize: 12 }}>Liên tỉnh (1 chiều)</Text>
             </Radio>
             <Radio value="noi-thanh" my="1" size="sm">
-              <Text style={{fontSize: 12}}>Nội thành</Text>
+              <Text style={{ fontSize: 12 }}>Nội thành</Text>
             </Radio>
           </HStack>
         </Radio.Group>
       </View>
-      <Row style={{alignItems: 'center', marginTop: 10, marginBottom: 10}}>
-        <Text style={{marginRight: 5}}>Di chuyển trong thành phố</Text>
+      <Row style={{ alignItems: 'center', marginTop: 10, marginBottom: 10 }}>
+        <Text style={{ marginRight: 5 }}>Di chuyển trong thành phố</Text>
         <Icon name="circle-question" color={COLOR.borderColor} size={20} />
       </Row>
       <View>
-        <Row style={{alignItems: 'center', marginBottom: 10}}>
+        <Row style={{ alignItems: 'center', marginBottom: 10 }}>
           <Icon name="map-pin" color={COLOR.borderColor} size={15} />
-          <Text style={{color: COLOR.borderColor, marginLeft: 10}}>
+          <Text style={{ color: COLOR.borderColor, marginLeft: 10 }}>
             Điểm đón
           </Text>
         </Row>
@@ -199,7 +205,7 @@ const DriverView = ({timeString, navigation}: ViewProps) => {
           onPressIn={() => navigation.navigate('LocationPicking')}
         />
       </View>
-      <View style={{marginBottom: 15}}>
+      <View style={{ marginBottom: 15 }}>
         <Row
           style={{
             alignItems: 'center',
@@ -207,7 +213,7 @@ const DriverView = ({timeString, navigation}: ViewProps) => {
             marginTop: 20,
           }}>
           <Icon name="location-dot" color={COLOR.borderColor} size={15} />
-          <Text style={{color: COLOR.borderColor, marginLeft: 10}}>
+          <Text style={{ color: COLOR.borderColor, marginLeft: 10 }}>
             Địa điểm
           </Text>
         </Row>
@@ -215,8 +221,8 @@ const DriverView = ({timeString, navigation}: ViewProps) => {
           <TextInput placeholder="Nhập địa điểm" style={[styles.heroInput]} />
         </Pressable>
       </View>
-      <Text style={{fontSize: 16, fontWeight: 'bold'}}>Thời gian</Text>
-      <View style={{marginBottom: 35}}>
+      <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Thời gian</Text>
+      <View style={{ marginBottom: 35 }}>
         <Row
           style={{
             alignItems: 'center',
@@ -224,7 +230,7 @@ const DriverView = ({timeString, navigation}: ViewProps) => {
             marginTop: 20,
           }}>
           <Icon name="calendar" color={COLOR.borderColor} size={20} />
-          <Text style={{color: COLOR.borderColor, marginLeft: 10}}>
+          <Text style={{ color: COLOR.borderColor, marginLeft: 10 }}>
             Thời gian thuê
           </Text>
         </Row>
@@ -244,8 +250,10 @@ export default Booking;
 
 const styles = StyleSheet.create({
   outerContainer: {
-    marginTop: -130,
+    marginTop: -windowHeight*0.2,
     alignSelf: 'center',
+    width: windowWidth,
+    paddingHorizontal: 14,
   },
   heroBtns: {
     justifyContent: 'center',
@@ -253,21 +261,23 @@ const styles = StyleSheet.create({
     shadowColor: COLOR.black,
     shadowRadius: 4.65,
     shadowOpacity: 0.3,
-    shadowOffset: {width: 0, height: 4},
+    shadowOffset: { width: 0, height: 4 },
     elevation: 5,
     width: '100%',
+
   },
   buttonContent: {
-    paddingVertical: 23,
-    paddingHorizontal: 44,
+    paddingVertical: 20,
+    width: '50%',
+
   },
   contentWrapper: {
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
+    borderBottomLeftRadius: 16,
+    borderBottomRightRadius: 16,
     shadowColor: COLOR.black,
     shadowRadius: 4.65,
     shadowOpacity: 0.3,
-    shadowOffset: {width: 0, height: 4},
+    shadowOffset: { width: 0, height: 4 },
     elevation: 5,
   },
   alignCenter: {
@@ -281,8 +291,8 @@ const styles = StyleSheet.create({
     paddingVertical: 25,
     width: '100%',
     backgroundColor: COLOR.white,
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
+    borderBottomLeftRadius: 16,
+    borderBottomRightRadius: 16,
   },
   heroInput: {
     paddingVertical: 10,

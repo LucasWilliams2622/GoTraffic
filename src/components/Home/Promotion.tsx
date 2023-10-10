@@ -10,12 +10,13 @@ interface PromotionProps {
 
 const Promotion = ({image, width, height}: PromotionProps) => {
   return (
-    <View style={{alignItems: 'center', marginRight: 20}}>
+    <View style={{alignItems: 'center', marginRight: 8}}>
       <FastImage
         source={{
           uri: image,
         }}
-        style={{width: width, height: height, borderRadius: 10}}
+        resizeMode='stretch'
+        style={{width: width, height: height, borderRadius: 14}}
       />
     </View>
   );

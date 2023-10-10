@@ -4,11 +4,14 @@ export const COLOR = {
   third: '#FFB703',
   forth: '#023047',
   fifth: '#219EBC',
-  sixth: '#EFFAF3',
+  sixth: '#dbf4ff',
   seventh: '#FCE0D3',
   eighth: '#F26A2B',
 
+
   background: '#ffffff',
+  bgHeader:'#c9eeff',
+
   main: '#ffffff',
 
   focus: '#41cff2',

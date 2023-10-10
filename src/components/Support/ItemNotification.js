@@ -34,7 +34,7 @@ export default ItemNotification;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#ecfff8',
+    backgroundColor: '#f0faff',
     flexDirection: 'row',
     paddingVertical: 16,
     paddingHorizontal: 10,

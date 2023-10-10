@@ -9,7 +9,7 @@ import {
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import {COLOR} from '../../../constants/Theme';
-import {appStyle} from '../../../constants/AppStyle';
+import {appStyle, windowHeight, windowWidth} from '../../../constants/AppStyle';
 import {Row, Column} from 'native-base';
 import Booking from '../../../components/Home/Booking';
 import {useNavigation} from '@react-navigation/native';
@@ -85,14 +85,14 @@ const Home: React.FC = () => {
             <Icon name="user" color={COLOR.forth} size={23}></Icon>
           </Column>
           <Column>
-            <Text style={appStyle.text16Bold}>Lê Hoàng Gia Khánh</Text>
+            <Text style={[appStyle.text18,{fontWeight:'500'}]}>Lê Hoàng Gia Khánh</Text>
             <Row style={{alignItems: 'center'}}>
               <Icon
                 name="star"
                 color={COLOR.third}
                 solid
-                style={{marginRight: 5}}></Icon>
-              <Text style={appStyle.text12Bold}>Điểm thưởng</Text>
+                style={{}}></Icon>
+              <Text style={[appStyle.text12Bold,{paddingHorizontal:4}]}>0<Text style={appStyle.text12}>điểm</Text></Text>
             </Row>
           </Column>
         </Row>
@@ -103,7 +103,7 @@ const Home: React.FC = () => {
         title="Chương trình khuyến mãi"
         data={promotionData}
         renderItem={({item}) => (
-          <Promotion image={item.image} width={300} height={200} />
+          <Promotion image={item.image} width={windowWidth*0.8} height={200} />
         )}
         snapToInterval={320}
       />
@@ -158,18 +158,18 @@ export default Home;
 
 const styles = StyleSheet.create({
   headBg: {
-    backgroundColor: COLOR.secondary,
+    backgroundColor: COLOR.bgHeader,
     width: '100%',
     height: Dimensions.get('window').height / 3,
-    borderBottomLeftRadius: 40,
-    borderBottomRightRadius: 40,
+    borderBottomLeftRadius: 16,
+    borderBottomRightRadius: 16,
     marginBottom: 20,
   },
 
   nameAndPointWrapper: {
     alignItems: 'center',
-    marginTop: Dimensions.get('window').height / 10,
-    marginLeft: 15,
+    marginTop: windowHeight*0.03,
+    paddingHorizontal:14
   },
 
   iconBG: {
