@@ -77,6 +77,6 @@ const styles = StyleSheet.create({
         
     },
     title: {
-
+      
     }
 })

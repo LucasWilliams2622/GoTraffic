@@ -26,52 +26,66 @@ const Profile = (props) => {
         <View style={styles.headBg}>
           <View style={[appStyle.boxCenter, { marginTop: windowHeight * 0.12 }]}>
             <FastImage source={require('../../../assets/image/guide/img_book.jpg')} style={[appStyle.avatar]}></FastImage>
-            <Text style={[appStyle.text24, { textAlign: 'center', marginTop: 12 }]}>{name}</Text>
+            <Text style={[appStyle.text24Bold, { textAlign: 'center', marginTop: 12 }]}>{name}</Text>
           </View>
         </View>
 
         <ScrollView
-          style={{ flex: 1, marginTop: windowHeight * 0.12,paddingHorizontal:16 }}
+          style={{ flex: 1, marginTop: windowHeight * 0.12, paddingHorizontal: 16 }}
           showsHorizontalScrollIndicator={false}>
-          <AppProfile
-            icon={ICON.Profile}
-            text="Tài khoản của tôi"
-            onPress={() =>
-              navigation.navigate('Account', updateNewName(name))
-            } />
-          <AppProfile
-            icon={ICON.Heart}
-            text="Xe yêu thích"
-            onPress={() => navigation.navigate('FavouriteCar')} />
+          <View style={styles.viewGroup}>
+            <AppProfile
+              icon={ICON.Profile}
+              text="Tài khoản của tôi"
+              onPress={() =>
+                navigation.navigate('Account', updateNewName(name))
+              } />
+            <AppProfile
+              icon={ICON.Heart}
+              text="Xe yêu thích"
+              onPress={() => navigation.navigate('FavouriteCar')} />
 
-          <AppProfile
-            icon={ICON.Trip}
-            text="Xe của tôi"
-            onPress={() => navigation.navigate('MyCar')} />
-          <AppProfile
-            icon={ICON.Location}
-            text="Địa chỉ của tôi"
-            onPress={() => navigation.navigate('MyAddress')} />
+            <AppProfile
+              icon={ICON.Trip}
+              text="Xe của tôi"
+              borderBottomWidth={2.7}
+              onPress={() => navigation.navigate('MyCar')} />
 
-          <AppProfile
-            icon={ICON.Share}
-            text="Giới thiệu bạn bè"
-            onPress={() => navigation.navigate('ShareWithFriend')} />
-          <AppProfile
-            icon={ICON.Policy}
-            text="Chính sách bảo mật"
-            onPress={() => navigation.navigate('Policy')} />
+            <AppProfile
+              icon={ICON.Address}
+              text="Địa chỉ của tôi"
+              onPress={() => navigation.navigate('MyAddress')} />
 
-          <AppProfile
-            icon={ICON.Key}
-            text="Đổi mật khẩu"
-            onPress={() => navigation.navigate('ChangePassword')} />
+            <AppProfile
+              icon={ICON.Wallet}
+              text="Thẻ của tôi"
+              borderBottomWidth={1}
+              onPress={() => navigation.navigate('MyCard')} />
+          </View>
+
+          <View style={[styles.viewGroup, {marginTop: 16}]}>
+            <AppProfile
+              icon={ICON.Share}
+              text="Giới thiệu bạn bè"
+              onPress={() => navigation.navigate('ShareWithFriend')} />
+            <AppProfile
+              icon={ICON.Policy}
+              text="Chính sách bảo mật"
+              onPress={() => navigation.navigate('Policy')} />
+
+            <AppProfile
+              icon={ICON.Key}
+              text="Đổi mật khẩu"
+              borderBottomWidth={0}
+              onPress={() => navigation.navigate('ChangePassword')} />
+          </View>
+
 
           <TouchableOpacity>
             <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 20 }}>
               <FastImage source={ICON.Exit} style={[appStyle.iconBig]}>
               </FastImage>
-              <Text style={[appStyle.text18, { color: COLOR.exit, left: 10 }]}>Đăng xuất</Text>
+              <Text style={[appStyle.text20Bold, { color: COLOR.exit, left: 10 }]}>Đăng xuất</Text>
             </View>
           </TouchableOpacity>
         </ScrollView>
@@ -89,5 +103,16 @@ const styles = StyleSheet.create({
     height: windowHeight * 0.15,
     borderBottomLeftRadius: 16,
     borderBottomRightRadius: 16,
+  },
+
+  viewGroup: {
+    flex:1,
+    width: 'auto', 
+    height: 'auto',
+    marginTop: 36, 
+    borderRadius: 10,
+    borderWidth: 2,
+    paddingHorizontal: 10,
+    borderColor: '#efefef',
   }
 })

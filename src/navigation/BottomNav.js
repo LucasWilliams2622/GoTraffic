@@ -22,6 +22,7 @@ import NewAddress from '../screens/Main/ProfileTab/NewAddress';
 import Account from '../screens/Main/ProfileTab/Account';
 import Register from '../screens/Begin/Register';
 import Verified from '../screens/Begin/Verified';
+import MyCard from '../screens/Main/ProfileTab/MyCard';
 
 
 const Tab = createBottomTabNavigator();
@@ -89,6 +90,8 @@ const StackProfile = () => {
             <Stack.Screen name="ChangePassword" component={ChangePassword} />
             <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
             <Stack.Screen name="NewAddress" component={NewAddress} />
+            <Stack.Screen name="MyCard" component={MyCard} />
+
 
         </Stack.Navigator>
     )
