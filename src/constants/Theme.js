@@ -50,7 +50,7 @@ export const COLOR = {
   lightBlue: '#8ce0f5',
   lightYellow: '#FFEEDB',
   lightGreen: '#D8F2E1',
-  exit: '#F25F57'
+  exit: '#ff2e2e'
 
 
 
