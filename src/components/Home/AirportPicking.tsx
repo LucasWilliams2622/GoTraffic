@@ -21,6 +21,7 @@ const AirportPicking = ({title, image, totalCar}: AirportPickingProps) => {
       <View style={{alignItems: 'center'}}>
         <FastImage
           source={{uri: image}}
+          resizeMode='cover'
           style={{height: 120, width: 120, borderRadius: 60}}
         />
         <Text style={[appStyle.text16Bold, {marginTop: 10, marginBottom: 5}]}>

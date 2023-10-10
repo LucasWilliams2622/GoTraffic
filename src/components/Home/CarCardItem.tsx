@@ -1,13 +1,13 @@
-import {Pressable, StyleSheet, Text, View} from 'react-native';
-import React, {useMemo} from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import React, { useMemo } from 'react';
 import FastImage from 'react-native-fast-image';
-import {COLOR} from '../../constants/Theme';
-import {appStyle} from '../../constants/AppStyle';
-import {Column, Row} from 'native-base';
+import { COLOR } from '../../constants/Theme';
+import { appStyle, windowWidth } from '../../constants/AppStyle';
+import { Column, Row } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import ShieldIcon from '../../assets/icon/ic_shield_verified';
 import SuitcaseIcon from '../../assets/icon/ic_suitcase';
-import {formatPrice, getTotalPrice, calculateDiscount} from '../../utils/utils';
+import { formatPrice, getTotalPrice, calculateDiscount } from '../../utils/utils';
 
 interface CarCardItemProps {
   id: number;
@@ -48,10 +48,10 @@ const CarCardItem = ({
 
   return (
     <View style={styles.container}>
-      <FastImage source={{uri: image}} style={styles.image} />
+      <FastImage source={{ uri: image }} style={styles.image} resizeMode='stretch' />
       {originalPrice && (
         <View style={styles.discount}>
-          <Text style={[appStyle.text10, {color: COLOR.white, padding: 10}]}>
+          <Text style={[appStyle.text12, { color: COLOR.white, paddingVertical: 6,paddingHorizontal:10,fontWeight:'500' }]}>
             Giảm {discountPercent}%
           </Text>
         </View>
@@ -61,7 +61,7 @@ const CarCardItem = ({
         onPress={() => setIsFavorite(!isFavorite)}>
         <Icon
           name="heart"
-          color={isFavorite ? COLOR.fifth : COLOR.white}
+          color={isFavorite ? COLOR.primary : COLOR.white}
           size={20}
           solid={isFavorite}
         />
@@ -80,46 +80,46 @@ const CarCardItem = ({
       </Row>
 
       <Row style={styles.row}>
-        <Text style={[appStyle.text16Bold, styles.title]}>
+        <Text style={[appStyle.text16Bold, { marginRight: 8, maxWidth: '80%' }]} numberOfLines={1}>
           {title.toUpperCase()}
         </Text>
-        <ShieldIcon color={COLOR.fifth} />
+        <ShieldIcon color={COLOR.primary} />
       </Row>
 
       <Row style={styles.locationRow}>
         <Icon name="location-dot" color={COLOR.borderColor} size={15} />
-        <Text style={styles.locationText}>{location}</Text>
+        <Text style={[styles.locationText,{maxWidth:'90%',}]} numberOfLines={1}>{location}</Text>
       </Row>
 
       <View style={styles.separator} />
 
       <Row style={styles.priceRow}>
-        <Row style={{alignItems: 'center'}}>
+        <Row style={{ alignItems: 'center' }}>
           <Icon name="star" color={COLOR.third} size={12} solid />
-          <Text style={[styles.ratingText, {marginLeft: 5}]}>{rating}</Text>
-          <Text style={[styles.dot, {marginLeft: 5, marginRight: 5}]}>·</Text>
-          <SuitcaseIcon color={COLOR.fifth} />
-          <Text style={[styles.ratingText, {marginLeft: 5}]}>
+          <Text style={[styles.ratingText, { marginLeft: 5 }]}>{rating}</Text>
+          <Text style={[styles.dot, { marginLeft: 5, marginRight: 5 }]}>·</Text>
+          <SuitcaseIcon color={COLOR.primary} />
+          <Text style={[styles.ratingText, { marginLeft: 5 }]}>
             {totalRide} chuyến
           </Text>
         </Row>
 
-        <Column style={{alignItems: 'flex-end'}}>
-          <Row style={{alignItems: 'baseline'}}>
+        <Column style={{ alignItems: 'flex-end' }}>
+          <Row style={{ alignItems: 'baseline' }}>
             {originalPrice && (
               <Text style={styles.originalPrice}>{formattedOriginalPrice}</Text>
             )}
 
-            <Text style={{color: COLOR.fifth, fontSize: 18}}>
+            <Text style={[appStyle.text18Bold, { color: COLOR.primary, }]}>
               {formattedPrice}
             </Text>
 
-            <Text style={{color: COLOR.borderColor, fontSize: 12}}>/ngày</Text>
+            <Text style={{ color: COLOR.borderColor, fontSize: 12 }}>/ngày</Text>
           </Row>
 
-          <Text style={{color: COLOR.borderColor, fontSize: 12, marginTop: 5}}>
+          <Text style={{ color: COLOR.borderColor, fontSize: 12, marginTop: 5 }}>
             Giá tổng{' '}
-            <Text style={{fontWeight: 'bold'}}>{formatPrice(totalPrice)}</Text>
+            <Text style={{ fontWeight: 'bold' }}>{formatPrice(totalPrice)}</Text>
           </Text>
         </Column>
       </Row>
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   container: {
     marginRight: 10,
     borderRadius: 20,
-    width: 330,
+    width: windowWidth * 0.9,
     borderWidth: 0.5,
     borderColor: '#ddd',
     padding: 10,

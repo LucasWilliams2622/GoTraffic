@@ -1,7 +1,7 @@
 import { StyleSheet, FlatList, Text, View, ScrollView } from 'react-native'
 import React from 'react'
 import { getStatusBarHeight } from "react-native-status-bar-height";
-import { appStyle, windowHeight } from '../../../constants/AppStyle';
+import { appStyle, windowHeight, windowWidth } from '../../../constants/AppStyle';
 import { COLOR } from '../../../constants/Theme';
 import AppButton from '../../../components/AppButton';
 import ItemGuide from '../../../components/Support/ItemGuide';
@@ -63,6 +63,9 @@ const Support = () => {
           showsVerticalScrollIndicator={false}
           style={{ paddingHorizontal: 12, }}
           horizontal
+          snapToAlignment="start"
+          snapToInterval={windowWidth*0.8}
+          decelerationRate={'fast'}
           renderItem={({ item }) => <ItemGuide data={item} />}
           keyExtractor={item => item.id}
         />
