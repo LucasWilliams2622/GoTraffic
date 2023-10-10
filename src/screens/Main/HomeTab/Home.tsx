@@ -127,15 +127,25 @@ const Home: React.FC = () => {
       <Section
         title="Địa điểm nổi bật"
         data={featuredLocationData}
+<<<<<<< HEAD
         renderItem={({ item }) => <FeaturedLocation {...item} />}
         snapToInterval={windowWidth * 0.5}
+=======
+        renderItem={({item}) => <FeaturedLocation {...item} />}
+        snapToInterval={224}
+>>>>>>> b64aa3d (update Component UI)
       />
 
       <Section
         title="Đón xe sân bay"
         data={AirportData}
+<<<<<<< HEAD
         renderItem={({ item }) => <AirportPicking {...item} />}
         snapToInterval={windowWidth * 0.7}
+=======
+        renderItem={({item}) => <AirportPicking {...item} />}
+        snapToInterval={140}
+>>>>>>> b64aa3d (update Component UI)
       />
 
       <Section
