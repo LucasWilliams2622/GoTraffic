@@ -1,4 +1,10 @@
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useMemo} from 'react';
 import FastImage from 'react-native-fast-image';
 import {COLOR} from '../../constants/Theme';
@@ -20,6 +26,7 @@ interface CarCardItemProps {
   price: number;
   rating: number;
   totalRide: number;
+  onPress: () => void;
 }
 
 const CarCardItem = ({
@@ -32,6 +39,7 @@ const CarCardItem = ({
   price,
   rating,
   totalRide,
+  onPress,
 }: CarCardItemProps) => {
   const [isFavorite, setIsFavorite] = React.useState<boolean>(false);
 
@@ -47,7 +55,7 @@ const CarCardItem = ({
   );
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <FastImage source={{uri: image}} style={styles.image} />
       {originalPrice && (
         <View style={styles.discount}>
@@ -123,7 +131,7 @@ const CarCardItem = ({
           </Text>
         </Column>
       </Row>
-    </View>
+    </TouchableOpacity>
   );
 };
 

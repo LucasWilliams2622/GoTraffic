@@ -83,6 +83,7 @@
     "react-native-stock-star-rating": "^1.0.6",
     "react-native-svg": "^13.14.0",
     "react-native-swipe-list-view": "^3.2.9",
+    "react-native-swiper": "^1.6.0",
     "react-native-switch-toggle": "^2.2.1",
     "react-native-tab-view": "^3.5.2",
     "react-native-table-component": "^1.2.2",
@@ -112,6 +113,8 @@
     "jest": "^29.2.1",
     "metro-react-native-babel-preset": "0.76.8",
     "prettier": "^2.4.1",
+    "react-native-image-slider-box": "^2.0.7",
+    "react-native-lightbox": "^0.8.1",
     "react-test-renderer": "18.2.0",
     "typescript": "4.8.4"
   },

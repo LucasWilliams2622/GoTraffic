@@ -24,6 +24,7 @@ import {
   AirportData,
   benefitData,
 } from './data/data';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 interface RenderListProps<T> {
   data: T[];
@@ -74,8 +75,14 @@ const Section: React.FC<SectionProps> = ({
   </View>
 );
 
+type StackScreenParamList = {
+  Home: undefined;
+  CarDetail: {car_id: number};
+};
+
 const Home: React.FC = () => {
-  const navigation = useNavigation();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<StackScreenParamList, 'Home'>>();
 
   return (
     <ScrollView style={[appStyle.container]}>
@@ -111,14 +118,24 @@ const Home: React.FC = () => {
       <Section
         title="Xe dành cho bạn"
         data={carData}
-        renderItem={({item}) => <CarCardItem {...item} />}
+        renderItem={({item}) => (
+          <CarCardItem
+            {...item}
+            onPress={() => navigation.navigate('CarDetail', {car_id: item.id})}
+          />
+        )}
         snapToInterval={350}
       />
 
       <Section
         title="Xe đã xem"
         data={carData}
-        renderItem={({item}) => <CarCardItem {...item} />}
+        renderItem={({item}) => (
+          <CarCardItem
+            {...item}
+            onPress={() => navigation.navigate('CarDetail', {car_id: item.id})}
+          />
+        )}
         snapToInterval={350}
       />
 
