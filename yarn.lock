@@ -3411,6 +3411,14 @@
   resolved "https://registry.npmjs.org/@types/prop-types/-/prop-types-15.7.6.tgz"
   integrity sha512-RK/kBbYOQQHLYj9Z95eh7S6t7gq4Ojt/NT8HTk8bWVhA5DaF+5SMnxHKkP4gPNN3wAZkKP+VjAf0ebtYzf+fxg==
 
+"@types/react-native-snap-carousel@^3.8.6":
+  version "3.8.6"
+  resolved "https://registry.npmjs.org/@types/react-native-snap-carousel/-/react-native-snap-carousel-3.8.6.tgz"
+  integrity sha512-fGq0jx8gbN6N3RjD6y0oUv10RQ1ye3Xzao9LqcqLV4I/rDzPAqipoz4GeBkzUq8Y0k5Zs8r1hkiQF6SxBfRuAg==
+  dependencies:
+    "@types/react" "*"
+    "@types/react-native" "*"
+
 "@types/react-native-vector-icons@^6.4.15":
   version "6.4.15"
   resolved "https://registry.npmjs.org/@types/react-native-vector-icons/-/react-native-vector-icons-6.4.15.tgz"
@@ -10157,7 +10165,7 @@ react-native-skeleton-placeholder@^5.2.4:
   resolved "https://registry.npmjs.org/react-native-skeleton-placeholder/-/react-native-skeleton-placeholder-5.2.4.tgz"
   integrity sha512-OZntVq1hU1UX33FltxK2ezT2v9vHIhV8YnEbnMWUCvxT0N9OsgD1qxiHm6qb9YRJVgq2o5z3S7dNPsPnDF/jNg==
 
-react-native-snap-carousel@latest:
+react-native-snap-carousel@^3.9.1, react-native-snap-carousel@latest:
   version "3.9.1"
   resolved "https://registry.npmjs.org/react-native-snap-carousel/-/react-native-snap-carousel-3.9.1.tgz"
   integrity sha512-xWEGusacIgK1YaDXLi7Gao2+ISLoGPVEBR8fcMf4tOOJQufutlNwkoLu0l6B8Qgsrre0nTxoVZikRgGRDWlLaQ==

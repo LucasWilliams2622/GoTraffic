@@ -1,50 +1,62 @@
-import React, {useRef, useState} from 'react';
-import {
-  Dimensions,
-  FlatList,
-  Image,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import React, {useState} from 'react';
+import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
 import {carDetailData} from './data/data';
+import Carousel from 'react-native-snap-carousel';
 
 const CarDetail = ({route}: any) => {
   const [index, setIndex] = useState(0);
   const {car_id} = route.params;
   const car = carDetailData.find(x => x.id == car_id);
-  const viewabilityConfig = useRef({viewAreaCoveragePercentThreshold: 50});
+  const itemWidth = Dimensions.get('window').width;
+  const snapToInterval = itemWidth + 10;
 
-  const onViewableItemsChanged = useRef(({viewableItems}) => {
-    if (viewableItems.length > 0) {
-      setIndex(viewableItems[0].index);
-    }
-  });
+  const renderItem = ({item}: any) => (
+    <Image
+      source={{uri: item}}
+      style={{width: Dimensions.get('window').width, height: 200}}
+    />
+  );
 
   return (
     <View>
-      <Text>{car?.title}</Text>
-      <FlatList
-        data={car?.images}
-        keyExtractor={item => item}
-        pagingEnabled={true}
-        renderItem={({item}) => (
-          <Image
-            source={{uri: item}}
-            style={{width: Dimensions.get('window').width, height: 200}}
+      {car ? (
+        <View>
+          <Carousel
+            data={car.images}
+            renderItem={renderItem}
+            sliderWidth={Dimensions.get('window').width}
+            itemWidth={itemWidth}
+            snapToInterval={snapToInterval}
+            onSnapToItem={(index: number) => setIndex(index)}
           />
-        )}
-        horizontal={true}
-        snapToInterval={Dimensions.get('window').width}
-        showsHorizontalScrollIndicator={false}
-        onViewableItemsChanged={onViewableItemsChanged.current}
-        viewabilityConfig={viewabilityConfig.current}
-      />
-      <Text>{`${index + 1}/${car?.images.length}`}</Text>
+          <View style={styles.indexContainer}>
+            <Text style={styles.indexText}>{`${index + 1}/${
+              car.images.length
+            }`}</Text>
+          </View>
+          <Text>{car.title}</Text>
+        </View>
+      ) : (
+        <Text>Car not found</Text>
+      )}
     </View>
   );
 };
 
-export default CarDetail;
+const styles = StyleSheet.create({
+  indexContainer: {
+    position: 'absolute',
+    bottom: 25,
+    right: 7,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+  },
+  indexText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+});
 
-const styles = StyleSheet.create({});
+export default CarDetail;
