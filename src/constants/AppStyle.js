@@ -4,11 +4,11 @@ import {
   Dimensions,
   PixelRatio,
 } from 'react-native';
-import { COLOR } from './Theme';
+import {COLOR} from './Theme';
 
 export const windowWidth = Dimensions.get('window').width;
 export const windowHeight = Dimensions.get('window').height;
-console.log("=========>",windowHeight);
+console.log('=========>', windowHeight);
 const scaleWidth = windowWidth / 375;
 const scaleHeight = windowHeight / 667;
 
@@ -29,7 +29,7 @@ export const appStyle = StyleSheet.create({
   main: {
     flex: 1,
     backgroundColor: COLOR.main,
-    paddingHorizontal: 12,
+    paddingHorizontal: 14,
   },
 
   // =============| ICON - IMAGE |===================
@@ -60,13 +60,14 @@ export const appStyle = StyleSheet.create({
     borderWidth: 2
   },
   portrait: {
-    height: 160, width: 130, borderRadius: 8,
+    height: 160,
+    width: 130,
+    borderRadius: 8,
   },
   logo: {
     width: 40,
     height: 40,
   },
-
 
   //=====================| TEXT - TITLE |============================
   text8: {
@@ -297,5 +298,4 @@ export const appStyle = StyleSheet.create({
 
     elevation: 15,
   },
-
-})
+});

@@ -83,9 +83,8 @@ const Profile = (props) => {
 
           <TouchableOpacity>
             <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 20 }}>
-              <FastImage source={ICON.Exit} style={[appStyle.iconBig]}>
-              </FastImage>
-              <Text style={[appStyle.text20Bold, { color: COLOR.exit, left: 10 }]}>Đăng xuất</Text>
+              <FastImage source={ICON.Exit} style={[appStyle.iconBig]}/>
+              <Text style={[appStyle.text20, { color: COLOR.exit, marginLeft: 10,fontWeight:'500' }]}>Đăng xuất</Text>
             </View>
           </TouchableOpacity>
         </ScrollView>
@@ -98,7 +97,7 @@ export default Profile
 
 const styles = StyleSheet.create({
   headBg: {
-    backgroundColor: COLOR.blueHeader,
+    backgroundColor: COLOR.bgHeader,
     width: '100%',
     height: windowHeight * 0.15,
     borderBottomLeftRadius: 16,

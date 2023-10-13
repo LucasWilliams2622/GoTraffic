@@ -8,9 +8,9 @@ import {AppContext} from '../utils/AppContext';
 import Login from '../screens/Begin/Login';
 import Home from '../screens/Main/HomeTab/Home';
 import Profile from '../screens/Main/ProfileTab/Profile';
-import Notification from '../screens/Main/NotificationTab/Notification'
-import Support from '../screens/Main/SupportTab/Support'
-import Trip from '../screens/Main/TripTab/Trip'
+import Notification from '../screens/Main/NotificationTab/Notification';
+import Support from '../screens/Main/SupportTab/Support';
+import Trip from '../screens/Main/TripTab/Trip';
 import Policy from '../screens/Main/ProfileTab/Policy';
 import FavouriteCar from '../screens/Main/ProfileTab/FavouriteCar';
 import MyCar from '../screens/Main/ProfileTab/MyCar';
@@ -23,6 +23,8 @@ import Account from '../screens/Main/ProfileTab/Account';
 import Register from '../screens/Begin/Register';
 import Verified from '../screens/Begin/Verified';
 import MyCard from '../screens/Main/ProfileTab/MyCard';
+import TimePicking from '../screens/Main/HomeTab/TimePicking';
+import LocationPicking from '../screens/Main/HomeTab/LocationPicking';
 
 
 const Tab = createBottomTabNavigator();
@@ -44,8 +46,22 @@ const StackHome = () => {
   return (
     <Stack.Navigator
       initialRouteName="Home"
-      screenOptions={{headerShown: false}}>
+      screenOptions={{headerShown: false, animationEnabled: false}}
+      mode="modal">
       <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen
+        name="LocationPicking"
+        component={LocationPicking}
+        options={{
+          animationEnabled: true,
+          animation: 'slide_from_bottom',
+        }}
+      />
+      <Stack.Screen
+        name="TimePicking"
+        component={TimePicking}
+        options={{animationEnabled: true, animation: 'slide_from_bottom'}}
+      />
     </Stack.Navigator>
   );
 };
@@ -91,7 +107,6 @@ const StackProfile = () => {
             <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
             <Stack.Screen name="NewAddress" component={NewAddress} />
             <Stack.Screen name="MyCard" component={MyCard} />
-
 
         </Stack.Navigator>
     )

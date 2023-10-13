@@ -4,8 +4,14 @@ export const COLOR = {
   third: '#FFB703',
   forth: '#023047',
   fifth: '#219EBC',
+  sixth: '#dbf4ff',
+  seventh: '#FCE0D3',
+  eighth: '#F26A2B',
+
 
   background: '#ffffff',
+  bgHeader:'#c9eeff',
+
   main: '#ffffff',
 
   focus: '#41cff2',
@@ -44,7 +50,7 @@ export const COLOR = {
   lightBlue: '#8ce0f5',
   lightYellow: '#FFEEDB',
   lightGreen: '#D8F2E1',
-  exit: '#F25F57'
+  exit: '#ff2e2e'
 
 
 
