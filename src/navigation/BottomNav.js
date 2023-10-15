@@ -25,6 +25,7 @@ import Verified from '../screens/Begin/Verified';
 import MyCard from '../screens/Main/ProfileTab/MyCard';
 import TimePicking from '../screens/Main/HomeTab/TimePicking';
 import LocationPicking from '../screens/Main/HomeTab/LocationPicking';
+import NewCard from '../screens/Main/ProfileTab/NewCard';
 
 
 const Tab = createBottomTabNavigator();
@@ -107,6 +108,7 @@ const StackProfile = () => {
             <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
             <Stack.Screen name="NewAddress" component={NewAddress} />
             <Stack.Screen name="MyCard" component={MyCard} />
+            <Stack.Screen name="NewCard" component={NewCard} />
 
         </Stack.Navigator>
     )

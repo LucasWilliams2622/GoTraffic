@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { COLOR, ICON } from '../constants/Theme';
+import { COLOR, ICON } from '../../constants/Theme';
 import FastImage from 'react-native-fast-image';
-import { appStyle } from '../constants/AppStyle';
+import { appStyle } from '../../constants/AppStyle';
 
 const Address = (props) => {
     // const {title, text, icon, onPress, dulieu } = props;
@@ -26,7 +26,7 @@ const Address = (props) => {
                         <Text style={[appStyle.text14]}>{address}</Text>
                     </View>
                 </View>
-                <FastImage style={appStyle.iconMedium} source={require('../assets/icon/ic_right.png')} />
+                <FastImage style={appStyle.iconMedium} source={require('../../assets/icon/ic_right.png')} />
             </View>
         </TouchableOpacity>
     )

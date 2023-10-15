@@ -77,7 +77,7 @@ const UpdateProfile = (props) => {
                 {image ? (
                     <FastImage source={{ uri: image }} style={[appStyle.avatar, { marginTop: 20 }]} />
                 ) : (
-                    <FastImage source={require('../../../assets/image/guide/img_book.jpg')} style={[appStyle.avatar, { marginTop: 20 }]} />
+                    <FastImage source={require('../../../assets/image/guide/img_friend.png')} style={[appStyle.avatar, { marginTop: 20 }]} />
                 )}
 
                 {/* Capture image */}
@@ -116,28 +116,43 @@ const UpdateProfile = (props) => {
                 <KeyboardAwareScrollView behavior='padding'>
                     <Formik
                         initialValues={{
-                            name: '',
-                            dob: '',
-                            sex: '',
+                            name: 'Bảo',
+                            dob: '11/01/1992',
+                            sex: 'Nữ',
                         }}
                         validationSchema={AccountSchema}
-                    // onSubmit={(values) => {
-                    //     if (isValid) {
-                    //         navigation.navigate('Account', {
-                    //             newName: values.name,
-                    //             newDOB: values.dob,
-                    //             newSex: values.sex
-                    //         });
-                    //         console.log("Lưu thành công");
-                    //         console.log(values.name);
-                    //         console.log(values.dob);
-                    //         console.log(values.sex);
-                    //     } else {
-                    //         console.log("Dữ liệu không hợp lệ");
-                    //     }
-                    // }}
+                        // onSubmit={(values) =>{
+                        //     console.log(values);
+                        // }}
+                        onSubmit={(values, { setSubmitting }) => {
+                            // Kiểm tra tính hợp lệ bằng cách sử dụng setSubmitting
+                            setSubmitting(true); // Đánh dấu rằng việc xác thực đang diễn ra
+                    
+                            // Thực hiện xác thực bằng Yup và tùy chỉnh xử lý dựa trên kết quả
+                            AccountSchema.validate(values)
+                                .then(valid => {
+                                    if (valid) {
+                                        // Dữ liệu hợp lệ, thực hiện cập nhật và chuyển đến trang Account
+                                        navigation.navigate('Account',{
+                                            newName: values.name,
+                                            newDOB: values.dob,
+                                            newSex: values.sex,
+                                        });
+                                        console.log("Lưu thành công");
+                                        console.log(values.name);
+                                        console.log(values.dob);
+                                        console.log(values.sex);
+                                    } else {
+                                        // Dữ liệu không hợp lệ, bạn có thể xử lý lỗi ở đây nếu cần
+                                        console.log("Dữ liệu không hợp lệ");
+                                    }
+                                })
+                                .finally(() => {
+                                    setSubmitting(false); // Kết thúc quá trình xác thực
+                                });
+                        }}
                     >
-                        {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit }) => (
+                        {({ values,errors, touched, handleChange, setFieldTouched, handleSubmit }) => (
                             <>
                                 <View style={{ width: '100%', height: 'auto' }}>
                                     <Text style={[appStyle.text14, { color: COLOR.text2 }]}>Tên người dùng</Text>
@@ -146,6 +161,7 @@ const UpdateProfile = (props) => {
                                         value={values.name}
                                         onChangeText={handleChange('name')}
                                         onBlur={() => setFieldTouched('name')}
+                                        //onBlur={handleBlur('name')}
                                     />
                                     {touched.name && errors.name && (
                                         <Text style={{ color: 'red' }}>{errors.name}</Text>
@@ -181,21 +197,7 @@ const UpdateProfile = (props) => {
                                 <AppButton
                                     marginTop={30}
                                     title="Lưu"
-                                    onPress={(values) => {
-                                        if (isValid) {
-                                            navigation.navigate('Account', {
-                                                newName: values.name,
-                                                newDOB: values.dob,
-                                                newSex: values.sex
-                                            });
-                                            console.log("Lưu thành công");
-                                            console.log(values.name);
-                                            console.log(values.dob);
-                                            console.log(values.sex);
-                                        } else {
-                                            console.log("Dữ liệu không hợp lệ");
-                                        }
-                                    }}
+                                    onPress={handleSubmit}
                                 />
                             </>
                         )}

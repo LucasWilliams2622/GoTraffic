@@ -21,25 +21,29 @@ const Profile = (props) => {
   }
   return (
     <SafeAreaView style={appStyle.container}>
-      <ScrollView
-        showsHorizontalScrollIndicator={false}>
-        <View style={styles.headBg}>
-          <View style={[appStyle.boxCenter, { marginTop: windowHeight * 0.12 }]}>
-            <FastImage source={require('../../../assets/image/guide/img_book.jpg')} style={[appStyle.avatar]}></FastImage>
-            <Text style={[appStyle.text24Bold, { textAlign: 'center', marginTop: 12 }]}>{name}</Text>
-          </View>
+      <View style={styles.headBg}>
+        <View style={[appStyle.boxCenter, { marginTop: windowHeight * 0.12 }]}>
+          <FastImage source={require('../../../assets/image/guide/img_friend.png')} style={[appStyle.avatar]}></FastImage>
+          <Text style={[appStyle.text24Bold, { textAlign: 'center', marginTop: 12 }]}>{name}</Text>
         </View>
-
+      </View>
+      
+      <View style={{
+        marginTop: windowHeight * 0.12,
+        width: '100%',
+        height: windowHeight * 0.6,
+        paddingHorizontal: 15
+      }}>
         <ScrollView
-          style={{ flex: 1, marginTop: windowHeight * 0.12, paddingHorizontal: 16 }}
-          showsHorizontalScrollIndicator={false}>
+          style={{ flex: 1, width: '100%', height: '100%' }}
+          showsVerticalScrollIndicator={false}>
           <View style={styles.viewGroup}>
             <AppProfile
               icon={ICON.Profile}
               text="Tài khoản của tôi"
               onPress={() =>
-                navigation.navigate('Account', updateNewName(name))
-              } />
+                navigation.navigate('Account', updateNewName(name))}/>
+
             <AppProfile
               icon={ICON.Heart}
               text="Xe yêu thích"
@@ -48,7 +52,6 @@ const Profile = (props) => {
             <AppProfile
               icon={ICON.Trip}
               text="Xe của tôi"
-              borderBottomWidth={2.7}
               onPress={() => navigation.navigate('MyCar')} />
 
             <AppProfile
@@ -59,15 +62,16 @@ const Profile = (props) => {
             <AppProfile
               icon={ICON.Wallet}
               text="Thẻ của tôi"
-              borderBottomWidth={1}
+              borderBottomWidth={0}
               onPress={() => navigation.navigate('MyCard')} />
           </View>
 
-          <View style={[styles.viewGroup, {marginTop: 16}]}>
+          <View style={[styles.viewGroup, { marginTop: 16 }]}>
             <AppProfile
               icon={ICON.Share}
               text="Giới thiệu bạn bè"
               onPress={() => navigation.navigate('ShareWithFriend')} />
+
             <AppProfile
               icon={ICON.Policy}
               text="Chính sách bảo mật"
@@ -80,15 +84,14 @@ const Profile = (props) => {
               onPress={() => navigation.navigate('ChangePassword')} />
           </View>
 
-
           <TouchableOpacity>
             <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 20 }}>
-              <FastImage source={ICON.Exit} style={[appStyle.iconBig]}/>
-              <Text style={[appStyle.text20, { color: COLOR.exit, marginLeft: 10,fontWeight:'500' }]}>Đăng xuất</Text>
+              <FastImage source={ICON.Exit} style={[appStyle.iconBig]} />
+              <Text style={[appStyle.text20, { color: COLOR.exit, marginLeft: 10, fontWeight: '500' }]}>Đăng xuất</Text>
             </View>
           </TouchableOpacity>
         </ScrollView>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   )
 }
@@ -105,10 +108,10 @@ const styles = StyleSheet.create({
   },
 
   viewGroup: {
-    flex:1,
-    width: 'auto', 
+    flex: 1,
+    width: 'auto',
     height: 'auto',
-    marginTop: 36, 
+    marginTop: 36,
     borderRadius: 10,
     borderWidth: 2,
     paddingHorizontal: 10,

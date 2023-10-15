@@ -6,7 +6,7 @@ import FastImage from 'react-native-fast-image'
 const AppInput = (props) => {
     const { backgroundColor, borderWidth, borderColor, borderRadius, paddingVertical, paddingHorizontal,
         placeholder, textColor, placeholderTextColor, keyboardAppearance, returnKeyType, autoCapitalize,
-        width, keyboardType,
+        width, keyboardType, marginTop,
         editable, autoCorrect, multiline, fontSize,
         onChangeText, value, onBlur,
 
@@ -38,6 +38,7 @@ const AppInput = (props) => {
             borderRadius: borderRadius == null ? 6 : borderRadius,
             paddingVertical: paddingVertical == null ? 8 : paddingVertical,
             paddingHorizontal: paddingHorizontal == null ? 8 : paddingHorizontal,
+            marginTop: marginTop == null ? 0 : marginTop
         }]}>
             <TextInput
                 style={[styles.textInput,  {
