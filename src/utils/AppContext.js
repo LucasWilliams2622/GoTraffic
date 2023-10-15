@@ -6,7 +6,7 @@ export const AppContext = createContext();
 
 export const AppContextProvider = props => {
   const {children} = props;
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
   const [infoUser, setInfoUser] = useState({});
   const [idUser, setIdUser] = useState('');
   const [appState, setAppState] = useState(0);
