@@ -8,11 +8,11 @@ import {
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome6';
-import { COLOR } from '../../../constants/Theme';
-import { appStyle, windowHeight, windowWidth } from '../../../constants/AppStyle';
-import { Row, Column } from 'native-base';
+import {COLOR} from '../../../constants/Theme';
+import {appStyle} from '../../../constants/AppStyle';
+import {Row, Column} from 'native-base';
 import Booking from '../../../components/Home/Booking';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import Promotion from '../../../components/Home/Promotion';
 import CarCardItem from '../../../components/Home/CarCardItem';
 import FeaturedLocation from '../../../components/Home/FeaturedLocation';
@@ -27,7 +27,7 @@ import {
 
 interface RenderListProps<T> {
   data: T[];
-  renderItem: ({ item }: { item: T }) => JSX.Element;
+  renderItem: ({item}: {item: T}) => JSX.Element;
   snapToInterval: number;
 }
 
@@ -38,7 +38,6 @@ const RenderList: React.FC<RenderListProps<any>> = ({
 }) => (
   <FlatList
     showsHorizontalScrollIndicator={false}
-    shouldRasterizeIOS
     data={data}
     keyExtractor={item => item.id.toString()}
     horizontal={true}
@@ -53,7 +52,7 @@ const RenderList: React.FC<RenderListProps<any>> = ({
 interface SectionProps {
   title: string;
   data: any[];
-  renderItem: ({ item }: { item: any }) => JSX.Element;
+  renderItem: ({item}: {item: any}) => JSX.Element;
   snapToInterval: number;
 }
 
@@ -63,9 +62,9 @@ const Section: React.FC<SectionProps> = ({
   renderItem,
   snapToInterval,
 }) => (
-  <View style={[styles.mt20, {}]}>
+  <View style={styles.mt20}>
     <View style={[styles.contentContainer]}>
-      <Text style={[appStyle.text20, { fontWeight: '600' }]}>{title}</Text>
+      <Text style={appStyle.text18Bold}>{title}</Text>
     </View>
     <RenderList
       data={data}
@@ -80,21 +79,20 @@ const Home: React.FC = () => {
 
   return (
     <ScrollView style={[appStyle.container]}>
-      <View style={[styles.headBg, {}]}>
-        <Row style={[styles.nameAndPointWrapper, {}]}>
+      <View style={[styles.headBg]}>
+        <Row style={styles.nameAndPointWrapper}>
           <Column style={[styles.iconBG, styles.iconMarginRight]}>
             <Icon name="user" color={COLOR.forth} size={23}></Icon>
           </Column>
           <Column>
-            <Text style={[appStyle.text18, { fontWeight: '500', paddingBottom: 6 }]}>Lê Hoàng Gia Khánh</Text>
-            <Row style={{ alignItems: 'center' }}>
+            <Text style={appStyle.text16Bold}>Lê Hoàng Gia Khánh</Text>
+            <Row style={{alignItems: 'center'}}>
               <Icon
                 name="star"
                 color={COLOR.third}
                 solid
-                style={{}}></Icon>
-              <Text style={[appStyle.text12Bold, { marginHorizontal: 4 }]}>0</Text>
-              <Text style={appStyle.text12}>điểm</Text>
+                style={{marginRight: 5}}></Icon>
+              <Text style={appStyle.text12Bold}>Điểm thưởng</Text>
             </Row>
           </Column>
         </Row>
@@ -104,47 +102,47 @@ const Home: React.FC = () => {
       <Section
         title="Chương trình khuyến mãi"
         data={promotionData}
-        renderItem={({ item }) => (
-          <Promotion image={item.image} width={windowWidth * 0.8} height={200} />
+        renderItem={({item}) => (
+          <Promotion image={item.image} width={300} height={200} />
         )}
-        snapToInterval={windowWidth * 0.8}
+        snapToInterval={320}
       />
 
       <Section
         title="Xe dành cho bạn"
         data={carData}
-        renderItem={({ item }) => <CarCardItem {...item} />}
-        snapToInterval={windowWidth * 0.9}
+        renderItem={({item}) => <CarCardItem {...item} />}
+        snapToInterval={350}
       />
 
       <Section
         title="Xe đã xem"
         data={carData}
-        renderItem={({ item }) => <CarCardItem {...item} />}
-        snapToInterval={windowWidth * 0.9}
+        renderItem={({item}) => <CarCardItem {...item} />}
+        snapToInterval={350}
       />
 
       <Section
         title="Địa điểm nổi bật"
         data={featuredLocationData}
-        renderItem={({ item }) => <FeaturedLocation {...item} />}
-        snapToInterval={windowWidth * 0.5}
+        renderItem={({item}) => <FeaturedLocation {...item} />}
+        snapToInterval={224}
       />
 
       <Section
         title="Đón xe sân bay"
         data={AirportData}
-        renderItem={({ item }) => <AirportPicking {...item} />}
-        snapToInterval={windowWidth * 0.7}
+        renderItem={({item}) => <AirportPicking {...item} />}
+        snapToInterval={140}
       />
 
       <Section
         title="Ưu điểm của Go Traffic"
         data={benefitData}
-        renderItem={({ item }) => (
-          <Promotion image={item.image} width={windowWidth * 0.9} height={130} />
+        renderItem={({item}) => (
+          <Promotion image={item.image} width={345} height={130} />
         )}
-        snapToInterval={windowWidth * 0.9}
+        snapToInterval={365}
       />
 
       <View
@@ -160,24 +158,24 @@ export default Home;
 
 const styles = StyleSheet.create({
   headBg: {
-    backgroundColor: COLOR.bgHeader,
+    backgroundColor: COLOR.secondary,
     width: '100%',
     height: Dimensions.get('window').height / 3,
-    borderBottomLeftRadius: 16,
-    borderBottomRightRadius: 16,
+    borderBottomLeftRadius: 40,
+    borderBottomRightRadius: 40,
     marginBottom: 20,
   },
 
   nameAndPointWrapper: {
     alignItems: 'center',
-    marginTop: windowHeight * 0.03,
-    paddingHorizontal: 14
+    marginTop: Dimensions.get('window').height / 10,
+    marginLeft: 15,
   },
 
   iconBG: {
     backgroundColor: COLOR.white,
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
     borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',
@@ -196,7 +194,7 @@ const styles = StyleSheet.create({
   },
 
   contentContainer: {
-    paddingLeft: 14,
+    paddingLeft: 20,
     marginBottom: 10,
   },
 });
