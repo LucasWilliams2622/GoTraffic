@@ -118,7 +118,7 @@ const Login = props => {
                   <Text
                     style={styles.text3}
                     onPress={() => {
-                      toggleBottomNavigationView3();
+                      toggleBottomNavigationView2();
                     }}>
                     Quên mật khẩu
                   </Text>
