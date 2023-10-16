@@ -77,7 +77,7 @@ const Section: React.FC<SectionProps> = ({
 
 type StackScreenParamList = {
   Home: undefined;
-  CarDetail: {car_id: number};
+  CarDetail: {car_id: number; navigation: any};
 };
 
 const Home: React.FC = () => {
@@ -121,7 +121,12 @@ const Home: React.FC = () => {
         renderItem={({item}) => (
           <CarCardItem
             {...item}
-            onPress={() => navigation.navigate('CarDetail', {car_id: item.id})}
+            onPress={() =>
+              navigation.navigate('CarDetail', {
+                car_id: item.id,
+                navigation: navigation,
+              })
+            }
           />
         )}
         snapToInterval={350}
@@ -133,7 +138,12 @@ const Home: React.FC = () => {
         renderItem={({item}) => (
           <CarCardItem
             {...item}
-            onPress={() => navigation.navigate('CarDetail', {car_id: item.id})}
+            onPress={() =>
+              navigation.navigate('CarDetail', {
+                car_id: item.id,
+                navigation: navigation,
+              })
+            }
           />
         )}
         snapToInterval={350}

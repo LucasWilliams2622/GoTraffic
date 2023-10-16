@@ -55,17 +55,17 @@ const CarCardItem = ({
   );
 
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
-      <FastImage source={{uri: image}} style={styles.image} />
+    <Pressable style={CarCardItemStyles.container} onPress={onPress}>
+      <FastImage source={{uri: image}} style={CarCardItemStyles.image} />
       {originalPrice && (
-        <View style={styles.discount}>
+        <View style={CarCardItemStyles.discount}>
           <Text style={[appStyle.text10, {color: COLOR.white, padding: 10}]}>
             Giảm {discountPercent}%
           </Text>
         </View>
       )}
       <Pressable
-        style={styles.pressable}
+        style={CarCardItemStyles.pressable}
         onPress={() => setIsFavorite(!isFavorite)}>
         <Icon
           name="heart"
@@ -75,39 +75,44 @@ const CarCardItem = ({
         />
       </Pressable>
 
-      <Row style={styles.row}>
-        <View style={styles.typeView}>
+      <Row style={CarCardItemStyles.row}>
+        <View style={CarCardItemStyles.typeView}>
           <Text style={appStyle.text12}>{type}</Text>
         </View>
 
         {benefit && (
-          <View style={styles.benefitView}>
+          <View style={CarCardItemStyles.benefitView}>
             <Text style={appStyle.text12}>{benefit}</Text>
           </View>
         )}
       </Row>
 
-      <Row style={styles.row}>
-        <Text style={[appStyle.text16Bold, styles.title]}>
+      <Row style={CarCardItemStyles.row}>
+        <Text style={[appStyle.text16Bold, CarCardItemStyles.title]}>
           {title.toUpperCase()}
         </Text>
         <ShieldIcon color={COLOR.fifth} />
       </Row>
 
-      <Row style={styles.locationRow}>
+      <Row style={CarCardItemStyles.locationRow}>
         <Icon name="location-dot" color={COLOR.borderColor} size={15} />
-        <Text style={styles.locationText}>{location}</Text>
+        <Text style={CarCardItemStyles.locationText}>{location}</Text>
       </Row>
 
-      <View style={styles.separator} />
+      <View style={CarCardItemStyles.separator} />
 
-      <Row style={styles.priceRow}>
+      <Row style={CarCardItemStyles.priceRow}>
         <Row style={{alignItems: 'center'}}>
           <Icon name="star" color={COLOR.third} size={12} solid />
-          <Text style={[styles.ratingText, {marginLeft: 5}]}>{rating}</Text>
-          <Text style={[styles.dot, {marginLeft: 5, marginRight: 5}]}>·</Text>
+          <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
+            {rating}
+          </Text>
+          <Text
+            style={[CarCardItemStyles.dot, {marginLeft: 5, marginRight: 5}]}>
+            ·
+          </Text>
           <SuitcaseIcon color={COLOR.fifth} />
-          <Text style={[styles.ratingText, {marginLeft: 5}]}>
+          <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
             {totalRide} chuyến
           </Text>
         </Row>
@@ -115,7 +120,9 @@ const CarCardItem = ({
         <Column style={{alignItems: 'flex-end'}}>
           <Row style={{alignItems: 'baseline'}}>
             {originalPrice && (
-              <Text style={styles.originalPrice}>{formattedOriginalPrice}</Text>
+              <Text style={CarCardItemStyles.originalPrice}>
+                {formattedOriginalPrice}
+              </Text>
             )}
 
             <Text style={{color: COLOR.fifth, fontSize: 18}}>
@@ -131,13 +138,13 @@ const CarCardItem = ({
           </Text>
         </Column>
       </Row>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
 export default CarCardItem;
 
-const styles = StyleSheet.create({
+export const CarCardItemStyles = StyleSheet.create({
   container: {
     marginRight: 10,
     borderRadius: 20,

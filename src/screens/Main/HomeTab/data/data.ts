@@ -1,3 +1,20 @@
+import Camera360Icon from '../../../../assets/icon/ic_360_camera';
+import AirbagIcon from '../../../../assets/icon/ic_airbag';
+import BackCameraIcon from '../../../../assets/icon/ic_backCar';
+import BackupTireIcon from '../../../../assets/icon/ic_backup_tire';
+import BluetoothIcon from '../../../../assets/icon/ic_bluetooth';
+import CarScreenIcon from '../../../../assets/icon/ic_car_display';
+import CarDisplayIcon from '../../../../assets/icon/ic_car_display';
+import CollisionSensorIcon from '../../../../assets/icon/ic_collision_sensor';
+import DashCamIcon from '../../../../assets/icon/ic_dashcam';
+import ETCIcon from '../../../../assets/icon/ic_etc';
+import GPSIcon from '../../../../assets/icon/ic_gps';
+import MapIcon from '../../../../assets/icon/ic_map';
+import SpeedWarningIcon from '../../../../assets/icon/ic_speed_warning';
+import SunRoofIcon from '../../../../assets/icon/ic_sunroof';
+import TireSensorIcon from '../../../../assets/icon/ic_tire_sensor';
+import UsbIcon from '../../../../assets/icon/ic_usb';
+
 export const promotionData = [
   {
     id: 1,
@@ -163,12 +180,12 @@ export const carDetailData = [
     price: 1200000,
     rating: 4.5,
     totalRide: 15,
-    features: {
-      'Truyền động': 'Số tự động',
-      'Số ghế': '7 chỗ',
-      'Nhiên liệu': 'Xăng',
-      'Tiêu hao': '71/100km',
-    },
+    features: [
+      {'Truyền động': 'Số tự động'},
+      {'Số ghế': '7 chỗ'},
+      {'Nhiên liệu': 'Xăng'},
+      {'Tiêu hao': '71/100km'},
+    ],
     description: '',
     owner: {
       name: 'Đặng Thanh Bình',
@@ -189,15 +206,14 @@ export const carDetailData = [
     price: 1234567,
     rating: 4.5,
     totalRide: 15,
-    features: {
-      'Truyền động': 'Số tự động',
-      'Số ghế': '7 chỗ',
-      'Nhiên liệu': 'Xăng',
-      'Tiêu hao': '71/100km',
-    },
+    features: [
+      {'Truyền động': 'Số tự động'},
+      {'Số ghế': '7 chỗ'},
+      {'Nhiên liệu': 'Xăng'},
+      {'Tiêu hao': '71/100km'},
+    ],
     amenities: [
       'map',
-      'rear-camera',
       'back-camera',
       'speed-warning',
       'usb',
@@ -237,12 +253,12 @@ export const carDetailData = [
     price: 870000,
     rating: 4.5,
     totalRide: 15,
-    features: {
-      'Truyền động': 'Số tự động',
-      'Số ghế': '7 chỗ',
-      'Nhiên liệu': 'Xăng',
-      'Tiêu hao': '81/100km',
-    },
+    features: [
+      {'Truyền động': 'Số tự động'},
+      {'Số ghế': '7 chỗ'},
+      {'Nhiên liệu': 'Xăng'},
+      {'Tiêu hao': '81/100km'},
+    ],
     amenities: [
       'map',
       '360-camera',
@@ -253,7 +269,6 @@ export const carDetailData = [
       'backup-tire',
       'etc',
       'bluetooth',
-      'rear-camera',
       'back-camera',
       'collision-sensor',
       'sunroof',
@@ -267,3 +282,21 @@ export const carDetailData = [
     },
   },
 ];
+
+export const amenitiesIconMapping = {
+  map: {name: 'Bản đồ', icon: MapIcon},
+  bluetooth: {name: 'Bluetooth', icon: BluetoothIcon},
+  'dash-cam': {name: 'Camera hành trình', icon: DashCamIcon},
+  usb: {name: 'Khe cắm USB', icon: UsbIcon},
+  'dvd-screen': {name: 'Màn hình DVD', icon: CarScreenIcon},
+  'back-camera': {name: 'Camera lùi', icon: BackCameraIcon},
+  '360-camera': {name: 'Camera 360', icon: Camera360Icon},
+  'backup-tire': {name: 'Lốp dự phòng', icon: BackupTireIcon},
+  'tire-sensor': {name: 'Cảm biến lốp', icon: TireSensorIcon},
+  'speed-warning': {name: 'Cảnh báo tốc độ', icon: SpeedWarningIcon},
+  gps: {name: 'Định vị GPS', icon: GPSIcon},
+  etc: {name: 'ETC', icon: ETCIcon},
+  'collision-sensor': {name: 'Cảm biến va chạm', icon: CollisionSensorIcon},
+  sunroof: {name: 'Cửa sổ trời', icon: SunRoofIcon},
+  airbag: {name: 'Túi khí an toàn', icon: AirbagIcon},
+};

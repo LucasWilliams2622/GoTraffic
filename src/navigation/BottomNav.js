@@ -62,7 +62,11 @@ const StackHome = () => {
         component={TimePicking}
         options={{animationEnabled: true, animation: 'slide_from_bottom'}}
       />
-      <Stack.Screen name="CarDetail" component={CarDetail} />
+      <Stack.Screen
+        name="CarDetail"
+        component={CarDetail}
+        options={{animationEnabled: true, animation: 'slide_from_bottom'}}
+      />
     </Stack.Navigator>
   );
 };
