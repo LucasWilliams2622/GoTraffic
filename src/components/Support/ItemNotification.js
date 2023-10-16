@@ -38,7 +38,7 @@ const ItemNotification = props => {
         </Text>
         <Text style={[appStyle.text12, {color: '#787878'}]}>{time}</Text>
       </View>
-      <Modal animationType="slide" transparent={true} visible={isModalVisible}>
+      <Modal animationType="fade" transparent={true} visible={isModalVisible}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <FastImage
@@ -54,7 +54,10 @@ const ItemNotification = props => {
               ⚡️GIẢM 300K CHO LẦN ĐẦU THUÊ XE 7 CHỖ TẠI MIOTO
             </Text>
             <View style={styles.line} />
-            <Text style={[[appStyle.text14,{lineHeight:30,paddingHorizontal:20}]]}>
+            <Text
+              style={[
+                [appStyle.text14, {lineHeight: 30, paddingHorizontal: 20}],
+              ]}>
               🚘Cần tìm chân ái để cả nhà mình di chuyển thoải mái? {'\n'}
               📲Mở Mioto,thuê ngay xe 7 chỗ rộng rãi. Nhà bao nhiêu người, Mioto
               cũng chiều đúng ý.{'\n'} 🌟Đặc biệt, Mioto tung ưu đãi giảm 300k
