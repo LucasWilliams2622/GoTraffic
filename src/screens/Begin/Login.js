@@ -121,7 +121,7 @@ const Login = props => {
                   <Text
                     style={styles.text3}
                     onPress={() => {
-                      toggleBottomNavigationView2();
+                      toggleBottomNavigationView();
                     }}>
                     Quên mật khẩu
                   </Text>
@@ -234,9 +234,9 @@ const Login = props => {
       <BottomSheet
         visible={visible2}
         //setting the visibility state of the bottom shee
-        onBackButtonPress={toggleBottomNavigationView}
+        onBackButtonPress={toggleBottomNavigationView2}
         //Toggling the visibility state on the click of the back botton
-        onBackdropPress={toggleBottomNavigationView}
+        onBackdropPress={toggleBottomNavigationView2}
         //Toggling the visibility state on the clicking out side of the sheet
       >
         {/*Bottom Sheet inner View*/}
@@ -292,9 +292,9 @@ const Login = props => {
           <BottomSheet
             visible={visible3}
             //setting the visibility state of the bottom shee
-            onBackButtonPress={toggleBottomNavigationView}
+            onBackButtonPress={toggleBottomNavigationView3}
             //Toggling the visibility state on the click of the back botton
-            onBackdropPress={toggleBottomNavigationView}
+            onBackdropPress={toggleBottomNavigationView3}
             //Toggling the visibility state on the clicking out side of the sheet
           >
             <View style={styles.bottomNavigationView2}>
