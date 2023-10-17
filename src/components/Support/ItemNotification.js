@@ -38,7 +38,11 @@ const ItemNotification = props => {
         </Text>
         <Text style={[appStyle.text12, {color: '#787878'}]}>{time}</Text>
       </View>
-      <Modal animationType="fade" transparent={true} visible={isModalVisible}>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={isModalVisible}
+        onBackdropPress={() => setModalVisible(false)}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <FastImage
