@@ -27,6 +27,7 @@
     "dayjs": "^1.11.10",
     "deprecated-react-native-prop-types": "^4.2.1",
     "formik": "^2.4.5",
+    "google-maps-react": "2.0.6",
     "install": "^0.13.0",
     "jsqr": "^1.4.0",
     "lottie-react-native": "^6.3.1",
