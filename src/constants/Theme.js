@@ -8,9 +8,9 @@ export const COLOR = {
   seventh: '#FCE0D3',
   eighth: '#F26A2B',
 
-
   background: '#ffffff',
-  bgHeader:'#c9eeff',
+  grayBackGround: '#F4F4F4',
+  bgHeader: '#c9eeff',
 
   main: '#ffffff',
 
@@ -24,6 +24,7 @@ export const COLOR = {
 
   borderColor: '#787878',
   borderColor2: '#9E9898',
+  borderColor3: '#E4E4E4',
   placeholder: '#595959',
   placeholder10: '#59595933',
 
@@ -40,8 +41,8 @@ export const COLOR = {
   blue: '#003399',
 
   gray: '#F6F6F6',
-  blueHeader:'#d9f3ff',
-  blueHeader2:'#c4ecff',
+  blueHeader: '#d9f3ff',
+  blueHeader2: '#c4ecff',
   blueViolet: '#000066',
   yellow: '#ffff00',
   green: '#339900',
@@ -50,12 +51,8 @@ export const COLOR = {
   lightBlue: '#8ce0f5',
   lightYellow: '#FFEEDB',
   lightGreen: '#D8F2E1',
-  exit: '#ff2e2e'
-
-
-
-
-}
+  exit: '#ff2e2e',
+};
 
 export const ICON = {
   Home: require('../assets/icon/ic_home.png'),

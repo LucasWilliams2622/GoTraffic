@@ -33,3 +33,31 @@ export const convertTotalNumber = (num: number) => {
 
   return result;
 };
+
+const currentDay = new Date();
+const tomorrow = new Date();
+tomorrow.setDate(tomorrow.getDate() + 1);
+
+const currentDayString = `${currentDay.getHours()}:00, ${currentDay.getDate()}/${
+  currentDay.getMonth() + 1
+}`;
+const tomorrowString = `${tomorrow.getHours() + 1}:00, ${tomorrow.getDate()}/${
+  tomorrow.getMonth() + 1
+}`;
+
+export const timeString = `${currentDayString} - ${tomorrowString}`;
+
+const formatTime = (date: Date) => {
+  const hours = date.getHours();
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+
+  const daysOfWeek = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+  const dayOfWeek = daysOfWeek[date.getDay()];
+
+  return `${hours + 1}h00 ${dayOfWeek}, ${day}/${month}/${year}`;
+};
+
+export const currentDateString = formatTime(currentDay);
+export const returnDateString = formatTime(tomorrow);
