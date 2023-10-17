@@ -160,7 +160,7 @@ const Login = props => {
                   title="Đăng nhập"
                   color={COLOR.secondary}
                   fontSize={18}
-                  onPress={handleSubmit}
+                  onPress={()=>{setIsLogin(true)}}
                 />
               </View>
             )}
