@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {appStyle} from '../../constants/AppStyle';
@@ -9,27 +9,42 @@ import FastImage from 'react-native-fast-image';
 import * as Yup from 'yup';
 import {Formik} from 'formik';
 import {KeyboardAvoidingView} from 'native-base';
-const Register = () => {
+const Register = (props) => {
+   const {navigation} = props;
+   const goBack = () => {
+     navigation.goBack('Login');
+   };
   const validationSchema = Yup.object().shape({
     name: Yup.string().required('Tên không được để trống'),
     phoneNumber: Yup.number()
       .typeError('Không phải định dạng số điện thoại')
       .positive('Số điện thoại không được có dấu trừ')
       .integer('Số điện thoại không có dấu thập phân')
-      .min(8)
       .required('Số điện thoại không được để trống'),
     password: Yup.string()
-      .required('Password không được để trống')
-      .min(8, 'Password quá ngắn ít nhất phải 8 kí tự')
+      .required('Mật khẩu không được để trống')
+      .min(8, 'Mật khẩu quá ngắn ít nhất phải 8 kí tự')
       .matches(/[a-zA-Z]/, 'Mật khẩu chỉ chứa các chữ các latinh'),
     rePassword: Yup.string()
-      .required('Password không được để trống')
-      .min(8, 'Password quá ngắn ít nhất phải 8 kí tự')
+      .required('Mật khẩu không được để trống')
+      .min(8, 'Mật khẩu quá ngắn ít nhất phải 8 kí tự')
       .matches(/[a-zA-Z]/, 'Mật khẩu chỉ chứa các chữ các latinh'),
   });
   return (
     <SafeAreaView style={appStyle.container}>
       <View style={[appStyle.main, {justifyContent: 'space-evenly'}]}>
+        <TouchableOpacity onPress={goBack}>
+          <FastImage
+            source={require('../../assets/icon/ic_left.png')}
+            style={{
+              position: 'absolute',
+              left: 5,
+              top: 5,
+              width: 30,
+              height: 30,
+            }}
+          />
+        </TouchableOpacity>
         <FastImage
           source={require('../../assets/image/logo_go_traffic.png')}
           style={styles.image}

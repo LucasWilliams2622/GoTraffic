@@ -41,22 +41,22 @@ const Login = props => {
   };
   const validationSchema = Yup.object().shape({
     rePassword: Yup.string()
-      .required('Password không được để trống')
-      .min(8, 'Password quá ngắn ít nhất phải 8 kí tự')
+      .required('Mật khẩu không được để trống')
+      .min(8, 'Mật khẩu quá ngắn ít nhất phải 8 kí tự')
       .matches(/[a-zA-Z]/, 'Mật khẩu chỉ chứa các chữ các latinh'),
     phoneNumber: Yup.number()
       .typeError('Không phải định dạng số điện thoại')
       .positive('Số điện thoại không được có dấu trừ')
       .integer('Số điện thoại không có dấu thập phân')
-      .min(8)
       .required('Số điện thoại không được để trống'),
     password: Yup.string()
-      .required('Password không được để trống')
-      .min(8, 'Password quá ngắn ít nhất phải 8 kí tự')
+      .required('Mật khẩu không được để trống')
+      .min(8, 'Mật khẩu quá ngắn ít nhất phải 8 kí tự')
       .matches(/[a-zA-Z]/, 'Mật khẩu chỉ chứa các chữ các latinh'),
   });
   return (
     <SafeAreaView style={appStyle.container}>
+      
       <View style={[appStyle.main, {justifyContent: 'space-evenly'}]}>
         <View style={{marginTop: -100}}>
           <FastImage
