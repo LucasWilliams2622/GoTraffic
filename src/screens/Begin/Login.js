@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState,useContext} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import AppInput from '../../components/AppInput';
 import {appStyle, windowHeight} from '../../constants/AppStyle';
@@ -18,6 +18,7 @@ import {BottomSheet} from 'react-native-btr';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 import * as Yup from 'yup';
 import {Formik} from 'formik';
+import { AppContext } from '../../utils/AppContext';
 
 const Login = props => {
   const {navigation} = props;
@@ -27,6 +28,8 @@ const Login = props => {
   const [visible, setVisible] = useState(false);
   const [visible2, setVisible2] = useState(false);
   const [visible3, setVisible3] = useState(false);
+  const { setIsLogin } = useContext(AppContext)
+
   const toggleBottomNavigationView = () => {
     //Toggling the visibility state of the bottom sheet
     setVisible(!visible);

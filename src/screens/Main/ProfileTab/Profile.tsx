@@ -1,15 +1,16 @@
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, ScrollView } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { appStyle, windowHeight } from '../../../constants/AppStyle'
 import { COLOR, ICON } from '../../../constants/Theme'
 import FastImage from 'react-native-fast-image'
 import AppProfile from '../../../components/AppProfile'
+import { AppContext } from '../../../utils/AppContext'
 
 const Profile = (props) => {
   const { navigation, route } = props;
   const defaultName = "Bảo";
   const [name, setName] = useState(route.params?.newName || defaultName);
-
+  const { setIsLogin } = useContext(AppContext)
   useEffect(() => {
     if (route.params?.newName) {
       setName(route.params.newName);
@@ -27,7 +28,7 @@ const Profile = (props) => {
           <Text style={[appStyle.text24Bold, { textAlign: 'center', marginTop: 12 }]}>{name}</Text>
         </View>
       </View>
-      
+
       <View style={{
         marginTop: windowHeight * 0.12,
         width: '100%',
@@ -42,7 +43,7 @@ const Profile = (props) => {
               icon={ICON.Profile}
               text="Tài khoản của tôi"
               onPress={() =>
-                navigation.navigate('Account', updateNewName(name))}/>
+                navigation.navigate('Account', updateNewName(name))} />
 
             <AppProfile
               icon={ICON.Heart}
@@ -84,7 +85,7 @@ const Profile = (props) => {
               onPress={() => navigation.navigate('ChangePassword')} />
           </View>
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => { setIsLogin(false) }}>
             <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 20 }}>
               <FastImage source={ICON.Exit} style={[appStyle.iconBig]} />
               <Text style={[appStyle.text20, { color: COLOR.exit, marginLeft: 10, fontWeight: '500' }]}>Đăng xuất</Text>
