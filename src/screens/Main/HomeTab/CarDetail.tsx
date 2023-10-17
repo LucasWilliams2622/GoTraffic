@@ -25,8 +25,7 @@ import StickIcon from '../../../assets/icon/ic_stick';
 import SeatIcon from '../../../assets/icon/ic_seat';
 import GasolineIcon from '../../../assets/icon/ic_gasoline';
 import EngineIcon from '../../../assets/icon/ic_engine';
-import CarScreenIcon from '../../../assets/icon/ic_car_display';
-import BluetoothIcon from '../../../assets/icon/ic_bluetooth';
+import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 
 const renderItem = ({item, setModalVisible}: any) => (
   <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
@@ -382,19 +381,39 @@ const CarDetail = ({route}: any) => {
             <Text style={{fontSize: 16, fontWeight: 'bold', marginTop: 15}}>
               Các tiện nghi trên xe
             </Text>
-            {car.amenities.map((item: string) => {
-              const Icon = amenitiesIconMapping[item].icon;
-              return (
-                <Row style={{alignItems: 'center', marginTop: 10}} key={item}>
-                  <Icon width={24} height={24} color={COLOR.fifth} />
-                  <Text style={{marginLeft: 10}}>
-                    {amenitiesIconMapping[item].name}
-                  </Text>
-                </Row>
-              );
-            })}
+            <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+              {car.amenities.map((item: string) => {
+                const Icon = amenitiesIconMapping[item].icon;
+                return (
+                  <View key={item} style={{width: '50%', padding: 10}}>
+                    <Row style={{alignItems: 'center', marginTop: 10}}>
+                      <Icon width={24} height={24} color={COLOR.fifth} />
+                      <Text style={{marginLeft: 10}}>
+                        {amenitiesIconMapping[item].name}
+                      </Text>
+                    </Row>
+                  </View>
+                );
+              })}
+            </View>
           </View>
         )}
+        <View style={[CarCardItemStyles.separator, {marginTop: 20}]} />
+        <View>
+          <Text style={{fontSize: 16, fontWeight: 'bold', marginTop: 15}}>
+            Chủ xe
+          </Text>
+          <View style={styles.container}>
+            <MapView
+              style={styles.map}
+              region={{
+                latitude: 37.78825,
+                longitude: -122.4324,
+                latitudeDelta: 0.015,
+                longitudeDelta: 0.0121,
+              }}></MapView>
+          </View>
+        </View>
       </View>
       <View style={{width: '100%', height: 300}}></View>
     </ScrollView>
@@ -402,6 +421,16 @@ const CarDetail = ({route}: any) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    height: 400,
+    width: 400,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
   indexContainer: {
     position: 'absolute',
     top: 265,

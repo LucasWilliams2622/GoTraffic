@@ -5877,6 +5877,11 @@ google-libphonenumber@^3.2.10:
   resolved "https://registry.npmjs.org/google-libphonenumber/-/google-libphonenumber-3.2.33.tgz"
   integrity sha512-1QKCvAlfq8zY1mviORI9lDzM3I/hwm9+h0CwYBTLq59DBbSHMd5zBOLqHZFiBLicRpwIz46Nynvbywj1XApKvA==
 
+google-maps-react@2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/google-maps-react/-/google-maps-react-2.0.6.tgz#0473356207ab6b47227b393b89e4b83f6eab06da"
+  integrity sha512-M8Eo9WndfQEfxcmm6yRq03qdJgw1x6rQmJ9DN+a+xPQ3K7yNDGkVDbinrf4/8vcox7nELbeopbm4bpefKewWfQ==
+
 gopd@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/gopd/-/gopd-1.0.1.tgz"
@@ -9687,10 +9692,10 @@ react-native-linear-gradient@^2.8.3:
   resolved "https://registry.npmjs.org/react-native-linear-gradient/-/react-native-linear-gradient-2.8.3.tgz"
   integrity sha512-KflAXZcEg54PXkLyflaSZQ3PJp4uC4whM7nT/Uot9m0e/qxFV3p6uor1983D1YOBJbJN7rrWdqIjq0T42jOJyA==
 
-react-native-maps@^1.7.1:
-  version "1.7.1"
-  resolved "https://registry.npmjs.org/react-native-maps/-/react-native-maps-1.7.1.tgz"
-  integrity sha512-CHVLzL+Q2jiUGgbt4/vosxVI1SukWyaLGjD62VLgR/wZpnH4Umi9ql1bmKDPWcfj2C1QZwMU0Yc7rXTbvZUIiw==
+react-native-maps@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-1.8.0.tgz#1f2471dec6f406725d22f2545f326c6fb6d9abf9"
+  integrity sha512-KfVZ03L42+a22Fkcl2uDe5d+73BweTlcRUzm2G+aQUJ7fHrBxj7CuXWtKMSNpVDiO3YDCWcshiiyjSXxkd/qOw==
   dependencies:
     "@types/geojson" "^7946.0.10"
 

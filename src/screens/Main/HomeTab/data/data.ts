@@ -189,6 +189,13 @@ export const carDetailData = [
     description: '',
     owner: {
       name: 'Đặng Thanh Bình',
+      totalRide: 15,
+      rating: 5,
+      description:
+        'Chủ xe 5* có thời gian phản hồi nhanh chóng, tỉ lệ đồng ý cao và dịch vụ nhân được nhiều đánh giá tốt từ khác hàng',
+      responseRate: '100%',
+      acceptRate: '80%',
+      responseIn: 5,
     },
   },
   {
@@ -229,6 +236,13 @@ export const carDetailData = [
       'Xe Honda Civic đời 2022 máy dầu xe trang bị Android Box, lót gỗ sang trọng, cảnh báo tốc độ, camera hành trình, xe bảo dưỡng hãng định kỳ',
     owner: {
       name: 'Đặng Lộc',
+      totalRide: 15,
+      rating: 5,
+      description:
+        'Chủ xe 5* có thời gian phản hồi nhanh chóng, tỉ lệ đồng ý cao và dịch vụ nhân được nhiều đánh giá tốt từ khác hàng',
+      responseRate: '100%',
+      acceptRate: '80%',
+      responseIn: 5,
     },
   },
   {
@@ -279,6 +293,13 @@ export const carDetailData = [
     description: '',
     owner: {
       name: 'Linh Car',
+      totalRide: 15,
+      rating: 5,
+      description:
+        'Chủ xe 5* có thời gian phản hồi nhanh chóng, tỉ lệ đồng ý cao và dịch vụ nhân được nhiều đánh giá tốt từ khác hàng',
+      responseRate: '100%',
+      acceptRate: '80%',
+      responseIn: 5,
     },
   },
 ];
