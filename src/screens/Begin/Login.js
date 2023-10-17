@@ -40,6 +40,10 @@ const Login = props => {
     setVisible3(!visible3);
   };
   const validationSchema = Yup.object().shape({
+    rePassword: Yup.string()
+      .required('Password không được để trống')
+      .min(8, 'Password quá ngắn ít nhất phải 8 kí tự')
+      .matches(/[a-zA-Z]/, 'Mật khẩu chỉ chứa các chữ các latinh'),
     phoneNumber: Yup.number()
       .typeError('Không phải định dạng số điện thoại')
       .positive('Số điện thoại không được có dấu trừ')
@@ -54,7 +58,7 @@ const Login = props => {
   return (
     <SafeAreaView style={appStyle.container}>
       <View style={[appStyle.main, {justifyContent: 'space-evenly'}]}>
-        <View style={{marginTop:-100}}>
+        <View style={{marginTop: -100}}>
           <FastImage
             source={require('../../assets/image/logo_go_traffic.png')}
             style={styles.image}
@@ -65,7 +69,6 @@ const Login = props => {
             initialValues={{phoneNumber: '', password: ''}}
             validationSchema={validationSchema}
             onSubmit={values => {
-              setIsLogin(true);
               console.log(values);
             }}>
             {({
@@ -115,7 +118,7 @@ const Login = props => {
                   <Text
                     style={styles.text3}
                     onPress={() => {
-                      toggleBottomNavigationView();
+                      toggleBottomNavigationView2();
                     }}>
                     Quên mật khẩu
                   </Text>
@@ -167,25 +170,61 @@ const Login = props => {
         onBackButtonPress={toggleBottomNavigationView}
         onBackdropPress={toggleBottomNavigationView}>
         {/*Bottom Sheet inner View*/}
-        <View style={styles.bottomNavigationView}>
-          <View style={{flex: 1}}>
-            <Text style={styles.text1InBottomSheet}>Quên mật khẩu</Text>
-            <Text style={styles.text2InBottomSheet}>
-              Nhập email của bạn để thực hiện quá trình xác minh, chúng tôi sẽ
-              gửi mã xác thực vào email.
-            </Text>
-            <AppInput placeholder={'Email'} />
-          </View>
-          <AppButton
-            title="Tiếp tục"
-            color={COLOR.secondary}
-            fontSize={18}
-            onPress={() => {
-              setVisible(false);
-              toggleBottomNavigationView2();
-            }}
-          />
-        </View>
+
+        <Formik
+          initialValues={{phoneNumber: ''}}
+          validationSchema={validationSchema}
+          onSubmit={values => {
+            console.log({values});
+            setVisible(false);
+            toggleBottomNavigationView2();
+          }}>
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            errors,
+            touched,
+          }) => (
+            <View style={styles.bottomNavigationView}>
+              <View style={{flex: 1}}>
+                <View>
+                  <Text style={styles.text1InBottomSheet}>Quên mật khẩu</Text>
+                  <Text style={styles.text2InBottomSheet}>
+                    Nhập sdt của bạn để thực hiện quá trình xác minh, chúng tôi
+                    sẽ gửi mã xác thực vào sdt.
+                  </Text>
+                  <AppInput
+                    keyboardType={'phone-pad'}
+                    returnKeyType={'done'}
+                    placeholder={'Nhập số điện thoại của bạn'}
+                    onChangeText={handleChange('phoneNumber')}
+                    onBlur={handleBlur('phoneNumber')}
+                    value={values.phoneNumber}
+                  />
+                </View>
+                {touched.phoneNumber && errors.phoneNumber && (
+                  <Text style={styles.textErrorInBottomSheet}>
+                    {errors.phoneNumber}
+                  </Text>
+                )}
+              </View>
+
+              <AppButton
+                title="Tiếp tục"
+                color={COLOR.secondary}
+                fontSize={18}
+                onPress={handleSubmit}
+                // onPress={handleSubmit => {
+                //   //handleSubmit;
+                //   //setVisible(false);
+                //   //toggleBottomNavigationView2();
+                // }}
+              />
+            </View>
+          )}
+        </Formik>
       </BottomSheet>
 
       {/*Bottom Sheet 2*/}
@@ -230,39 +269,76 @@ const Login = props => {
       </BottomSheet>
 
       {/*Bottom Sheet 3*/}
-      <BottomSheet
-        visible={visible3}
-        //setting the visibility state of the bottom shee
-        onBackButtonPress={toggleBottomNavigationView}
-        //Toggling the visibility state on the click of the back botton
-        onBackdropPress={toggleBottomNavigationView}
-        //Toggling the visibility state on the clicking out side of the sheet
-      >
-        {/*Bottom Sheet inner View*/}
-        <View style={styles.bottomNavigationView2}>
-          <View>
-            <Text style={styles.text1InBottomSheet}>Đặt lại mật khẩu</Text>
-            <Text style={styles.text2InBottomSheet}>
-              Đặt lại mật khẩu mới để tiến hành đăng nhập vào tài khoản nhé!
-            </Text>
-            <View style={{marginBottom: 20}}>
-              <AppInput placeholder={'Mật khẩu'} isPassword />
-            </View>
-            <View style={{marginBottom: 20}}>
-              <AppInput placeholder={'Xác nhận lại mật khẩu'} isPassword />
-            </View>
 
-            <AppButton
-              title="Tiếp tục"
-              color={COLOR.secondary}
-              fontSize={18}
-              onPress={() => {
-                setVisible3(false);
-              }}
-            />
-          </View>
-        </View>
-      </BottomSheet>
+      {/*Bottom Sheet inner View*/}
+      <Formik
+        initialValues={{password: '', rePassword: ''}}
+        validationSchema={validationSchema}
+        onSubmit={values => {
+          console.log({values});
+          setVisible3(false);
+        }}>
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+          errors,
+          touched,
+        }) => (
+          <BottomSheet
+            visible={visible3}
+            //setting the visibility state of the bottom shee
+            onBackButtonPress={toggleBottomNavigationView}
+            //Toggling the visibility state on the click of the back botton
+            onBackdropPress={toggleBottomNavigationView}
+            //Toggling the visibility state on the clicking out side of the sheet
+          >
+            <View style={styles.bottomNavigationView2}>
+              <View>
+                <Text style={styles.text1InBottomSheet}>Đặt lại mật khẩu</Text>
+                <Text style={styles.text2InBottomSheet}>
+                  Đặt lại mật khẩu mới để tiến hành đăng nhập vào tài khoản nhé!
+                </Text>
+                <View style={{marginBottom: 20}}>
+                  <AppInput
+                    returnKeyType={'done'}
+                    placeholder={'Nhập mật khảu'}
+                    isPassword
+                    secureTextEntry
+                    onChangeText={handleChange('password')}
+                    onBlur={handleBlur('password')}
+                    value={values.password}
+                  />
+                </View>
+                {touched.password && errors.password && (
+                  <Text style={styles.textError}>{errors.password}</Text>
+                )}
+                <View style={{marginBottom: 20}}>
+                  <AppInput
+                    returnKeyType={'done'}
+                    placeholder={'Xác nhận lại mật khảu'}
+                    isPassword
+                    secureTextEntry
+                    onChangeText={handleChange('rePassword')}
+                    onBlur={handleBlur('rePassword')}
+                    value={values.rePassword}
+                  />
+                </View>
+                {touched.rePassword && errors.rePassword && (
+                  <Text style={styles.textError}>{errors.rePassword}</Text>
+                )}
+              </View>
+              <AppButton
+                title="Tiếp tục"
+                color={COLOR.secondary}
+                fontSize={18}
+                onPress={handleSubmit}
+              />
+            </View>
+          </BottomSheet>
+        )}
+      </Formik>
     </SafeAreaView>
   );
 };
@@ -303,7 +379,6 @@ const styles = StyleSheet.create({
     color: 'black',
     marginBottom: 50,
     textAlign: 'center',
-    
   },
   text5: {
     fontSize: 16,
@@ -348,7 +423,7 @@ const styles = StyleSheet.create({
   bottomNavigationView2: {
     backgroundColor: '#fff',
     width: '100%',
-    height: windowHeight * 0.4,
+    height: windowHeight * 0.45,
     padding: 20,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -382,5 +457,9 @@ const styles = StyleSheet.create({
     color: COLOR.red,
     marginBottom: 10,
     marginTop: -10,
+  },
+  textErrorInBottomSheet: {
+    color: COLOR.red,
+    marginTop: 10,
   },
 });

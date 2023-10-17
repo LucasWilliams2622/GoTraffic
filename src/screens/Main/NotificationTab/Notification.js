@@ -5,14 +5,12 @@ import {COLOR} from '../../../constants/Theme';
 import {FlatList, ScrollView} from 'native-base';
 import ItemNotification from '../../../components/Support/ItemNotification';
 import {appStyle} from '../../../constants/AppStyle';
-
 const Notification = () => {
   return (
     <SafeAreaView style={appStyle.container}>
       <View style={styles.viewTitle}>
         <Text style={styles.title}>Thông báo</Text>
       </View>
-
       <ScrollView>
         <View style={styles.line1}>
           <Text style={styles.text1}>Mới</Text>
@@ -81,6 +79,7 @@ const DATA = [
     content:
       'Chào mừng bạn tham gia cộng đồng Mioto, bấm vào đây để xem những kinh nghiệm thuê xe hữu ích',
     time: '17h43, 25/09',
+    poster: require('../../../assets/image/poster.jpg'),
   },
   {
     id: 2,
@@ -89,6 +88,7 @@ const DATA = [
     content:
       'Chào mừng bạn tham gia cộng đồng Mioto, bấm vào đây để xem những kinh nghiệm thuê xe hữu ích',
     time: '17h43, 25/09',
+    poster: require('../../../assets/image/poster.jpg'),
   },
   {
     id: 3,
@@ -97,5 +97,6 @@ const DATA = [
     content:
       'Chào mừng bạn tham gia cộng đồng Mioto, bấm vào đây để xem những kinh nghiệm thuê xe hữu ích',
     time: '17h43, 25/09',
+    poster: require('../../../assets/image/poster.jpg'),
   },
 ];
