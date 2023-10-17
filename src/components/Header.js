@@ -5,9 +5,11 @@ import FastImage from 'react-native-fast-image';
 import { appStyle, windowHeight } from '../constants/AppStyle';
 
 const Header = (props) => {
-    const { text, icon, onPress } = props;
+    const { text, icon, onPress, backgroundColor } = props;
     return (
-        <View style={styles.header}>
+        <View style={[styles.header,{
+            backgroundColor: backgroundColor == null ? COLOR.background : backgroundColor
+        }]}>
             <TouchableOpacity onPress={onPress}>
                 <FastImage
                     source={icon}

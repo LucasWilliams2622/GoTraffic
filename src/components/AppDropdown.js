@@ -39,8 +39,8 @@ const AppDropdown = (props) => {
                 maxHeight={300}
                 containerStyle={{
                     width: windowWidth,
-                    height: windowHeight * .5,
-                    marginTop: windowHeight * .5,
+                    height: windowHeight *.5,
+                    marginTop: windowHeight * 0.5,
                     borderTopRightRadius:16,
                     borderTopLeftRadius:16
                 }}
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     dropdown: {
         color: '#000000',
         height: 35,
-        width: '100%',
+        width: windowWidth,
         fontSize: 14
     },
 

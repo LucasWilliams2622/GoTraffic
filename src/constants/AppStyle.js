@@ -295,7 +295,6 @@ export const appStyle = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
-
     elevation: 15,
   },
 });

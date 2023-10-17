@@ -13,6 +13,7 @@ import {Row, Radio, HStack} from 'native-base';
 import AppButton from '../AppButton';
 import SteeringWheel from '../../assets/icon/ic_steering_wheel';
 import {appStyle} from '../../constants/AppStyle';
+import {timeString} from '../../utils/utils';
 
 interface ButtonProps {
   isSelfDriving: boolean;
@@ -80,15 +81,6 @@ tomorrow.setDate(tomorrow.getDate() + 1);
 
 const Booking = ({navigation}: any) => {
   const [isSelfDriving, setIsSelfDriving] = useState<boolean>(true);
-  const [currentDay, setCurrentDay] = useState<Date>(new Date());
-
-  const currentDayString = `${currentDay.getHours()}:00, ${currentDay.getDate()}/${
-    currentDay.getMonth() + 1
-  }`;
-  const tomorrowString = `${
-    tomorrow.getHours() + 1
-  }:00, ${tomorrow.getDate()}/${tomorrow.getMonth() + 1}`;
-  const timeString = `${currentDayString} - ${tomorrowString}`;
 
   return (
     <View style={styles.outerContainer}>
