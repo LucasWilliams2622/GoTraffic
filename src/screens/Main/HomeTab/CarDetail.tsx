@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Dimensions,
   Image,
@@ -25,8 +25,12 @@ import StickIcon from '../../../assets/icon/ic_stick';
 import SeatIcon from '../../../assets/icon/ic_seat';
 import GasolineIcon from '../../../assets/icon/ic_gasoline';
 import EngineIcon from '../../../assets/icon/ic_engine';
-import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import MapView, {Marker, PROVIDER_GOOGLE, Circle} from 'react-native-maps';
+import Geocoder from 'react-native-geocoding';
+import {REACT_APP_GOOGLE_MAPS_API_KEY} from '@env';
+import FastImage from 'react-native-fast-image';
 
+Geocoder.init(REACT_APP_GOOGLE_MAPS_API_KEY || '');
 const renderItem = ({item, setModalVisible}: any) => (
   <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
     <Image source={{uri: item}} style={styles.carouselImage} />
@@ -39,6 +43,8 @@ const CarDetail = ({route}: any) => {
   const [isFavorite, setIsFavorite] = React.useState<boolean>(false);
   const [receiveCarLocation, setReceiveCarLocation] =
     useState<string>('atCarLocation');
+  const [carCoordinates, setCarCoordinates] = useState(null);
+
   const {car_id, navigation} = route.params;
   const car = carDetailData.find(x => x.id == car_id) || {
     images: [],
@@ -66,6 +72,24 @@ const CarDetail = ({route}: any) => {
       Alert(error.message);
     }
   };
+
+  const calculateAvgRating = ratings => {
+    const totalRatings = ratings.reduce(
+      (sum, rating) => sum + rating.rating,
+      0,
+    );
+    return totalRatings / ratings.length;
+  };
+
+  useEffect(() => {
+    Geocoder.from(car.location)
+      .then(json => {
+        var location = json.results[0].geometry.location;
+        setCarCoordinates(location);
+        console.log(location);
+      })
+      .catch(error => console.warn(error));
+  }, []);
 
   return (
     <ScrollView style={{backgroundColor: COLOR.white}}>
@@ -180,7 +204,7 @@ const CarDetail = ({route}: any) => {
         <Row style={{alignItems: 'center'}}>
           <Icon name="star" color={COLOR.third} size={12} solid />
           <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
-            {car.rating}
+            {calculateAvgRating(car.rating)}
           </Text>
           <Text
             style={[CarCardItemStyles.dot, {marginLeft: 5, marginRight: 5}]}>
@@ -399,20 +423,137 @@ const CarDetail = ({route}: any) => {
           </View>
         )}
         <View style={[CarCardItemStyles.separator, {marginTop: 20}]} />
+        {carCoordinates && (
+          <View>
+            <Text style={{fontSize: 16, fontWeight: 'bold', marginTop: 15}}>
+              Vị trí xe
+            </Text>
+            <Row style={{marginTop: 15, marginBottom: 10}}>
+              <Icon name="location-dot" size={20} color={COLOR.borderColor} />
+              <Text style={{marginLeft: 10}}>{car.location}</Text>
+            </Row>
+            <View style={styles.container}>
+              <View style={styles.mapContainer}>
+                <MapView
+                  style={styles.map}
+                  region={{
+                    latitude: carCoordinates.lat,
+                    longitude: carCoordinates.lng,
+                    latitudeDelta: 0.04,
+                    longitudeDelta: 0.015,
+                  }}
+                  pitchEnabled={false}
+                  rotateEnabled={false}
+                  scrollEnabled={false}
+                  zoomEnabled={false}>
+                  <Circle
+                    center={{
+                      latitude: carCoordinates.lat,
+                      longitude: carCoordinates.lng,
+                    }}
+                    radius={1500}
+                    strokeWidth={1}
+                    strokeColor={'#1a66ff'}
+                    fillColor={'rgba(26, 102, 255, 0.3)'}
+                  />
+                </MapView>
+              </View>
+            </View>
+          </View>
+        )}
         <View>
           <Text style={{fontSize: 16, fontWeight: 'bold', marginTop: 15}}>
             Chủ xe
           </Text>
-          <View style={styles.container}>
-            <MapView
-              style={styles.map}
-              region={{
-                latitude: 37.78825,
-                longitude: -122.4324,
-                latitudeDelta: 0.015,
-                longitudeDelta: 0.0121,
-              }}></MapView>
-          </View>
+          <Row style={{marginTop: 10}}>
+            <View style={{marginRight: 10}}>
+              <FastImage
+                source={{uri: car.owner.avatar}}
+                style={appStyle.avatar}
+              />
+            </View>
+            <View style={{flex: 1, width: '100%'}}>
+              <Text>{car.owner.name}</Text>
+              <Row style={{alignItems: 'center'}}>
+                <Icon name="star" color={COLOR.third} size={12} solid />
+                <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
+                  {calculateAvgRating(car.rating)}
+                </Text>
+                <Text
+                  style={[
+                    CarCardItemStyles.dot,
+                    {marginLeft: 5, marginRight: 5},
+                  ]}>
+                  ·
+                </Text>
+                <SuitcaseIcon color={COLOR.fifth} />
+                <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
+                  {car.totalRide} chuyến
+                </Text>
+              </Row>
+              <Text>
+                Thông tin liên hệ sẽ hiển thị sau khi đặt cọc trên ứng dụng
+              </Text>
+            </View>
+          </Row>
+          <View style={[CarCardItemStyles.separator, {marginTop: 20}]} />
+          <Row style={{justifyContent: 'space-evenly'}}>
+            <View>
+              <Text>Tỉ lệ phản hồi</Text>
+              <Text
+                style={{color: COLOR.black, fontWeight: 'bold', marginTop: 5}}>
+                {car.owner.responseRate}
+              </Text>
+            </View>
+            <View>
+              <Text>Tỉ lệ đồng ý</Text>
+              <Text
+                style={{color: COLOR.black, fontWeight: 'bold', marginTop: 5}}>
+                {car.owner.acceptRate}
+              </Text>
+            </View>
+            <View>
+              <Text>Phản hồi trong vòng</Text>
+              <Text
+                style={{color: COLOR.black, fontWeight: 'bold', marginTop: 5}}>
+                {car.owner.responseIn} phút
+              </Text>
+            </View>
+          </Row>
+        </View>
+        <View style={[CarCardItemStyles.separator, {marginTop: 20}]} />
+        <View>
+          <Text style={{fontSize: 16, fontWeight: 'bold', marginTop: 15}}>
+            Đánh giá
+          </Text>
+          <Row
+            style={{
+              flex: 1,
+              width: '100%',
+              justifyContent: 'space-between',
+              padding: 10,
+              borderColor: COLOR.borderColor,
+              borderWidth: 0.5,
+              borderRadius: 10,
+              marginTop: 10,
+            }}>
+            <Row style={{alignItems: 'center'}}>
+              <FastImage
+                source={{uri: car.owner.avatar}}
+                style={appStyle.avatar}
+              />
+              <View style={{marginLeft: 10}}>
+                <Text>Name</Text>
+                <Text>Date</Text>
+              </View>
+            </Row>
+            <Row style={{alignItems: 'center'}}>
+              <Icon name="star" color={COLOR.third} size={12} solid />
+              <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
+                {calculateAvgRating(car.rating)}
+              </Text>
+            </Row>
+          </Row>
         </View>
       </View>
       <View style={{width: '100%', height: 300}}></View>
@@ -422,11 +563,15 @@ const CarDetail = ({route}: any) => {
 
 const styles = StyleSheet.create({
   container: {
-    ...StyleSheet.absoluteFillObject,
-    height: 400,
-    width: 400,
+    height: 200,
+    width: '100%',
     justifyContent: 'flex-end',
     alignItems: 'center',
+  },
+  mapContainer: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: 10,
+    overflow: 'hidden',
   },
   map: {
     ...StyleSheet.absoluteFillObject,
