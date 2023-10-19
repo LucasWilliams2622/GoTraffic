@@ -1,10 +1,12 @@
 import React from 'react';
 import {Text, View} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome6';
 import {COLOR} from '../../../constants/Theme';
+import {IconProps} from '../../../assets/icon/ic_engine';
+
+type IconComponentType = React.ComponentType<IconProps>;
 
 type FeatureItemProps = {
-  icon: React.ComponentType;
+  icon: IconComponentType;
   color: string;
   feature: {[key: string]: string};
 };

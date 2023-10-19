@@ -19,7 +19,7 @@ export const TimeAndPlacePickup = ({
   return (
     <View>
       <View style={styles.timeAndPlacePickupContainer}>
-        <Text style={[appStyle.text16Bold, {marginBottom: 20}]}>
+        <Text style={[appStyle.text16Bold, {marginBottom: 10}]}>
           Thời gian thuê xe
         </Text>
         <Pressable
@@ -44,7 +44,7 @@ export const TimeAndPlacePickup = ({
             </View>
           </Row>
         </Pressable>
-        <Text style={[appStyle.text16Bold, {marginBottom: 20}]}>
+        <Text style={[appStyle.text16Bold, {marginTop: 15, marginBottom: 10}]}>
           Địa điểm giao nhận xe
         </Text>
         <Radio.Group
@@ -135,6 +135,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     flex: 1,
     width: '100%',
-    marginTop: 15,
+    marginTop: 10,
   },
 });
