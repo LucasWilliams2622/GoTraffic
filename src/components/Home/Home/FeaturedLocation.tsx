@@ -1,9 +1,9 @@
-import {View, Text, StyleSheet, Image, ImageBackground} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import React, {useMemo} from 'react';
-import {COLOR} from '../../constants/Theme';
+import {COLOR} from '../../../constants/Theme';
 import FeaturedLocationFrame from './FeaturedLocationFrame';
-import {convertTotalNumber} from '../../utils/utils';
-import {appStyle} from '../../constants/AppStyle';
+import {convertTotalNumber} from '../../../utils/utils';
+import {appStyle} from '../../../constants/AppStyle';
 
 interface FeaturedLocationProps {
   id: number;

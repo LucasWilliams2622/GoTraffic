@@ -11,12 +11,12 @@ import Icon from 'react-native-vector-icons/FontAwesome6';
 import {COLOR} from '../../../constants/Theme';
 import {appStyle} from '../../../constants/AppStyle';
 import {Row, Column} from 'native-base';
-import Booking from '../../../components/Home/Booking';
+import Booking from '../../../components/Home/Home/Booking';
 import {useNavigation} from '@react-navigation/native';
-import Promotion from '../../../components/Home/Promotion';
-import CarCardItem from '../../../components/Home/CarCardItem';
-import FeaturedLocation from '../../../components/Home/FeaturedLocation';
-import AirportPicking from '../../../components/Home/AirportPicking';
+import Promotion from '../../../components/Home/Home/Promotion';
+import CarCardItem from '../../../components/Home/Home/CarCardItem';
+import FeaturedLocation from '../../../components/Home/Home/FeaturedLocation';
+import AirportPicking from '../../../components/Home/Home/AirportPicking';
 import {
   promotionData,
   carData,

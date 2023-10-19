@@ -7,43 +7,352 @@ import {
   Text,
   TouchableWithoutFeedback,
   View,
-  Share,
-  Alert,
 } from 'react-native';
 import {amenitiesIconMapping, carDetailData} from './data/data';
-import Carousel from 'react-native-snap-carousel';
-import ImageView from 'react-native-image-viewing';
-import {Radio, Row, ScrollView} from 'native-base';
+import {Row, ScrollView} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import {COLOR} from '../../../constants/Theme';
 import ShieldIcon from '../../../assets/icon/ic_shield_verified';
 import {appStyle} from '../../../constants/AppStyle';
 import SuitcaseIcon from '../../../assets/icon/ic_suitcase';
-import {CarCardItemStyles} from '../../../components/Home/CarCardItem';
-import {currentDateString, returnDateString} from '../../../utils/utils';
+import {CarCardItemStyles} from '../../../components/Home/Home/CarCardItem';
 import StickIcon from '../../../assets/icon/ic_stick';
 import SeatIcon from '../../../assets/icon/ic_seat';
 import GasolineIcon from '../../../assets/icon/ic_gasoline';
 import EngineIcon from '../../../assets/icon/ic_engine';
-import MapView, {Marker, PROVIDER_GOOGLE, Circle} from 'react-native-maps';
+import MapView, {Circle} from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
 import {REACT_APP_GOOGLE_MAPS_API_KEY} from '@env';
 import FastImage from 'react-native-fast-image';
 import Modal from 'react-native-modal';
+import {SlideShow} from '../../../components/Home/Detail/SlideShow';
+import {TimeAndPlacePickup} from '../../../components/Home/Detail/TimeAndPlacePickup';
+import {FeatureItem} from '../../../components/Home/Detail/FeatureItem';
+import {Amenities} from '../../../components/Home/Detail/Amenities';
+
+const SectionTitle = ({title}: {title: string}) => (
+  <Text style={styles.SectionTitle}>{title}</Text>
+);
+
+interface CarLocationProps {
+  car: {
+    location: string;
+  };
+  carCoordinates: {
+    lat: number;
+    lng: number;
+  };
+  styles: {
+    container: object;
+    mapContainer: object;
+    map: object;
+  };
+}
+
+const CarLocation: React.FC<CarLocationProps> = ({
+  car,
+  carCoordinates,
+  styles,
+}) => {
+  return (
+    <>
+      <Row style={{marginTop: 15, marginBottom: 10}}>
+        <Icon name="location-dot" size={20} color={COLOR.borderColor} />
+        <Text style={{marginLeft: 10}}>{car.location}</Text>
+      </Row>
+      <View style={styles.container}>
+        <View style={styles.mapContainer}>
+          <MapView
+            style={styles.map}
+            region={{
+              latitude: carCoordinates.lat,
+              longitude: carCoordinates.lng,
+              latitudeDelta: 0.04,
+              longitudeDelta: 0.015,
+            }}
+            pitchEnabled={false}
+            rotateEnabled={false}
+            scrollEnabled={false}
+            zoomEnabled={false}>
+            <Circle
+              center={{
+                latitude: carCoordinates.lat,
+                longitude: carCoordinates.lng,
+              }}
+              radius={1500}
+              strokeWidth={1}
+              strokeColor={'#1a66ff'}
+              fillColor={'rgba(26, 102, 255, 0.3)'}
+            />
+          </MapView>
+        </View>
+      </View>
+    </>
+  );
+};
+
+interface OwnerInfoProps {
+  owner: {
+    avatar: string;
+    name: string;
+    responseRate: string;
+    acceptRate: string;
+    responseIn: string;
+  };
+  rating: number[];
+  totalRide: number;
+
+  calculateAvgRating: (ratings: number[]) => number;
+}
+
+const OwnerInfo: React.FC<OwnerInfoProps> = ({
+  owner,
+  rating,
+  totalRide,
+  calculateAvgRating,
+}) => {
+  return (
+    <>
+      <Row style={{marginTop: 10}}>
+        <View style={{marginRight: 10}}>
+          <FastImage source={{uri: owner.avatar}} style={appStyle.avatar} />
+        </View>
+        <View style={{flex: 1, width: '100%'}}>
+          <Text>{owner.name}</Text>
+          <Row style={{alignItems: 'center'}}>
+            <Icon name="star" color={COLOR.third} size={12} solid />
+            <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
+              {calculateAvgRating(rating)}
+            </Text>
+            <Text
+              style={[CarCardItemStyles.dot, {marginLeft: 5, marginRight: 5}]}>
+              ·
+            </Text>
+            <Icon name="suitcase" color={COLOR.fifth} size={12} solid />
+            <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
+              {totalRide} chuyến
+            </Text>
+          </Row>
+          <Text>
+            Thông tin liên hệ sẽ hiển thị sau khi đặt cọc trên ứng dụng
+          </Text>
+        </View>
+      </Row>
+      <View style={[CarCardItemStyles.separator, {marginTop: 20}]} />
+      <Row style={{justifyContent: 'space-evenly'}}>
+        <View>
+          <Text>Tỉ lệ phản hồi</Text>
+          <Text style={{color: COLOR.black, fontWeight: 'bold', marginTop: 5}}>
+            {owner.responseRate}
+          </Text>
+        </View>
+        <View>
+          <Text>Tỉ lệ đồng ý</Text>
+          <Text style={{color: COLOR.black, fontWeight: 'bold', marginTop: 5}}>
+            {owner.acceptRate}
+          </Text>
+        </View>
+        <View>
+          <Text>Phản hồi trong vòng</Text>
+          <Text style={{color: COLOR.black, fontWeight: 'bold', marginTop: 5}}>
+            {owner.responseIn} phút
+          </Text>
+        </View>
+      </Row>
+    </>
+  );
+};
+
+interface RatingProps {
+  rating: {
+    avatar: string;
+    username: string;
+    date: string;
+    rating: number;
+  }[];
+  toggleModal: () => void;
+}
+
+const Rating: React.FC<RatingProps> = ({rating, toggleModal}) => {
+  return (
+    <>
+      {rating.slice(0, 2).map(item => (
+        <Row
+          key={item}
+          style={{
+            flex: 1,
+            width: '100%',
+            justifyContent: 'space-between',
+            padding: 10,
+            borderColor: COLOR.borderColor,
+            borderWidth: 0.5,
+            borderRadius: 10,
+            marginTop: 10,
+          }}>
+          <Row style={{alignItems: 'center'}}>
+            <FastImage source={{uri: item.avatar}} style={appStyle.avatar} />
+            <View style={{marginLeft: 10}}>
+              <Text style={{color: COLOR.black}}>{item.username}</Text>
+              <Text style={{color: COLOR.borderColor}}>{item.date}</Text>
+            </View>
+          </Row>
+          <Row style={{alignItems: 'center'}}>
+            <Icon name="star" color={COLOR.third} size={12} solid />
+            <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
+              {item.rating}
+            </Text>
+          </Row>
+        </Row>
+      ))}
+      <Pressable
+        onPress={toggleModal}
+        style={{
+          flex: 1,
+          width: '100%',
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderWidth: 1,
+          borderColor: COLOR.black,
+          padding: 10,
+          borderRadius: 10,
+          marginTop: 10,
+        }}>
+        <Text style={{color: COLOR.black, fontWeight: 'bold', fontSize: 18}}>
+          Xem thêm
+        </Text>
+      </Pressable>
+    </>
+  );
+};
+
+interface RatingModalProps {
+  isRatingModalVisible: boolean;
+  toggleModal: () => void;
+  rating: {
+    avatar: string;
+    username: string;
+    date: string;
+    description?: string;
+    rating: number;
+  }[];
+}
+
+const RatingModal: React.FC<RatingModalProps> = ({
+  isRatingModalVisible,
+  toggleModal,
+  rating,
+}) => {
+  return (
+    <Modal
+      isVisible={isRatingModalVisible}
+      onSwipeComplete={toggleModal}
+      swipeDirection="down"
+      style={{
+        margin: 0,
+        justifyContent: 'flex-end',
+      }}>
+      <View
+        style={{
+          backgroundColor: COLOR.white,
+          height: Dimensions.get('window').height * 0.9,
+          width: '100%',
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+          padding: 10,
+        }}>
+        <Row
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginBottom: 20,
+            marginTop: 30,
+          }}>
+          <Pressable
+            style={{
+              padding: 10,
+              width: 40,
+              height: 40,
+              borderRadius: 50,
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderWidth: 0.5,
+              borderColor: COLOR.borderColor,
+              position: 'absolute',
+              top: 10,
+              left: 10,
+            }}
+            onPress={toggleModal}>
+            <Icon name="x" size={20} color={COLOR.borderColor2} />
+          </Pressable>
+          <Text style={{marginTop: 20, fontSize: 20, fontWeight: 'bold'}}>
+            Đánh giá
+          </Text>
+        </Row>
+        <ScrollView style={{flex: 1}}>
+          {rating.map(item => (
+            <Row key={item} style={styles.mapRow}>
+              <Row style={{alignItems: 'center'}}>
+                <FastImage
+                  source={{uri: item.avatar}}
+                  style={appStyle.avatar}
+                />
+                <View style={{marginLeft: 10}}>
+                  <Text style={{color: COLOR.black}}>{item.username}</Text>
+                  <Text style={{color: COLOR.borderColor}}>{item.date}</Text>
+                  {item.description && <Text>{item.description}</Text>}
+                </View>
+              </Row>
+              <Row style={{alignItems: 'center'}}>
+                <Icon name="star" color={COLOR.third} size={12} solid />
+                <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
+                  {item.rating}
+                </Text>
+              </Row>
+            </Row>
+          ))}
+        </ScrollView>
+      </View>
+    </Modal>
+  );
+};
 
 Geocoder.init(REACT_APP_GOOGLE_MAPS_API_KEY || '');
+
 const renderItem = ({item, setModalVisible}: any) => (
   <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
     <Image source={{uri: item}} style={styles.carouselImage} />
   </TouchableWithoutFeedback>
 );
 
-const CarDetail = ({route}: any) => {
-  const [index, setIndex] = useState(0);
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [isFavorite, setIsFavorite] = React.useState<boolean>(false);
-  const [receiveCarLocation, setReceiveCarLocation] =
-    useState<string>('atCarLocation');
+type CarDetailProps = {
+  route: {
+    params: {
+      car_id: number;
+      navigation: any;
+    };
+  };
+};
+
+type Car = {
+  id: number;
+  images: string[];
+  title: string;
+  rating: number[];
+  totalRide: number;
+  location: string;
+  features: {[key: string]: string}[];
+  description: string;
+  amenities: string[];
+  owner: {
+    avatar: string;
+    name: string;
+    responseRate: string;
+    acceptRate: string;
+    responseIn: string;
+  };
+};
+
+const CarDetail = ({route}: CarDetailProps) => {
   const [carCoordinates, setCarCoordinates] = useState(null);
   const [isRatingModalVisible, setRatingModalVisible] =
     useState<boolean>(false);
@@ -53,32 +362,9 @@ const CarDetail = ({route}: any) => {
   };
 
   const {car_id, navigation} = route.params;
-  const car = carDetailData.find(x => x.id == car_id) || {
-    images: [],
-    title: 'Car not found',
-  };
+  const car: Car = carDetailData.find(x => x.id == car_id);
 
   const images = car.images.map(image => ({uri: image}));
-
-  const itemWidth = Dimensions.get('window').width;
-
-  const handleIndexChange = (newIndex: number) => {
-    setIndex(newIndex);
-  };
-
-  const handleClose = () => {
-    setModalVisible(false);
-  };
-
-  const handleShare = async () => {
-    try {
-      await Share.share({
-        message: 'Check out this car!',
-      });
-    } catch (error) {
-      Alert(error.message);
-    }
-  };
 
   const calculateAvgRating = ratings => {
     const totalRatings = ratings.reduce(
@@ -100,108 +386,9 @@ const CarDetail = ({route}: any) => {
 
   return (
     <ScrollView style={{backgroundColor: COLOR.white}}>
-      <View
-        style={{
-          position: 'absolute',
-          top: 50,
-          left: 20,
-          zIndex: 1,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          width: '100%',
-          paddingRight: 40,
-        }}>
-        <Pressable
-          style={{
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            padding: 10,
-            borderRadius: 50,
-            width: 40,
-            height: 40,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          onPress={() => navigation.pop()}>
-          <Icon name="x" size={20} color={COLOR.white} />
-        </Pressable>
-        <View style={{flexDirection: 'row'}}>
-          <Pressable
-            style={{
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-              padding: 10,
-              borderRadius: 50,
-              marginLeft: 10,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            onPress={handleShare}>
-            <Icon name="share-nodes" size={24} color={COLOR.white} />
-          </Pressable>
-          <Pressable
-            style={{
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-              padding: 10,
-              borderRadius: 50,
-              marginLeft: 10,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            onPress={() => setIsFavorite(!isFavorite)}>
-            <Icon
-              name="heart"
-              color={isFavorite ? COLOR.fifth : COLOR.white}
-              size={20}
-              solid={isFavorite}
-            />
-          </Pressable>
-        </View>
-      </View>
-
-      <Carousel
-        data={car.images}
-        renderItem={({item}) => renderItem({item, setModalVisible})}
-        sliderWidth={Dimensions.get('window').width}
-        itemWidth={itemWidth}
-        snapToInterval={itemWidth}
-        snapToAlignment="start"
-        decelerationRate="fast"
-        inactiveSlideOpacity={1}
-        inactiveSlideScale={1}
-        onSnapToItem={(index: number) => setIndex(index)}
-        removeClippedSubviews={false}
-      />
-      <View style={styles.indexContainer}>
-        <Text style={styles.indexText}>{`${index + 1}/${
-          car.images.length
-        }`}</Text>
-      </View>
-
-      {car.images.length > 0 && (
-        <ImageView
-          images={images}
-          imageIndex={index}
-          visible={modalVisible}
-          onIndexChange={handleIndexChange}
-          onRequestClose={handleClose}
-          onDismiss={handleClose}
-          swipeToCloseEnabled={false}
-          FooterComponent={({imageIndex}) => (
-            <View style={styles.indexContainer}>
-              <Text style={styles.indexText}>{`${imageIndex + 1}/${
-                car.images.length
-              }`}</Text>
-            </View>
-          )}
-          renderFooter={({imageIndex}) => (
-            <View style={styles.indexContainer}>
-              <Text style={styles.indexText}>{`${imageIndex + 1}/${
-                car.images.length
-              }`}</Text>
-            </View>
-          )}
-        />
-      )}
+      <SlideShow images={car.images} navigation={navigation} />
       <View style={{paddingHorizontal: 10, paddingVertical: 20}}>
+        {/* Car title and rating info */}
         <Row style={{alignItems: 'center'}}>
           <Text style={[appStyle.text16Bold, {marginRight: 10}]}>
             {car.title.toUpperCase()}
@@ -222,137 +409,11 @@ const CarDetail = ({route}: any) => {
             {car.totalRide} chuyến
           </Text>
         </Row>
-        <View
-          style={{
-            backgroundColor: COLOR.grayBackGround,
-            paddingHorizontal: 15,
-            paddingVertical: 15,
-            borderRadius: 10,
-            marginTop: 15,
-          }}>
-          <Text style={[appStyle.text16Bold, {marginBottom: 20}]}>
-            Thời gian thuê xe
-          </Text>
-          <Pressable
-            style={{
-              backgroundColor: COLOR.white,
-              padding: 10,
-              paddingVertical: 15,
-              borderRadius: 10,
-              borderColor: COLOR.borderColor3,
-              borderWidth: 0.5,
-              marginBottom: 20,
-            }}
-            onPress={() => navigation.navigate('TimePicking')}>
-            <Row style={{justifyContent: 'space-evenly'}}>
-              <View>
-                <Text style={{color: COLOR.borderColor, marginBottom: 5}}>
-                  Nhận xe
-                </Text>
-                <Text style={{fontSize: 13.5, fontWeight: 'bold'}}>
-                  {currentDateString}
-                </Text>
-              </View>
-              <View>
-                <Text style={{color: COLOR.borderColor, marginBottom: 5}}>
-                  Trả xe
-                </Text>
-                <Text style={{fontSize: 13.5, fontWeight: 'bold'}}>
-                  {returnDateString}
-                </Text>
-              </View>
-            </Row>
-          </Pressable>
-          <Text style={[appStyle.text16Bold, {marginBottom: 20}]}>
-            Địa điểm giao nhận xe
-          </Text>
-          <Radio.Group
-            name="receiveCarLocation"
-            value={receiveCarLocation}
-            onChange={nextValue => {
-              setReceiveCarLocation(nextValue);
-            }}>
-            <Pressable
-              onPress={() => setReceiveCarLocation('atCarLocation')}
-              style={{
-                backgroundColor: COLOR.white,
-                padding: 10,
-                borderRadius: 10,
-                flex: 1,
-                width: '100%',
-              }}>
-              <Row style={{alignItems: 'flex-start'}}>
-                <Radio
-                  value={'atCarLocation'}
-                  my="1"
-                  size="sm"
-                  style={{marginRight: 10}}
-                />
-                <View style={{flex: 1}}>
-                  <Row
-                    style={{
-                      marginTop: 3,
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                    }}>
-                    <Text>Tôi tự đến lấy xe</Text>
-                    <Text
-                      style={{
-                        marginRight: 10,
-                        fontSize: 15,
-                        color: COLOR.fifth,
-                      }}>
-                      Miễn phí
-                    </Text>
-                  </Row>
-                  <Text style={[appStyle.text14Bold, {marginTop: 10}]}>
-                    {car.location}
-                  </Text>
-                  <Text style={{color: COLOR.placeholder, marginTop: 10}}>
-                    Địa chỉ xe cụ thể sẽ được hiển thị sau khi đặt cọc thành
-                    công trên ứng dụng
-                  </Text>
-                </View>
-              </Row>
-            </Pressable>
-            <Pressable
-              onPress={() => setReceiveCarLocation('atUserLocation')}
-              style={{
-                backgroundColor: COLOR.white,
-                padding: 10,
-                borderRadius: 10,
-                flex: 1,
-                width: '100%',
-                marginTop: 15,
-              }}>
-              <Row style={{alignItems: 'flex-start'}}>
-                <Radio
-                  value={'atUserLocation'}
-                  my="1"
-                  size="sm"
-                  style={{marginRight: 10}}
-                />
-                <View style={{flex: 1}}>
-                  <Row
-                    style={{
-                      marginTop: 3,
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                    }}>
-                    <Text>Tôi muốn được giao xe tận nơi</Text>
-                  </Row>
-                  <Text style={{color: COLOR.placeholder, marginTop: 10}}>
-                    Chủ xe sẽ giao và nhận xe đến địa chỉ cụ thể mà bạn lựa chọn
-                  </Text>
-                </View>
-              </Row>
-            </Pressable>
-          </Radio.Group>
-        </View>
+
+        <TimeAndPlacePickup navigation={navigation} location={car.location} />
+
         <View>
-          <Text style={{fontSize: 16, fontWeight: 'bold', marginTop: 15}}>
-            Đặc điểm
-          </Text>
+          <SectionTitle title="Đặc điểm" />
           <Row
             style={{
               marginTop: 20,
@@ -361,318 +422,105 @@ const CarDetail = ({route}: any) => {
               width: '100%',
               justifyContent: 'space-evenly',
             }}>
-            <View style={{alignItems: 'center'}}>
-              <StickIcon width={32} height={32} color={COLOR.fifth} />
-              <Text style={{color: COLOR.borderColor, marginTop: 15}}>
-                {Object.keys(car.features[0])[0]}
-              </Text>
-              <Text style={{fontWeight: 'bold'}}>
-                {Object.values(car.features[0])[0]}
-              </Text>
-            </View>
-            <View style={{alignItems: 'center'}}>
-              <SeatIcon width={32} height={32} color={COLOR.fifth} />
-              <Text style={{color: COLOR.borderColor, marginTop: 15}}>
-                {Object.keys(car.features[1])[0]}
-              </Text>
-              <Text style={{fontWeight: 'bold'}}>
-                {Object.values(car.features[1])[0]}
-              </Text>
-            </View>
-            <View style={{alignItems: 'center'}}>
-              <GasolineIcon width={32} height={32} color={COLOR.fifth} />
-              <Text style={{color: COLOR.borderColor, marginTop: 15}}>
-                {Object.keys(car.features[2])[0]}
-              </Text>
-              <Text style={{fontWeight: 'bold'}}>
-                {Object.values(car.features[2])[0]}
-              </Text>
-            </View>
-            <View style={{alignItems: 'center'}}>
-              <EngineIcon width={32} height={32} color={COLOR.fifth} />
-              <Text style={{color: COLOR.borderColor, marginTop: 15}}>
-                {Object.keys(car.features[3])[0]}
-              </Text>
-              <Text style={{fontWeight: 'bold'}}>
-                {Object.values(car.features[3])[0]}
-              </Text>
-            </View>
+            {car.features.map((feature, index) => {
+              const icons = [StickIcon, SeatIcon, GasolineIcon, EngineIcon];
+              return (
+                <FeatureItem
+                  key={index}
+                  icon={icons[index]}
+                  color={COLOR.fifth}
+                  feature={feature}
+                />
+              );
+            })}
           </Row>
         </View>
         <View style={[CarCardItemStyles.separator, {marginTop: 20}]} />
         <View>
-          <Text style={{fontSize: 16, fontWeight: 'bold', marginTop: 15}}>
-            Mô tả
-          </Text>
+          <SectionTitle title="Mô tả" />
           <Text>{car.description}</Text>
         </View>
         <View style={[CarCardItemStyles.separator, {marginTop: 20}]} />
-        {car.amenities && (
-          <View>
-            <Text style={{fontSize: 16, fontWeight: 'bold', marginTop: 15}}>
-              Các tiện nghi trên xe
-            </Text>
-            <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-              {car.amenities.map((item: string) => {
-                const Icon = amenitiesIconMapping[item].icon;
-                return (
-                  <View key={item} style={{width: '50%', padding: 10}}>
-                    <Row style={{alignItems: 'center', marginTop: 10}}>
-                      <Icon width={24} height={24} color={COLOR.fifth} />
-                      <Text style={{marginLeft: 10}}>
-                        {amenitiesIconMapping[item].name}
-                      </Text>
-                    </Row>
-                  </View>
-                );
-              })}
-            </View>
-          </View>
-        )}
+        <SectionTitle title="Các tiện nghi trên xe" />
+        {car.amenities && <Amenities amenities={car.amenities} />}
         <View style={[CarCardItemStyles.separator, {marginTop: 20}]} />
         {carCoordinates && (
           <View>
-            <Text style={{fontSize: 16, fontWeight: 'bold', marginTop: 15}}>
-              Vị trí xe
-            </Text>
-            <Row style={{marginTop: 15, marginBottom: 10}}>
-              <Icon name="location-dot" size={20} color={COLOR.borderColor} />
-              <Text style={{marginLeft: 10}}>{car.location}</Text>
-            </Row>
-            <View style={styles.container}>
-              <View style={styles.mapContainer}>
-                <MapView
-                  style={styles.map}
-                  region={{
-                    latitude: carCoordinates.lat,
-                    longitude: carCoordinates.lng,
-                    latitudeDelta: 0.04,
-                    longitudeDelta: 0.015,
-                  }}
-                  pitchEnabled={false}
-                  rotateEnabled={false}
-                  scrollEnabled={false}
-                  zoomEnabled={false}>
-                  <Circle
-                    center={{
-                      latitude: carCoordinates.lat,
-                      longitude: carCoordinates.lng,
-                    }}
-                    radius={1500}
-                    strokeWidth={1}
-                    strokeColor={'#1a66ff'}
-                    fillColor={'rgba(26, 102, 255, 0.3)'}
-                  />
-                </MapView>
-              </View>
-            </View>
+            <SectionTitle title="Vị trí xe" />
+            <CarLocation
+              car={car}
+              carCoordinates={carCoordinates}
+              styles={styles}
+            />
           </View>
         )}
         <View>
-          <Text style={{fontSize: 16, fontWeight: 'bold', marginTop: 15}}>
-            Chủ xe
-          </Text>
-          <Row style={{marginTop: 10}}>
-            <View style={{marginRight: 10}}>
-              <FastImage
-                source={{uri: car.owner.avatar}}
-                style={appStyle.avatar}
-              />
-            </View>
-            <View style={{flex: 1, width: '100%'}}>
-              <Text>{car.owner.name}</Text>
-              <Row style={{alignItems: 'center'}}>
-                <Icon name="star" color={COLOR.third} size={12} solid />
-                <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
-                  {calculateAvgRating(car.rating)}
-                </Text>
-                <Text
-                  style={[
-                    CarCardItemStyles.dot,
-                    {marginLeft: 5, marginRight: 5},
-                  ]}>
-                  ·
-                </Text>
-                <SuitcaseIcon color={COLOR.fifth} />
-                <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
-                  {car.totalRide} chuyến
-                </Text>
-              </Row>
-              <Text>
-                Thông tin liên hệ sẽ hiển thị sau khi đặt cọc trên ứng dụng
-              </Text>
-            </View>
-          </Row>
-          <View style={[CarCardItemStyles.separator, {marginTop: 20}]} />
-          <Row style={{justifyContent: 'space-evenly'}}>
-            <View>
-              <Text>Tỉ lệ phản hồi</Text>
-              <Text
-                style={{color: COLOR.black, fontWeight: 'bold', marginTop: 5}}>
-                {car.owner.responseRate}
-              </Text>
-            </View>
-            <View>
-              <Text>Tỉ lệ đồng ý</Text>
-              <Text
-                style={{color: COLOR.black, fontWeight: 'bold', marginTop: 5}}>
-                {car.owner.acceptRate}
-              </Text>
-            </View>
-            <View>
-              <Text>Phản hồi trong vòng</Text>
-              <Text
-                style={{color: COLOR.black, fontWeight: 'bold', marginTop: 5}}>
-                {car.owner.responseIn} phút
-              </Text>
-            </View>
-          </Row>
+          <SectionTitle title="Chủ xe" />
+          <OwnerInfo
+            owner={car.owner}
+            rating={car.rating}
+            totalRide={car.totalRide}
+            calculateAvgRating={calculateAvgRating}
+          />
         </View>
         <View style={[CarCardItemStyles.separator, {marginTop: 20}]} />
         {car.rating.length > 0 && (
           <View>
-            <Text style={{fontSize: 16, fontWeight: 'bold', marginTop: 15}}>
-              Đánh giá
-            </Text>
-            {car.rating.slice(0, 2).map((item: any) => (
-              <Row
-                key={item}
-                style={{
-                  flex: 1,
-                  width: '100%',
-                  justifyContent: 'space-between',
-                  padding: 10,
-                  borderColor: COLOR.borderColor,
-                  borderWidth: 0.5,
-                  borderRadius: 10,
-                  marginTop: 10,
-                }}>
-                <Row style={{alignItems: 'center'}}>
-                  <FastImage
-                    source={{uri: item.avatar}}
-                    style={appStyle.avatar}
-                  />
-                  <View style={{marginLeft: 10}}>
-                    <Text style={{color: COLOR.black}}>{item.username}</Text>
-                    <Text style={{color: COLOR.borderColor}}>{item.date}</Text>
-                  </View>
-                </Row>
-                <Row style={{alignItems: 'center'}}>
-                  <Icon name="star" color={COLOR.third} size={12} solid />
-                  <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
-                    {item.rating}
-                  </Text>
-                </Row>
-              </Row>
-            ))}
-            <Pressable
-              onPress={toggleModal}
-              style={{
-                flex: 1,
-                width: '100%',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderWidth: 1,
-                borderColor: COLOR.black,
-                padding: 10,
-                borderRadius: 10,
-                marginTop: 10,
-              }}>
-              <Text
-                style={{color: COLOR.black, fontWeight: 'bold', fontSize: 18}}>
-                Xem thêm
-              </Text>
-            </Pressable>
+            <SectionTitle title="Đánh giá" />
+            <Rating rating={car.rating} toggleModal={toggleModal} />
           </View>
         )}
       </View>
       <View style={{width: '100%', height: 300}}></View>
-      <Modal
-        isVisible={isRatingModalVisible}
-        onSwipeComplete={toggleModal}
-        swipeDirection="down"
-        style={{
-          margin: 0,
-          justifyContent: 'flex-end',
-        }}>
-        <View
-          style={{
-            backgroundColor: COLOR.white,
-            height: Dimensions.get('window').height * 0.9,
-            width: '100%',
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20,
-            padding: 10,
-          }}>
-          <Row
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginBottom: 20,
-              marginTop: 30,
-            }}>
-            <Pressable
-              style={{
-                padding: 10,
-                width: 40,
-                height: 40,
-                borderRadius: 50,
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderWidth: 0.5,
-                borderColor: COLOR.borderColor,
-                position: 'absolute',
-                top: 10,
-                left: 10,
-              }}
-              onPress={toggleModal}>
-              <Icon name="x" size={20} color={COLOR.borderColor1} />
-            </Pressable>
-            <Text style={{marginTop: 20, fontSize: 20, fontWeight: 'bold'}}>
-              Đánh giá
-            </Text>
-          </Row>
-          <ScrollView style={{flex: 1}}>
-            {car.rating.map((item: any) => (
-              <Row
-                key={item}
-                style={{
-                  flex: 1,
-                  width: '100%',
-                  justifyContent: 'space-between',
-                  padding: 10,
-                  borderColor: COLOR.borderColor,
-                  borderWidth: 0.5,
-                  borderRadius: 10,
-                  marginTop: 10,
-                }}>
-                <Row style={{alignItems: 'center'}}>
-                  <FastImage
-                    source={{uri: item.avatar}}
-                    style={appStyle.avatar}
-                  />
-                  <View style={{marginLeft: 10}}>
-                    <Text style={{color: COLOR.black}}>{item.username}</Text>
-                    <Text style={{color: COLOR.borderColor}}>{item.date}</Text>
-                    {item.description && <Text>{item.description}</Text>}
-                  </View>
-                </Row>
-                <Row style={{alignItems: 'center'}}>
-                  <Icon name="star" color={COLOR.third} size={12} solid />
-                  <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
-                    {item.rating}
-                  </Text>
-                </Row>
-              </Row>
-            ))}
-          </ScrollView>
-        </View>
-      </Modal>
+      <RatingModal
+        isRatingModalVisible={isRatingModalVisible}
+        toggleModal={toggleModal}
+        rating={car.rating}
+      />
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  topContainer: {
+    position: 'absolute',
+    top: 50,
+    left: 20,
+    zIndex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    paddingRight: 40,
+  },
+  pressable: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    padding: 10,
+    borderRadius: 50,
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  row: {
+    flexDirection: 'row',
+  },
+  timeAndPlacePickupContainer: {
+    backgroundColor: COLOR.grayBackGround,
+    paddingHorizontal: 15,
+    paddingVertical: 15,
+    borderRadius: 10,
+    marginTop: 15,
+  },
+  timeAndPlacePickupPressable: {
+    backgroundColor: COLOR.white,
+    padding: 10,
+    borderRadius: 10,
+    flex: 1,
+    width: '100%',
+    marginTop: 15,
+  },
+  SectionTitle: {fontSize: 16, fontWeight: 'bold', marginTop: 15},
+
   container: {
     height: 200,
     width: '100%',
@@ -691,7 +539,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 265,
     right: 7,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0,0,0,0.5)',
     borderRadius: 10,
     paddingHorizontal: 15,
     paddingVertical: 5,
@@ -703,6 +551,16 @@ const styles = StyleSheet.create({
   carouselImage: {
     width: Dimensions.get('window').width,
     height: 300,
+  },
+  mapRow: {
+    flex: 1,
+    width: '100%',
+    justifyContent: 'space-between',
+    padding: 10,
+    borderColor: COLOR.borderColor,
+    borderWidth: 0.5,
+    borderRadius: 10,
+    marginTop: 10,
   },
 });
 

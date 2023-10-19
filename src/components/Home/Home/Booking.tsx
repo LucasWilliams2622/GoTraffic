@@ -8,12 +8,12 @@ import {
 } from 'react-native';
 import React, {useCallback, useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome6';
-import {COLOR} from '../../constants/Theme';
+import {COLOR} from '../../../constants/Theme';
 import {Row, Radio, HStack} from 'native-base';
-import AppButton from '../AppButton';
-import SteeringWheel from '../../assets/icon/ic_steering_wheel';
-import {appStyle} from '../../constants/AppStyle';
-import {timeString} from '../../utils/utils';
+import AppButton from '../../AppButton';
+import SteeringWheel from '../../../assets/icon/ic_steering_wheel';
+import {appStyle} from '../../../constants/AppStyle';
+import {timeString} from '../../../utils/utils';
 
 interface ButtonProps {
   isSelfDriving: boolean;
