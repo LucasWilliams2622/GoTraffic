@@ -365,7 +365,7 @@ export const carDetailData = [
         avatar: 'https://i.imgur.com/2nCt3Sbl.jpg',
         date: '2023-10-20',
         rating: 5,
-        description: 'Xe lái cảm giác vui vẻm êm mượt',
+        description: 'Xe lái cảm giác vui vẻ êm mượt',
       },
       {
         ratingByUserId: 4,
