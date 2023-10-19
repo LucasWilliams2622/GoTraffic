@@ -4,7 +4,6 @@ import BackCameraIcon from '../../../../assets/icon/ic_backCar';
 import BackupTireIcon from '../../../../assets/icon/ic_backup_tire';
 import BluetoothIcon from '../../../../assets/icon/ic_bluetooth';
 import CarScreenIcon from '../../../../assets/icon/ic_car_display';
-import CarDisplayIcon from '../../../../assets/icon/ic_car_display';
 import CollisionSensorIcon from '../../../../assets/icon/ic_collision_sensor';
 import DashCamIcon from '../../../../assets/icon/ic_dashcam';
 import ETCIcon from '../../../../assets/icon/ic_etc';
