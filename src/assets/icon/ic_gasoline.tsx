@@ -1,6 +1,8 @@
 import * as React from 'react';
 import Svg, {SvgProps, G, Path, Defs, ClipPath} from 'react-native-svg';
-const GasolineIcon = (props: SvgProps) => (
+import {IconProps} from './ic_engine';
+
+const GasolineIcon = (props: IconProps) => (
   <Svg width={props.width} height={props.height} fill="none" {...props}>
     <G clipPath="url(#a)">
       <Path
