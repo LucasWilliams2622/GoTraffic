@@ -14,6 +14,7 @@ import Carousel from 'react-native-snap-carousel';
 import {ImageViewComponent} from './ImageViewComponent';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import FastImage from 'react-native-fast-image';
+import {PressableIconProps, SlideShowProps} from '../../../types';
 
 const ICON_SIZE = 20;
 
@@ -22,14 +23,6 @@ const renderItem = ({item, setModalVisible}: any) => (
     <FastImage source={{uri: item}} style={styles.carouselImage} />
   </TouchableWithoutFeedback>
 );
-
-interface PressableIconProps {
-  name: string;
-  color: string;
-  size: number;
-  solid?: boolean;
-  onPress: () => void;
-}
 
 const PressableIcon = ({
   name,
@@ -42,11 +35,6 @@ const PressableIcon = ({
     <Icon name={name} color={color} size={size} solid={solid} />
   </Pressable>
 );
-
-type SlideShowProps = {
-  images: string[];
-  navigation: any;
-};
 
 export const SlideShow = ({images, navigation}: SlideShowProps) => {
   const [index, setIndex] = useState<number>(0);

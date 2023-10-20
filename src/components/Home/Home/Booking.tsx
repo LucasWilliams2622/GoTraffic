@@ -14,24 +14,14 @@ import AppButton from '../../AppButton';
 import SteeringWheel from '../../../assets/icon/ic_steering_wheel';
 import {appStyle} from '../../../constants/AppStyle';
 import {timeString} from '../../../utils/utils';
-
-interface ButtonProps {
-  isSelfDriving: boolean;
-  setIsSelfDriving: (value: boolean) => void;
-  config: ButtonConfig;
-}
-
-interface ButtonConfig {
-  value: boolean;
-  side: ButtonSide;
-  icon: (isActive: boolean) => JSX.Element;
-  text: string;
-}
-
-enum ButtonSide {
-  Left = 'left',
-  Right = 'right',
-}
+import {
+  ButtonConfig,
+  ButtonProps,
+  ButtonSide,
+  InputFieldProps,
+  RadioButtonProps,
+  ViewProps,
+} from '../../../types';
 
 const Button = ({isSelfDriving, setIsSelfDriving, config}: ButtonProps) => {
   const {value, side, icon, text} = config;
@@ -114,14 +104,6 @@ const Booking = ({navigation}: any) => {
 const getTextStyle = (isActive: boolean) =>
   isActive ? {color: COLOR.white} : {color: COLOR.forth};
 
-interface InputFieldProps {
-  iconName: string;
-  placeholderText: string;
-  value?: string;
-  navigation: any;
-  navigateTo: string;
-}
-
 const InputField = ({
   iconName,
   placeholderText,
@@ -147,11 +129,6 @@ const InputField = ({
   );
 };
 
-interface ViewProps {
-  timeString: string;
-  navigation?: any;
-}
-
 const SelfDrivingView = ({timeString, navigation}: ViewProps) => {
   return (
     <View>
@@ -171,12 +148,6 @@ const SelfDrivingView = ({timeString, navigation}: ViewProps) => {
     </View>
   );
 };
-
-interface RadioButtonProps {
-  value: string;
-  tripType: string;
-  text: string;
-}
 
 const RadioButton = ({value, tripType, text}: RadioButtonProps) => (
   <Radio value={value} my="1" size="sm">

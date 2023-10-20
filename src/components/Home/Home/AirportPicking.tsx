@@ -3,13 +3,7 @@ import React, {useMemo} from 'react';
 import FastImage from 'react-native-fast-image';
 import {convertTotalNumber} from '../../../utils/utils';
 import {appStyle} from '../../../constants/AppStyle';
-
-interface AirportPickingProps {
-  id: number;
-  title: string;
-  image: string;
-  totalCar: number;
-}
+import {AirportPickingProps} from '../../../types';
 
 const AirportPicking = ({title, image, totalCar}: AirportPickingProps) => {
   const formattedTotalCar = useMemo(

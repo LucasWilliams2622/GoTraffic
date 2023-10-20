@@ -4,13 +4,7 @@ import {COLOR} from '../../../constants/Theme';
 import FeaturedLocationFrame from './FeaturedLocationFrame';
 import {convertTotalNumber} from '../../../utils/utils';
 import {appStyle} from '../../../constants/AppStyle';
-
-interface FeaturedLocationProps {
-  id: number;
-  title: string;
-  image: string;
-  totalCar: number;
-}
+import {FeaturedLocationProps} from '../../../types';
 
 const FeaturedLocation = ({title, image, totalCar}: FeaturedLocationProps) => {
   const formattedTotalCar = useMemo(

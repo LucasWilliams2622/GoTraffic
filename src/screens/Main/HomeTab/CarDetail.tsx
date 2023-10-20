@@ -19,40 +19,13 @@ import {TimeAndPlacePickup} from '../../../components/Home/Detail/TimeAndPlacePi
 import {FeatureItem} from '../../../components/Home/Detail/FeatureItem';
 import {Amenities} from '../../../components/Home/Detail/Amenities';
 import {CarLocation} from '../../../components/Home/Detail/CarLocation';
-import {Owner, OwnerInfo} from '../../../components/Home/Detail/OwnerInfo';
-import {Rating, RatingItem} from '../../../components/Home/Detail/Rating';
+import {OwnerInfo} from '../../../components/Home/Detail/OwnerInfo';
+import {Rating} from '../../../components/Home/Detail/Rating';
 import {RatingModal} from '../../../components/Home/Detail/RatingModal';
+import {Car, CarDetailProps} from '../../../types';
+import {calculateAvgRating} from '../../../utils/utils';
 
 Geocoder.init(REACT_APP_GOOGLE_MAPS_API_KEY || '');
-
-type CarDetailProps = {
-  route: {
-    params: {
-      car_id: number;
-      navigation: any;
-    };
-  };
-};
-
-type Feature = {
-  'Truyền động'?: string;
-  'Số ghế'?: string;
-  'Nhiên liệu'?: string;
-  'Tiêu hao'?: string;
-};
-
-type Car = {
-  id: number;
-  images: string[];
-  title: string;
-  rating: RatingItem[];
-  totalRide: number;
-  location: string;
-  features: Feature[];
-  description: string;
-  amenities?: string[];
-  owner: Owner;
-};
 
 const SectionTitle = ({title}: {title: string}) => (
   <Text style={styles.SectionTitle}>{title}</Text>
@@ -71,14 +44,6 @@ const CarDetail = ({route}: CarDetailProps) => {
 
   const {car_id, navigation} = route.params;
   const car: Car | undefined = carDetailData.find(x => x.id == car_id);
-
-  const calculateAvgRating = (ratings: {rating: number}[]) => {
-    const totalRatings = ratings.reduce(
-      (sum, rating) => sum + rating.rating,
-      0,
-    );
-    return totalRatings / ratings.length;
-  };
 
   useEffect(() => {
     if (car) {

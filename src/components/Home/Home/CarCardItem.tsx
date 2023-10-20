@@ -18,20 +18,7 @@ import {
   getTotalPrice,
   calculateDiscount,
 } from '../../../utils/utils';
-
-interface CarCardItemProps {
-  id: number;
-  title: string;
-  image: string;
-  location: string;
-  benefit?: string;
-  type: string;
-  originalPrice?: number;
-  price: number;
-  rating: number;
-  totalRide: number;
-  onPress: () => void;
-}
+import {CarCardItemProps} from '../../../types';
 
 const CarCardItem = ({
   title,

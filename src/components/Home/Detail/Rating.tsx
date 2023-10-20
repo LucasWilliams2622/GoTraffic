@@ -6,23 +6,7 @@ import {Pressable, Text, View} from 'react-native';
 import {COLOR} from '../../../constants/Theme';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import {CarCardItemStyles} from '../Home/CarCardItem';
-
-export type RatingItem = {
-  avatar: string;
-  username: string;
-  date: string;
-  rating: number;
-  description?: string;
-};
-
-interface RatingProps {
-  rating: RatingItem[];
-  toggleModal: () => void;
-}
-
-interface RatingItemProps {
-  item: RatingItem;
-}
+import {RatingItemProps, RatingProps} from '../../../types';
 
 export const RatingItem: React.FC<RatingItemProps> = ({item}) => {
   return (

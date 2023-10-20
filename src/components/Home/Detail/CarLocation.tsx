@@ -4,14 +4,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import {COLOR} from '../../../constants/Theme';
 import MapView, {Circle} from 'react-native-maps';
-
-interface CarLocationProps {
-  location: string;
-  carCoordinates: {
-    lat: number;
-    lng: number;
-  };
-}
+import {CarLocationProps} from '../../../types';
 
 export const CarLocation: React.FC<CarLocationProps> = ({
   location,

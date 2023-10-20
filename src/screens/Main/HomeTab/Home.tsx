@@ -25,12 +25,11 @@ import {
   benefitData,
 } from './data/data';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-
-interface RenderListProps<T> {
-  data: T[];
-  renderItem: ({item}: {item: T}) => JSX.Element;
-  snapToInterval: number;
-}
+import {
+  RenderListProps,
+  SectionProps,
+  StackScreenParamList,
+} from '../../../types';
 
 const RenderList: React.FC<RenderListProps<any>> = ({
   data,
@@ -50,13 +49,6 @@ const RenderList: React.FC<RenderListProps<any>> = ({
   />
 );
 
-interface SectionProps {
-  title: string;
-  data: any[];
-  renderItem: ({item}: {item: any}) => JSX.Element;
-  snapToInterval: number;
-}
-
 const Section: React.FC<SectionProps> = ({
   title,
   data,
@@ -74,11 +66,6 @@ const Section: React.FC<SectionProps> = ({
     />
   </View>
 );
-
-type StackScreenParamList = {
-  Home: undefined;
-  CarDetail: {car_id: number; navigation: any};
-};
 
 const Home: React.FC = () => {
   const navigation =

@@ -13,6 +13,7 @@ import SpeedWarningIcon from '../../../../assets/icon/ic_speed_warning';
 import SunRoofIcon from '../../../../assets/icon/ic_sunroof';
 import TireSensorIcon from '../../../../assets/icon/ic_tire_sensor';
 import UsbIcon from '../../../../assets/icon/ic_usb';
+import {AmenitiesIconMapping} from '../../../../types';
 
 export const promotionData = [
   {
@@ -420,7 +421,7 @@ export const carDetailData = [
   },
 ];
 
-export const amenitiesIconMapping = {
+export const amenitiesIconMapping: AmenitiesIconMapping = {
   map: {name: 'Bản đồ', icon: MapIcon},
   bluetooth: {name: 'Bluetooth', icon: BluetoothIcon},
   'dash-cam': {name: 'Camera hành trình', icon: DashCamIcon},

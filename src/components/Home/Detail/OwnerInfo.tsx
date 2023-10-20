@@ -6,21 +6,7 @@ import {appStyle} from '../../../constants/AppStyle';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import {COLOR} from '../../../constants/Theme';
 import {CarCardItemStyles} from '../Home/CarCardItem';
-
-export type Owner = {
-  avatar: string;
-  name: string;
-  rating: number;
-  responseRate: string;
-  acceptRate: string;
-  responseIn: number;
-};
-
-interface OwnerInfoProps {
-  owner: Owner;
-  rating: number;
-  totalRide: number;
-}
+import {OwnerInfoProps} from '../../../types';
 
 export const OwnerInfo: React.FC<OwnerInfoProps> = ({
   owner,

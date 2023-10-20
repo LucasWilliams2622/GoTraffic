@@ -1,13 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import ImageView from 'react-native-image-viewing';
-
-type ImageViewComponentProps = {
-  images: {uri: string}[];
-  imageIndex: number;
-  modalVisible: boolean;
-  handleClose: () => void;
-};
+import {ImageViewComponentProps} from '../../../types';
 
 export const ImageViewComponent = ({
   images,

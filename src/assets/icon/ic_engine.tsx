@@ -1,11 +1,6 @@
 import * as React from 'react';
-import Svg, {SvgProps, G, Path, Defs, ClipPath} from 'react-native-svg';
-
-export interface IconProps extends SvgProps {
-  color?: string;
-  width?: number;
-  height?: number;
-}
+import Svg, {G, Path, Defs, ClipPath} from 'react-native-svg';
+import {IconProps} from '../../types';
 
 const EngineIcon = (props: IconProps) => (
   <Svg width={props.width} height={props.height} fill="none" {...props}>

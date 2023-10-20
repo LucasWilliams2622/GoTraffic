@@ -5,18 +5,7 @@ import {COLOR} from '../../../constants/Theme';
 import {Row} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import {RatingItem} from './Rating';
-
-interface RatingModalProps {
-  isRatingModalVisible: boolean;
-  toggleModal: () => void;
-  rating: {
-    avatar: string;
-    username: string;
-    date: string;
-    description?: string;
-    rating: number;
-  }[];
-}
+import {RatingModalProps} from '../../../types';
 
 export const RatingModal: React.FC<RatingModalProps> = ({
   isRatingModalVisible,
@@ -71,7 +60,7 @@ export const RatingModal: React.FC<RatingModalProps> = ({
         </Row>
         <ScrollView style={{flex: 1}}>
           {rating.map(item => (
-            <RatingItem item={item} />
+            <RatingItem key={item.username} item={item} />
           ))}
         </ScrollView>
       </View>

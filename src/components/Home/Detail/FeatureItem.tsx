@@ -1,15 +1,7 @@
 import React from 'react';
 import {Text, View} from 'react-native';
 import {COLOR} from '../../../constants/Theme';
-import {IconProps} from '../../../assets/icon/ic_engine';
-
-type IconComponentType = React.ComponentType<IconProps>;
-
-type FeatureItemProps = {
-  icon: IconComponentType;
-  color: string;
-  feature: {[key: string]: string};
-};
+import {FeatureItemProps} from '../../../types';
 
 export const FeatureItem = ({icon: Icon, color, feature}: FeatureItemProps) => {
   const featureKey = Object.keys(feature)[0];

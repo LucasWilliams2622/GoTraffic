@@ -4,11 +4,7 @@ import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {appStyle} from '../../../constants/AppStyle';
 import {COLOR} from '../../../constants/Theme';
 import {currentDateString, returnDateString} from '../../../utils/utils';
-
-type TimeAndPlacePickupProps = {
-  navigation: any;
-  location: string;
-};
+import {TimeAndPlacePickupProps} from '../../../types';
 
 export const TimeAndPlacePickup = ({
   navigation,
