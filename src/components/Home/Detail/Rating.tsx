@@ -59,7 +59,7 @@ export const Rating: React.FC<RatingProps> = ({rating, toggleModal}) => {
   return (
     <>
       {rating.slice(0, 2).map(item => (
-        <RatingItem item={item} />
+        <RatingItem key={item.username} item={item} />
       ))}
       <Pressable
         onPress={toggleModal}
