@@ -1,5 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {
+  ImageStyle,
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextStyle,
+  View,
+  ViewStyle,
+} from 'react-native';
 import {carDetailData} from './data/data';
 import {Row, ScrollView} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome6';
@@ -24,14 +32,18 @@ import {Rating} from '../../../components/Home/Detail/Rating';
 import {RatingModal} from '../../../components/Home/Detail/RatingModal';
 import {Car, CarDetailProps} from '../../../types';
 import {calculateAvgRating} from '../../../utils/utils';
+import OtherDetails from '../../../components/Home/Detail/OtherDetails';
 
 Geocoder.init(REACT_APP_GOOGLE_MAPS_API_KEY || '');
 
-const SectionTitle = ({title}: {title: string}) => (
-  <Text style={styles.SectionTitle}>{title}</Text>
-);
+export const SectionTitle: React.FC<{
+  title: string;
+  style?: StyleProp<ViewStyle | TextStyle | ImageStyle>;
+}> = ({title, style}) => {
+  return <Text style={[styles.SectionTitle, style]}>{title}</Text>;
+};
 
-const CarDetail = ({route}: CarDetailProps) => {
+const CarDetail: React.FC<CarDetailProps> = ({route}) => {
   const [carCoordinates, setCarCoordinates] = useState<Geocoder.LatLng | null>(
     null,
   );
@@ -87,7 +99,7 @@ const CarDetail = ({route}: CarDetailProps) => {
           <TimeAndPlacePickup navigation={navigation} location={car.location} />
 
           <View>
-            <SectionTitle title="Đặc điểm" />
+            <SectionTitle title="Đặc điểm" style={{marginTop: 10}} />
             <Row
               style={{
                 marginTop: 20,
@@ -111,16 +123,16 @@ const CarDetail = ({route}: CarDetailProps) => {
           </View>
           <View style={[CarCardItemStyles.separator, {marginTop: 20}]} />
           <View>
-            <SectionTitle title="Mô tả" />
+            <SectionTitle title="Mô tả" style={{marginTop: 10}} />
             <Text>{car.description}</Text>
           </View>
           <View style={[CarCardItemStyles.separator, {marginTop: 20}]} />
-          <SectionTitle title="Các tiện nghi trên xe" />
+          <SectionTitle title="Các tiện nghi trên xe" style={{marginTop: 10}} />
           {car.amenities && <Amenities amenities={car.amenities} />}
           <View style={[CarCardItemStyles.separator, {marginTop: 20}]} />
           {carCoordinates && (
             <View>
-              <SectionTitle title="Vị trí xe" />
+              <SectionTitle title="Vị trí xe" style={{marginTop: 10}} />
               <CarLocation
                 location={car.location}
                 carCoordinates={carCoordinates}
@@ -128,7 +140,7 @@ const CarDetail = ({route}: CarDetailProps) => {
             </View>
           )}
           <View>
-            <SectionTitle title="Chủ xe" />
+            <SectionTitle title="Chủ xe" style={{marginTop: 10}} />
             <OwnerInfo
               owner={car.owner}
               rating={car.owner.rating}
@@ -138,12 +150,15 @@ const CarDetail = ({route}: CarDetailProps) => {
           <View style={[CarCardItemStyles.separator, {marginTop: 20}]} />
           {car.rating.length > 0 && (
             <View>
-              <SectionTitle title="Đánh giá" />
+              <SectionTitle title="Đánh giá" style={{marginTop: 10}} />
               <Rating rating={car.rating} toggleModal={toggleModal} />
             </View>
           )}
+          <View style={[CarCardItemStyles.separator, {marginTop: 20}]} />
+          <OtherDetails />
         </View>
-        <View style={{width: '100%', height: 300}}></View>
+
+        <View style={{width: '100%', height: 70}}></View>
         <RatingModal
           isRatingModalVisible={isRatingModalVisible}
           toggleModal={toggleModal}
@@ -155,7 +170,7 @@ const CarDetail = ({route}: CarDetailProps) => {
 };
 
 const styles = StyleSheet.create({
-  SectionTitle: {fontSize: 16, fontWeight: 'bold', marginTop: 15},
+  SectionTitle: {fontSize: 16, fontWeight: 'bold'},
 });
 
 export default CarDetail;
