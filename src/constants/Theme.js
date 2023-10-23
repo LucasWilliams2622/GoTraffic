@@ -78,7 +78,6 @@ export const ICON = {
   Heart: require('../assets/icon/ic_heart.png'),
   Location: require('../assets/icon/ic_location.png'),
   Share: require('../assets/icon/ic_share.png'),
-  Policy: require('../assets/icon/ic_interrogation.png'),
   Key: require('../assets/icon/ic_key.png'),
   Company: require('../assets/icon/ic_company.png'),
   Other: require('../assets/icon/ic_bookmark.png'),
@@ -90,5 +89,7 @@ export const ICON = {
   Tech: require('../assets/image/guide/img_tech.png'),
   Copy: require('../assets/icon/ic_copy.png'),
   Send: require('../assets/icon/ic_send.png'),
+  Delete: require('../assets/icon/ic_delete.png'),
+  Gift: require('../assets/icon/ic_gift.png'),
 
 }

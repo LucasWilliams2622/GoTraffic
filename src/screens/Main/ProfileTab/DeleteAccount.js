@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const Policy = () => {
+const DeleteAccount = () => {
   return (
     <View>
-      <Text>Policy</Text>
+      <Text>DeleteAccount</Text>
     </View>
   )
 }
 
-export default Policy
+export default DeleteAccount
 
 const styles = StyleSheet.create({})
