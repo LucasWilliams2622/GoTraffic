@@ -6,7 +6,7 @@ import {
   FlatList,
   Dimensions,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import {COLOR} from '../../../constants/Theme';
 import {appStyle} from '../../../constants/AppStyle';
@@ -30,6 +30,8 @@ import {
   SectionProps,
   StackScreenParamList,
 } from '../../../types';
+import Modal from 'react-native-modal';
+import CarDetail from './CarDetail';
 
 const RenderList: React.FC<RenderListProps<any>> = ({
   data,
@@ -68,8 +70,13 @@ const Section: React.FC<SectionProps> = ({
 );
 
 const Home: React.FC = () => {
+  const [selectedCarId, setSelectedCarId] = useState<number | null>(null);
   const navigation =
     useNavigation<NativeStackNavigationProp<StackScreenParamList, 'Home'>>();
+
+  const handleCarPress = (id: number) => {
+    setSelectedCarId(id);
+  };
 
   return (
     <ScrollView style={[appStyle.container]}>
@@ -106,18 +113,25 @@ const Home: React.FC = () => {
         title="Xe dành cho bạn"
         data={carData}
         renderItem={({item}) => (
-          <CarCardItem
-            {...item}
-            onPress={() =>
-              navigation.navigate('CarDetail', {
-                car_id: item.id,
-                navigation: navigation,
-              })
-            }
-          />
+          <CarCardItem {...item} onPress={() => handleCarPress(item.id)} />
         )}
         snapToInterval={350}
       />
+
+      <Modal
+        isVisible={selectedCarId !== null}
+        style={{margin: 0}}
+        onBackButtonPress={() => setSelectedCarId(null)}
+        onSwipeComplete={() => setSelectedCarId(null)}
+        swipeDirection="down"
+        swipeThreshold={1}>
+        {selectedCarId && (
+          <CarDetail
+            car_id={selectedCarId}
+            close={() => setSelectedCarId(null)}
+          />
+        )}
+      </Modal>
 
       <Section
         title="Xe đã xem"

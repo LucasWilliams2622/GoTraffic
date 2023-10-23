@@ -43,7 +43,7 @@ export const SectionTitle: React.FC<{
   return <Text style={[styles.SectionTitle, style]}>{title}</Text>;
 };
 
-const CarDetail: React.FC<CarDetailProps> = ({route}) => {
+const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
   const [carCoordinates, setCarCoordinates] = useState<Geocoder.LatLng | null>(
     null,
   );
@@ -54,7 +54,6 @@ const CarDetail: React.FC<CarDetailProps> = ({route}) => {
     setRatingModalVisible(!isRatingModalVisible);
   };
 
-  const {car_id, navigation} = route.params;
   const car: Car | undefined = carDetailData.find(x => x.id == car_id);
 
   useEffect(() => {
@@ -72,7 +71,7 @@ const CarDetail: React.FC<CarDetailProps> = ({route}) => {
   if (car) {
     return (
       <ScrollView style={{backgroundColor: COLOR.white}}>
-        <SlideShow images={car.images} navigation={navigation} />
+        <SlideShow images={car.images} close={close} />
         <View style={{paddingHorizontal: 10, paddingVertical: 20}}>
           {/* Car title and rating info */}
           <Row style={{alignItems: 'center'}}>
@@ -96,7 +95,7 @@ const CarDetail: React.FC<CarDetailProps> = ({route}) => {
             </Text>
           </Row>
 
-          <TimeAndPlacePickup navigation={navigation} location={car.location} />
+          <TimeAndPlacePickup location={car.location} />
 
           <View>
             <SectionTitle title="Đặc điểm" style={{marginTop: 10}} />

@@ -1,12 +1,14 @@
 import {SvgProps} from 'react-native-svg';
 
 export type CarDetailProps = {
-  route: {
-    params: {
-      car_id: number;
-      navigation: any;
-    };
-  };
+  // route: {
+  //   params: {
+  //     car_id?: number;
+  //     navigation: any;
+  //   };
+  // };
+  car_id: number;
+  close: () => void;
 };
 
 export type Feature = {
@@ -46,7 +48,6 @@ export type FeatureItemProps = {
 };
 
 export type TimeAndPlacePickupProps = {
-  navigation: any;
   location: string;
 };
 
@@ -60,7 +61,7 @@ export interface PressableIconProps {
 
 export type SlideShowProps = {
   images: string[];
-  navigation: any;
+  close: () => void;
 };
 
 export type ImageViewComponentProps = {

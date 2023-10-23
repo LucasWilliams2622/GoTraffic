@@ -6,10 +6,7 @@ import {COLOR} from '../../../constants/Theme';
 import {currentDateString, returnDateString} from '../../../utils/utils';
 import {TimeAndPlacePickupProps} from '../../../types';
 
-export const TimeAndPlacePickup = ({
-  navigation,
-  location,
-}: TimeAndPlacePickupProps) => {
+export const TimeAndPlacePickup = ({location}: TimeAndPlacePickupProps) => {
   const [receiveCarLocation, setReceiveCarLocation] =
     useState<string>('atCarLocation');
   return (
@@ -18,9 +15,7 @@ export const TimeAndPlacePickup = ({
         <Text style={[appStyle.text16Bold, {marginBottom: 10}]}>
           Thời gian thuê xe
         </Text>
-        <Pressable
-          style={styles.timeAndPlacePickupPressable}
-          onPress={() => navigation.navigate('TimePicking')}>
+        <Pressable style={styles.timeAndPlacePickupPressable}>
           <Row style={{justifyContent: 'space-evenly'}}>
             <View>
               <Text style={{color: COLOR.borderColor, marginBottom: 5}}>

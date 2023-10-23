@@ -36,7 +36,7 @@ const PressableIcon = ({
   </Pressable>
 );
 
-export const SlideShow = ({images, navigation}: SlideShowProps) => {
+export const SlideShow = ({images, close}: SlideShowProps) => {
   const [index, setIndex] = useState<number>(0);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [isFavorite, setIsFavorite] = React.useState<boolean>(false);
@@ -66,12 +66,7 @@ export const SlideShow = ({images, navigation}: SlideShowProps) => {
   return (
     <View>
       <View style={styles.topContainer}>
-        <PressableIcon
-          name="x"
-          color={COLOR.white}
-          size={20}
-          onPress={() => navigation.pop()}
-        />
+        <PressableIcon name="x" color={COLOR.white} size={20} onPress={close} />
         <View style={styles.row}>
           <PressableIcon
             name="share-nodes"
