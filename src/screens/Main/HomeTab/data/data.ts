@@ -421,6 +421,46 @@ export const carDetailData = [
   },
 ];
 
+export const FeeData = [
+  {
+    fee_name: 'Phí vượt giới hạn',
+    fee_amount: '5 000đ/km',
+    fee_description:
+      'Phụ phí phát sinh nếu lộ trình di chuyển vượt quá 400km khi thuê xe 1 ngày',
+  },
+  {
+    fee_name: 'Phí quá giờ',
+    fee_amount: '70 000đ/giờ',
+    fee_description:
+      'Phụ phí phát sinh nếu hoàn trả xe trễ giờ. Trường hợp trễ quá 5 giờ, phụ phí thêm 1 ngày thuê',
+  },
+  {
+    fee_name: 'Phí vệ sinh',
+    fee_amount: '80 000đ',
+    fee_description:
+      'Phụ phí phát sinh khi xe hoàn trả không đảm bảo vệ sinh (nhiêu vêt bẩn, bùn cát, sinh lây ...)',
+  },
+  {
+    fee_name: 'Phí khử mùi',
+    fee_amount: '200 000đ',
+    fee_description:
+      'Phụ phí phát sinh khi xe hoàn trả bị ám mùi khó chịu (mùi thuốc lá, thực phẩm nặng mùi...)',
+  },
+];
+
+export const otherRules = [
+  'Sử dụng xe đúng mục đích.',
+  'Không sử dụng xe thuê vào mục đích phi pháp, trái pháp luật.',
+  'Không sử dụng xe thuê để cầm cố, thế chấp.',
+  'Không hút thuốc, nhả kẹo cao su, xả rác trong xe.',
+  'Không chở hàng quốc cấm dễ cháy nổ.',
+];
+export const otherRulesFull = [
+  ...otherRules,
+  'Không chở hoa quả, thực phẩm nặng mùi trong xe.',
+  'Khi trả xe, nếu xe bẩn hoặc có mùi trong xe, khách hàng vui lòng vệ sinh xe sạch sẽ hoặc gửi phụ thu phí vệ sinh xe.',
+];
+
 export const amenitiesIconMapping: AmenitiesIconMapping = {
   map: {name: 'Bản đồ', icon: MapIcon},
   bluetooth: {name: 'Bluetooth', icon: BluetoothIcon},

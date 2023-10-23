@@ -17,6 +17,10 @@ import {IDModal} from './IDModal';
 import {CollateralModal} from './CollateralModal';
 import {FeeModal} from './FeeModal';
 import {CancelModal} from './CancelModal';
+import {
+  otherRules,
+  otherRulesFull,
+} from '../../../screens/Main/HomeTab/data/data';
 
 const TitleWithQuestion: React.FC<{
   title: string;
@@ -70,18 +74,7 @@ const SectionWithModal: React.FC<{
 
 const OtherDetails: React.FC = () => {
   const [isShowMore, setShowMore] = React.useState<boolean>(false);
-  const otherRules = [
-    'Sử dụng xe đúng mục đích.',
-    'Không sử dụng xe thuê vào mục đích phi pháp, trái pháp luật.',
-    'Không sử dụng xe thuê để cầm cố, thế chấp.',
-    'Không hút thuốc, nhả kẹo cao su, xả rác trong xe.',
-    'Không chở hàng quốc cấm dễ cháy nổ.',
-  ];
-  const otherRulesFull = [
-    ...otherRules,
-    'Không chở hoa quả, thực phẩm nặng mùi trong xe.',
-    'Khi trả xe, nếu xe bẩn hoặc có mùi trong xe, khách hàng vui lòng vệ sinh xe sạch sẽ hoặc gửi phụ thu phí vệ sinh xe.',
-  ];
+
   return (
     <View>
       <TitleWithQuestion title="Giấy tờ thuê xe" Modal={IDModal} />
