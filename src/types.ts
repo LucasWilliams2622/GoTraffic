@@ -9,6 +9,7 @@ export type CarDetailProps = {
   // };
   car_id: number;
   close: () => void;
+  setSwipeEnabled: (enabled: boolean) => void;
 };
 
 export type Feature = {
@@ -62,6 +63,7 @@ export interface PressableIconProps {
 export type SlideShowProps = {
   images: string[];
   close: () => void;
+  scrollY: any;
 };
 
 export type ImageViewComponentProps = {

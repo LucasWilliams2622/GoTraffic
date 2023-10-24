@@ -1,6 +1,7 @@
 import React, {useMemo, useState} from 'react';
 import {
   Alert,
+  Animated,
   Dimensions,
   Pressable,
   Share,
@@ -18,9 +19,12 @@ import {PressableIconProps, SlideShowProps} from '../../../types';
 
 const ICON_SIZE = 20;
 
-const renderItem = ({item, setModalVisible}: any) => (
+const renderItem = ({item, setModalVisible, scale}: any) => (
   <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
-    <FastImage source={{uri: item}} style={styles.carouselImage} />
+    <Animated.Image
+      source={{uri: item}}
+      style={[styles.carouselImage, {transform: [{scale}]}]}
+    />
   </TouchableWithoutFeedback>
 );
 
@@ -36,7 +40,7 @@ const PressableIcon = ({
   </Pressable>
 );
 
-export const SlideShow = ({images, close}: SlideShowProps) => {
+export const SlideShow = ({images, close, scrollY}: SlideShowProps) => {
   const [index, setIndex] = useState<number>(0);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [isFavorite, setIsFavorite] = React.useState<boolean>(false);
@@ -53,6 +57,12 @@ export const SlideShow = ({images, close}: SlideShowProps) => {
       Alert.alert(message);
     }
   };
+
+  const scale = scrollY.interpolate({
+    inputRange: [-300, 0, 300],
+    outputRange: [2, 1, 1],
+    extrapolate: 'clamp',
+  });
 
   const handleClose = () => {
     setModalVisible(false);
@@ -86,7 +96,7 @@ export const SlideShow = ({images, close}: SlideShowProps) => {
 
       <Carousel
         data={images}
-        renderItem={({item}) => renderItem({item, setModalVisible})}
+        renderItem={({item}) => renderItem({item, setModalVisible, scale})}
         sliderWidth={Dimensions.get('window').width}
         itemWidth={itemWidth}
         snapToInterval={itemWidth}

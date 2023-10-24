@@ -7,6 +7,7 @@ import {
   TextStyle,
   View,
   ViewStyle,
+  Animated,
 } from 'react-native';
 import {carDetailData} from './data/data';
 import {Row, ScrollView} from 'native-base';
@@ -43,7 +44,11 @@ export const SectionTitle: React.FC<{
   return <Text style={[styles.SectionTitle, style]}>{title}</Text>;
 };
 
-const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
+const CarDetail: React.FC<CarDetailProps> = ({
+  car_id,
+  close,
+  setSwipeEnabled,
+}) => {
   const [carCoordinates, setCarCoordinates] = useState<Geocoder.LatLng | null>(
     null,
   );
@@ -53,6 +58,8 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
   const toggleModal = () => {
     setRatingModalVisible(!isRatingModalVisible);
   };
+
+  const scrollY = new Animated.Value(0);
 
   const car: Car | undefined = carDetailData.find(x => x.id == car_id);
 
@@ -70,8 +77,14 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
 
   if (car) {
     return (
-      <ScrollView style={{backgroundColor: COLOR.white}}>
-        <SlideShow images={car.images} close={close} />
+      <Animated.ScrollView
+        style={{backgroundColor: COLOR.white}}
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {y: scrollY}}}],
+          {useNativeDriver: true},
+        )}
+        scrollEventThrottle={16}>
+        <SlideShow images={car.images} close={close} scrollY={scrollY} />
         <View style={{paddingHorizontal: 10, paddingVertical: 20}}>
           {/* Car title and rating info */}
           <Row style={{alignItems: 'center'}}>
@@ -163,7 +176,7 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
           toggleModal={toggleModal}
           rating={car.rating}
         />
-      </ScrollView>
+      </Animated.ScrollView>
     );
   }
 };

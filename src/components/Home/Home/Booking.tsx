@@ -150,7 +150,7 @@ const SelfDrivingView = ({timeString, navigation}: ViewProps) => {
 };
 
 const RadioButton = ({value, tripType, text}: RadioButtonProps) => (
-  <Radio value={value} my="1" size="sm">
+  <Radio value={value} my="0.5" size="sm">
     <Text
       style={[
         {
@@ -339,7 +339,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     alignSelf: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
     paddingVertical: 25,
     width: '100%',
     backgroundColor: COLOR.white,

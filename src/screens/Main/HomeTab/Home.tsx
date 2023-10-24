@@ -74,6 +74,8 @@ const Home: React.FC = () => {
   const navigation =
     useNavigation<NativeStackNavigationProp<StackScreenParamList, 'Home'>>();
 
+  const [isSwipeEnabled, setSwipeEnabled] = useState<boolean>(true);
+
   const handleCarPress = (id: number) => {
     setSelectedCarId(id);
   };
@@ -123,11 +125,12 @@ const Home: React.FC = () => {
         style={{margin: 0}}
         onBackButtonPress={() => setSelectedCarId(null)}
         onSwipeComplete={() => setSelectedCarId(null)}
-        swipeDirection="down">
+        swipeDirection={isSwipeEnabled ? 'down' : undefined}>
         {selectedCarId && (
           <CarDetail
             car_id={selectedCarId}
             close={() => setSelectedCarId(null)}
+            setSwipeEnabled={setSwipeEnabled}
           />
         )}
       </Modal>
