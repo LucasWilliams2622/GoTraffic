@@ -17,7 +17,7 @@ import {Center} from 'native-base';
 import {BottomSheet} from 'react-native-btr';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 import * as Yup from 'yup';
-import {Formik} from 'formik';
+import {Formik, useFormik} from 'formik';
 import { AppContext } from '../../utils/AppContext';
 
 const Login = props => {
@@ -56,10 +56,26 @@ const Login = props => {
       .required('Mật khẩu không được để trống')
       .min(8, 'Mật khẩu quá ngắn ít nhất phải 8 kí tự')
       .matches(/[a-zA-Z]/, 'Mật khẩu chỉ chứa các chữ các latinh'),
+    passwordInBottomSheet: Yup.string()
+      .required('Mật khẩu không được để trống')
+      .min(8, 'Mật khẩu quá ngắn ít nhất phải 8 kí tự')
+      .matches(/[a-zA-Z]/, 'Mật khẩu chỉ chứa các chữ các latinh'),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      phoneNumber: '',
+      password:'',
+      rePassword:''
+    },
+    validationSchema: validationSchema,
+    onSubmit: values => {
+      // Xử lý logic khi submit form
+      console.log(values);
+    },
   });
   return (
     <SafeAreaView style={appStyle.container}>
-      
       <View style={[appStyle.main, {justifyContent: 'space-evenly'}]}>
         <View style={{marginTop: -100}}>
           <FastImage
@@ -73,7 +89,7 @@ const Login = props => {
             validationSchema={validationSchema}
             onSubmit={values => {
               console.log(values);
-              setIsLogin(true)
+              setIsLogin(true);
             }}>
             {({
               handleChange,
@@ -122,7 +138,7 @@ const Login = props => {
                   <Text
                     style={styles.text3}
                     onPress={() => {
-                      toggleBottomNavigationView();
+                      toggleBottomNavigationView3();
                     }}>
                     Quên mật khẩu
                   </Text>
@@ -160,7 +176,9 @@ const Login = props => {
                   title="Đăng nhập"
                   color={COLOR.secondary}
                   fontSize={18}
-                  onPress={()=>{setIsLogin(true)}}
+                  onPress={() => {
+                    setIsLogin(true);
+                  }}
                 />
               </View>
             )}
@@ -174,61 +192,41 @@ const Login = props => {
         onBackButtonPress={toggleBottomNavigationView}
         onBackdropPress={toggleBottomNavigationView}>
         {/*Bottom Sheet inner View*/}
-
-        <Formik
-          initialValues={{phoneNumber: ''}}
-          validationSchema={validationSchema}
-          onSubmit={values => {
-            console.log({values});
-            setVisible(false);
-            toggleBottomNavigationView2();
-          }}>
-          {({
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            values,
-            errors,
-            touched,
-          }) => (
-            <View style={styles.bottomNavigationView}>
-              <View style={{flex: 1}}>
-                <View>
-                  <Text style={styles.text1InBottomSheet}>Quên mật khẩu</Text>
-                  <Text style={styles.text2InBottomSheet}>
-                    Nhập sdt của bạn để thực hiện quá trình xác minh, chúng tôi
-                    sẽ gửi mã xác thực vào sdt.
-                  </Text>
-                  <AppInput
-                    keyboardType={'phone-pad'}
-                    returnKeyType={'done'}
-                    placeholder={'Nhập số điện thoại của bạn'}
-                    onChangeText={handleChange('phoneNumber')}
-                    onBlur={handleBlur('phoneNumber')}
-                    value={values.phoneNumber}
-                  />
-                </View>
-                {touched.phoneNumber && errors.phoneNumber && (
-                  <Text style={styles.textErrorInBottomSheet}>
-                    {errors.phoneNumber}
-                  </Text>
-                )}
-              </View>
-
-              <AppButton
-                title="Tiếp tục"
-                color={COLOR.secondary}
-                fontSize={18}
-                onPress={handleSubmit}
-                // onPress={handleSubmit => {
-                //   //handleSubmit;
-                //   //setVisible(false);
-                //   //toggleBottomNavigationView2();
-                // }}
+        <View style={styles.bottomNavigationView}>
+          <View style={{flex: 1}}>
+            <View>
+              <Text style={styles.text1InBottomSheet}>Quên mật khẩu</Text>
+              <Text style={styles.text2InBottomSheet}>
+                Nhập sdt của bạn để thực hiện quá trình xác minh, chúng tôi sẽ
+                gửi mã xác thực vào sdt.
+              </Text>
+              <AppInput
+                keyboardType={'phone-pad'}
+                returnKeyType={'done'}
+                placeholder={'Nhập số điện thoại của bạn'}
+                onChangeText={formik.handleChange('phoneNumber')}
+                onBlur={formik.handleBlur('phoneNumber')}
+                value={formik.values.phoneNumber}
               />
             </View>
-          )}
-        </Formik>
+            {formik.touched.phoneNumber && formik.errors.phoneNumber ? (
+              <Text style={styles.textErrorInBottomSheet}>
+                {formik.errors.phoneNumber}
+              </Text>
+            ) : null}
+          </View>
+          <AppButton
+            title="Tiếp tục"
+            color={COLOR.secondary}
+            fontSize={18}
+            onPress={formik.handleSubmit}
+            // onPress={handleSubmit => {
+            //   //handleSubmit;
+            //   //setVisible(false);
+            //   //toggleBottomNavigationView2();
+            // }}
+          />
+        </View>
       </BottomSheet>
 
       {/*Bottom Sheet 2*/}
@@ -276,7 +274,7 @@ const Login = props => {
 
       {/*Bottom Sheet inner View*/}
       <Formik
-        initialValues={{password: '', rePassword: ''}}
+        initialValues={{passwordInBottomSheet: '', rePassword: ''}}
         validationSchema={validationSchema}
         onSubmit={values => {
           console.log({values});
@@ -310,14 +308,17 @@ const Login = props => {
                     placeholder={'Nhập mật khảu'}
                     isPassword
                     secureTextEntry
-                    onChangeText={handleChange('password')}
-                    onBlur={handleBlur('password')}
-                    value={values.password}
+                    onChangeText={handleChange('passwordInBottomSheet')}
+                    onBlur={handleBlur('passwordInBottomSheet')}
+                    value={values.passwordInBottomSheet}
                   />
                 </View>
-                {touched.password && errors.password && (
-                  <Text style={styles.textError}>{errors.password}</Text>
-                )}
+                {touched.passwordInBottomSheet &&
+                  errors.passwordInBottomSheet && (
+                    <Text style={styles.textError}>
+                      {errors.passwordInBottomSheet}
+                    </Text>
+                  )}
                 <View style={{marginBottom: 20}}>
                   <AppInput
                     returnKeyType={'done'}
