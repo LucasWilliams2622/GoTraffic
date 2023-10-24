@@ -123,8 +123,7 @@ const Home: React.FC = () => {
         style={{margin: 0}}
         onBackButtonPress={() => setSelectedCarId(null)}
         onSwipeComplete={() => setSelectedCarId(null)}
-        swipeDirection="down"
-        swipeThreshold={1}>
+        swipeDirection="down">
         {selectedCarId && (
           <CarDetail
             car_id={selectedCarId}
