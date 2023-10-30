@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "974273860765",
+    "project_id": "auth-with-e3023",
+    "storage_bucket": "auth-with-e3023.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:974273860765:android:5a55b7b26a2b5f60efb074",
+        "android_client_info": {
+          "package_name": "com.gotraffic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "974273860765-peetifsgq043rdukvv0h4jk5jggai1p2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gotraffic",
+            "certificate_hash": "526e563360fd817914a7fa0b4861b6bf4243b9a9"
+          }
+        },
+        {
+          "client_id": "974273860765-ttpf3mc771c3ho2t7okvn7v57sb133pg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyPqdMZ4DPLEk2urP6Oejz_-XD89SvC_E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "974273860765-ae2osh2v3oj8trmu1u5pvj365168n7qm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

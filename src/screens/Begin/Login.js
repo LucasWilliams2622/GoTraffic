@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState,useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import AppInput from '../../components/AppInput';
 import {appStyle, windowHeight} from '../../constants/AppStyle';
@@ -18,9 +18,44 @@ import {BottomSheet} from 'react-native-btr';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 import * as Yup from 'yup';
 import {Formik, useFormik} from 'formik';
-import { AppContext } from '../../utils/AppContext';
+import {AppContext} from '../../utils/AppContext';
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
+import auth from '@react-native-firebase/auth';
 
 const Login = props => {
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId:
+        '974273860765-ae2osh2v3oj8trmu1u5pvj365168n7qm.apps.googleusercontent.com',
+    });
+  }, []);
+
+  const signInGoogle = async () => {
+    await GoogleSignin.hasPlayServices();
+    const {idToken} = await GoogleSignin.signIn();
+    console.log(idToken);
+    try {
+      
+      const googleCredentials = auth.GoogleAuthProvider.credential(idToken);
+      auth().signInWithCredential(googleCredentials);
+      return userInfo;
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (e.g. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+      } else {
+        // some other error happened
+      }
+    }
+  };
+
   const {navigation} = props;
   const goRegister = () => {
     navigation.navigate('Register');
@@ -28,7 +63,7 @@ const Login = props => {
   const [visible, setVisible] = useState(false);
   const [visible2, setVisible2] = useState(false);
   const [visible3, setVisible3] = useState(false);
-  const { setIsLogin } = useContext(AppContext)
+  const {setIsLogin} = useContext(AppContext);
 
   const toggleBottomNavigationView = () => {
     //Toggling the visibility state of the bottom sheet
@@ -65,8 +100,8 @@ const Login = props => {
   const formik = useFormik({
     initialValues: {
       phoneNumber: '',
-      password:'',
-      rePassword:''
+      password: '',
+      rePassword: '',
     },
     validationSchema: validationSchema,
     onSubmit: values => {
@@ -144,7 +179,11 @@ const Login = props => {
                   </Text>
                   <View style={styles.view1}></View>
                   <View style={styles.itemLoginSocial}>
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => {
+                        signInGoogle();
+                      }}>
                       <FastImage
                         style={styles.logo}
                         source={require('../../assets/image/logo-gg.png')}
