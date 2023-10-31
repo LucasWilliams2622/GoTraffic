@@ -32,6 +32,7 @@ import {
 } from '../../../types';
 import Modal from 'react-native-modal';
 import CarDetail from './CarDetail';
+import SwipeUpDownModal from 'react-native-swipe-modal-up-down';
 
 const RenderList: React.FC<RenderListProps<any>> = ({
   data,
@@ -120,20 +121,23 @@ const Home: React.FC = () => {
         snapToInterval={350}
       />
 
-      <Modal
-        isVisible={selectedCarId !== null}
-        style={{margin: 0}}
-        onBackButtonPress={() => setSelectedCarId(null)}
-        onSwipeComplete={() => setSelectedCarId(null)}
-        swipeDirection={isSwipeEnabled ? 'down' : undefined}>
-        {selectedCarId && (
-          <CarDetail
-            car_id={selectedCarId}
-            close={() => setSelectedCarId(null)}
-            setSwipeEnabled={setSwipeEnabled}
-          />
-        )}
-      </Modal>
+      <SwipeUpDownModal
+        modalVisible={selectedCarId !== null}
+        PressToanimate={true}
+        ContentModal={
+          <View style={{flex: 1}}>
+            {selectedCarId && (
+              <CarDetail
+                car_id={selectedCarId}
+                close={() => setSelectedCarId(null)}
+                setSwipeEnabled={setSwipeEnabled}
+              />
+            )}
+          </View>
+        }
+        ContentModalStyle={{backgroundColor: 'transparent', marginTop: 0}}
+        onClose={() => setSelectedCarId(null)}
+      />
 
       <Section
         title="Xe đã xem"

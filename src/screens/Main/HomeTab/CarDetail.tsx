@@ -8,9 +8,10 @@ import {
   View,
   ViewStyle,
   Animated,
+  ScrollView,
 } from 'react-native';
 import {carDetailData} from './data/data';
-import {Row, ScrollView} from 'native-base';
+import {Row} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import {COLOR} from '../../../constants/Theme';
 import ShieldIcon from '../../../assets/icon/ic_shield_verified';
@@ -55,6 +56,8 @@ const CarDetail: React.FC<CarDetailProps> = ({
   const [isRatingModalVisible, setRatingModalVisible] =
     useState<boolean>(false);
 
+  const [isScrollEnabled, setIsScrollEnabled] = useState<boolean>(true);
+
   const toggleModal = () => {
     setRatingModalVisible(!isRatingModalVisible);
   };
@@ -77,13 +80,21 @@ const CarDetail: React.FC<CarDetailProps> = ({
 
   if (car) {
     return (
-      <Animated.ScrollView
-        style={{backgroundColor: COLOR.white}}
-        onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {y: scrollY}}}],
-          {useNativeDriver: true},
-        )}
-        scrollEventThrottle={16}>
+      <ScrollView
+        style={{
+          backgroundColor: COLOR.white,
+        }}
+        scrollEnabled={isScrollEnabled}
+        onScroll={({nativeEvent}) => {
+          if (nativeEvent.contentOffset.y <= 0) {
+            setIsScrollEnabled(false);
+            setSwipeEnabled(true);
+          } else {
+            setIsScrollEnabled(true);
+            setSwipeEnabled(false);
+          }
+        }}
+        onScrollEndDrag={() => setIsScrollEnabled(true)}>
         <SlideShow images={car.images} close={close} scrollY={scrollY} />
         <View style={{paddingHorizontal: 10, paddingVertical: 20}}>
           {/* Car title and rating info */}
@@ -176,7 +187,7 @@ const CarDetail: React.FC<CarDetailProps> = ({
           toggleModal={toggleModal}
           rating={car.rating}
         />
-      </Animated.ScrollView>
+      </ScrollView>
     );
   }
 };

@@ -14,7 +14,6 @@ import {COLOR} from '../../../constants/Theme';
 import Carousel from 'react-native-snap-carousel';
 import {ImageViewComponent} from './ImageViewComponent';
 import Icon from 'react-native-vector-icons/FontAwesome6';
-import FastImage from 'react-native-fast-image';
 import {PressableIconProps, SlideShowProps} from '../../../types';
 
 const ICON_SIZE = 20;
