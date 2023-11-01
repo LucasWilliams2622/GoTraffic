@@ -1,6 +1,5 @@
 import React from 'react';
 import {Text, View} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome6';
 import {amenitiesIconMapping} from '../../../screens/Main/HomeTab/data/data';
 import {Row} from 'native-base';
 import {COLOR} from '../../../constants/Theme';
