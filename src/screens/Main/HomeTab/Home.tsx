@@ -121,23 +121,21 @@ const Home: React.FC = () => {
         snapToInterval={350}
       />
 
-      <SwipeUpDownModal
-        modalVisible={selectedCarId !== null}
-        PressToanimate={true}
-        ContentModal={
-          <View style={{flex: 1}}>
-            {selectedCarId && (
-              <CarDetail
-                car_id={selectedCarId}
-                close={() => setSelectedCarId(null)}
-                setSwipeEnabled={setSwipeEnabled}
-              />
-            )}
-          </View>
-        }
-        ContentModalStyle={{backgroundColor: 'transparent', marginTop: 0}}
-        onClose={() => setSelectedCarId(null)}
-      />
+      <Modal
+        isVisible={selectedCarId !== null}
+        style={{margin: 0}}
+        onBackButtonPress={() => setSelectedCarId(null)}
+        onSwipeComplete={() => setSelectedCarId(null)}
+        // swipeDirection={isSwipeEnabled ? 'down' : undefined}
+        swipeThreshold={50}>
+        {selectedCarId && (
+          <CarDetail
+            car_id={selectedCarId}
+            close={() => setSelectedCarId(null)}
+            setSwipeEnabled={setSwipeEnabled}
+          />
+        )}
+      </Modal>
 
       <Section
         title="Xe đã xem"

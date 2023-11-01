@@ -84,17 +84,15 @@ const CarDetail: React.FC<CarDetailProps> = ({
         style={{
           backgroundColor: COLOR.white,
         }}
-        scrollEnabled={isScrollEnabled}
         onScroll={({nativeEvent}) => {
-          if (nativeEvent.contentOffset.y <= 0) {
+          if (nativeEvent.contentOffset.y == 5) {
             setIsScrollEnabled(false);
             setSwipeEnabled(true);
           } else {
             setIsScrollEnabled(true);
             setSwipeEnabled(false);
           }
-        }}
-        onScrollEndDrag={() => setIsScrollEnabled(true)}>
+        }}>
         <SlideShow images={car.images} close={close} scrollY={scrollY} />
         <View style={{paddingHorizontal: 10, paddingVertical: 20}}>
           {/* Car title and rating info */}
