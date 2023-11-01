@@ -27,6 +27,7 @@ import TimePicking from '../screens/Main/HomeTab/TimePicking';
 import LocationPicking from '../screens/Main/HomeTab/LocationPicking';
 import NewCard from '../screens/Main/ProfileTab/NewCard';
 import CarDetail from '../screens/Main/HomeTab/CarDetail';
+import HomeCar from '../screens/Main/ProfileTab/MyCar/HomeCar';
 
 
 
@@ -110,6 +111,7 @@ const StackProfile = () => {
       <Stack.Screen name="Account" component={Account} />
       <Stack.Screen name="FavouriteCar" component={FavouriteCar} />
       <Stack.Screen name="MyCar" component={MyCar} />
+      <Stack.Screen name="HomeCar" component={HomeCar} />
       <Stack.Screen name="MyAddress" component={MyAddress} />
       <Stack.Screen name="ShareWithFriend" component={ShareWithFriend} />
       <Stack.Screen name="Policy" component={Policy} />
@@ -118,7 +120,6 @@ const StackProfile = () => {
       <Stack.Screen name="NewAddress" component={NewAddress} />
       <Stack.Screen name="MyCard" component={MyCard} />
       <Stack.Screen name="NewCard" component={NewCard} />
-
     </Stack.Navigator>
   );
 };
