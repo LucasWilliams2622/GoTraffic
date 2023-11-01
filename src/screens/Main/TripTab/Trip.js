@@ -73,14 +73,7 @@ const styles = StyleSheet.create({
   viewTitle: {
     flexDirection: 'row',
     justifyContent: 'center',
-    shadowColor: '#000000',
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 11.27,
-    elevation: 14,
+    borderBottomWidth:0.5
   },
   imageInvisible: {
     width: 192,
