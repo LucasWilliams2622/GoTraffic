@@ -1,16 +1,13 @@
 import React, {useMemo, useState} from 'react';
 import {
-  Alert,
   Animated,
   Dimensions,
   Pressable,
-  Share,
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import {COLOR} from '../../../constants/Theme';
 import Carousel from 'react-native-snap-carousel';
 import {ImageViewComponent} from './ImageViewComponent';
 import Icon from 'react-native-vector-icons/FontAwesome6';
@@ -27,14 +24,15 @@ const renderItem = ({item, setModalVisible, scale}: any) => (
   </TouchableWithoutFeedback>
 );
 
-const PressableIcon = ({
+export const PressableIcon = ({
   name,
   color,
   size = ICON_SIZE,
   solid,
   onPress,
+  style,
 }: PressableIconProps) => (
-  <Pressable style={styles.pressable} onPress={onPress}>
+  <Pressable style={[styles.pressable, style]} onPress={onPress}>
     <Icon name={name} color={color} size={size} solid={solid} />
   </Pressable>
 );
@@ -42,20 +40,8 @@ const PressableIcon = ({
 export const SlideShow = ({images, close, scrollY}: SlideShowProps) => {
   const [index, setIndex] = useState<number>(0);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [isFavorite, setIsFavorite] = React.useState<boolean>(false);
 
   const itemWidth = Dimensions.get('window').width;
-
-  const handleShare = async () => {
-    try {
-      await Share.share({
-        message: 'Check out this car!',
-      });
-    } catch (error) {
-      const message = (error as Error).message;
-      Alert.alert(message);
-    }
-  };
 
   const scale = scrollY.interpolate({
     inputRange: [-300, 0, 300],
@@ -74,25 +60,6 @@ export const SlideShow = ({images, close, scrollY}: SlideShowProps) => {
 
   return (
     <View>
-      <View style={styles.topContainer}>
-        <PressableIcon name="x" color={COLOR.white} size={20} onPress={close} />
-        <View style={styles.row}>
-          <PressableIcon
-            name="share-nodes"
-            color={COLOR.white}
-            size={24}
-            onPress={handleShare}
-          />
-          <PressableIcon
-            name="heart"
-            color={isFavorite ? COLOR.fifth : COLOR.white}
-            size={20}
-            solid={isFavorite}
-            onPress={() => setIsFavorite(!isFavorite)}
-          />
-        </View>
-      </View>
-
       <Carousel
         data={images}
         renderItem={({item}) => renderItem({item, setModalVisible, scale})}
