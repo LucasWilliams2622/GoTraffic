@@ -24,6 +24,7 @@ export type Car = {
   images: string[];
   title: string;
   price: number;
+  licensePlate: string;
   rating: RatingItem[];
   totalRide: number;
   location: string;
