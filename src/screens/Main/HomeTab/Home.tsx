@@ -6,17 +6,17 @@ import {
   FlatList,
   Dimensions,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import {COLOR} from '../../../constants/Theme';
 import {appStyle} from '../../../constants/AppStyle';
 import {Row, Column} from 'native-base';
-import Booking from '../../../components/Home/Booking';
+import Booking from '../../../components/Home/Home/Booking';
 import {useNavigation} from '@react-navigation/native';
-import Promotion from '../../../components/Home/Promotion';
-import CarCardItem from '../../../components/Home/CarCardItem';
-import FeaturedLocation from '../../../components/Home/FeaturedLocation';
-import AirportPicking from '../../../components/Home/AirportPicking';
+import Promotion from '../../../components/Home/Home/Promotion';
+import CarCardItem from '../../../components/Home/Home/CarCardItem';
+import FeaturedLocation from '../../../components/Home/Home/FeaturedLocation';
+import AirportPicking from '../../../components/Home/Home/AirportPicking';
 import {
   promotionData,
   carData,
@@ -25,12 +25,13 @@ import {
   benefitData,
 } from './data/data';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-
-interface RenderListProps<T> {
-  data: T[];
-  renderItem: ({item}: {item: T}) => JSX.Element;
-  snapToInterval: number;
-}
+import {
+  RenderListProps,
+  SectionProps,
+  StackScreenParamList,
+} from '../../../types';
+import Modal from 'react-native-modal';
+import CarDetail from './CarDetail';
 
 const RenderList: React.FC<RenderListProps<any>> = ({
   data,
@@ -50,13 +51,6 @@ const RenderList: React.FC<RenderListProps<any>> = ({
   />
 );
 
-interface SectionProps {
-  title: string;
-  data: any[];
-  renderItem: ({item}: {item: any}) => JSX.Element;
-  snapToInterval: number;
-}
-
 const Section: React.FC<SectionProps> = ({
   title,
   data,
@@ -75,14 +69,18 @@ const Section: React.FC<SectionProps> = ({
   </View>
 );
 
-type StackScreenParamList = {
-  Home: undefined;
-  CarDetail: {car_id: number; navigation: any};
-};
-
 const Home: React.FC = () => {
+  const [selectedCarId, setSelectedCarId] = useState<number | null>(null);
   const navigation =
     useNavigation<NativeStackNavigationProp<StackScreenParamList, 'Home'>>();
+
+  const [isSwipeEnabled, setSwipeEnabled] = useState<boolean>(true);
+  const [isModalVisible, setModalVisible] = useState<boolean>(false);
+
+  const handleCarPress = (id: number) => {
+    setSelectedCarId(id);
+    setModalVisible(true);
+  };
 
   return (
     <ScrollView style={[appStyle.container]}>
@@ -119,18 +117,24 @@ const Home: React.FC = () => {
         title="Xe dành cho bạn"
         data={carData}
         renderItem={({item}) => (
-          <CarCardItem
-            {...item}
-            onPress={() =>
-              navigation.navigate('CarDetail', {
-                car_id: item.id,
-                navigation: navigation,
-              })
-            }
-          />
+          <CarCardItem {...item} onPress={() => handleCarPress(item.id)} />
         )}
         snapToInterval={350}
       />
+
+      <Modal
+        isVisible={isModalVisible}
+        style={{margin: 0}}
+        onBackButtonPress={() => setSelectedCarId(null)}
+        swipeThreshold={50}>
+        {selectedCarId && (
+          <CarDetail
+            car_id={selectedCarId}
+            close={() => setModalVisible(false)}
+            setSwipeEnabled={setSwipeEnabled}
+          />
+        )}
+      </Modal>
 
       <Section
         title="Xe đã xem"

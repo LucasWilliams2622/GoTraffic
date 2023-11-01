@@ -1,7 +1,8 @@
 import * as React from 'react';
 import Svg, {SvgProps, Path} from 'react-native-svg';
-const Camera360Icon = (props: SvgProps) => (
-  <Svg width={20} height={25} fill="none" {...props}>
+import {IconProps} from '../../types';
+const Camera360Icon: React.FC<IconProps> = props => (
+  <Svg width={props.width} height={props.height} fill="none" {...props}>
     <Path
       fill={props.color}
       fillRule="evenodd"

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Svg, {SvgProps, Path} from 'react-native-svg';
-const StickIcon = (props: SvgProps) => (
+import {IconProps} from './ic_engine';
+const StickIcon = (props: IconProps) => (
   <Svg width={props.width} height={props.height} fill="none" {...props}>
     <Path
       fill={props.color}

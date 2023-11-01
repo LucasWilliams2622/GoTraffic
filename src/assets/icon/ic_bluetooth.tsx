@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Svg, {SvgProps, Path} from 'react-native-svg';
-const BluetoothIcon = (props: SvgProps) => (
+import {IconProps} from '../../types';
+const BluetoothIcon: React.FC<IconProps> = props => (
   <Svg width={props.width} height={props.height} viewBox="0 0 24 24" {...props}>
     <Path
       fill={props.color}

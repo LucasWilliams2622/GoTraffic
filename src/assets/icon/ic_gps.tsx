@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Svg, {SvgProps, Path} from 'react-native-svg';
-const GPSIcon = (props: SvgProps) => (
+import {IconProps} from '../../types';
+const GPSIcon: React.FC<IconProps> = props => (
   <Svg {...props} width={props.width} height={props.height} fill="none">
     <Path
       fill={props.color}

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Svg, {SvgProps, G, Path, Defs, ClipPath} from 'react-native-svg';
-const SvgComponent = (props: SvgProps) => (
+import {IconProps} from './ic_engine';
+const SvgComponent = (props: IconProps) => (
   <Svg width={props.width} height={props.height} fill="none" {...props}>
     <G clipPath="url(#a)">
       <Path

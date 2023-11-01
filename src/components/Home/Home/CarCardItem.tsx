@@ -7,27 +7,18 @@ import {
 } from 'react-native';
 import React, {useMemo} from 'react';
 import FastImage from 'react-native-fast-image';
-import {COLOR} from '../../constants/Theme';
-import {appStyle} from '../../constants/AppStyle';
+import {COLOR} from '../../../constants/Theme';
+import {appStyle} from '../../../constants/AppStyle';
 import {Column, Row} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome6';
-import ShieldIcon from '../../assets/icon/ic_shield_verified';
-import SuitcaseIcon from '../../assets/icon/ic_suitcase';
-import {formatPrice, getTotalPrice, calculateDiscount} from '../../utils/utils';
-
-interface CarCardItemProps {
-  id: number;
-  title: string;
-  image: string;
-  location: string;
-  benefit?: string;
-  type: string;
-  originalPrice?: number;
-  price: number;
-  rating: number;
-  totalRide: number;
-  onPress: () => void;
-}
+import ShieldIcon from '../../../assets/icon/ic_shield_verified';
+import SuitcaseIcon from '../../../assets/icon/ic_suitcase';
+import {
+  formatPrice,
+  getTotalPrice,
+  calculateDiscount,
+} from '../../../utils/utils';
+import {CarCardItemProps} from '../../../types';
 
 const CarCardItem = ({
   title,

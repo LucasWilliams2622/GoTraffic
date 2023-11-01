@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Svg, {SvgProps, Path} from 'react-native-svg';
-const BackCameraIcon = (props: SvgProps) => (
+import {IconProps} from '../../types';
+const BackCameraIcon: React.FC<IconProps> = props => (
   <Svg width={props.width} height={props.height} fill="none" {...props}>
     <Path
       fill={props.color}
