@@ -41,6 +41,8 @@ import {RatingModal} from '../../../components/Home/Detail/RatingModal';
 import {Car, CarDetailProps, PressableIconProps} from '../../../types';
 import {calculateAvgRating, formatPrice} from '../../../utils/utils';
 import OtherDetails from '../../../components/Home/Detail/OtherDetails';
+import Confirm from './Confirm';
+import Modal from 'react-native-modal';
 
 Geocoder.init(REACT_APP_GOOGLE_MAPS_API_KEY || '');
 
@@ -65,8 +67,9 @@ const PressableIconCarDetail = ({
   </Pressable>
 );
 
-const BottomBar: React.FC<{price: number}> = ({price}) => {
+const BottomBar: React.FC<{price: number; car: Car}> = ({price, car}) => {
   const formattedPrice = useMemo(() => formatPrice(price), [price]);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   return (
     <View
       style={{
@@ -74,10 +77,11 @@ const BottomBar: React.FC<{price: number}> = ({price}) => {
         width: '100%',
         position: 'absolute',
         bottom: 0,
-        paddingHorizontal: 10,
+        paddingHorizontal: 20,
         paddingVertical: 20,
         borderTopColor: COLOR.borderColor,
         borderTopWidth: StyleSheet.hairlineWidth,
+        paddingBottom: 30,
       }}>
       <Row style={{display: 'flex', justifyContent: 'space-between'}}>
         <View>
@@ -89,9 +93,13 @@ const BottomBar: React.FC<{price: number}> = ({price}) => {
             </Text>
           </Pressable>
         </View>
+        <Modal isVisible={isModalVisible} style={{margin: 0}}>
+          <Confirm closeModal={() => setIsModalVisible(false)} car={car} />
+        </Modal>
         <Pressable
-          style={{backgroundColor: COLOR.fifth, padding: 10, borderRadius: 8}}>
-          <Row>
+          style={{backgroundColor: COLOR.fifth, padding: 10, borderRadius: 8}}
+          onPress={() => setIsModalVisible(true)}>
+          <Row style={{alignItems: 'center'}}>
             <Icon name={'bolt'} color={COLOR.white} size={20} solid />
             <Text
               style={{color: COLOR.white, marginLeft: 5, fontWeight: 'bold'}}>
@@ -136,7 +144,7 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
 
   const topBarY = scrollY.interpolate({
     inputRange: [SLIDESHOW_HEIGHT, SLIDESHOW_HEIGHT + 5],
-    outputRange: [-100, 0],
+    outputRange: [-150, 0],
     extrapolate: 'clamp',
   });
 
@@ -162,6 +170,7 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
           top: 0,
           borderBottomColor: COLOR.borderColor,
           borderBottomWidth: StyleSheet.hairlineWidth,
+          paddingTop: 20,
         }}>
         <Row
           style={{
@@ -352,7 +361,7 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
           />
         </ScrollView>
         <StickyHeader name={car.title} />
-        <BottomBar price={car.price} />
+        <BottomBar price={car.price} car={car} />
       </View>
     );
   }
