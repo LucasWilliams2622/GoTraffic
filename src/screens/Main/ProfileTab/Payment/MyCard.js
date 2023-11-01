@@ -54,6 +54,7 @@ const MyCard = (props) => {
             style={{ width: '80%', height: '77%', alignSelf: 'center', justifyContent: 'center' }}
           />
         )}
+        
         <AppButton
           title="Thêm phương thức thanh toán"
           onPress={() => navigation.navigate('NewCard')}

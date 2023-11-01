@@ -68,6 +68,7 @@ const ChangePassword = (props) => {
             {touched.currentPassword && errors.currentPassword && (
               <Text style={{ color: 'red' }}>{errors.currentPassword}</Text>
             )}
+
             <AppInput
               returnKeyType={'done'}
               placeholder="Mật khẩu mới"
@@ -81,6 +82,7 @@ const ChangePassword = (props) => {
             {touched.newPassword && errors.newPassword && (
               <Text style={{ color: 'red' }}>{errors.newPassword}</Text>
             )}
+
             <AppInput
               returnKeyType={'done'}
               placeholder="Xác nhận mật khẩu mới"
@@ -94,6 +96,7 @@ const ChangePassword = (props) => {
             {touched.confirmPassword && errors.confirmPassword && (
               <Text style={{ color: 'red' }}>{errors.confirmPassword}</Text>
             )}
+
             <AppButton title="Cập nhật" marginTop={20} onPress={handleSubmit} />
           </View>
         )}

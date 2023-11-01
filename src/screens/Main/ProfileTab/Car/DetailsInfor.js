@@ -1,14 +1,15 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const DeleteAccount = () => {
+const DetailsInfor = (props) => {
+  const {navigation} = props;
   return (
     <View>
-      <Text>DeleteAccount</Text>
+      <Text>DetailsInfor</Text>
     </View>
   )
 }
 
-export default DeleteAccount
+export default DetailsInfor
 
 const styles = StyleSheet.create({})

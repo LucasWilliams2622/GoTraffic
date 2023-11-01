@@ -106,30 +106,31 @@ const NewAddress = (props) => {
                 text="Chi tiết địa chỉ"
                 onPress={() => navigation.navigate('MyAddress')}
             />
-            <View style={{ width: '100%', padding: 15 }}>
-                <Text style={[appStyle.text18, { fontWeight: '600' }]}>Loại địa chỉ</Text>
-                <View style={{ flexDirection: 'row', marginTop: 5 }}>
-                    <ButtonSelected
-                        text="Nhà riêng"
-                        icon={ICON.Home}
-                        isSelected={isSelected === 'Nhà riêng'}
-                        onPress={() => handleButtonPress('Nhà riêng')}
-                    />
-                    <ButtonSelected
-                        text="Công ty"
-                        icon={ICON.Company}
-                        isSelected={isSelected === 'Công ty'}
-                        onPress={() => handleButtonPress('Công ty')}
-                    />
-                    <ButtonSelected
-                        text="Khác"
-                        icon={ICON.Other}
-                        isSelected={isSelected === 'Khác'}
-                        onPress={() => handleButtonPress('Khác')}
-                    />
-                </View>
-                
-                <KeyboardAwareScrollView behavior='padding'>
+            <KeyboardAwareScrollView behavior='padding'>
+                <View style={{ width: '100%', padding: 15 }}>
+                    <Text style={[appStyle.text18, { fontWeight: '600' }]}>Loại địa chỉ</Text>
+                    <View style={{ flexDirection: 'row', marginTop: 5 }}>
+                        <ButtonSelected
+                            text="Nhà riêng"
+                            icon={ICON.Home}
+                            isSelected={isSelected === 'Nhà riêng'}
+                            onPress={() => handleButtonPress('Nhà riêng')}
+                        />
+                        <ButtonSelected
+                            text="Công ty"
+                            icon={ICON.Company}
+                            isSelected={isSelected === 'Công ty'}
+                            onPress={() => handleButtonPress('Công ty')}
+                        />
+                        <ButtonSelected
+                            text="Khác"
+                            icon={ICON.Other}
+                            isSelected={isSelected === 'Khác'}
+                            onPress={() => handleButtonPress('Khác')}
+                        />
+                    </View>
+
+
                     <View>
                         <Text style={[appStyle.text18, { fontWeight: '500', marginTop: 10 }]}>Tên gợi nhớ</Text>
                         <AppInput
@@ -221,13 +222,15 @@ const NewAddress = (props) => {
                             }}
                         />
                     </View>
+                    
                     <AppButton
                         title="Lưu"
                         marginTop={60}
                         onPress={() => handleSaveButtonPress()}
                     />
-                </KeyboardAwareScrollView>
-            </View>
+
+                </View>
+            </KeyboardAwareScrollView>
         </SafeAreaView>
     )
 }

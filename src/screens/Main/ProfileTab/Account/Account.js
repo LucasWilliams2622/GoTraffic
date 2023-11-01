@@ -51,7 +51,7 @@ const Account = (props) => {
       </View>
 
       <View style={{ width: '100%', alignItems: 'center', padding: 15 }}>
-        <FastImage source={require('../../../../assets/image/guide/img_friend.png')} style={[appStyle.avatar, { marginTop: 20 }]}></FastImage>
+        <FastImage source={require('../../../../assets/image/guide/img_friends.png')} style={[appStyle.avatar, { marginTop: 20 }]}></FastImage>
         <Text style={[appStyle.text24Bold, { marginTop: 12 }]}>{name}</Text>
         <View style={{ flexDirection: 'row' }}>
           <Text style={[appStyle.text12]}>

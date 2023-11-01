@@ -51,7 +51,7 @@ export const COLOR = {
   lightBlue: '#8ce0f5',
   lightYellow: '#FFEEDB',
   lightGreen: '#D8F2E1',
-  exit: '#ff2e2e',
+  exit: '#F25F57',
 };
 
 export const ICON = {
@@ -91,5 +91,6 @@ export const ICON = {
   Send: require('../assets/icon/ic_send.png'),
   Delete: require('../assets/icon/ic_delete.png'),
   Gift: require('../assets/icon/ic_gift.png'),
+  DropDown: require('../assets/icon/ic_down.png')
 
 }

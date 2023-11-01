@@ -4,7 +4,7 @@ import {
   Dimensions,
   PixelRatio,
 } from 'react-native';
-import {COLOR} from './Theme';
+import { COLOR } from './Theme';
 
 export const windowWidth = Dimensions.get('window').width;
 export const windowHeight = Dimensions.get('window').height;
@@ -138,6 +138,13 @@ export const appStyle = StyleSheet.create({
     letterSpacing: 0.5,
     color: COLOR.text,
   },
+  text165: {
+    fontSize: 16,
+    fontWeight: '500',
+    fontStyle: 'normal',
+    letterSpacing: 0.5,
+    color: COLOR.text,
+  },
   text16Bold: {
     fontSize: 16,
     fontWeight: 'bold',
@@ -205,9 +212,9 @@ export const appStyle = StyleSheet.create({
     letterSpacing: 0.5,
     color: COLOR.text,
   },
-  text500:{
+  text500: {
     fontSize: 18,
-    fontWeight:'500',
+    fontWeight: '500',
     fontStyle: 'normal',
     letterSpacing: 0.5,
     color: COLOR.text,
@@ -297,4 +304,16 @@ export const appStyle = StyleSheet.create({
     shadowRadius: 1.41,
     elevation: 15,
   },
+  cardInfo: {
+    width: '100%',
+    height: 'auto',
+    paddingVertical: 16,
+    borderTopWidth: 0.5,
+    borderTopColor: COLOR.borderColor2,
+  },
+  rowContent:{
+    flexDirection:'row',
+    justifyContent:'space-between',
+    alignItems:'center'
+  }
 });
