@@ -1,20 +1,20 @@
 {
   "project_info": {
-    "project_number": "974273860765",
-    "project_id": "auth-with-e3023",
-    "storage_bucket": "auth-with-e3023.appspot.com"
+    "project_number": "873917801307",
+    "project_id": "auth-with-f04eb",
+    "storage_bucket": "auth-with-f04eb.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:974273860765:android:5a55b7b26a2b5f60efb074",
+        "mobilesdk_app_id": "1:873917801307:android:27dd61934d01c54cc7307e",
         "android_client_info": {
           "package_name": "com.gotraffic"
         }
       },
       "oauth_client": [
         {
-          "client_id": "974273860765-peetifsgq043rdukvv0h4jk5jggai1p2.apps.googleusercontent.com",
+          "client_id": "873917801307-vcmtgrb5spibhfe3u8cfifs67cg23j4j.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.gotraffic",
@@ -22,20 +22,20 @@
           }
         },
         {
-          "client_id": "974273860765-ttpf3mc771c3ho2t7okvn7v57sb133pg.apps.googleusercontent.com",
+          "client_id": "873917801307-htf3r1tg2ndc9eqoq685d20f9099cqgj.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCyPqdMZ4DPLEk2urP6Oejz_-XD89SvC_E"
+          "current_key": "AIzaSyCe-klrybP-EUJZ5j99xWNPdm56gU1TVDI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "974273860765-ae2osh2v3oj8trmu1u5pvj365168n7qm.apps.googleusercontent.com",
+              "client_id": "873917801307-htf3r1tg2ndc9eqoq685d20f9099cqgj.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -30,16 +30,15 @@ const Login = props => {
   useEffect(() => {
     GoogleSignin.configure({
       webClientId:
-        '974273860765-ae2osh2v3oj8trmu1u5pvj365168n7qm.apps.googleusercontent.com',
+        '225655748998-h8s6r3m379t1kpijmk7pfhbgut94l2rm.apps.googleusercontent.com',
     });
   }, []);
 
   const signInGoogle = async () => {
-    await GoogleSignin.hasPlayServices();
-    const {idToken} = await GoogleSignin.signIn();
-    console.log(idToken);
     try {
-      
+      await GoogleSignin.hasPlayServices();
+      const {idToken} = await GoogleSignin.signIn();
+      console.log(idToken);
       const googleCredentials = auth.GoogleAuthProvider.credential(idToken);
       auth().signInWithCredential(googleCredentials);
       return userInfo;
