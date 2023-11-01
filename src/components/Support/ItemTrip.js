@@ -7,43 +7,60 @@ import {appStyle} from '../../constants/AppStyle';
 
 const ItemTrip = props => {
   const {data} = props;
-  const {image, name, bienSo, time, address, price, id} = data;
+  const {image, name, time, timeStart, timeEnd, price, id} = data;
   return (
-    <TouchableOpacity style={styles.container}>
-      <View style={[{alignSelf: 'flex-start'}]}>
-        <FastImage style={styles.logo} resizeMode={'stretch'} source={image} />
-      </View>
+    <View>
       <View
         style={{
+          flexDirection: 'row',
           justifyContent: 'space-between',
+          padding: 10,
         }}>
-        <Text style={[appStyle.text12]}>{time}</Text>
-        <Text style={[appStyle.text12, {paddingVertical: 4, fontWeight: 700}]}>
-          {name}
-        </Text>
-        <Text
-          style={[appStyle.text14Bold, {paddingVertical: 4, color: '#F26F25'}]}>
-          {bienSo}
-        </Text>
-        <View style={{flexDirection:'row'}}>
+        <View style={{flexDirection: 'row'}}>
           <FastImage
-            style={styles.logoMap}
+            style={{width: 20, height: 20}}
             resizeMode={'stretch'}
-            source={require('../../assets/image/logoMap.png')}
+            source={require('../../assets/icon/ic_warning.png')}
           />
-          <Text
-            style={[appStyle.text10, {paddingVertical: 4,paddingHorizontal:4, color: '#6A6565'}]}>
-            {address}
+          <Text style={[appStyle.text14, {marginLeft: 5}]}>Hoàn thành</Text>
+        </View>
+        <Text style={[appStyle.text14Bold]}>{time}</Text>
+      </View>
+      <TouchableOpacity style={styles.container}>
+        <View style={[{alignSelf: 'flex-start'}]}>
+          <FastImage
+            style={styles.image}
+            resizeMode={'stretch'}
+            source={image}
+          />
+        </View>
+        <View
+          style={{
+            justifyContent: 'space-between',
+          }}>
+          <View style={{flexDirection: 'row'}}>
+            <FastImage
+              style={styles.logoMap}
+              resizeMode={'stretch'}
+              source={require('../../assets/image/logoMap.png')}
+            />
+            <Text style={[appStyle.text10, {marginLeft: 5}]}>Tự lái</Text>
+          </View>
+          <View style={styles.line}></View>
+          <Text style={[appStyle.text16Bold]}>{name}</Text>
+          <Text style={[appStyle.text12, {marginTop: 5}]}>
+            📅 Bắt đầu: {timeStart}
+          </Text>
+          <Text style={[appStyle.text12, {marginTop: 5}]}>
+            📅 Kết thúc: {timeEnd}{' '}
+          </Text>
+          <Text style={{color: '#219EBC', fontWeight: '700', fontSize: 16,marginTop:10}}>
+            <Text style={{color: COLOR.black}}>Tổng giá tiền : </Text>
+            {price}
           </Text>
         </View>
-      </View>
-      <View style={styles.viewPrice}>
-        <Text style={{color: '#219EBC', fontWeight: '700', fontSize: 16}}>
-          {price}
-          <Text style={{color: COLOR.black}}>/NGÀY</Text>
-        </Text>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </View>
   );
 };
 
@@ -53,10 +70,10 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FFFFFF',
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-around',
     marginHorizontal: 4,
-    paddingVertical: 16,
-    paddingHorizontal: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 5,
     borderRadius: 14,
     borderColor: COLOR.borderColor,
     shadowColor: '#000',
@@ -67,20 +84,23 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    marginBottom: 20,
+    marginBottom: 10,
   },
-  viewPrice: {
-    marginTop: 50,
-  },
-  logo: {
-    width: 42,
-    height: 42,
+  image: {
+    width: 130,
+    height: 120,
     alignSelf: 'flex-start',
     marginLeft: -20,
+    borderRadius: 10,
   },
   logoMap: {
     width: 14,
     height: 15,
     marginTop: 2,
+  },
+  line: {
+    width: '100%',
+    height: 1,
+    color: COLOR.borderColor2,
   },
 });

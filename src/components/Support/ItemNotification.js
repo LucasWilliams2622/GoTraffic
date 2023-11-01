@@ -70,9 +70,9 @@ const ItemNotification = props => {
               rong chơi không cần nghĩ ngợi!
             </Text>
             <Pressable
-              style={[styles.button, styles.buttonClose]}
+              style={styles.buttonClose}
               onPress={() => setModalVisible(!isModalVisible)}>
-              <Text style={styles.textStyle}>Hide Modal</Text>
+              <Text style={{fontSize:15,textAlign:'center',color:COLOR.black}}>X</Text>
             </Pressable>
           </View>
         </View>
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalView: {
-    justifyContent:'space-between',
+    justifyContent: 'space-between',
     width: '100%',
     height: '98%',
     margin: 20,
@@ -128,5 +128,14 @@ const styles = StyleSheet.create({
     backgroundColor: COLOR.primary,
     marginBottom: 16,
     marginTop: 16,
+  },
+  buttonClose: {
+    borderRadius: 50,
+    backgroundColor: COLOR.gray,
+    width: 20,
+    height: 20,
+    position:'absolute',
+    top:5,
+    right:5
   },
 });

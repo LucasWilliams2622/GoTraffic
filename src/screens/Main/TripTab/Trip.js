@@ -73,14 +73,7 @@ const styles = StyleSheet.create({
   viewTitle: {
     flexDirection: 'row',
     justifyContent: 'center',
-    shadowColor: '#000000',
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 11.27,
-    elevation: 14,
+    borderBottomWidth:0.5
   },
   imageInvisible: {
     width: 192,
@@ -120,29 +113,29 @@ const styles = StyleSheet.create({
 const DATA = [
   {
     id: 1,
-    image: require('../../../assets/image/logoPerson.png'),
+    image: require('../../../assets/image/car.jpg'),
     time: '21/09/2023 | 20:30',
     name: 'KIA MORNING 2022',
-    bienSo: '50LD - 74953',
-    address: 'Quận Gò Vấp, Hồ Chí Minh',
-    price: '599K',
+    timeStart: '21h00,17/10/2023',
+    timeEnd: '21h00,18/10/2023',
+    price: '1.600.666đ',
   },
   {
     id: 2,
-    image: require('../../../assets/image/logoPerson.png'),
+    image: require('../../../assets/image/car.jpg'),
     time: '21/09/2023 | 20:30',
     name: 'KIA MORNING 2022',
-    bienSo: '50LD - 74953',
-    address: 'Quận Gò Vấp, Hồ Chí Minh',
-    price: '599K',
+    timeStart: '21h00,17/10/2023',
+    timeEnd: '21h00,18/10/2023',
+    price: '1.600.666đ',
   },
   {
     id: 3,
-    image: require('../../../assets/image/logo-fb.png'),
+    image: require('../../../assets/image/car.jpg'),
     time: '21/09/2023 | 20:30',
     name: 'KIA MORNING 2022',
-    bienSo: '50LD - 74953',
-    address: 'Quận Gò Vấp, Hồ Chí Minh',
-    price: '599K',
+    timeStart: '21h00,17/10/2023',
+    timeEnd: '21h00,18/10/2023',
+    price: '1.600.666đ',
   },
 ];
