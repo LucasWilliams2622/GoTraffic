@@ -23,6 +23,7 @@ export type Car = {
   id: number;
   images: string[];
   title: string;
+  price: number;
   rating: RatingItem[];
   totalRide: number;
   location: string;
@@ -58,6 +59,7 @@ export interface PressableIconProps {
   size: number;
   solid?: boolean;
   onPress: () => void;
+  style?: object;
 }
 
 export type SlideShowProps = {
