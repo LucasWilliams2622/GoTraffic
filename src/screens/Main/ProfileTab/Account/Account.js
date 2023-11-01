@@ -1,8 +1,8 @@
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { COLOR, ICON } from '../../../constants/Theme';
+import { COLOR, ICON } from '../../../../constants/Theme';
 import FastImage from 'react-native-fast-image';
-import { appStyle, windowHeight, windowWidth } from '../../../constants/AppStyle';
+import { appStyle, windowHeight, windowWidth } from '../../../../constants/AppStyle';
 
 const Account = (props) => {
   const { navigation, route } = props;
@@ -24,13 +24,13 @@ const Account = (props) => {
     if (route.params?.newName) {
       setName(route.params.newName);
     }
-    if (route.params?.newDob) {
-      setDob(route.params.newDob);
+    if (route.params?.newDOB) {
+      setDob(route.params.newDOB);
     }
-    if (route.params?.sex) {
-      setSex(route.params.sex);
+    if (route.params?.newSex) {
+      setSex(route.params.newSex);
     }
-  }, [route.params?.newName, route.params?.newDob, route.params?.sex])
+  }, [route.params?.newName, route.params?.newDOB, route.params?.newSex])
   return (
     <SafeAreaView style={[appStyle.container]}>
       <View style={styles.header}>
@@ -51,12 +51,13 @@ const Account = (props) => {
       </View>
 
       <View style={{ width: '100%', alignItems: 'center', padding: 15 }}>
-        <FastImage source={require('../../../assets/image/guide/img_friend.png')} style={[appStyle.avatar, { marginTop: 20 }]}></FastImage>
+        <FastImage source={require('../../../../assets/image/guide/img_friend.png')} style={[appStyle.avatar, { marginTop: 20 }]}></FastImage>
         <Text style={[appStyle.text24Bold, { marginTop: 12 }]}>{name}</Text>
         <View style={{ flexDirection: 'row' }}>
           <Text style={[appStyle.text12]}>
             Tham gia: 11/09/2023</Text>
         </View>
+        
         <View style={styles.viewEdit}>
           <View style={styles.viewText}>
             <Text style={appStyle.text14}>Ngày sinh</Text>

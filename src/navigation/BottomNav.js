@@ -11,22 +11,21 @@ import Profile from '../screens/Main/ProfileTab/Profile';
 import Notification from '../screens/Main/NotificationTab/Notification';
 import Support from '../screens/Main/SupportTab/Support';
 import Trip from '../screens/Main/TripTab/Trip';
-import Policy from '../screens/Main/ProfileTab/Policy';
 import FavouriteCar from '../screens/Main/ProfileTab/FavouriteCar';
-import MyCar from '../screens/Main/ProfileTab/MyCar';
-import MyAddress from '../screens/Main/ProfileTab/MyAddress';
+import MyAddress from '../screens/Main/ProfileTab/Address/MyAddress';
 import ShareWithFriend from '../screens/Main/ProfileTab/ShareWithFriend';
 import ChangePassword from '../screens/Main/ProfileTab/ChangePassword';
-import UpdateProfile from '../screens/Main/ProfileTab/UpdateProfile';
-import NewAddress from '../screens/Main/ProfileTab/NewAddress';
-import Account from '../screens/Main/ProfileTab/Account';
+import UpdateProfile from '../screens/Main/ProfileTab/Account/UpdateProfile';
+import NewAddress from '../screens/Main/ProfileTab/Address/NewAddress';
+import Account from '../screens/Main/ProfileTab/Account/Account';
 import Register from '../screens/Begin/Register';
 import Verified from '../screens/Begin/Verified';
-import MyCard from '../screens/Main/ProfileTab/MyCard';
+import MyCard from '../screens/Main/ProfileTab/Payment/MyCard';
 import TimePicking from '../screens/Main/HomeTab/TimePicking';
 import LocationPicking from '../screens/Main/HomeTab/LocationPicking';
-import NewCard from '../screens/Main/ProfileTab/NewCard';
+import NewCard from '../screens/Main/ProfileTab/Payment/NewCard';
 import CarDetail from '../screens/Main/HomeTab/CarDetail';
+import MyPromotion from '../screens/Main/ProfileTab/Gift/MyPromotion';
 
 
 
@@ -109,15 +108,14 @@ const StackProfile = () => {
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Account" component={Account} />
       <Stack.Screen name="FavouriteCar" component={FavouriteCar} />
-      <Stack.Screen name="MyCar" component={MyCar} />
       <Stack.Screen name="MyAddress" component={MyAddress} />
       <Stack.Screen name="ShareWithFriend" component={ShareWithFriend} />
-      <Stack.Screen name="Policy" component={Policy} />
       <Stack.Screen name="ChangePassword" component={ChangePassword} />
       <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
       <Stack.Screen name="NewAddress" component={NewAddress} />
       <Stack.Screen name="MyCard" component={MyCard} />
       <Stack.Screen name="NewCard" component={NewCard} />
+      <Stack.Screen name="MyPromotion" component={MyPromotion}/>
 
     </Stack.Navigator>
   );

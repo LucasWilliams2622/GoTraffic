@@ -1,11 +1,11 @@
 import { SafeAreaView, StyleSheet, Text, View, FlatList } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import Header from '../../../components/Header'
-import { appStyle } from '../../../constants/AppStyle'
-import { COLOR, ICON } from '../../../constants/Theme'
+import Header from '../../../../components/Header'
+import { appStyle } from '../../../../constants/AppStyle'
+import { COLOR, ICON } from '../../../../constants/Theme'
 import FastImage from 'react-native-fast-image'
-import AppButton from '../../../components/AppButton'
-import Address from '../../../components/Profile/Address'
+import AppButton from '../../../../components/AppButton'
+import Address from '../../../../components/Profile/Address'
 import { blue } from 'react-native-reanimated/lib/typescript/reanimated2/Colors'
 
 const MyAddress = (props) => {
@@ -32,13 +32,7 @@ const MyAddress = (props) => {
         onPress={() => navigation.navigate('Profile')}
         marginLeft={86}
       />
-      {/* <View style={{width: '100%', height: '75%', backgroundColor:'blue'}}>
-        <FastImage 
-          source={require('../../../assets/image/guide/img_address.png')}
-          style={{ width: '80%', height: '75%', alignSelf: 'center', justifyContent:'center' }}
-        />
-
-      </View> */}
+      
       <View style={{ padding: 15, width: '100%', alignItems: 'center' }}>
         <View style={{ height: '80%' }}>
           {hasAddress ? (
@@ -52,7 +46,7 @@ const MyAddress = (props) => {
 
           ) : (
               <FastImage
-                source={require('../../../assets/image/guide/img_address.png')}
+                source={require('../../../../assets/image/guide/img_address.png')}
                 onLoad={() => console.log('Hình ảnh đã được tải thành công')}
                 onError={(error) => console.error('Lỗi khi tải hình ảnh:', error)}
                 style={{ width: '80%', height: '80%', alignSelf: 'center', justifyContent: 'center' }}
