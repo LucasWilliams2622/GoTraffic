@@ -178,6 +178,7 @@ export const carDetailData = [
     location: 'Quận 4, TP HCM',
     type: 'Số tự động',
     price: 1200000,
+    licensePlate: '51A-12345',
     rating: [
       {
         ratingByUserId: 1,
@@ -250,6 +251,7 @@ export const carDetailData = [
     benefit: 'Giao xe tận nơi',
     type: 'Số tự động',
     price: 1234567,
+    licensePlate: '51A-23456',
     rating: [
       {
         ratingByUserId: 1,
@@ -343,6 +345,7 @@ export const carDetailData = [
     type: 'Số tự động',
     originalPrice: 1234567,
     price: 870000,
+    licensePlate: '51A-34567',
     rating: [
       {
         ratingByUserId: 1,
