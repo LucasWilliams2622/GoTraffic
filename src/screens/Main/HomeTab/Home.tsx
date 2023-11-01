@@ -75,9 +75,11 @@ const Home: React.FC = () => {
     useNavigation<NativeStackNavigationProp<StackScreenParamList, 'Home'>>();
 
   const [isSwipeEnabled, setSwipeEnabled] = useState<boolean>(true);
+  const [isModalVisible, setModalVisible] = useState<boolean>(false);
 
   const handleCarPress = (id: number) => {
     setSelectedCarId(id);
+    setModalVisible(true);
   };
 
   return (
@@ -121,16 +123,14 @@ const Home: React.FC = () => {
       />
 
       <Modal
-        isVisible={selectedCarId !== null}
+        isVisible={isModalVisible}
         style={{margin: 0}}
         onBackButtonPress={() => setSelectedCarId(null)}
-        onSwipeComplete={() => setSelectedCarId(null)}
-        // swipeDirection={isSwipeEnabled ? 'down' : undefined}
         swipeThreshold={50}>
         {selectedCarId && (
           <CarDetail
             car_id={selectedCarId}
-            close={() => setSelectedCarId(null)}
+            close={() => setModalVisible(false)}
             setSwipeEnabled={setSwipeEnabled}
           />
         )}
