@@ -32,7 +32,6 @@ import {
 } from '../../../types';
 import Modal from 'react-native-modal';
 import CarDetail from './CarDetail';
-import SwipeUpDownModal from 'react-native-swipe-modal-up-down';
 
 const RenderList: React.FC<RenderListProps<any>> = ({
   data,
