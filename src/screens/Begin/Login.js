@@ -35,14 +35,10 @@ const Login = props => {
   }, []);
 
   const signInGoogle = async () => {
-    console.log("123bc");
-
-    await GoogleSignin.hasPlayServices();
-    console.log("abc");
-    const { idToken } = await GoogleSignin.signIn();
-    console.log("idToken", idToken);
     try {
-
+      await GoogleSignin.hasPlayServices();
+      const {idToken} = await GoogleSignin.signIn();
+      console.log(idToken);
       const googleCredentials = auth.GoogleAuthProvider.credential(idToken);
       auth().signInWithCredential(googleCredentials);
       return userInfo;
