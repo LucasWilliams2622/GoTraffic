@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Svg, {SvgProps, Path} from 'react-native-svg';
-import {IconProps} from './ic_engine';
+import {IconProps} from '../../types';
 const MapIcon: React.FC<IconProps> = props => (
   <Svg
     width={props.width}

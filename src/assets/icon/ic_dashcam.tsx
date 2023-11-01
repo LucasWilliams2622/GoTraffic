@@ -1,7 +1,8 @@
 import * as React from 'react';
 import Svg, {SvgProps, Path} from 'react-native-svg';
+import {IconProps} from '../../types';
 /* SVGR has dropped some elements not supported by react-native-svg: title */
-const DashCamIcon = (props: SvgProps) => (
+const DashCamIcon: React.FC<IconProps> = props => (
   <Svg width={props.width} height={props.height} {...props}>
     <Path
       fill={props.color}

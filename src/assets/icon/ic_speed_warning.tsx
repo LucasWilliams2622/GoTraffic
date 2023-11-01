@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Svg, {SvgProps, G, Path, Defs, ClipPath} from 'react-native-svg';
-const SpeedWarningIcon = (props: SvgProps) => (
+import {IconProps} from '../../types';
+const SpeedWarningIcon: React.FC<IconProps> = props => (
   <Svg {...props} width={props.width} height={props.height} fill="none">
     <G clipPath="url(#a)">
       <Path

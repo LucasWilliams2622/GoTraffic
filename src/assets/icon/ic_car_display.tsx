@@ -1,7 +1,8 @@
 import {color} from 'native-base/lib/typescript/theme/styled-system';
 import * as React from 'react';
 import Svg, {SvgProps, Path, G, Mask, Defs, ClipPath} from 'react-native-svg';
-const CarScreenIcon = (props: SvgProps) => (
+import {IconProps} from '../../types';
+const CarScreenIcon: React.FC<IconProps> = props => (
   <Svg {...props} width={props.width} height={props.height} fill="none">
     <Path
       fill={props.color}
