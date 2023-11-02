@@ -10157,10 +10157,10 @@
   dependencies:
     "react" "^18.2.0"
 
-"react-native-pager-view@*", "react-native-pager-view@^6.2.1", "react-native-pager-view@>= 4.0.0":
-  "integrity" "sha512-fZ8chez5J+w831nSnbtK8hwlCiMy1DgpFv8xG6ajXLsAI8uMkGvP554QDIDNlUoCuVwMf7OFyd32Y2Nm2Iaj9Q=="
-  "resolved" "https://registry.npmjs.org/react-native-pager-view/-/react-native-pager-view-6.2.1.tgz"
-  "version" "6.2.1"
+"react-native-pager-view@*", "react-native-pager-view@^6.2.2", "react-native-pager-view@>= 4.0.0":
+  "integrity" "sha512-MLkJB7iP6v0Hd4/B4/R/gLCSE+YBtjxG/vHZYBDU+fI3U7HBYgKAg4o6ad8HxbKVcWWyRDNeeVRGISw1MUjlHw=="
+  "resolved" "https://registry.npmjs.org/react-native-pager-view/-/react-native-pager-view-6.2.2.tgz"
+  "version" "6.2.2"
 
 "react-native-paper@^5.10.6":
   "integrity" "sha512-n5r2S53/pGpHRyQV/n75W8ibU+VyamMGSqKWGSti9ZmChcgEWC0s4o/TnpUvmAKNZCQwcYwKSLrmMq5wR5nUNA=="

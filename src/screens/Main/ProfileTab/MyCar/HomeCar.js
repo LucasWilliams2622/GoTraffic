@@ -52,7 +52,7 @@ const HomeCar = props => {
           icon={ICON.Trip}
           title="Danh sách xe"
           text="Quản lí các xe đang cho thuê"
-          onPress={() => navigation.navigate('')}
+          onPress={() => navigation.navigate('ListCar')}
         />
         <AppHomeCar
           icon={ICON.Wallet}

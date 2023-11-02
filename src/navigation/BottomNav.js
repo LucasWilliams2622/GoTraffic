@@ -28,6 +28,8 @@ import LocationPicking from '../screens/Main/HomeTab/LocationPicking';
 import NewCard from '../screens/Main/ProfileTab/NewCard';
 import CarDetail from '../screens/Main/HomeTab/CarDetail';
 import HomeCar from '../screens/Main/ProfileTab/MyCar/HomeCar';
+import ListCar from '../screens/Main/ProfileTab/MyCar/ListCar';
+import DetailInListCar from '../screens/Main/ProfileTab/MyCar/DetailInListCar';
 
 
 
@@ -112,6 +114,8 @@ const StackProfile = () => {
       <Stack.Screen name="FavouriteCar" component={FavouriteCar} />
       <Stack.Screen name="MyCar" component={MyCar} />
       <Stack.Screen name="HomeCar" component={HomeCar} />
+      <Stack.Screen name="ListCar" component={ListCar} />
+      <Stack.Screen name="DetailInListCar" component={DetailInListCar} />
       <Stack.Screen name="MyAddress" component={MyAddress} />
       <Stack.Screen name="ShareWithFriend" component={ShareWithFriend} />
       <Stack.Screen name="Policy" component={Policy} />
