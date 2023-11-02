@@ -46,15 +46,24 @@ const Profile = (props) => {
             onPress={() =>
               navigation.navigate('Account', updateNewName(name))} />
 
-          <AppProfile
-            icon={ICON.Heart}
-            text="Xe yêu thích"
-            onPress={() => navigation.navigate('FavouriteCar')} />
+            <AppProfile
+              icon={ICON.Heart}
+              text="Xe yêu thích"
+              onPress={() => navigation.navigate('FavouriteCar')} />
 
-          <AppProfile
-            icon={ICON.Address}
-            text="Địa chỉ của tôi"
-            onPress={() => navigation.navigate('MyAddress')} />
+            <AppProfile
+              icon={ICON.Trip}
+              text="Xe của tôi"
+              onPress={() => navigation.navigate('MyCar')} />
+      <AppProfile
+              icon={ICON.Trip}
+              text="Xe của tôi"
+              onPress={() => navigation.navigate('HomeCar')} />
+
+            <AppProfile
+              icon={ICON.Address}
+              text="Địa chỉ của tôi"
+              onPress={() => navigation.navigate('MyAddress')} />
 
           <AppProfile
             icon={ICON.Wallet}
