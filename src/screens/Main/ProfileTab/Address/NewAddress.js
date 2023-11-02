@@ -10,6 +10,7 @@ import AppButton from '../../../../components/AppButton'
 import AppDropdown from '../../../../components/AppDropdown'
 import axios from 'axios';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import Switch from '../../../../components/Switch'
 
 const NewAddress = (props) => {
     const { navigation } = props;
@@ -27,7 +28,6 @@ const NewAddress = (props) => {
 
 
     const handleSaveButtonPress = () => {
-        // Lấy thông tin từ các trường nhập liệu
         const newAddress = {
             type: isSelected,
             nickName: nickName,
@@ -39,12 +39,9 @@ const NewAddress = (props) => {
         };
         const updatedAddresses = [...addresses];
 
-        // Thêm địa chỉ mới vào danh sách
         updatedAddresses.push(newAddress);
-        // Cập nhật danh sách địa chỉ
         setAddresses(updatedAddresses);
         console.log(newAddress);
-        // Sau đó, chuyển đến trang MyAddress
         navigation.navigate('MyAddress', { updatedAddresses: [newAddress] });
     };
 
@@ -93,7 +90,7 @@ const NewAddress = (props) => {
     }, [selectedDistrict]);
 
     const handleSwitchToggle = () => {
-        setonSwitch(!onSwitch); // Thay đổi giá trị của state khi SwitchToggle được bật/tắt
+        setonSwitch(!onSwitch);
     };
 
     const handleButtonPress = (buttonName) => {
@@ -106,30 +103,31 @@ const NewAddress = (props) => {
                 text="Chi tiết địa chỉ"
                 onPress={() => navigation.navigate('MyAddress')}
             />
-            <View style={{ width: '100%', padding: 15 }}>
-                <Text style={[appStyle.text18, { fontWeight: '600' }]}>Loại địa chỉ</Text>
-                <View style={{ flexDirection: 'row', marginTop: 5 }}>
-                    <ButtonSelected
-                        text="Nhà riêng"
-                        icon={ICON.Home}
-                        isSelected={isSelected === 'Nhà riêng'}
-                        onPress={() => handleButtonPress('Nhà riêng')}
-                    />
-                    <ButtonSelected
-                        text="Công ty"
-                        icon={ICON.Company}
-                        isSelected={isSelected === 'Công ty'}
-                        onPress={() => handleButtonPress('Công ty')}
-                    />
-                    <ButtonSelected
-                        text="Khác"
-                        icon={ICON.Other}
-                        isSelected={isSelected === 'Khác'}
-                        onPress={() => handleButtonPress('Khác')}
-                    />
-                </View>
-                
-                <KeyboardAwareScrollView behavior='padding'>
+            <KeyboardAwareScrollView behavior='padding'>
+                <View style={{ width: '100%', padding: 15 }}>
+                    <Text style={[appStyle.text18, { fontWeight: '600' }]}>Loại địa chỉ</Text>
+                    <View style={{ flexDirection: 'row', marginTop: 5 }}>
+                        <ButtonSelected
+                            text="Nhà riêng"
+                            icon={ICON.Home}
+                            isSelected={isSelected === 'Nhà riêng'}
+                            onPress={() => handleButtonPress('Nhà riêng')}
+                        />
+                        <ButtonSelected
+                            text="Công ty"
+                            icon={ICON.Company}
+                            isSelected={isSelected === 'Công ty'}
+                            onPress={() => handleButtonPress('Công ty')}
+                        />
+                        <ButtonSelected
+                            text="Khác"
+                            icon={ICON.Other}
+                            isSelected={isSelected === 'Khác'}
+                            onPress={() => handleButtonPress('Khác')}
+                        />
+                    </View>
+
+
                     <View>
                         <Text style={[appStyle.text18, { fontWeight: '500', marginTop: 10 }]}>Tên gợi nhớ</Text>
                         <AppInput
@@ -220,14 +218,17 @@ const NewAddress = (props) => {
                                 borderRadius: 20,
                             }}
                         />
+                        {/* <Switch switchOn={onSwitch} onPress={handleSwitchToggle}/> */}
                     </View>
+
                     <AppButton
                         title="Lưu"
                         marginTop={60}
                         onPress={() => handleSaveButtonPress()}
                     />
-                </KeyboardAwareScrollView>
-            </View>
+
+                </View>
+            </KeyboardAwareScrollView>
         </SafeAreaView>
     )
 }
