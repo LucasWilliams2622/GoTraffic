@@ -32,6 +32,7 @@ import DetailInListCar from '../screens/Main/ProfileTab/MyCar/DetailInListCar';
 
 import BasicInfor from '../screens/Main/ProfileTab/Car/BasicInfor';
 import DetailsInfor from '../screens/Main/ProfileTab/Car/DetailsInfor';
+import CarAddress from '../screens/Main/ProfileTab/Car/CarAddress';
 import MyCar from '../screens/Main/ProfileTab/MyCar'
 
 
@@ -129,6 +130,7 @@ const StackProfile = () => {
       {/* <Stack.Screen name="MyPromotion" component={MyPromotion}/> */}
       <Stack.Screen name="BasicInfor" component={BasicInfor}/>
       <Stack.Screen name="DetailsInfor" component={DetailsInfor}/>
+      <Stack.Screen name="CarAddress" component={CarAddress}/>
 
     </Stack.Navigator>
   );

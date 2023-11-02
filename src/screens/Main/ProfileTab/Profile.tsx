@@ -46,24 +46,28 @@ const Profile = (props) => {
             onPress={() =>
               navigation.navigate('Account', updateNewName(name))} />
 
-            <AppProfile
-              icon={ICON.Heart}
-              text="Xe yêu thích"
-              onPress={() => navigation.navigate('FavouriteCar')} />
+          <AppProfile
+            icon={ICON.Heart}
+            text="Xe yêu thích"
+            onPress={() => navigation.navigate('FavouriteCar')} />
 
-            <AppProfile
-              icon={ICON.Trip}
-              text="Xe của tôi"
-              onPress={() => navigation.navigate('MyCar')} />
-      <AppProfile
-              icon={ICON.Trip}
-              text="Xe của tôi"
-              onPress={() => navigation.navigate('HomeCar')} />
+          <AppProfile
+            icon={ICON.Trip}
+            text="Xe của tôi"
+            onPress={() => navigation.navigate('MyCar')} />
+          <AppProfile
+            icon={ICON.Trip}
+            text="Xe của tôi"
+            onPress={() => navigation.navigate('HomeCar')} />
+          <AppProfile
+            icon={ICON.Trip}
+            text="Thêm Xe"
+            onPress={() => navigation.navigate('BasicInfor')} />
 
-            <AppProfile
-              icon={ICON.Address}
-              text="Địa chỉ của tôi"
-              onPress={() => navigation.navigate('MyAddress')} />
+          <AppProfile
+            icon={ICON.Address}
+            text="Địa chỉ của tôi"
+            onPress={() => navigation.navigate('MyAddress')} />
 
           <AppProfile
             icon={ICON.Wallet}
@@ -112,7 +116,7 @@ const Profile = (props) => {
         visible={isModalVisible}>
         <TouchableOpacity
           style={styles.modalBackdrop}
-          onPress={toggleModal} 
+          onPress={toggleModal}
         />
         <View style={styles.modalContainer}>
           <Text style={[appStyle.text20Bold, { marginVertical: 20 }]}>CẢNH BÁO</Text>
@@ -129,7 +133,7 @@ const Profile = (props) => {
             điều khoản chính sách xóa tài khoản của Mioto. {'\n\n'} Yêu cầu xóa tài khoản
             sẽ được xử lý trong 15 ngày làm việc. Mioto sẽ liên hệ trực tiếp với bạn qua
             Email hoặc số điện thoại bạn đã cung cấp. {'\n\n'} Mọi thắc mắc xin liên hệ Fanpage
-            của Mioto hoặc hotline <Text style={{fontWeight: 'bold'}}>1900 9217</Text>  để được hỗ trợ
+            của Mioto hoặc hotline <Text style={{ fontWeight: 'bold' }}>1900 9217</Text>  để được hỗ trợ
           </Text>
 
           <AppButton
@@ -137,7 +141,7 @@ const Profile = (props) => {
             marginTop={50}
             onPress={() => toggleModal()}
           />
-          <Text style={[appStyle.text14Bold, {marginTop: 15}]}>Xác nhận</Text>
+          <Text style={[appStyle.text14Bold, { marginTop: 15 }]}>Xác nhận</Text>
         </View>
       </Modal>
     </SafeAreaView >
@@ -168,11 +172,11 @@ const styles = StyleSheet.create({
   modalContainer: {
     backgroundColor: 'white',
     position: 'absolute',
-    top: '50%', 
-    left: '50%', 
+    top: '50%',
+    left: '50%',
     transform: [{ translateX: -windowWidth * 0.45 }, { translateY: -windowHeight * 0.36 }],
-    width: windowWidth * 0.9, 
-    height: windowHeight * 0.72, 
+    width: windowWidth * 0.9,
+    height: windowHeight * 0.72,
     borderRadius: 12,
     paddingHorizontal: 25,
     paddingBottom: 10,

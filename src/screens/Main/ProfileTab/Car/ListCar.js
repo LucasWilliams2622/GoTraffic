@@ -27,7 +27,7 @@ const ListCar = (props) => {
                     <ItemCar
                         name={item.name}
                         status={item.status}
-                        rating={item.rating}
+                        trip={item.trip}
                         selfDrivePrice={item.selfDrivePrice}
                         location={item.location}
                     />

@@ -1,5 +1,5 @@
 import { SafeAreaView, StyleSheet, Text, View, ScrollView, TouchableOpacity, Modal, PermissionsAndroid } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { appStyle, windowHeight, windowWidth } from '../../../../constants/AppStyle';
 import Header from '../../../../components/Header';
 import { COLOR, ICON } from '../../../../constants/Theme';
@@ -12,17 +12,31 @@ import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
 
 const DetailsInfor = (props) => {
-  const { navigation } = props;
+  const { navigation, route } = props;
+  const { carInfo } = route.params;
+  const { newAddress } = route.params; 
+
+  const [description, setDescription] = useState(null);
+  const [fuelConsumption, setFuelConsumption] = useState(null);
+  const [price, setPrice] = useState(null);
   const [selectedFeatures, setSelectedFeatures] = useState([]);
+  const [carAddress, setCarAddress] = useState(null);
   const [onSwitch, setonSwitch] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [isCameraModalVisible, setIsCameraModalVisible] = useState(false);
   const [selectedImageType, setSelectedImageType] = useState(null);
-  const [imageFront, setImageFront] = useState(null);
-  const [imageLeft, setImageLeft] = useState(null);
-  const [imageRight, setImageRight] = useState(null);
-  const [imageBack, setImageBack] = useState(null);
+  const [carImages, setCarImages] = useState({
+    front: null,
+    back: null,
+    left: null,
+    right: null,
+  });
 
+
+  const handleComplete = () => {
+    const combinedInfo = { ...carInfo, description, fuelConsumption, price, selectedFeatures, images: carImages, };
+    console.log('Thông tin xe:', combinedInfo);
+  };
 
 
   const handleFeatureSelection = (featureName) => {
@@ -91,19 +105,31 @@ const DetailsInfor = (props) => {
 
         switch (selectedImageType) {
           case 'front':
-            setImageFront(result.assets[0].uri);
+            setCarImages((prevImages) => ({
+              ...prevImages,
+              front: result.assets[0].uri,
+            }));
             console.log(result.assets[0].uri);
             break;
           case 'left':
-            setImageLeft(result.assets[0].uri);
+            setCarImages((prevImages) => ({
+              ...prevImages,
+              left: result.assets[0].uri,
+            }));
             console.log(result.assets[0].uri);
             break;
           case 'right':
-            setImageRight(result.assets[0].uri);
+            setCarImages((prevImages) => ({
+              ...prevImages,
+              right: result.assets[0].uri,
+            }));
             console.log(result.assets[0].uri);
             break;
           case 'back':
-            setImageBack(result.assets[0].uri);
+            setCarImages((prevImages) => ({
+              ...prevImages,
+              back: result.assets[0].uri,
+            }));
             console.log(result.assets[0].uri);
             break;
           default:
@@ -133,25 +159,36 @@ const DetailsInfor = (props) => {
         console.log(response.assets[0].uri);
         switch (selectedImageType) {
           case 'front':
-            setImageFront(response.assets[0].uri);
+            setCarImages((prevImages) => ({
+              ...prevImages,
+              front: response.assets[0].uri,
+            }));
             setIsCameraModalVisible(false);
             break;
           case 'left':
-            setImageLeft(response.assets[0].uri);
+            setCarImages((prevImages) => ({
+              ...prevImages,
+              left: response.assets[0].uri,
+            }));
             setIsCameraModalVisible(false);
             break;
           case 'right':
-            setImageRight(response.assets[0].uri);
+            setCarImages((prevImages) => ({
+              ...prevImages,
+              right: response.assets[0].uri,
+            }));
             setIsCameraModalVisible(false);
             break;
           case 'back':
-            setImageBack(response.assets[0].uri);
+            setCarImages((prevImages) => ({
+              ...prevImages,
+              back: response.assets[0].uri,
+            }));
             setIsCameraModalVisible(false);
             break;
           default:
             break;
         }
-        setIsCameraModalVisible(false);
       }
     });
   };
@@ -177,12 +214,12 @@ const DetailsInfor = (props) => {
                   borderRadius: 5,
                   paddingHorizontal: 7
                 }}
-              //onPress={()=> navigation.navigate('')}
+                onPress={() => navigation.navigate('CarAddress')}
               >
                 <Text style={[appStyle.text12Bold, { color: COLOR.fifth, margin: 3 }]}>Thay đổi</Text>
               </TouchableOpacity>
             </View>
-            <Text>0223 Nguyễn Du </Text>
+            <Text>{newAddress ? newAddress.address : '0223 Nguyễn Du'}</Text>
           </View>
 
           {/* Đặt xe nhanh */}
@@ -246,6 +283,9 @@ const DetailsInfor = (props) => {
               height={windowHeight * 0.17}
               marginTop={8}
               placeholder="Mô tả xe của bạn"
+              value={description}
+              onChangeText={(text) => setDescription(text)}
+
             />
           </View>
 
@@ -258,6 +298,8 @@ const DetailsInfor = (props) => {
                   placeholder="0"
                   width={windowWidth * 0.15}
                   borderWidth={0}
+                  value={fuelConsumption}
+                  onChangeText={(text) => setFuelConsumption(text)}
                 />
                 <Text>lít/100 km</Text>
               </View>
@@ -290,6 +332,8 @@ const DetailsInfor = (props) => {
                   width={windowWidth * 0.2}
                   fontSize={18}
                   borderWidth={0}
+                  value={price}
+                  onChangeText={(text) => setPrice(text)}
                 />
                 <Text style={[appStyle.text18Bold, { color: COLOR.primary }]}>K</Text>
               </View>
@@ -307,18 +351,17 @@ const DetailsInfor = (props) => {
             <View style={[styles.featuresContainer, { paddingHorizontal: 10 }]}>
               <TouchableOpacity onPress={() => cameraModal('front')}>
                 <View style={{ width: 170, height: 100, backgroundColor: '#D9D9D9', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
-                  {imageFront ? (
-                    <FastImage source={{ uri: imageFront }} style={{ width: 170, height: 100 }} />
+                  {carImages.front ? (
+                    <FastImage source={{ uri: carImages.front }} style={{ width: 170, height: 100 }} />
                   ) : (
                     <FastImage source={ICON.Picture} style={{ width: 160, height: 100 }} />
                   )}
-
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => cameraModal('back')}>
                 <View style={{ width: 170, height: 100, backgroundColor: '#D9D9D9', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
-                  {imageBack ? (
-                    <FastImage source={{ uri: imageBack }} style={{ width: 170, height: 100 }} />
+                  {carImages.back ? (
+                    <FastImage source={{ uri: carImages.back }} style={{ width: 170, height: 100 }} />
                   ) : (
                     <FastImage source={ICON.Picture} style={{ width: 160, height: 100 }} />
                   )}
@@ -327,8 +370,8 @@ const DetailsInfor = (props) => {
               </TouchableOpacity>
               <TouchableOpacity onPress={() => cameraModal('left')}>
                 <View style={{ width: 170, height: 100, backgroundColor: '#D9D9D9', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
-                  {imageLeft ? (
-                    <FastImage source={{ uri: imageLeft }} style={{ width: 170, height: 100 }} />
+                  {carImages.left ? (
+                    <FastImage source={{ uri: carImages.left }} style={{ width: 170, height: 100 }} />
                   ) : (
                     <FastImage source={ICON.Picture} style={{ width: 160, height: 100 }} />
                   )}
@@ -337,8 +380,8 @@ const DetailsInfor = (props) => {
               </TouchableOpacity>
               <TouchableOpacity onPress={() => cameraModal('right')}>
                 <View style={{ width: 170, height: 100, backgroundColor: '#D9D9D9', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
-                  {imageRight ? (
-                    <FastImage source={{ uri: imageRight }} style={{ width: 170, height: 100 }} />
+                  {carImages.right ? (
+                    <FastImage source={{ uri: carImages.right }} style={{ width: 170, height: 100 }} />
                   ) : (
                     <FastImage source={ICON.Picture} style={{ width: 160, height: 100 }} />
                   )}
@@ -351,7 +394,7 @@ const DetailsInfor = (props) => {
         <AppButton
           title="Hoàn tất"
           marginBottom={70}
-          onPress={() => navigation.navigate('ListCar')}
+          onPress={() => handleComplete()}
         />
       </View>
 
@@ -397,7 +440,7 @@ const DetailsInfor = (props) => {
         visible={isCameraModalVisible}>
         <TouchableOpacity
           style={styles.modalBackdrop}
-          onPress={cameraModal}
+          onPress={() => setIsCameraModalVisible(false)}
         />
         <View style={styles.modalContainerCam}>
           <AppButton
