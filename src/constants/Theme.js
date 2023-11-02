@@ -60,7 +60,6 @@ export const ICON = {
   Trip: require('../assets/icon/ic_car.png'),
   Support: require('../assets/icon/ic_message.png'),
   Profile: require('../assets/icon/ic_user.png'),
-
   HomeFocus: require('../assets/icon/ic_home_focus.png'),
   NotificationFocus: require('../assets/icon/ic_notification_focus.png'),
   TripFocus: require('../assets/icon/ic_car_focus.png'),
@@ -91,5 +90,5 @@ export const ICON = {
   Send: require('../assets/icon/ic_send.png'),
   Delete: require('../assets/icon/ic_delete.png'),
   Gift: require('../assets/icon/ic_gift.png'),
-
+  Calendar: require('../assets/icon/ic_calendar.png'),
 }

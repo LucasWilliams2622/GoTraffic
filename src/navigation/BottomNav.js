@@ -29,6 +29,11 @@ import MyPromotion from '../screens/Main/ProfileTab/Gift/MyPromotion';
 import HomeCar from '../screens/Main/ProfileTab/MyCar/HomeCar';
 import ListCar from '../screens/Main/ProfileTab/MyCar/ListCar';
 import DetailInListCar from '../screens/Main/ProfileTab/MyCar/DetailInListCar';
+import GeneralInformation from '../screens/Main/ProfileTab/MyCar/GeneralInformation';
+import RentCost from '../screens/Main/ProfileTab/MyCar/RentCost';
+import CalendarOfCar from '../screens/Main/ProfileTab/MyCar/CalendarOfCar';
+import CarDelivery from '../screens/Main/ProfileTab/MyCar/CarDelivery';
+import Surcharge from '../screens/Main/ProfileTab/MyCar/Surcharge';
 
 
 
@@ -112,10 +117,15 @@ const StackProfile = () => {
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Account" component={Account} />
       <Stack.Screen name="FavouriteCar" component={FavouriteCar} />
-      <Stack.Screen name="MyCar" component={MyCar} />
+
       <Stack.Screen name="HomeCar" component={HomeCar} />
       <Stack.Screen name="ListCar" component={ListCar} />
       <Stack.Screen name="DetailInListCar" component={DetailInListCar} />
+      <Stack.Screen name="GeneralInformation" component={GeneralInformation} />
+      <Stack.Screen name="RentCost" component={RentCost} />
+      <Stack.Screen name="CalendarOfCar" component={CalendarOfCar} />
+      <Stack.Screen name="CarDelivery" component={CarDelivery} />
+      <Stack.Screen name="Surcharge" component={Surcharge} />
       <Stack.Screen name="MyAddress" component={MyAddress} />
       <Stack.Screen name="ShareWithFriend" component={ShareWithFriend} />
       <Stack.Screen name="ChangePassword" component={ChangePassword} />

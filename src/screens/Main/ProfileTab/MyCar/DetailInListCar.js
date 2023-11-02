@@ -12,27 +12,38 @@ import {appStyle} from '../../../../constants/AppStyle';
 import {COLOR, ICON} from '../../../../constants/Theme';
 import AppProfile from '../../../../components/AppProfile';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
+
+
+const DetailInListCar = props => {
+  const {navigation} = props;
+  const goBack = () => {
+    navigation.goBack('Profile');
+  };
+  const goInfor = () => {
+    navigation.navigate('GeneralInformation');
+  };
+  const layout = useWindowDimensions();
 const FirstRoute = () => (
   <View style={{flex: 1, padding: 10}}>
     <AppProfile
       icon={ICON.Trip}
       text="Giá cho thuê"
-      onPress={() => navigation.navigate('ListCar')}
+      onPress={() => navigation.navigate('RentCost')}
     />
     <AppProfile
-      icon={ICON.Card}
+      icon={ICON.Calendar}
       text="Lịch xe"
-      onPress={() => navigation.navigate('')}
+      onPress={() => navigation.navigate('CalendarOfCar')}
     />
     <AppProfile
       icon={ICON.Heart}
       text="Giao xe tận nơi"
-      onPress={() => navigation.navigate('')}
+      onPress={() => navigation.navigate('CarDelivery')}
     />
     <AppProfile
-      icon={ICON.Policy}
+      icon={ICON.Card}
       text="Phụ phí"
-      onPress={() => navigation.navigate('')}
+      onPress={() => navigation.navigate('Surcharge')}
     />
   </View>
 );
@@ -40,14 +51,6 @@ const FirstRoute = () => (
 const SecondRoute = () => (
   <View style={{flex: 1, backgroundColor: '#673ab7'}} />
 );
-
-const DetailInListCar = props => {
-  const {navigation} = props;
-  const goBack = () => {
-    navigation.goBack('Profile');
-  };
-  const layout = useWindowDimensions();
-
   const renderScene = SceneMap({
     first: FirstRoute,
     second: SecondRoute,
@@ -82,7 +85,7 @@ const DetailInListCar = props => {
       </TouchableOpacity>
       <TouchableOpacity>
         <FastImage
-          source={require('../../../../assets/icon/ic_add.png')}
+          source={require('../../../../assets/icon/ic_garbage.png')}
           style={{
             position: 'absolute',
             right: 10,
@@ -110,7 +113,7 @@ const DetailInListCar = props => {
               style={[
                 appStyle.text14Bold,
                 {marginTop: 10, color: COLOR.primary},
-              ]}>
+              ]} onPress={goInfor}>
               Thông tin chung {'>'}{' '}
             </Text>
           </View>

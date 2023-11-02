@@ -1,17 +1,19 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
-import {FlatList} from 'native-base';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {appStyle} from '../../../../constants/AppStyle';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {COLOR} from '../../../../constants/Theme';
 import FastImage from 'react-native-fast-image';
-import ItemListCar from '../../../../components/Support/ItemListCar';
+import {Calendar, LocaleConfig} from 'react-native-calendars';
+import {CalendarList} from 'react-native-calendars';
 
-const ListCar = (props) => {
+const CalendarOfCar = props => {
   const {navigation} = props;
   const goBack = () => {
-    navigation.goBack('HomeCar');
+    navigation.goBack('DetailInListCar');
   };
+  const [selected, setSelected] = useState('');
+
   return (
     <SafeAreaView style={appStyle.container}>
       <View style={styles.viewTitle}>
@@ -27,8 +29,7 @@ const ListCar = (props) => {
             }}
           />
         </TouchableOpacity>
-        <Text style={styles.title}>Danh sách xe</Text>
-
+        <Text style={styles.title}>Lịch xe</Text>
         <TouchableOpacity>
           <FastImage
             source={require('../../../../assets/icon/ic_add.png')}
@@ -42,30 +43,41 @@ const ListCar = (props) => {
           />
         </TouchableOpacity>
       </View>
-      <FlatList
-        style={appStyle.main}
-        data={DATA}
-        renderItem={({item}) => <ItemListCar data={item} />}
-        keyExtractor={item => item._id}
-        showsVerticalScrollIndicator={false}></FlatList>
+      <CalendarList
+        // Callback which gets executed when visible months change in scroll view. Default = undefined
+        onVisibleMonthsChange={months => {
+          console.log('now these months are visible', months);
+        }}
+        pastScrollRange={0}
+        futureScrollRange={2}
+        // Enable or disable scrolling of calendar list
+        scrollEnabled={true}
+        // Enable or disable vertical scroll indicator. Default = false
+        showScrollIndicator={true}
+        style={{marginBottom: 100}}
+        theme={{
+          'stylesheet.calendar.header': {
+            dayTextAtIndex5: {
+              color: COLOR.orange,
+            },
+            dayTextAtIndex6: {
+              color: COLOR.orange,
+            },
+          },
+        }}
+      />
     </SafeAreaView>
   );
 };
 
-export default ListCar;
+export default CalendarOfCar;
 
 const styles = StyleSheet.create({
   viewTitle: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    height: 70,
     borderBottomWidth: 0.5,
-  },
-  image: {
-    width: '100%',
-    height: '30%',
-    position: 'absolute',
-    borderBottomRightRadius: 10,
-    borderBottomLeftRadius: 10,
   },
   title: {
     fontSize: 24,
@@ -75,13 +87,15 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 14,
   },
-});
-const DATA = [
-  {
-    id: 1,
-    image: require('../../../../assets/image/car.jpg'),
-    name: 'KIA MORNING 2022',
-    price: '750K',
-    address:'Huyện Tân Thành,Bà Rịa - Vũng Tàu '
+  line1: {
+    width: '100%',
+    height: '30%',
+    padding: 14,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+
+    marginBottom: 10,
+    backgroundColor: COLOR.black,
   },
-];
+});

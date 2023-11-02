@@ -48,7 +48,7 @@ const Profile = (props) => {
               icon={ICON.Trip}
               text="Xe của tôi"
               onPress={() => navigation.navigate('MyCar')} />
-      <AppProfile
+            <AppProfile
               icon={ICON.Trip}
               text="Xe của tôi"
               onPress={() => navigation.navigate('HomeCar')} />
