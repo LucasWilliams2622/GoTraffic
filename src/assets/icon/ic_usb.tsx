@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Svg, {SvgProps, Path} from 'react-native-svg';
-const UsbIcon = (props: SvgProps) => (
+import {IconProps} from '../../types';
+const UsbIcon: React.FC<IconProps> = props => (
   <Svg width={props.width} height={props.height} data-name="Layer 1" {...props}>
     <Path
       fill={props.color}

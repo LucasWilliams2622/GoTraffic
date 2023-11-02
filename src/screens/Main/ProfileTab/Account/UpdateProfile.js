@@ -5,7 +5,7 @@ import { COLOR, ICON } from '../../../../constants/Theme'
 import FastImage from 'react-native-fast-image'
 import AppInput from '../../../../components/AppInput'
 import AppButton from '../../../../components/AppButton'
-import { launchCamera, ImagePicker } from 'react-native-image-picker';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import Header from '../../../../components/Header'
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -48,6 +48,24 @@ const UpdateProfile = (props) => {
         }
     };
 
+    const chooseImage = () => {
+        const options = {
+            mediaType: 'photo',
+        };
+
+        launchImageLibrary(options, (response) => {
+            if (response.didCancel) {
+                console.log('Hủy chọn ảnh');
+            } else if (response.error) {
+                console.log('Lỗi:', response.error);
+            } else {
+                console.log(response.assets[0].uri);
+                setImage(response.assets[0].uri);
+                toggleModal();
+            }
+        });
+    };
+
     const AccountSchema = Yup.object().shape({
         name: Yup.string()
             .min(1, 'Quá ngắn')
@@ -77,7 +95,7 @@ const UpdateProfile = (props) => {
                 {image ? (
                     <FastImage source={{ uri: image }} style={[appStyle.avatar, { marginTop: 20 }]} />
                 ) : (
-                    <FastImage source={require('../../../../assets/image/guide/img_friend.png')} style={[appStyle.avatar, { marginTop: 20 }]} />
+                    <FastImage source={require('../../../../assets/image/guide/img_friends.png')} style={[appStyle.avatar, { marginTop: 20 }]} />
                 )}
 
                 {/* Capture image */}
@@ -101,13 +119,14 @@ const UpdateProfile = (props) => {
                         <AppButton
                             title="Chụp ảnh"
                             marginTop={5}
-                            onPress={requestCameraPermission}
+                            onPress={() => requestCameraPermission()}
                         />
                         <AppButton
                             title="Chọn ảnh"
-                            marginTop={5}
+                            marginTop={15}
                             backgroundColor={COLOR.background}
                             textColor={COLOR.primary}
+                            onPress={() => chooseImage()}
                         />
                     </View>
                 </Modal>
@@ -121,19 +140,14 @@ const UpdateProfile = (props) => {
                             sex: 'Nữ',
                         }}
                         validationSchema={AccountSchema}
-                        // onSubmit={(values) =>{
-                        //     console.log(values);
-                        // }}
                         onSubmit={(values, { setSubmitting }) => {
                             // Kiểm tra tính hợp lệ bằng cách sử dụng setSubmitting
                             setSubmitting(true); // Đánh dấu rằng việc xác thực đang diễn ra
-                    
-                            // Thực hiện xác thực bằng Yup và tùy chỉnh xử lý dựa trên kết quả
                             AccountSchema.validate(values)
                                 .then(valid => {
                                     if (valid) {
                                         // Dữ liệu hợp lệ, thực hiện cập nhật và chuyển đến trang Account
-                                        navigation.navigate('Account',{
+                                        navigation.navigate('Account', {
                                             newName: values.name,
                                             newDOB: values.dob,
                                             newSex: values.sex,
@@ -151,7 +165,7 @@ const UpdateProfile = (props) => {
                                 });
                         }}
                     >
-                        {({ values,errors, touched, handleChange, setFieldTouched, handleSubmit }) => (
+                        {({ values, errors, touched, handleChange, setFieldTouched, handleSubmit }) => (
                             <>
                                 <View style={{ width: '100%', height: 'auto' }}>
                                     <Text style={[appStyle.text14, { color: COLOR.text2 }]}>Tên người dùng</Text>
@@ -160,7 +174,6 @@ const UpdateProfile = (props) => {
                                         value={values.name}
                                         onChangeText={handleChange('name')}
                                         onBlur={() => setFieldTouched('name')}
-                                        //onBlur={handleBlur('name')}
                                     />
                                     {touched.name && errors.name && (
                                         <Text style={{ color: 'red' }}>{errors.name}</Text>
@@ -234,10 +247,10 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 10,
         alignSelf: 'center',
-        width: '95%',
-        height: windowHeight * 0.16,
-        borderTopRightRadius: 10,
-        borderTopLeftRadius: 10,
+        width: '100%',
+        height: windowHeight * 0.18,
+        borderTopRightRadius: 20,
+        borderTopLeftRadius: 20,
         paddingHorizontal: 10,
         paddingBottom: 10,
         justifyContent: 'center',

@@ -4,7 +4,7 @@ import {
   Dimensions,
   PixelRatio,
 } from 'react-native';
-import {COLOR} from './Theme';
+import { COLOR } from './Theme';
 
 export const windowWidth = Dimensions.get('window').width;
 export const windowHeight = Dimensions.get('window').height;
@@ -51,13 +51,13 @@ export const appStyle = StyleSheet.create({
   },
 
   avatar: {
-    width: 120,
-    height: 120,
+    width: 60,
+    height: 60,
     alignSelf: 'center',
     justifyContent: 'center',
     borderRadius: 60,
     borderColor: COLOR.background,
-    borderWidth: 2
+    borderWidth: 2,
   },
   portrait: {
     height: 160,
@@ -107,7 +107,6 @@ export const appStyle = StyleSheet.create({
     color: COLOR.text,
   },
 
-
   text12Bold: {
     fontSize: 12,
     fontWeight: 'bold',
@@ -134,6 +133,13 @@ export const appStyle = StyleSheet.create({
   text16: {
     fontSize: 16,
     fontWeight: '400',
+    fontStyle: 'normal',
+    letterSpacing: 0.5,
+    color: COLOR.text,
+  },
+  text165: {
+    fontSize: 16,
+    fontWeight: '500',
     fontStyle: 'normal',
     letterSpacing: 0.5,
     color: COLOR.text,
@@ -205,9 +211,9 @@ export const appStyle = StyleSheet.create({
     letterSpacing: 0.5,
     color: COLOR.text,
   },
-  text500:{
-    fontSize: 18,
-    fontWeight:'500',
+  text500: {
+    fontSize: 16,
+    fontWeight: '500',
     fontStyle: 'normal',
     letterSpacing: 0.5,
     color: COLOR.text,
@@ -297,4 +303,16 @@ export const appStyle = StyleSheet.create({
     shadowRadius: 1.41,
     elevation: 15,
   },
+  cardInfo: {
+    width: '100%',
+    height: 'auto',
+    paddingVertical: 16,
+    borderTopWidth: 0.5,
+    borderTopColor: COLOR.borderColor2,
+  },
+  rowContent:{
+    flexDirection:'row',
+    justifyContent:'space-between',
+    alignItems:'center'
+  }
 });

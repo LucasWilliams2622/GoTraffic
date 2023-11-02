@@ -1,12 +1,7 @@
 import {StyleSheet, View} from 'react-native';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
-
-interface PromotionProps {
-  image: string;
-  width: number;
-  height: number;
-}
+import {PromotionProps} from '../../../types';
 
 const Promotion = ({image, width, height}: PromotionProps) => {
   return (

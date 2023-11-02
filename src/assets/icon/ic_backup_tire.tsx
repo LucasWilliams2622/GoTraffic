@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Svg, {SvgProps, Path} from 'react-native-svg';
-const BackupTireIcon = (props: SvgProps) => (
+import {IconProps} from '../../types';
+const BackupTireIcon: React.FC<IconProps> = props => (
   <Svg width={props.width} height={props.height} data-name="Layer 1" {...props}>
     <Path
       fill={props.color}

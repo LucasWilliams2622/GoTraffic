@@ -1,4 +1,4 @@
-import { Clipboard, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Clipboard, ImageBackground, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { appStyle, windowHeight, windowWidth } from '../../../constants/AppStyle'
 import Header from '../../../components/Header'
@@ -9,7 +9,7 @@ const ShareWithFriend = (props) => {
   const { navigation } = props;
 
   const handleCopyCode = () => {
-    const referralCode = 'ATXmk09GH'; 
+    const referralCode = 'ATXmk09GH';
     Clipboard.setString(referralCode);
 
     // Kiểm tra copy thành công hay không
@@ -24,14 +24,15 @@ const ShareWithFriend = (props) => {
 
   return (
     <SafeAreaView style={appStyle.container}>
-      <Header
-        text="Giới thiệu bạn mới"
-        icon={ICON.Back}
-        onPress={() => navigation.navigate('Profile')} />
+        <Header
+        backgroundColor={COLOR.blueHeader2}
+          text="Giới thiệu bạn mới"
+          icon={ICON.Back}
+          onPress={() => navigation.navigate('Profile')} />
 
       <View style={{ flex: 1 }}>
         <FastImage
-          source={require('../../../assets/image/guide/img_friend.png')}
+          source={require('../../../assets/image/guide/img_friends.png')}
           style={styles.vImg}
         />
 
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     backgroundColor: COLOR.blueHeader2,
     width: '100%',
-    height: windowHeight * 0.3,
+    height: windowHeight * 0.32,
     flex: 1,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
@@ -74,6 +75,8 @@ const styles = StyleSheet.create({
   vImg: {
     resizeMode: 'cover',
     width: windowWidth,
+    marginTop: 10,
+    marginLeft: 10,
     height: windowHeight * 0.3,
     zIndex: 1
   },
@@ -124,4 +127,8 @@ const styles = StyleSheet.create({
     ...appStyle.text14,
     textDecorationLine: 'underline',
   },
+  imageBackground: {
+    width: windowWidth,
+    height: windowHeight * 0.3,
+  }
 })

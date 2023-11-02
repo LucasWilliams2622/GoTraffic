@@ -2,11 +2,12 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-nativ
 import React, { useState } from 'react'
 import { COLOR } from '../constants/Theme'
 import FastImage from 'react-native-fast-image'
+import { windowHeight } from '../constants/AppStyle'
 
 const AppInput = (props) => {
     const { backgroundColor, borderWidth, borderColor, borderRadius, paddingVertical, paddingHorizontal,
         placeholder, textColor, placeholderTextColor, keyboardAppearance, returnKeyType, autoCapitalize,
-        width, keyboardType, marginTop,
+        width,height, keyboardType, marginTop, textAlignVertical,
         editable, autoCorrect, multiline, fontSize,
         onChangeText, value, onBlur,
 
@@ -32,6 +33,7 @@ const AppInput = (props) => {
     return (
         <View style={[styles.boxInput, {
             width: width == null ? '100%' : width,
+            height: height == null? windowHeight*0.06 : height,
             backgroundColor: backgroundColor == null ? COLOR.background : backgroundColor,
             borderWidth: borderWidth == null ? .8 : borderWidth,
             borderColor: isFocused ? COLOR.primary : (borderColor == null ? COLOR.borderColor : borderColor),
@@ -89,6 +91,8 @@ const styles = StyleSheet.create({
         marginTop: 5
     },
     textInput: {
-        paddingVertical: 0,
+        //paddingVertical: 0,
+        padding:0,
+        textAlignVertical:'top'
     },
 });

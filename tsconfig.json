@@ -3,5 +3,6 @@
       "jsx": "react",
       "esModuleInterop": true
   },
+  "include": ["./**/*.ts", "./**/*.tsx", "./**/*.d.ts"],
   "extends": "@tsconfig/react-native/tsconfig.json",
 }

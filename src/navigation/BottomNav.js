@@ -25,7 +25,7 @@ import TimePicking from '../screens/Main/HomeTab/TimePicking';
 import LocationPicking from '../screens/Main/HomeTab/LocationPicking';
 import NewCard from '../screens/Main/ProfileTab/Payment/NewCard';
 import CarDetail from '../screens/Main/HomeTab/CarDetail';
-import MyPromotion from '../screens/Main/ProfileTab/Gift/MyPromotion';
+// import MyPromotion from '../screens/Main/ProfileTab/Gift/MyPromotion';
 import HomeCar from '../screens/Main/ProfileTab/MyCar/HomeCar';
 import ListCar from '../screens/Main/ProfileTab/MyCar/ListCar';
 import DetailInListCar from '../screens/Main/ProfileTab/MyCar/DetailInListCar';
@@ -35,6 +35,9 @@ import CalendarOfCar from '../screens/Main/ProfileTab/MyCar/CalendarOfCar';
 import CarDelivery from '../screens/Main/ProfileTab/MyCar/CarDelivery';
 import Surcharge from '../screens/Main/ProfileTab/MyCar/Surcharge';
 
+import BasicInfor from '../screens/Main/ProfileTab/Car/BasicInfor';
+import DetailsInfor from '../screens/Main/ProfileTab/Car/DetailsInfor';
+import MyCar from '../screens/Main/ProfileTab/MyCar'
 
 
 
@@ -133,6 +136,10 @@ const StackProfile = () => {
       <Stack.Screen name="NewAddress" component={NewAddress} />
       <Stack.Screen name="MyCard" component={MyCard} />
       <Stack.Screen name="NewCard" component={NewCard} />
+      {/* <Stack.Screen name="MyPromotion" component={MyPromotion}/> */}
+      <Stack.Screen name="BasicInfor" component={BasicInfor}/>
+      <Stack.Screen name="DetailsInfor" component={DetailsInfor}/>
+
     </Stack.Navigator>
   );
 };
@@ -218,7 +225,8 @@ const BottomTabNav = () => {
   const {isLogin, infoUser} = useContext(AppContext);
   // console.log("isLogin Bottom Tabs=================>", isLogin);
   // console.log("infoUser Bottom Tabs=========>", infoUser);
-  return <>{isLogin == false ? <StackBegin /> : <Main />}</>;
+  // return <>{isLogin == false ? <StackBegin /> : <Main />}</>;
+  return  <Main/>;
 };
 //ADMIN
 export default BottomTabNav;

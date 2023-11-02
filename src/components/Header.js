@@ -30,13 +30,12 @@ export default Header
 const styles = StyleSheet.create({
     header: {
         width: '100%',
-        height: windowHeight * 0.05,
+        height: windowHeight * 0.07,
         backgroundColor: COLOR.background,
-    //  backgroundColor:'blue',
         flexDirection: 'row',
         paddingHorizontal: 10,
-        paddingTop: 10,
         alignItems: 'center',
+        justifyContent:'center'
     },
     textContainer: {
         flex: 1,

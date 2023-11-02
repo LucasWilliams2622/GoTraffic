@@ -61,3 +61,8 @@ const formatTime = (date: Date) => {
 
 export const currentDateString = formatTime(currentDay);
 export const returnDateString = formatTime(tomorrow);
+
+export const calculateAvgRating = (ratings: {rating: number}[]) => {
+  const totalRatings = ratings.reduce((sum, rating) => sum + rating.rating, 0);
+  return totalRatings / ratings.length;
+};

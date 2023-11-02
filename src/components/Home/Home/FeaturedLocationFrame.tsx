@@ -1,9 +1,6 @@
 import * as React from 'react';
-import Svg, {SvgProps, Path, Image, Defs, Pattern} from 'react-native-svg';
-
-interface FeaturedLocationFrameProps extends SvgProps {
-  img: string;
-}
+import Svg, {Path, Image, Defs, Pattern} from 'react-native-svg';
+import {FeaturedLocationFrameProps} from '../../../types';
 
 const FeaturedLocationFrame = ({img, ...props}: FeaturedLocationFrameProps) => {
   return (
