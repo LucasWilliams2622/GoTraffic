@@ -12,6 +12,7 @@ import {appStyle} from '../../../../constants/AppStyle';
 import {COLOR, ICON} from '../../../../constants/Theme';
 import AppProfile from '../../../../components/AppProfile';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
+import AppInput from '../../../../components/AppInput';
 
 
 const DetailInListCar = props => {
@@ -49,7 +50,48 @@ const FirstRoute = () => (
 );
 
 const SecondRoute = () => (
-  <View style={{flex: 1, backgroundColor: '#673ab7'}} />
+  <View style={[appStyle.main, {marginTop: 20,justifyContent:'space-evenly'}]}>
+    
+    <AppInput placeholder={'Nhập tên của bạn'} />
+    
+    <AppInput placeholder={'Nhập CCCD'} />
+    
+    <AppInput placeholder={'Nhập sdt'} />
+    <View
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 20,
+      }}>
+      <View style={styles.upLoadImage}>
+        <Text style={{textAlign: 'center'}}>
+          Vui lòng chụp mặt trước của bằng lái
+        </Text>
+        <FastImage
+          style={{width: 30, height: 30, marginTop: 10}}
+          source={ICON.Picture}
+        />
+      </View>
+      <View style={styles.upLoadImage}>
+        <Text style={{textAlign: 'center'}}>
+          Vui lòng chụp mặt sau của bằng lái
+        </Text>
+        <FastImage
+          style={{width: 30, height: 30, marginTop: 10}}
+          source={ICON.Picture}
+        />
+      </View>
+    </View>
+    <TouchableOpacity style={styles.btn}>
+      <Text
+        style={[
+          appStyle.text16Bold,
+          {color: COLOR.white, textAlign: 'center'},
+        ]}>
+       ĐĂNG KÝ
+      </Text>
+    </TouchableOpacity>
+  </View>
 );
   const renderScene = SceneMap({
     first: FirstRoute,
@@ -166,5 +208,23 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     marginBottom: 10,
+  },
+  upLoadImage: {
+    height: 120,
+    width: 174,
+    borderWidth: 0.5,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+  },
+  btn: {
+    backgroundColor: COLOR.primary,
+    height: 50,
+    borderRadius: 10,
+    alignContent: 'center',
+    justifyContent: 'center',
+    marginBottom: 70,
+    marginTop:20
   },
 });

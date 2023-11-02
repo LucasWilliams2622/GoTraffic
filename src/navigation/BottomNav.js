@@ -37,6 +37,8 @@ import Surcharge from '../screens/Main/ProfileTab/MyCar/Surcharge';
 import TripOfCar from '../screens/Main/ProfileTab/MyCar/TripOfCar';
 import InforOfCar from '../screens/Main/ProfileTab/MyCar/InforOfCar';
 import ExhibitOfCar from '../screens/Main/ProfileTab/MyCar/ExhibitOfCar';
+import MyWallet from '../screens/Main/ProfileTab/MyCar/MyWallet';
+
 
 import BasicInfor from '../screens/Main/ProfileTab/Car/BasicInfor';
 import DetailsInfor from '../screens/Main/ProfileTab/Car/DetailsInfor';
@@ -134,6 +136,7 @@ const StackProfile = () => {
       <Stack.Screen name="TripOfCar" component={TripOfCar} />
       <Stack.Screen name="InforOfCar" component={InforOfCar} />
       <Stack.Screen name="ExhibitOfCar" component={ExhibitOfCar} />
+      <Stack.Screen name="MyWallet" component={MyWallet} />
       <Stack.Screen name="MyAddress" component={MyAddress} />
       <Stack.Screen name="ShareWithFriend" component={ShareWithFriend} />
       <Stack.Screen name="ChangePassword" component={ChangePassword} />

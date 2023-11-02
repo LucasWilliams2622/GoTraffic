@@ -1,4 +1,10 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useState} from 'react';
 import {appStyle} from '../../../../constants/AppStyle';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -19,6 +25,12 @@ const CarDelivery = props => {
   const [first, setfirst] = useState(0);
   const [second, setsecond] = useState(0);
   const [third, setthird] = useState(0);
+  const [howFar, sethowFar] = useState(0);
+  const logCat = () => {
+    console.log("Trong vong: ",Math.floor(first * 100));
+    console.log('Phi: ', Math.floor(second * 10 * 5));
+    console.log('Mien phi trong vong: ', Math.floor(third * 10));
+  };
   return (
     <SafeAreaView style={appStyle.container}>
       <View style={styles.viewTitle}>
@@ -94,8 +106,12 @@ const CarDelivery = props => {
             />
           </View>
         ) : null}
-        <TouchableOpacity style={styles.btn}>
-          <Text style={[appStyle.text16Bold,{color:COLOR.white,textAlign:'center'}]}>
+        <TouchableOpacity style={styles.btn} onPress={logCat}>
+          <Text
+            style={[
+              appStyle.text16Bold,
+              {color: COLOR.white, textAlign: 'center'},
+            ]}>
             CẬP NHẬT
           </Text>
         </TouchableOpacity>
@@ -141,6 +157,6 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 10,
     alignContent: 'center',
-    justifyContent:'center'
+    justifyContent: 'center',
   },
 });
