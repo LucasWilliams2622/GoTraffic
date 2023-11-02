@@ -21,29 +21,23 @@ const Profile = (props) => {
     navigation.setParams({ newName });
   }
   return (
-    <SafeAreaView style={appStyle.container}>
-      <View style={styles.headBg}>
-        <View style={[appStyle.boxCenter, { marginTop: windowHeight * 0.12 }]}>
-          <FastImage source={require('../../../assets/image/guide/img_friend.png')} style={[appStyle.avatar]}></FastImage>
-          <Text style={[appStyle.text24Bold, { textAlign: 'center', marginTop: 12 }]}>{name}</Text>
+    <SafeAreaView style={[appStyle.container, { backgroundColor: COLOR.gray }]}>
+      <ScrollView
+        style={{ flex: 1, width: '100%', height: '80%', marginBottom: windowHeight * 0.1 }}
+        showsVerticalScrollIndicator={false}>
+        <View style={styles.headBg}>
+          <View style={[appStyle.boxCenter, { marginTop: windowHeight * 0.12 }]}>
+            <FastImage source={require('../../../assets/image/guide/img_friend.png')} style={[appStyle.avatar]}></FastImage>
+            <Text style={[appStyle.text24Bold, { textAlign: 'center', marginTop: 12 }]}>{name}</Text>
+          </View>
         </View>
-      </View>
 
-      <View style={{
-        marginTop: windowHeight * 0.12,
-        width: '100%',
-        height: windowHeight * 0.6,
-        paddingHorizontal: 15
-      }}>
-        <ScrollView
-          style={{ flex: 1, width: '100%', height: '100%' }}
-          showsVerticalScrollIndicator={false}>
-          <View style={styles.viewGroup}>
-            <AppProfile
-              icon={ICON.Profile}
-              text="Tài khoản của tôi"
-              onPress={() =>
-                navigation.navigate('Account', updateNewName(name))} />
+        <View style={[styles.viewGroup, { marginTop: windowHeight * 0.18 }]}>
+          <AppProfile
+            icon={ICON.Profile}
+            text="Tài khoản của tôi"
+            onPress={() =>
+              navigation.navigate('Account', updateNewName(name))} />
 
             <AppProfile
               icon={ICON.Heart}
@@ -54,7 +48,7 @@ const Profile = (props) => {
               icon={ICON.Trip}
               text="Xe của tôi"
               onPress={() => navigation.navigate('MyCar')} />
-               <AppProfile
+      <AppProfile
               icon={ICON.Trip}
               text="Xe của tôi"
               onPress={() => navigation.navigate('HomeCar')} />
@@ -64,40 +58,48 @@ const Profile = (props) => {
               text="Địa chỉ của tôi"
               onPress={() => navigation.navigate('MyAddress')} />
 
-            <AppProfile
-              icon={ICON.Wallet}
-              text="Thẻ của tôi"
-              borderBottomWidth={0}
-              onPress={() => navigation.navigate('MyCard')} />
+          <AppProfile
+            icon={ICON.Wallet}
+            text="Thẻ của tôi"
+            borderBottomWidth={0}
+            onPress={() => navigation.navigate('MyCard')} />
+        </View>
+
+        <View style={[styles.viewGroup, { marginTop: 35 }]}>
+          <AppProfile
+            icon={ICON.Share}
+            text="Giới thiệu bạn bè"
+            onPress={() => navigation.navigate('ShareWithFriend')} />
+
+          <AppProfile
+            icon={ICON.Gift}
+            text="Quà tặng"
+            borderBottomWidth={0}
+            onPress={() => navigation.navigate('MyPromotion')} />
+        </View>
+
+        <View style={[styles.viewGroup, { marginTop: 35 }]}>
+          <AppProfile
+            icon={ICON.Key}
+            text="Đổi mật khẩu"
+            onPress={() => navigation.navigate('ChangePassword')} />
+
+          <AppProfile
+            icon={ICON.Delete}
+            text="Yêu cầu xóa tài khoản"
+            borderBottomWidth={0}
+            onPress={() => navigation.navigate('Policy')} />
+        </View>
+
+        <TouchableOpacity onPress={() => { setIsLogin(false) }}>
+          <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 20 }}>
+            <FastImage source={ICON.Exit} style={[appStyle.iconBig]} />
+            <Text style={[appStyle.text20, { color: COLOR.exit, marginLeft: 10, fontWeight: '500' }]}>Đăng xuất</Text>
           </View>
+        </TouchableOpacity>
 
-          <View style={[styles.viewGroup, { marginTop: 16 }]}>
-            <AppProfile
-              icon={ICON.Share}
-              text="Giới thiệu bạn bè"
-              onPress={() => navigation.navigate('ShareWithFriend')} />
-
-            <AppProfile
-              icon={ICON.Policy}
-              text="Chính sách bảo mật"
-              onPress={() => navigation.navigate('Policy')} />
-
-            <AppProfile
-              icon={ICON.Key}
-              text="Đổi mật khẩu"
-              borderBottomWidth={0}
-              onPress={() => navigation.navigate('ChangePassword')} />
-          </View>
-
-          <TouchableOpacity onPress={() => { setIsLogin(false) }}>
-            <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 20 }}>
-              <FastImage source={ICON.Exit} style={[appStyle.iconBig]} />
-              <Text style={[appStyle.text20, { color: COLOR.exit, marginLeft: 10, fontWeight: '500' }]}>Đăng xuất</Text>
-            </View>
-          </TouchableOpacity>
-        </ScrollView>
-      </View>
-    </SafeAreaView>
+      </ScrollView>
+    </SafeAreaView >
   )
 }
 
@@ -113,13 +115,13 @@ const styles = StyleSheet.create({
   },
 
   viewGroup: {
-    flex: 1,
-    width: 'auto',
+    marginHorizontal: 15,
     height: 'auto',
-    marginTop: 36,
+    width: 'auto',
     borderRadius: 10,
     borderWidth: 2,
     paddingHorizontal: 10,
-    borderColor: '#efefef',
+    borderColor: COLOR.background,
+    backgroundColor: COLOR.background
   }
 })

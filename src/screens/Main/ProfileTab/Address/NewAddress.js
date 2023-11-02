@@ -1,13 +1,13 @@
 import { KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { appStyle } from '../../../constants/AppStyle'
-import Header from '../../../components/Header'
-import { COLOR, ICON } from '../../../constants/Theme'
-import ButtonSelected from '../../../components/ButtonSelected'
-import AppInput from '../../../components/AppInput'
+import { appStyle } from '../../../../constants/AppStyle'
+import Header from '../../../../components/Header'
+import { COLOR, ICON } from '../../../../constants/Theme'
+import ButtonSelected from '../../../../components/ButtonSelected'
+import AppInput from '../../../../components/AppInput'
 import SwitchToggle from "react-native-switch-toggle";
-import AppButton from '../../../components/AppButton'
-import AppDropdown from '../../../components/AppDropdown'
+import AppButton from '../../../../components/AppButton'
+import AppDropdown from '../../../../components/AppDropdown'
 import axios from 'axios';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
@@ -54,7 +54,7 @@ const NewAddress = (props) => {
             .then((response) => response.json())
             .then((data) => {
                 setProvinces(data);
-                console.log(data);
+                //console.log(data);
                 // Chọn tỉnh/thành phố mặc định (nếu muốn)
                 // setSelectedProvince(data[0]); // Chọn tỉnh/thành phố đầu tiên trong danh sách
             })

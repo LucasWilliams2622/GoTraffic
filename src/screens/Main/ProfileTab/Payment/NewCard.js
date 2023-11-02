@@ -1,11 +1,11 @@
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { appStyle, windowHeight, windowWidth } from '../../../constants/AppStyle';
-import Header from '../../../components/Header';
-import { COLOR, ICON } from '../../../constants/Theme';
-import AppInput from '../../../components/AppInput';
+import { appStyle, windowHeight, windowWidth } from '../../../../constants/AppStyle';
+import Header from '../../../../components/Header';
+import { COLOR, ICON } from '../../../../constants/Theme';
+import AppInput from '../../../../components/AppInput';
 import FastImage from 'react-native-fast-image';
-import AppButton from '../../../components/AppButton';
+import AppButton from '../../../../components/AppButton';
 
 const NewCard = (props) => {
     const { navigation } = props;

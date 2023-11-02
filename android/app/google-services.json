@@ -1,41 +1,41 @@
 {
   "project_info": {
-    "project_number": "873917801307",
-    "project_id": "auth-with-f04eb",
-    "storage_bucket": "auth-with-f04eb.appspot.com"
+    "project_number": "225655748998",
+    "project_id": "gotraffic-1f432",
+    "storage_bucket": "gotraffic-1f432.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:873917801307:android:27dd61934d01c54cc7307e",
+        "mobilesdk_app_id": "1:225655748998:android:5cb8afde1b08765c999407",
         "android_client_info": {
           "package_name": "com.gotraffic"
         }
       },
       "oauth_client": [
         {
-          "client_id": "873917801307-vcmtgrb5spibhfe3u8cfifs67cg23j4j.apps.googleusercontent.com",
+          "client_id": "225655748998-ungj02ust7ukbjvc4npc8rkr45b6lkks.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.gotraffic",
-            "certificate_hash": "526e563360fd817914a7fa0b4861b6bf4243b9a9"
+            "certificate_hash": "963bf66dc2d3b6e90b4e1cf13ab9e505ff21bbc5"
           }
         },
         {
-          "client_id": "873917801307-htf3r1tg2ndc9eqoq685d20f9099cqgj.apps.googleusercontent.com",
+          "client_id": "225655748998-h8s6r3m379t1kpijmk7pfhbgut94l2rm.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCe-klrybP-EUJZ5j99xWNPdm56gU1TVDI"
+          "current_key": "AIzaSyBse1udxXKCmGdjsLQna7P-fCx9WnfAG5A"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "873917801307-htf3r1tg2ndc9eqoq685d20f9099cqgj.apps.googleusercontent.com",
+              "client_id": "225655748998-h8s6r3m379t1kpijmk7pfhbgut94l2rm.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

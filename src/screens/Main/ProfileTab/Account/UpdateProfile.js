@@ -1,12 +1,12 @@
 import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, PermissionsAndroid, Modal } from 'react-native'
 import React, { useState } from 'react'
-import { appStyle, windowHeight } from '../../../constants/AppStyle'
-import { COLOR, ICON } from '../../../constants/Theme'
+import { appStyle, windowHeight } from '../../../../constants/AppStyle'
+import { COLOR, ICON } from '../../../../constants/Theme'
 import FastImage from 'react-native-fast-image'
-import AppInput from '../../../components/AppInput'
-import AppButton from '../../../components/AppButton'
+import AppInput from '../../../../components/AppInput'
+import AppButton from '../../../../components/AppButton'
 import { launchCamera, ImagePicker } from 'react-native-image-picker';
-import Header from '../../../components/Header'
+import Header from '../../../../components/Header'
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -55,7 +55,7 @@ const UpdateProfile = (props) => {
             .required('Bắt buộc'),
         dob: Yup.string()
             .matches(
-                /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/,
+                /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(194[5-9]|19[5-9]\d|20[0-2][0-3])$/,
                 'Ngày tháng năm sinh không hợp lệ, hãy nhập theo định dạng DD/MM/YYYY'
             )
             .required('Bắt buộc'),
@@ -77,7 +77,7 @@ const UpdateProfile = (props) => {
                 {image ? (
                     <FastImage source={{ uri: image }} style={[appStyle.avatar, { marginTop: 20 }]} />
                 ) : (
-                    <FastImage source={require('../../../assets/image/guide/img_friend.png')} style={[appStyle.avatar, { marginTop: 20 }]} />
+                    <FastImage source={require('../../../../assets/image/guide/img_friend.png')} style={[appStyle.avatar, { marginTop: 20 }]} />
                 )}
 
                 {/* Capture image */}
@@ -86,6 +86,7 @@ const UpdateProfile = (props) => {
                     onPress={() => toggleModal()}>
                     <FastImage source={ICON.Camera} style={[appStyle.iconBig]}></FastImage>
                 </TouchableOpacity>
+
                 <Modal
                     //isVisible={isModalVisible}
                     animationType='slide'
@@ -109,7 +110,6 @@ const UpdateProfile = (props) => {
                             textColor={COLOR.primary}
                         />
                     </View>
-
                 </Modal>
 
                 {/* Validate */}
@@ -143,7 +143,6 @@ const UpdateProfile = (props) => {
                                         console.log(values.dob);
                                         console.log(values.sex);
                                     } else {
-                                        // Dữ liệu không hợp lệ, bạn có thể xử lý lỗi ở đây nếu cần
                                         console.log("Dữ liệu không hợp lệ");
                                     }
                                 })

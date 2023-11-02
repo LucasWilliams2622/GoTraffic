@@ -1,11 +1,11 @@
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
-import { appStyle, windowHeight, windowWidth } from '../../../constants/AppStyle'
-import Header from '../../../components/Header'
-import { COLOR, ICON } from '../../../constants/Theme'
+import { appStyle, windowHeight, windowWidth } from '../../../../constants/AppStyle'
+import Header from '../../../../components/Header'
+import { COLOR, ICON } from '../../../../constants/Theme'
 import FastImage from 'react-native-fast-image'
-import AppButton from '../../../components/AppButton'
-import ItemCard from '../../../components/Profile/ItemCard'
+import AppButton from '../../../../components/AppButton'
+import ItemCard from '../../../../components/Profile/ItemCard'
 import { FlatList } from 'native-base'
 
 const MyCard = (props) => {
@@ -48,7 +48,7 @@ const MyCard = (props) => {
           </View>
         ) : (
           <FastImage
-            source={require('../../../assets/image/guide/img_no_card.png')}
+            source={require('../../../../assets/image/guide/img_no_card.png')}
             onLoad={() => console.log('Hình ảnh đã được tải thành công')}
             onError={(error) => console.error('Lỗi khi tải hình ảnh:', error)}
             style={{ width: '80%', height: '77%', alignSelf: 'center', justifyContent: 'center' }}

@@ -8,8 +8,7 @@ const AppProfile = (props) => {
   const { text, icon, onPress, borderBottomWidth } = props;
   return (
     <TouchableOpacity onPress={onPress}>
-      <View style={{ flexDirection: 'row', alignItems: 'center' ,width: '100%',
-    height: 50}}>
+      <View style={{ flexDirection: 'row', alignItems: 'center' ,width: '100%',height: 55}}>
         <FastImage style={[appStyle.icon, {marginRight: 10}]} source={icon} resizeMode='stretch' />
         <View style={[styles.container, {
           borderBottomWidth: borderBottomWidth == null ? 2 : borderBottomWidth
@@ -27,12 +26,13 @@ export default AppProfile
 const styles = StyleSheet.create({
   container: {
     backgroundColor: COLOR.background,
-    width: '90%',
+    width: '88%',
     height: 50,
     alignSelf: 'center',
     borderBottomColor: '#efefef',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'center', 
+    marginLeft: 10
   },
 })
