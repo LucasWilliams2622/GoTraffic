@@ -34,6 +34,9 @@ import RentCost from '../screens/Main/ProfileTab/MyCar/RentCost';
 import CalendarOfCar from '../screens/Main/ProfileTab/MyCar/CalendarOfCar';
 import CarDelivery from '../screens/Main/ProfileTab/MyCar/CarDelivery';
 import Surcharge from '../screens/Main/ProfileTab/MyCar/Surcharge';
+import TripOfCar from '../screens/Main/ProfileTab/MyCar/TripOfCar';
+import InforOfCar from '../screens/Main/ProfileTab/MyCar/InforOfCar';
+import ExhibitOfCar from '../screens/Main/ProfileTab/MyCar/ExhibitOfCar';
 
 import BasicInfor from '../screens/Main/ProfileTab/Car/BasicInfor';
 import DetailsInfor from '../screens/Main/ProfileTab/Car/DetailsInfor';
@@ -120,7 +123,6 @@ const StackProfile = () => {
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Account" component={Account} />
       <Stack.Screen name="FavouriteCar" component={FavouriteCar} />
-
       <Stack.Screen name="HomeCar" component={HomeCar} />
       <Stack.Screen name="ListCar" component={ListCar} />
       <Stack.Screen name="DetailInListCar" component={DetailInListCar} />
@@ -129,6 +131,9 @@ const StackProfile = () => {
       <Stack.Screen name="CalendarOfCar" component={CalendarOfCar} />
       <Stack.Screen name="CarDelivery" component={CarDelivery} />
       <Stack.Screen name="Surcharge" component={Surcharge} />
+      <Stack.Screen name="TripOfCar" component={TripOfCar} />
+      <Stack.Screen name="InforOfCar" component={InforOfCar} />
+      <Stack.Screen name="ExhibitOfCar" component={ExhibitOfCar} />
       <Stack.Screen name="MyAddress" component={MyAddress} />
       <Stack.Screen name="ShareWithFriend" component={ShareWithFriend} />
       <Stack.Screen name="ChangePassword" component={ChangePassword} />
@@ -137,9 +142,8 @@ const StackProfile = () => {
       <Stack.Screen name="MyCard" component={MyCard} />
       <Stack.Screen name="NewCard" component={NewCard} />
       {/* <Stack.Screen name="MyPromotion" component={MyPromotion}/> */}
-      <Stack.Screen name="BasicInfor" component={BasicInfor}/>
-      <Stack.Screen name="DetailsInfor" component={DetailsInfor}/>
-
+      <Stack.Screen name="BasicInfor" component={BasicInfor} />
+      <Stack.Screen name="DetailsInfor" component={DetailsInfor} />
     </Stack.Navigator>
   );
 };

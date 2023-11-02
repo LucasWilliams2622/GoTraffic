@@ -30,20 +30,20 @@ const GeneralInformation = (props) => {
         <AppProfile
           icon={ICON.Warning}
           text="Thông tin xe"
-          onPress={() => navigation.navigate('ListCar')}
+          onPress={() => navigation.navigate('InforOfCar')}
         />
         <AppProfile
-          icon={ICON.Calendar}
+          icon={ICON.Wallet}
           text="Giấy tờ xe & Bảo hiểm"
-          onPress={() => navigation.navigate('')}
+          onPress={() => navigation.navigate('ExhibitOfCar')}
         />
         <AppProfile
           icon={ICON.Heart}
           text="Danh sách chuyến "
-          onPress={() => navigation.navigate('')}
+          onPress={() => navigation.navigate('TripOfCar')}
         />
         <AppProfile
-          icon={ICON.Card}
+          icon={ICON.Location}
           text="GPS"
           onPress={() => navigation.navigate('')}
         />
