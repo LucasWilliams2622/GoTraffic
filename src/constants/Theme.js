@@ -91,6 +91,8 @@ export const ICON = {
   Send: require('../assets/icon/ic_send.png'),
   Delete: require('../assets/icon/ic_delete.png'),
   Gift: require('../assets/icon/ic_gift.png'),
-  DropDown: require('../assets/icon/ic_down.png')
+  DropDown: require('../assets/icon/ic_down.png'),
+  Picture: require('../assets/icon/ic_picture.png'),
+  Star: require('../assets/icon/ic_star.png'),
 
 }

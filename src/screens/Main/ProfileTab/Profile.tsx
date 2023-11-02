@@ -73,7 +73,7 @@ const Profile = (props) => {
             icon={ICON.Trip}
             text="Xe của tôi"
             borderBottomWidth={0}
-            onPress={() => navigation.navigate('BasicInfor')} />
+            onPress={() => navigation.navigate('ListCar')} />
         </View>
 
         <View style={[styles.viewGroup, { marginTop: 35 }]}>

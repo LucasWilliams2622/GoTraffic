@@ -10,6 +10,7 @@ import AppButton from '../../../../components/AppButton'
 import AppDropdown from '../../../../components/AppDropdown'
 import axios from 'axios';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import Switch from '../../../../components/Switch'
 
 const NewAddress = (props) => {
     const { navigation } = props;
@@ -27,7 +28,6 @@ const NewAddress = (props) => {
 
 
     const handleSaveButtonPress = () => {
-        // Lấy thông tin từ các trường nhập liệu
         const newAddress = {
             type: isSelected,
             nickName: nickName,
@@ -39,12 +39,9 @@ const NewAddress = (props) => {
         };
         const updatedAddresses = [...addresses];
 
-        // Thêm địa chỉ mới vào danh sách
         updatedAddresses.push(newAddress);
-        // Cập nhật danh sách địa chỉ
         setAddresses(updatedAddresses);
         console.log(newAddress);
-        // Sau đó, chuyển đến trang MyAddress
         navigation.navigate('MyAddress', { updatedAddresses: [newAddress] });
     };
 
@@ -93,7 +90,7 @@ const NewAddress = (props) => {
     }, [selectedDistrict]);
 
     const handleSwitchToggle = () => {
-        setonSwitch(!onSwitch); // Thay đổi giá trị của state khi SwitchToggle được bật/tắt
+        setonSwitch(!onSwitch);
     };
 
     const handleButtonPress = (buttonName) => {
@@ -221,8 +218,9 @@ const NewAddress = (props) => {
                                 borderRadius: 20,
                             }}
                         />
+                        {/* <Switch switchOn={onSwitch} onPress={handleSwitchToggle}/> */}
                     </View>
-                    
+
                     <AppButton
                         title="Lưu"
                         marginTop={60}

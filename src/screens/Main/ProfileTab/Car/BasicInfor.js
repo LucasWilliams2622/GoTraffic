@@ -85,7 +85,7 @@ const BasicInfor = (props) => {
                 backgroundColor={COLOR.bgHeader}
                 text="Thông tin cơ bản"
                 icon={ICON.Back}
-                onPress={() => navigation.navigate('Profile')}
+                onPress={() => navigation.navigate('ListCar')}
             />
             <View style={{ flex: 1, paddingHorizontal: 10 }} >
                 <ScrollView style={{ flex: 1, width: '100%', marginBottom: 20 }}
@@ -139,7 +139,6 @@ const BasicInfor = (props) => {
                                 <Text style={appStyle.text165}>Mẫu xe</Text>
                                 {selectedBrand && (
                                     <AppDropdown
-
                                         width={windowWidth * 0.3}
                                         height={windowHeight * 0.04}
                                         borderWidth={0}
@@ -150,7 +149,6 @@ const BasicInfor = (props) => {
                                         onChange={(model) => {
                                             setSelectedModel(model.value);
                                         }}
-
                                     />
                                 )}
                             </View>
