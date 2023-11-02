@@ -30,9 +30,8 @@
     "clipboard": "^2.0.11",
     "dayjs": "^1.11.10",
     "deprecated-react-native-prop-types": "^4.2.1",
-    "firebase": "^10.5.2",
     "dotenv": "^16.3.1",
-
+    "firebase": "^10.5.2",
     "formik": "^2.4.5",
     "install": "^0.13.0",
     "jsqr": "^1.4.0",
@@ -74,7 +73,6 @@
     "react-native-linear-gradient": "^2.8.3",
     "react-native-maps": "^1.8.0",
     "react-native-modal": "^13.0.1",
-
     "react-native-modal-datetime-picker": "^17.1.0",
     "react-native-otp-input": "^1.0.12",
     "react-native-otp-inputs": "^7.4.0",

@@ -25,7 +25,7 @@ import TimePicking from '../screens/Main/HomeTab/TimePicking';
 import LocationPicking from '../screens/Main/HomeTab/LocationPicking';
 import NewCard from '../screens/Main/ProfileTab/Payment/NewCard';
 import CarDetail from '../screens/Main/HomeTab/CarDetail';
-import MyPromotion from '../screens/Main/ProfileTab/Gift/MyPromotion';
+// import MyPromotion from '../screens/Main/ProfileTab/Gift/MyPromotion';
 
 import HomeCar from '../screens/Main/ProfileTab/MyCar/HomeCar';
 import ListCar from '../screens/Main/ProfileTab/MyCar/ListCar';
@@ -33,7 +33,6 @@ import DetailInListCar from '../screens/Main/ProfileTab/MyCar/DetailInListCar';
 
 import BasicInfor from '../screens/Main/ProfileTab/Car/BasicInfor';
 import DetailsInfor from '../screens/Main/ProfileTab/Car/DetailsInfor';
-import ListCar from '../screens/Main/ProfileTab/Car/ListCar';
 
 
 
@@ -128,7 +127,7 @@ const StackProfile = () => {
       <Stack.Screen name="NewAddress" component={NewAddress} />
       <Stack.Screen name="MyCard" component={MyCard} />
       <Stack.Screen name="NewCard" component={NewCard} />
-      <Stack.Screen name="MyPromotion" component={MyPromotion}/>
+      {/* <Stack.Screen name="MyPromotion" component={MyPromotion}/> */}
       <Stack.Screen name="BasicInfor" component={BasicInfor}/>
       <Stack.Screen name="DetailsInfor" component={DetailsInfor}/>
       <Stack.Screen name="ListCar" component={ListCar}/>
