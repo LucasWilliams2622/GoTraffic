@@ -8,7 +8,21 @@ import { Car } from '../../../../components/Profile/data/DataCar';
 import ItemCar from '../../../../components/Profile/ItemCar';
 
 const ListCar = (props) => {
-    const { navigation } = props;
+    const { navigation, route } = props;
+    const [hasDisplayed, setHasDisplayed] = useState(false);
+    const [carData, setCarData] = useState([]);
+    const { updatedCarInfo } = route.params;
+    console.log(">>>>>>>>>", updatedCarInfo);
+
+    
+    useEffect(() => {
+        if (updatedCarInfo && carData.length === 0 && !hasDisplayed) {
+            setCarData([updatedCarInfo]);
+            setHasDisplayed(true);
+        }
+    }, [updatedCarInfo, carData, hasDisplayed]);
+
+
     return (
 
         <SafeAreaView style={appStyle.container}>
@@ -20,18 +34,11 @@ const ListCar = (props) => {
                 screenRight="BasicInfor"
             />
             <FlatList
-            style={{marginBottom:50}}
-                data={Car}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item }) => (
-                    <ItemCar
-                        name={item.name}
-                        status={item.status}
-                        trip={item.trip}
-                        selfDrivePrice={item.selfDrivePrice}
-                        location={item.location}
-                    />
-                )}
+                style={{ marginBottom: 50 }}
+                data={carData}
+                renderItem={({ item }) => <ItemCar data={item} />}
+                keyExtractor={(item, index) => index.toString()}
+                showsVerticalScrollIndicator={false}
             />
         </SafeAreaView>
     )

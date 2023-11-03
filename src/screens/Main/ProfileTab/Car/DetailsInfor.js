@@ -14,13 +14,14 @@ import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 const DetailsInfor = (props) => {
   const { navigation, route } = props;
   const { carInfo } = route.params;
-  const { newAddress } = route.params; 
+  console.log(route.params.carInfo);
+  const { newAddress } = route.params;
 
+  const [newCar, setNewCar] = useState([]);
   const [description, setDescription] = useState(null);
   const [fuelConsumption, setFuelConsumption] = useState(null);
   const [price, setPrice] = useState(null);
   const [selectedFeatures, setSelectedFeatures] = useState([]);
-  const [carAddress, setCarAddress] = useState(null);
   const [onSwitch, setonSwitch] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [isCameraModalVisible, setIsCameraModalVisible] = useState(false);
@@ -32,10 +33,23 @@ const DetailsInfor = (props) => {
     right: null,
   });
 
-
   const handleComplete = () => {
-    const combinedInfo = { ...carInfo, description, fuelConsumption, price, selectedFeatures, images: carImages, };
+    const combinedInfo = {
+      carInfo: carInfo,
+      newAddress,
+      description,
+      fuelConsumption,
+      price,
+      selectedFeatures,
+      images: carImages,
+    };
     console.log('Thông tin xe:', combinedInfo);
+
+    setNewCar([...newCar, combinedInfo]);
+
+    navigation.navigate('ListCar', {
+      updatedCarInfo: combinedInfo,
+    });
   };
 
 
@@ -219,7 +233,7 @@ const DetailsInfor = (props) => {
                 <Text style={[appStyle.text12Bold, { color: COLOR.fifth, margin: 3 }]}>Thay đổi</Text>
               </TouchableOpacity>
             </View>
-            <Text>{newAddress ? newAddress.address : '0223 Nguyễn Du'}</Text>
+            <Text>{newAddress ? newAddress : '0223 Nguyễn Du'}</Text>
           </View>
 
           {/* Đặt xe nhanh */}

@@ -55,7 +55,7 @@ const BasicInfor = (props) => {
             selectedFuel
         }
         console.log(carInfo);
-        navigation.navigate('DetailsInfor', {carInfo});
+        navigation.navigate('DetailsInfor', {carInfo : carInfo});
     }
 
 

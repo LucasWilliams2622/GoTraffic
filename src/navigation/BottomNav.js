@@ -27,12 +27,12 @@ import NewCard from '../screens/Main/ProfileTab/Payment/NewCard';
 import CarDetail from '../screens/Main/HomeTab/CarDetail';
 // import MyPromotion from '../screens/Main/ProfileTab/Gift/MyPromotion';
 import HomeCar from '../screens/Main/ProfileTab/MyCar/HomeCar';
-import ListCar from '../screens/Main/ProfileTab/MyCar/ListCar';
 import DetailInListCar from '../screens/Main/ProfileTab/MyCar/DetailInListCar';
 
 import BasicInfor from '../screens/Main/ProfileTab/Car/BasicInfor';
 import DetailsInfor from '../screens/Main/ProfileTab/Car/DetailsInfor';
 import CarAddress from '../screens/Main/ProfileTab/Car/CarAddress';
+import ListCar from '../screens/Main/ProfileTab/Car/ListCar';
 import MyCar from '../screens/Main/ProfileTab/MyCar'
 
 

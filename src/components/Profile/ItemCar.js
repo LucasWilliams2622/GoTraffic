@@ -6,23 +6,25 @@ import { appStyle, windowHeight, windowWidth } from '../../constants/AppStyle';
 
 
 const ItemCar = (props) => {
-    const { name, status, trip, selfDrivePrice, location } = props;
+    const { data } = props;
+    const { brand, model, year, selfDrivePrice, province, district, } = data ;
+    console.log(data);
     return (
         <View style={styles.container}>
             <View style={styles.carContainer}>
                 <FastImage source={ICON.MasterCard} style={styles.carImage} />
                 <View style={styles.statusContainer}>
-                    <Text style={styles.statusText}>{status}</Text>
+                    <Text style={styles.statusText}>Chờ duyệt</Text>
                 </View>
                 <View style={styles.detailsContainer}>
-                    <Text style={styles.carName}>{name}</Text>
+                    <Text style={styles.carName}>{brand}</Text>
                     <View style={styles.tripContainer}>
                         <FastImage source={ICON.Star} style={appStyle.iconMedium} />
                         <FastImage source={ICON.Star} style={appStyle.iconMedium} />
                         <FastImage source={ICON.Star} style={appStyle.iconMedium} />
                         <FastImage source={ICON.Star} style={appStyle.iconMedium} />
                         <FastImage source={ICON.Star} style={appStyle.iconMedium} />
-                        <Text style={styles.tripText}>{trip} chuyến</Text>
+                        <Text style={styles.tripText}>3 chuyến</Text>
                     </View>
                     <View style={styles.priceContainer}>
                         <Text style={styles.priceLabel}>Giá tự lái: </Text>
@@ -30,7 +32,7 @@ const ItemCar = (props) => {
                     </View>
                     <View style={styles.locationContainer}>
                         <FastImage source={ICON.Location} style={appStyle.iconBig} />
-                        <Text style={styles.locationText}>{location}</Text>
+                        <Text style={styles.locationText}>{district} {province}</Text>
                     </View>
                 </View>
             </View>
@@ -48,14 +50,14 @@ const styles = StyleSheet.create({
     },
     carContainer: {
         width: '85%',
-        height: windowHeight*0.15,
+        height: windowHeight * 0.15,
         borderWidth: 0.5,
         borderRadius: 10,
         flexDirection: 'row',
         padding: 8,
     },
     carImage: {
-        width: windowWidth*0.35,
+        width: windowWidth * 0.35,
         height: '100%',
     },
     statusContainer: {
@@ -75,7 +77,7 @@ const styles = StyleSheet.create({
     },
     carName: {
         flexWrap: 'wrap',
-        width:windowWidth*0.45,
+        width: windowWidth * 0.45,
         //flex: 1,
         fontSize: 18,
         fontWeight: 'bold',
@@ -84,7 +86,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
-    
+
     tripText: {
         marginLeft: 6,
     },
@@ -103,7 +105,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
-    
+
     locationText: {
         marginLeft: 3,
         flexWrap: 'wrap',

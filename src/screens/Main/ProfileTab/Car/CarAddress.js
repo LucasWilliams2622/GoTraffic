@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
+import { KeyboardAwareScrollView, SafeAreaView, StyleSheet, Text, View } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { appStyle } from '../../../../constants/AppStyle';
 import Header from '../../../../components/Header';
@@ -18,18 +18,30 @@ const CarAddress = (props) => {
   const [wards, setWards] = useState([]);
   const [selectedWard, setSelectedWard] = useState(null);
   const [address, setAddress] = useState(null);
+  const [newAddress, setNewAddress] = useState(null)
 
-  const handleAddressSubmit = (newAddress) => {
-    const newAddress = {
-      province: selectedProvince?.name,
-      district: selectedDistrict?.name,
-      ward: selectedWard?.name,
-      address: address,
-    };
+  // const handleAddressSubmit = () => {
+  //   const newAddress = {
+  //     province: selectedProvince?.name,
+  //     district: selectedDistrict?.name,
+  //     ward: selectedWard?.name,
+  //     address: address,
+  //   };
 
-    console.log(newAddress);
-    console.log(address,", ",wards,", ",districts,", ",provinces);
-    navigation.navigate('DetailsInfor', { newAddress });
+  //   console.log(newAddress);
+  //   //console.log(address,", ",wards,", ",districts,", ",provinces);
+  //   navigation.navigate('DetailsInfor', { newAddress });
+  // }
+
+  const handleAddressSubmit = () => {
+    // Tạo biến newAddress với định dạng "địa chỉ, phường, quận, tỉnh"
+    const newAddressString = `${address}, ${selectedWard?.name}, ${selectedDistrict?.name}, ${selectedProvince?.name}`;
+
+    // In ra để kiểm tra
+    console.log(newAddressString);
+
+    // Chuyển newAddressString sang màn hình DetailsInfor
+    navigation.navigate('DetailsInfor', { newAddress: newAddressString });
   }
 
 
@@ -84,72 +96,73 @@ const CarAddress = (props) => {
         text="Chọn địa chỉ"
         onPress={() => navigation.navigate('DetailsInfor')}
       />
-      <View style={{ paddingHorizontal: 20 }}>
-        <View>
-          <Text style={[appStyle.text18, { fontWeight: '500', marginVertical: 10 }]}>Tỉnh/Thành phố</Text>
-          <AppDropdown
-            placeholderStyle={{ fontSize: 14 }}
-            fontSize={16}
-            labelField="name"
-            valueField="name"
-            placeholder="Tỉnh/Thành phố"
-            data={provinces}
-            value={selectedProvince?.name}
-            onChange={(val) => {
-              setSelectedProvince(val);
-              setSelectedDistrict(null);
-              setSelectedWard(null);
-            }}
+        <View style={{ paddingHorizontal: 20 }}>
+          <View>
+            <Text style={[appStyle.text18, { fontWeight: '500', marginVertical: 10 }]}>Tỉnh/Thành phố</Text>
+            <AppDropdown
+              placeholderStyle={{ fontSize: 14 }}
+              fontSize={16}
+              labelField="name"
+              valueField="name"
+              placeholder="Tỉnh/Thành phố"
+              data={provinces}
+              value={selectedProvince?.name}
+              onChange={(val) => {
+                setSelectedProvince(val);
+                setSelectedDistrict(null);
+                setSelectedWard(null);
+              }}
+            />
+          </View>
+
+          <View>
+            <Text style={[appStyle.text18, { fontWeight: '500', marginVertical: 10 }]}>Quận Huyện</Text>
+            <AppDropdown
+              placeholderStyle={{ fontSize: 14 }}
+              fontSize={16}
+              labelField="name"
+              valueField="name"
+              placeholder="Quận Huyện"
+              data={districts}
+              value={selectedDistrict?.name}
+              onChange={(val) => {
+                setSelectedDistrict(val);
+                setSelectedWard(null);
+              }}
+            />
+          </View>
+
+          <View>
+            <Text style={[appStyle.text18, { fontWeight: '500', marginVertical: 10 }]}>Phường Xã</Text>
+            <AppDropdown
+              labelField="name"
+              valueField="name"
+              placeholder="Phường Xã"
+              data={wards}
+              value={selectedWard?.name}
+              onChange={(val) => {
+                setSelectedWard(val);
+              }}
+            />
+          </View>
+
+          <View>
+            <Text style={[appStyle.text18, { fontWeight: '500', marginVertical: 10 }]}>Địa chỉ</Text>
+            <AppInput
+              placeholder="Nhập tên cho địa chỉ"
+              placeholderStyle={{ fontSize: 14 }}
+              value={address}
+              onChangeText={(text) => setAddress(text)}
+            />
+          </View>
+
+          <AppButton
+            title="Xác nhận"
+            marginTop={60}
+            onPress={() => handleAddressSubmit()}
           />
         </View>
 
-        <View>
-          <Text style={[appStyle.text18, { fontWeight: '500', marginVertical: 10 }]}>Quận Huyện</Text>
-          <AppDropdown
-            placeholderStyle={{ fontSize: 14 }}
-            fontSize={16}
-            labelField="name"
-            valueField="name"
-            placeholder="Quận Huyện"
-            data={districts}
-            value={selectedDistrict?.name}
-            onChange={(val) => {
-              setSelectedDistrict(val);
-              setSelectedWard(null);
-            }}
-          />
-        </View>
-
-        <View>
-          <Text style={[appStyle.text18, { fontWeight: '500', marginVertical: 10 }]}>Phường Xã</Text>
-          <AppDropdown
-            labelField="name"
-            valueField="name"
-            placeholder="Phường Xã"
-            data={wards}
-            value={selectedWard?.name}
-            onChange={(val) => {
-              setSelectedWard(val);
-            }}
-          />
-        </View>
-
-        <View>
-          <Text style={[appStyle.text18, { fontWeight: '500', marginVertical: 10 }]}>Địa chỉ</Text>
-          <AppInput
-            placeholder="Nhập tên cho địa chỉ"
-            placeholderStyle={{ fontSize: 14 }}
-            value={address}
-            onChangeText={(text) => setAddress(text)}
-          />
-        </View>
-
-        <AppButton
-          title="Xác nhận"
-          marginTop={60}
-          onPress={() => handleAddressSubmit()}
-        />
-      </View>
 
     </SafeAreaView>
   )
