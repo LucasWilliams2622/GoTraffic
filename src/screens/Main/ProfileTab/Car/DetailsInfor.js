@@ -9,19 +9,31 @@ import AppInput from '../../../../components/AppInput';
 import FastImage from 'react-native-fast-image';
 import ItemFeature from '../../../../components/Profile/ItemFeature';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import AppDropdown from '../../../../components/AppDropdown';
 
 
 const DetailsInfor = (props) => {
   const { navigation, route } = props;
-  const { carInfo } = route.params;
-  console.log(route.params.carInfo);
-  const { newAddress } = route.params;
+  const cardInfo = route.params;
+  console.log("DAY LAF DATA", cardInfo);
 
-  const [newCar, setNewCar] = useState([]);
+  const [cars, setCars] = useState([]);
   const [description, setDescription] = useState(null);
   const [fuelConsumption, setFuelConsumption] = useState(null);
   const [price, setPrice] = useState(null);
   const [selectedFeatures, setSelectedFeatures] = useState([]);
+
+  // địa chỉ
+  const [openAddress, setOpenAddress] = useState(false);
+  const [provinces, setProvinces] = useState([]);
+  const [selectedProvince, setSelectedProvince] = useState(null);
+  const [districts, setDistricts] = useState([]);
+  const [selectedDistrict, setSelectedDistrict] = useState(null);
+  const [wards, setWards] = useState([]);
+  const [selectedWard, setSelectedWard] = useState(null);
+  const [address, setAddress] = useState(null);
+  const [location, setLocation] = useState(null);
+
   const [onSwitch, setonSwitch] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [isCameraModalVisible, setIsCameraModalVisible] = useState(false);
@@ -35,24 +47,62 @@ const DetailsInfor = (props) => {
 
   const handleComplete = () => {
     const combinedInfo = {
-      carInfo: carInfo,
-      newAddress,
+      ...cardInfo,
+      districts,
+      provinces,
       description,
       fuelConsumption,
       price,
       selectedFeatures,
       images: carImages,
+      mainImageType: 'front',
     };
-    console.log('Thông tin xe:', combinedInfo);
+    const updatedCarInfo = [...cars];
 
-    setNewCar([...newCar, combinedInfo]);
+    updatedCarInfo.push(combinedInfo);
+    setCars(updatedCarInfo);
+    console.log('DetailInfo =====>', combinedInfo);
+    navigation.navigate('ListCar', { updatedCarInfo: [combinedInfo] });
 
-    navigation.navigate('ListCar', {
-      updatedCarInfo: combinedInfo,
-    });
   };
 
+  // api địa chỉ
+  useEffect(() => {
+    fetch('https://provinces.open-api.vn/api/p/')
+      .then((response) => response.json())
+      .then((data) => {
+        setProvinces(data);
+      })
+      .catch((error) => {
+        console.error('Lỗi khi lấy dữ liệu từ API: ', error);
+      });
+  }, []);
 
+  useEffect(() => {
+    if (selectedProvince) {
+      axios.get(`https://provinces.open-api.vn/api/p/${selectedProvince.code}?depth=2`)
+        .then((response) => {
+          setDistricts(response.data.districts);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [selectedProvince]);
+
+  useEffect(() => {
+    if (selectedDistrict) {
+      axios.get(`https://provinces.open-api.vn/api/d/${selectedDistrict.code}?depth=2`)
+        .then((response) => {
+          setWards(response.data.wards);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [selectedDistrict]);
+
+  // feature
   const handleFeatureSelection = (featureName) => {
     if (selectedFeatures.includes(featureName)) {
       setSelectedFeatures((prevSelectedFeatures) =>
@@ -78,6 +128,7 @@ const DetailsInfor = (props) => {
     'Định vị GPS',
   ];
 
+  
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -95,6 +146,15 @@ const DetailsInfor = (props) => {
     }
   };
 
+  // địa chỉ
+  const handleAddressClick = () => {
+    setOpenAddress(!openAddress);
+  };
+  const handleAddressSubmit = () => {
+    const newAddressString = `${address}, ${selectedWard?.name}, ${selectedDistrict?.name}, ${selectedProvince?.name}`;
+    setLocation(newAddressString);
+    handleAddressClick();
+  };
   const handleConfirm = () => {
     setonSwitch(true);
     toggleModal();
@@ -228,12 +288,69 @@ const DetailsInfor = (props) => {
                   borderRadius: 5,
                   paddingHorizontal: 7
                 }}
-                onPress={() => navigation.navigate('CarAddress')}
+                onPress={() => handleAddressClick()}
               >
                 <Text style={[appStyle.text12Bold, { color: COLOR.fifth, margin: 3 }]}>Thay đổi</Text>
               </TouchableOpacity>
             </View>
-            <Text>{newAddress ? newAddress : '0223 Nguyễn Du'}</Text>
+            <Text>{location ? location : 'Chưa có địa chỉ'}</Text>
+
+            {openAddress && (
+              <View style={{ width: '100%', height: windowHeight * 0.4, justifyContent: 'space-evenly', alignItems: 'center' }}>
+                <AppDropdown
+                  width={windowWidth * 0.7}
+                  height={40}
+                  labelField="name"
+                  valueField="name"
+                  placeholder="Tỉnh/Thành phố"
+                  data={provinces}
+                  value={selectedProvince?.name}
+                  onChange={(val) => {
+                    setSelectedProvince(val);
+                    setSelectedDistrict(null);
+                    setSelectedWard(null);
+                  }}
+                />
+                <AppDropdown
+                  width={windowWidth * 0.7}
+                  height={40}
+                  labelField="name"
+                  valueField="name"
+                  placeholder="Quận Huyện"
+                  data={districts}
+                  value={selectedDistrict?.name}
+                  onChange={(val) => {
+                    setSelectedDistrict(val);
+                    setSelectedWard(null);
+                  }}
+                />
+                <AppDropdown
+                  width={windowWidth * 0.7}
+                  height={40}
+                  labelField="name"
+                  valueField="name"
+                  placeholder="Phường Xã"
+                  data={wards}
+                  value={selectedWard?.name}
+                  onChange={(val) => {
+                    setSelectedWard(val);
+                  }}
+                />
+                <AppInput
+                  width={windowWidth * 0.7}
+                  height={40}
+                  placeholder="Nhập địa chỉ"
+                  value={address}
+                  onChangeText={(text) => setAddress(text)}
+                />
+                <AppButton
+                  title="Lưu"
+                  width={windowWidth * 0.5}
+                  height={40}
+                  onPress={() => handleAddressSubmit()}
+                />
+              </View>
+            )}
           </View>
 
           {/* Đặt xe nhanh */}
@@ -331,7 +448,6 @@ const DetailsInfor = (props) => {
                   isSelected={selectedFeatures.includes(feature)}
                   onPress={handleFeatureSelection}
                 />
-
               ))}
             </View>
           </View>
@@ -417,7 +533,7 @@ const DetailsInfor = (props) => {
         transparent={true}
         visible={isModalVisible}>
         <TouchableOpacity
-          style={styles.modalBackdrop}
+          style={appStyle.modalBackdrop}
           onPress={toggleModal}
         />
         <View style={styles.modalContainer}>
@@ -453,10 +569,10 @@ const DetailsInfor = (props) => {
         transparent={true}
         visible={isCameraModalVisible}>
         <TouchableOpacity
-          style={styles.modalBackdrop}
+          style={appStyle.modalBackdrop}
           onPress={() => setIsCameraModalVisible(false)}
         />
-        <View style={styles.modalContainerCam}>
+        <View style={appStyle.modalContainerCam}>
           <AppButton
             title="Chụp ảnh"
             marginTop={5}
@@ -484,12 +600,7 @@ const DetailsInfor = (props) => {
 export default DetailsInfor
 
 const styles = StyleSheet.create({
-  modalBackdrop: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background color
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+  
   modalContainer: {
     backgroundColor: 'white',
     position: 'absolute',
@@ -503,30 +614,6 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     alignSelf: 'center',
     alignItems: 'center',
-  },
-  modalContainerCam: {
-    backgroundColor: 'white',
-    position: 'absolute',
-    bottom: 10,
-    alignSelf: 'center',
-    width: '100%',
-    zIndex: 1,
-    height: windowHeight * 0.18,
-    borderTopRightRadius: 20,
-    borderTopLeftRadius: 20,
-    paddingHorizontal: 10,
-    paddingBottom: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-
   },
   featuresContainer: {
     flexDirection: 'row',

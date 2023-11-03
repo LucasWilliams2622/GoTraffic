@@ -6,7 +6,6 @@ import { COLOR, ICON } from '../../../../constants/Theme'
 import FastImage from 'react-native-fast-image'
 import AppButton from '../../../../components/AppButton'
 import Address from '../../../../components/Profile/Address'
-import { blue } from 'react-native-reanimated/lib/typescript/reanimated2/Colors'
 
 const MyAddress = (props) => {
   const { navigation, route } = props;
@@ -17,9 +16,8 @@ const MyAddress = (props) => {
   useEffect(() => {
     const updatedAddresses = props.route.params?.updatedAddresses || [];
     if (updatedAddresses.length > 0) {
-      // Nếu có địa chỉ đã được cập nhật, thêm vào danh sách
       setAddresses([...addresses, ...updatedAddresses]);
-      setHasAddress(true); // Đảm bảo hiển thị danh sách khi có địa chỉ
+      setHasAddress(true); 
     }
   }, [props.route.params]);
 

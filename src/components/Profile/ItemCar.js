@@ -1,42 +1,51 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React from 'react'
 import FastImage from 'react-native-fast-image';
-import { ICON } from '../../constants/Theme';
+import { COLOR, ICON } from '../../constants/Theme';
 import { appStyle, windowHeight, windowWidth } from '../../constants/AppStyle';
+import {useNavigation} from '@react-navigation/native';
 
 
 const ItemCar = (props) => {
+    const navigation = useNavigation();
+
     const { data } = props;
-    const { brand, model, year, selfDrivePrice, province, district, } = data ;
+    const { selectedModel, selectedBrand, selectedYear, price, provinces, district } = data;
+
     console.log(data);
+
+    const goDetail = () => {
+        navigation.navigate('DetailInListCar');
+    };
+
     return (
-        <View style={styles.container}>
+        <TouchableOpacity style={styles.container} onPress={goDetail}>
             <View style={styles.carContainer}>
-                <FastImage source={ICON.MasterCard} style={styles.carImage} />
+                <FastImage source={ICON.MasterCard} style={styles.carImage}/>
                 <View style={styles.statusContainer}>
                     <Text style={styles.statusText}>Chờ duyệt</Text>
                 </View>
                 <View style={styles.detailsContainer}>
-                    <Text style={styles.carName}>{brand}</Text>
+                    <Text style={styles.carName}>{selectedBrand} {selectedModel} {selectedYear}</Text>
                     <View style={styles.tripContainer}>
-                        <FastImage source={ICON.Star} style={appStyle.iconMedium} />
-                        <FastImage source={ICON.Star} style={appStyle.iconMedium} />
-                        <FastImage source={ICON.Star} style={appStyle.iconMedium} />
-                        <FastImage source={ICON.Star} style={appStyle.iconMedium} />
-                        <FastImage source={ICON.Star} style={appStyle.iconMedium} />
-                        <Text style={styles.tripText}>3 chuyến</Text>
+                        <FastImage source={ICON.Star} style={appStyle.iconSmall} />
+                        <FastImage source={ICON.Star} style={appStyle.iconSmall} />
+                        <FastImage source={ICON.Star} style={appStyle.iconSmall} />
+                        <FastImage source={ICON.Star} style={appStyle.iconSmall} />
+                        <FastImage source={ICON.Star} style={appStyle.iconSmall} />
+                        <Text style={styles.tripText}>0 chuyến</Text>
                     </View>
                     <View style={styles.priceContainer}>
                         <Text style={styles.priceLabel}>Giá tự lái: </Text>
-                        <Text style={styles.priceText}>{selfDrivePrice}</Text>
+                        <Text style={styles.priceText}>{price}K</Text>
                     </View>
                     <View style={styles.locationContainer}>
-                        <FastImage source={ICON.Location} style={appStyle.iconBig} />
-                        <Text style={styles.locationText}>{district} {province}</Text>
+                        <FastImage source={ICON.Location} style={appStyle.iconMedium} />
+                        <Text style={styles.locationText}>{district} {provinces}</Text>
                     </View>
                 </View>
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
 
@@ -49,23 +58,24 @@ const styles = StyleSheet.create({
         marginTop: 25,
     },
     carContainer: {
-        width: '85%',
-        height: windowHeight * 0.15,
-        borderWidth: 0.5,
+        width: '90%',
+        height: 'auto',
+        backgroundColor: COLOR.background,
         borderRadius: 10,
+        borderWidth: 0.4,
         flexDirection: 'row',
-        padding: 8,
+        padding: 10,
     },
     carImage: {
         width: windowWidth * 0.35,
-        height: '100%',
+        height: '90%',
+        alignSelf: 'center'
     },
     statusContainer: {
         position: 'absolute',
         backgroundColor: 'rgba(65, 207, 242, 0.8)',
         borderRadius: 8,
         padding: 5,
-        alignItems: 'center',
         justifyContent: 'center',
     },
     statusText: {
@@ -79,7 +89,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         width: windowWidth * 0.45,
         //flex: 1,
-        fontSize: 18,
+        fontSize: 17,
         fontWeight: 'bold',
     },
     tripContainer: {
@@ -100,17 +110,18 @@ const styles = StyleSheet.create({
     },
     priceText: {
         fontSize: 14,
+        color: COLOR.primary,
+        fontWeight: 'bold',
     },
     locationContainer: {
         flexDirection: 'row',
         alignItems: 'center',
     },
-
     locationText: {
         marginLeft: 3,
         flexWrap: 'wrap',
         flex: 1,
-        fontSize: 14,
+        fontSize: 12,
     },
 });
 

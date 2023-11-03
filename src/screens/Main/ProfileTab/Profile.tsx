@@ -52,19 +52,6 @@ const Profile = (props) => {
             onPress={() => navigation.navigate('FavouriteCar')} />
 
           <AppProfile
-            icon={ICON.Trip}
-            text="Xe của tôi"
-            onPress={() => navigation.navigate('MyCar')} />
-          <AppProfile
-            icon={ICON.Trip}
-            text="Xe của tôi"
-            onPress={() => navigation.navigate('HomeCar')} />
-          <AppProfile
-            icon={ICON.Trip}
-            text="Thêm Xe"
-            onPress={() => navigation.navigate('BasicInfor')} />
-
-          <AppProfile
             icon={ICON.Address}
             text="Địa chỉ của tôi"
             onPress={() => navigation.navigate('MyAddress')} />
@@ -86,7 +73,7 @@ const Profile = (props) => {
             icon={ICON.Trip}
             text="Xe của tôi"
             borderBottomWidth={0}
-            onPress={() => navigation.navigate('ListCar')} />
+            onPress={() => navigation.navigate('HomeCar')} />
         </View>
 
         <View style={[styles.viewGroup, { marginTop: 35 }]}>
