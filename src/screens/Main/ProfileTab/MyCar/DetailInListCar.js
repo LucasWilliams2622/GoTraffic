@@ -5,7 +5,7 @@ import {
   View,
   useWindowDimensions,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import FastImage from 'react-native-fast-image';
 import {appStyle} from '../../../../constants/AppStyle';
@@ -13,7 +13,7 @@ import {COLOR, ICON} from '../../../../constants/Theme';
 import AppProfile from '../../../../components/AppProfile';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import AppInput from '../../../../components/AppInput';
-
+import Modal from 'react-native-modal';
 
 const DetailInListCar = props => {
   const {navigation} = props;
@@ -24,75 +24,75 @@ const DetailInListCar = props => {
     navigation.navigate('GeneralInformation');
   };
   const layout = useWindowDimensions();
-const FirstRoute = () => (
-  <View style={{flex: 1, padding: 10}}>
-    <AppProfile
-      icon={ICON.Trip}
-      text="Giá cho thuê"
-      onPress={() => navigation.navigate('RentCost')}
-    />
-    <AppProfile
-      icon={ICON.Calendar}
-      text="Lịch xe"
-      onPress={() => navigation.navigate('CalendarOfCar')}
-    />
-    <AppProfile
-      icon={ICON.Heart}
-      text="Giao xe tận nơi"
-      onPress={() => navigation.navigate('CarDelivery')}
-    />
-    <AppProfile
-      icon={ICON.Card}
-      text="Phụ phí"
-      onPress={() => navigation.navigate('Surcharge')}
-    />
-  </View>
-);
-
-const SecondRoute = () => (
-  <View style={[appStyle.main, {marginTop: 20,justifyContent:'space-evenly'}]}>
-    
-    <AppInput placeholder={'Nhập tên của bạn'} />
-    
-    <AppInput placeholder={'Nhập CCCD'} />
-    
-    <AppInput placeholder={'Nhập sdt'} />
-    <View
-      style={{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginTop: 20,
-      }}>
-      <View style={styles.upLoadImage}>
-        <Text style={{textAlign: 'center'}}>
-          Vui lòng chụp mặt trước của bằng lái
-        </Text>
-        <FastImage
-          style={{width: 30, height: 30, marginTop: 10}}
-          source={ICON.Picture}
-        />
-      </View>
-      <View style={styles.upLoadImage}>
-        <Text style={{textAlign: 'center'}}>
-          Vui lòng chụp mặt sau của bằng lái
-        </Text>
-        <FastImage
-          style={{width: 30, height: 30, marginTop: 10}}
-          source={ICON.Picture}
-        />
-      </View>
+  const FirstRoute = () => (
+    <View style={{flex: 1, padding: 10}}>
+      <AppProfile
+        icon={ICON.Trip}
+        text="Giá cho thuê"
+        onPress={() => navigation.navigate('RentCost')}
+      />
+      <AppProfile
+        icon={ICON.Calendar}
+        text="Lịch xe"
+        onPress={() => navigation.navigate('CalendarOfCar')}
+      />
+      <AppProfile
+        icon={ICON.Heart}
+        text="Giao xe tận nơi"
+        onPress={() => navigation.navigate('CarDelivery')}
+      />
+      <AppProfile
+        icon={ICON.Card}
+        text="Phụ phí"
+        onPress={() => navigation.navigate('Surcharge')}
+      />
     </View>
-    <TouchableOpacity style={styles.btn}>
-      <Text
-        style={[
-          appStyle.text16Bold,
-          {color: COLOR.white, textAlign: 'center'},
-        ]}>
-       ĐĂNG KÝ
-      </Text>
-    </TouchableOpacity>
-  </View>
-);
+  );
+
+  const SecondRoute = () => (
+    <View
+      style={[appStyle.main, {marginTop: 20, justifyContent: 'space-evenly'}]}>
+      <AppInput placeholder={'Nhập tên của bạn'} />
+
+      <AppInput placeholder={'Nhập CCCD'} />
+
+      <AppInput placeholder={'Nhập sdt'} />
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginTop: 20,
+        }}>
+        <View style={styles.upLoadImage}>
+          <Text style={{textAlign: 'center'}}>
+            Vui lòng chụp mặt trước của bằng lái
+          </Text>
+          <FastImage
+            style={{width: 30, height: 30, marginTop: 10}}
+            source={ICON.Picture}
+          />
+        </View>
+        <View style={styles.upLoadImage}>
+          <Text style={{textAlign: 'center'}}>
+            Vui lòng chụp mặt sau của bằng lái
+          </Text>
+          <FastImage
+            style={{width: 30, height: 30, marginTop: 10}}
+            source={ICON.Picture}
+          />
+        </View>
+      </View>
+      <TouchableOpacity style={styles.btn}>
+        <Text
+          style={[
+            appStyle.text16Bold,
+            {color: COLOR.white, textAlign: 'center'},
+          ]}>
+          ĐĂNG KÝ
+        </Text>
+      </TouchableOpacity>
+    </View>
+  );
   const renderScene = SceneMap({
     first: FirstRoute,
     second: SecondRoute,
@@ -107,12 +107,38 @@ const SecondRoute = () => (
       {...props}
       indicatorStyle={{backgroundColor: COLOR.primary}}
       style={{backgroundColor: COLOR.white}}
-      labelStyle={{color:COLOR.black}}
+      labelStyle={{color: COLOR.black}}
     />
   );
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <SafeAreaView style={appStyle.container}>
+      <Modal animationType="slide" transparent={true} visible={modalVisible}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={appStyle.text16Bold}>Xác nhận xóa xe</Text>
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-between',marginTop:20}}>
+              <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
+                <Text style={[appStyle.text14, {color: COLOR.red}]}>Hủy</Text>
+              </TouchableOpacity>
+              <View
+                style={{
+                  width: 1,
+                  height: 20,
+                  backgroundColor: COLOR.borderColor2,
+                }}
+              />
+              <TouchableOpacity>
+                <Text style={[appStyle.text14, {color: COLOR.green}]}>
+                  Đồng ý
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
       <TouchableOpacity onPress={goBack}>
         <FastImage
           source={require('../../../../assets/icon/ic_left.png')}
@@ -125,7 +151,7 @@ const SecondRoute = () => (
           }}
         />
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => setModalVisible(true)}>
         <FastImage
           source={require('../../../../assets/icon/ic_garbage.png')}
           style={{
@@ -155,7 +181,8 @@ const SecondRoute = () => (
               style={[
                 appStyle.text14Bold,
                 {marginTop: 10, color: COLOR.primary},
-              ]} onPress={goInfor}>
+              ]}
+              onPress={goInfor}>
               Thông tin chung {'>'}{' '}
             </Text>
           </View>
@@ -225,6 +252,25 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
     marginBottom: 70,
-    marginTop:20
+    marginTop: 20,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    backgroundColor: COLOR.borderColor3,
+    borderRadius: 20,
+    padding: 30,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
 });

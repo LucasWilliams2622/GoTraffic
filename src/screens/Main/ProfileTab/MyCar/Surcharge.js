@@ -25,6 +25,16 @@ const Surcharge = props => {
   const [fourth, setfourth] = useState(0);
   const [fifth, setfifth] = useState(0);
   const [sixth, setsixth] = useState(0);
+
+  const logCat = () => {
+    console.log('Số km tối đa', Math.floor(first * 100 * 8));
+    console.log('Phí vượt giới hạn: ', Math.floor(second * 10));
+    console.log('Phí quá giờ: ', Math.floor(third * 1000));
+    console.log('Tính giá 1 ngày nếu quá: ', Math.floor(fourth * 10));
+    console.log('Phí vs: ', Math.floor(fifth * 100 * 3));
+    console.log('Khử mùi xe: ', Math.floor(sixth * 1000));
+  };
+
   return (
     <SafeAreaView style={appStyle.container}>
       <View style={styles.viewTitle}>
@@ -44,7 +54,6 @@ const Surcharge = props => {
         <View />
       </View>
       <ScrollView style={[appStyle.main, {marginTop: 20}]}>
-
         {/*Visible of LimitKilometer*/}
         <View
           style={{
@@ -64,7 +73,9 @@ const Surcharge = props => {
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text style={appStyle.text14}>Số km tối đa</Text>
-              <Text style={appStyle.text14}>{Math.floor(first * 100)} km</Text>
+              <Text style={appStyle.text14}>
+                {Math.floor(first * 100 * 8)} km/ngày
+              </Text>
             </View>
             <Slider
               style={{width: '100%', height: 40}}
@@ -78,7 +89,7 @@ const Surcharge = props => {
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text style={appStyle.text14}>Phí vượt qua giới hạn</Text>
               <Text style={appStyle.text14}>
-                {Math.floor(second * 10 * 5)} K/km
+                {Math.floor(second * 10)} K/km
               </Text>
             </View>
             <Slider
@@ -111,7 +122,9 @@ const Surcharge = props => {
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text style={appStyle.text14}>Phí quá giờ</Text>
-              <Text style={appStyle.text14}>{Math.floor(third * 100)} km</Text>
+              <Text style={appStyle.text14}>
+                {Math.floor(third * 1000)} K/giờ
+              </Text>
             </View>
             <Slider
               style={{width: '100%', height: 40}}
@@ -124,9 +137,7 @@ const Surcharge = props => {
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text style={appStyle.text14}>Tính giá tiền 1 ngày nếu quá</Text>
-              <Text style={appStyle.text14}>
-                {Math.floor(fourth * 10 * 5)} K/km
-              </Text>
+              <Text style={appStyle.text14}>{Math.floor(fourth * 10)} giờ</Text>
             </View>
             <Slider
               style={{width: '100%', height: 40}}
@@ -158,7 +169,9 @@ const Surcharge = props => {
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text style={appStyle.text14}>Phí</Text>
-              <Text style={appStyle.text14}>{Math.floor(fifth * 100)} km</Text>
+              <Text style={appStyle.text14}>
+                {Math.floor(fifth * 100 * 3)} K/chuyến
+              </Text>
             </View>
             <Slider
               style={{width: '100%', height: 40}}
@@ -190,7 +203,9 @@ const Surcharge = props => {
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text style={appStyle.text14}>Khử mùi xe</Text>
-              <Text style={appStyle.text14}>{Math.floor(sixth * 100)} km</Text>
+              <Text style={appStyle.text14}>
+                {Math.floor(sixth * 1000)} K/chuyến
+              </Text>
             </View>
             <Slider
               style={{width: '100%', height: 40}}
@@ -202,7 +217,7 @@ const Surcharge = props => {
             />
           </View>
         ) : null}
-        <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity style={styles.btn} onPress={logCat}>
           <Text
             style={[
               appStyle.text16Bold,
