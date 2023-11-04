@@ -28,13 +28,13 @@ import CarDetail from '../screens/Main/HomeTab/CarDetail';
 // import MyPromotion from '../screens/Main/ProfileTab/Gift/MyPromotion';
 import HomeCar from '../screens/Main/ProfileTab/MyCar/HomeCar';
 import DetailInListCar from '../screens/Main/ProfileTab/MyCar/DetailInListCar';
+import UpdateCar from '../screens/Main/ProfileTab/MyCar/UpdateCar';
+
 
 import BasicInfor from '../screens/Main/ProfileTab/Car/BasicInfor';
 import DetailsInfor from '../screens/Main/ProfileTab/Car/DetailsInfor';
-import CarAddress from '../screens/Main/ProfileTab/Car/CarAddress';
 import ListCar from '../screens/Main/ProfileTab/Car/ListCar';
 import MyCar from '../screens/Main/ProfileTab/MyCar';
-
 
 
 const Tab = createBottomTabNavigator();
@@ -130,7 +130,9 @@ const StackProfile = () => {
       {/* <Stack.Screen name="MyPromotion" component={MyPromotion}/> */}
       <Stack.Screen name="BasicInfor" component={BasicInfor}/>
       <Stack.Screen name="DetailsInfor" component={DetailsInfor}/>
-      <Stack.Screen name="CarAddress" component={CarAddress}/>
+      <Stack.Screen name="UpdateCar" component={UpdateCar}/>
+
+      
 
 
     </Stack.Navigator>

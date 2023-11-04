@@ -7,6 +7,9 @@ import AppInput from '../../../../components/AppInput';
 import { ScrollView } from 'native-base';
 import AppButton from '../../../../components/AppButton';
 import AppDropdown from '../../../../components/AppDropdown';
+import Brand from '../../../../components/Profile/Brand';
+import Model from '../../../../components/Profile/Model';
+
 import { listBrand, listModal } from '../../../../components/Profile/data/DataCar';
 import { useNavigation } from '@react-navigation/native';
 
@@ -68,6 +71,7 @@ const BasicInfor = (props) => {
                 <ScrollView style={{ flex: 1, width: '100%', marginBottom: 20 }}
                     showsVerticalScrollIndicator={false}>
                     <View style={{ paddingHorizontal: 15 }}>
+
                         <View style={[appStyle.cardInfo, { paddingVertical: 30, borderTopWidth: 0 }]}>
                             <Text style={{ color: COLOR.textWarn, fontWeight: '300' }}>
                                 Lưu ý: Bạn sẽ không thể thay đổi các thông tin
@@ -94,45 +98,15 @@ const BasicInfor = (props) => {
                             </Text>
                         </View>
 
-                        <View style={[appStyle.cardInfo]}>
-                            <View style={appStyle.rowContent}>
-                                <Text style={appStyle.text165}>Hãng xe</Text>
-                                <AppDropdown
-                                    width={windowWidth * 0.3}
-                                    height={windowHeight * 0.04}
-                                    borderWidth={0}
-                                    labelField="label"
-                                    valueField="value"
-                                    data={listBrand}
-                                    value={selectedBrand}
-                                    onChange={(brand) => {
-                                        setSelectedBrand(brand.value);
-                                        setSelectedModel(null);
-                                    }}
-                                />
-                            </View>
-                        </View>
+                        <Brand selectedBrand={selectedBrand} setSelectedBrand={setSelectedBrand} />
 
 
-                        <View style={[appStyle.cardInfo]}>
-                            <View style={appStyle.rowContent}>
-                                <Text style={appStyle.text165}>Mẫu xe</Text>
-                                {selectedBrand && (
-                                    <AppDropdown
-                                        width={windowWidth * 0.3}
-                                        height={windowHeight * 0.04}
-                                        borderWidth={0}
-                                        labelField="label"
-                                        valueField="value"
-                                        data={listModal[selectedBrand]}
-                                        value={selectedModel}
-                                        onChange={(model) => {
-                                            setSelectedModel(model.value);
-                                        }}
-                                    />
-                                )}
-                            </View>
-                        </View>
+
+                        <Model
+                            selectedBrand={selectedBrand}
+                            selectedModel={selectedModel}
+                            setSelectedModel={setSelectedModel}
+                        />
 
 
                         <View style={[appStyle.cardInfo]}>
