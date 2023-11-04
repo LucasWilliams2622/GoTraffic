@@ -6,8 +6,9 @@ import {appStyle} from '../../../../constants/AppStyle';
 import {COLOR} from '../../../../constants/Theme';
 import FastImage from 'react-native-fast-image';
 import ItemListCar from '../../../../components/Support/ItemListCar';
+import ItemTrip from '../../../../components/Support/ItemTrip';
 
-const ListCar = (props) => {
+const TripOfCar = (props) => {
   const {navigation} = props;
   const goBack = () => {
     navigation.goBack('HomeCar');
@@ -27,7 +28,7 @@ const ListCar = (props) => {
             }}
           />
         </TouchableOpacity>
-        <Text style={styles.title}>Danh sách xe</Text>
+        <Text style={styles.title}>Danh sách chuyến</Text>
 
         <TouchableOpacity>
           <FastImage
@@ -45,14 +46,14 @@ const ListCar = (props) => {
       <FlatList
         style={appStyle.main}
         data={DATA}
-        renderItem={({item}) => <ItemListCar data={item} />}
+        renderItem={({item}) => <ItemTrip data={item} />}
         keyExtractor={item => item._id}
         showsVerticalScrollIndicator={false}></FlatList>
     </SafeAreaView>
   );
 };
 
-export default ListCar;
+export default TripOfCar;
 
 const styles = StyleSheet.create({
   viewTitle: {
@@ -80,8 +81,19 @@ const DATA = [
   {
     id: 1,
     image: require('../../../../assets/image/car.jpg'),
+    time: '21/09/2023 | 20:30',
     name: 'KIA MORNING 2022',
-    price: '750K',
-    address:'Huyện Tân Thành,Bà Rịa - Vũng Tàu '
+    timeStart: '21h00,17/10/2023',
+    timeEnd: '21h00,18/10/2023',
+    price: '1.600.666đ',
+  },
+  {
+    id: 2,
+    image: require('../../../../assets/image/car.jpg'),
+    time: '21/09/2023 | 20:30',
+    name: 'KIA MORNING 2022',
+    timeStart: '21h00,17/10/2023',
+    timeEnd: '21h00,18/10/2023',
+    price: '1.600.666đ',
   },
 ];

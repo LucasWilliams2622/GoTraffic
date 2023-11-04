@@ -28,7 +28,17 @@ import CarDetail from '../screens/Main/HomeTab/CarDetail';
 // import MyPromotion from '../screens/Main/ProfileTab/Gift/MyPromotion';
 import HomeCar from '../screens/Main/ProfileTab/MyCar/HomeCar';
 import DetailInListCar from '../screens/Main/ProfileTab/MyCar/DetailInListCar';
+import GeneralInformation from '../screens/Main/ProfileTab/MyCar/GeneralInformation';
+import RentCost from '../screens/Main/ProfileTab/MyCar/RentCost';
+import CalendarOfCar from '../screens/Main/ProfileTab/MyCar/CalendarOfCar';
+import CarDelivery from '../screens/Main/ProfileTab/MyCar/CarDelivery';
+import Surcharge from '../screens/Main/ProfileTab/MyCar/Surcharge';
+import TripOfCar from '../screens/Main/ProfileTab/MyCar/TripOfCar';
+import InforOfCar from '../screens/Main/ProfileTab/MyCar/InforOfCar';
+import ExhibitOfCar from '../screens/Main/ProfileTab/MyCar/ExhibitOfCar';
+import MyWallet from '../screens/Main/ProfileTab/MyCar/MyWallet';
 import UpdateCar from '../screens/Main/ProfileTab/MyCar/UpdateCar';
+
 
 
 import BasicInfor from '../screens/Main/ProfileTab/Car/BasicInfor';
@@ -116,10 +126,18 @@ const StackProfile = () => {
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Account" component={Account} />
       <Stack.Screen name="FavouriteCar" component={FavouriteCar} />
-      <Stack.Screen name="MyCar" component={MyCar} />
       <Stack.Screen name="HomeCar" component={HomeCar} />
       <Stack.Screen name="ListCar" component={ListCar} />
       <Stack.Screen name="DetailInListCar" component={DetailInListCar} />
+      <Stack.Screen name="GeneralInformation" component={GeneralInformation} />
+      <Stack.Screen name="RentCost" component={RentCost} />
+      <Stack.Screen name="CalendarOfCar" component={CalendarOfCar} />
+      <Stack.Screen name="CarDelivery" component={CarDelivery} />
+      <Stack.Screen name="Surcharge" component={Surcharge} />
+      <Stack.Screen name="TripOfCar" component={TripOfCar} />
+      <Stack.Screen name="InforOfCar" component={InforOfCar} />
+      <Stack.Screen name="ExhibitOfCar" component={ExhibitOfCar} />
+      <Stack.Screen name="MyWallet" component={MyWallet} />
       <Stack.Screen name="MyAddress" component={MyAddress} />
       <Stack.Screen name="ShareWithFriend" component={ShareWithFriend} />
       <Stack.Screen name="ChangePassword" component={ChangePassword} />
@@ -130,9 +148,7 @@ const StackProfile = () => {
       {/* <Stack.Screen name="MyPromotion" component={MyPromotion}/> */}
       <Stack.Screen name="BasicInfor" component={BasicInfor}/>
       <Stack.Screen name="DetailsInfor" component={DetailsInfor}/>
-      <Stack.Screen name="UpdateCar" component={UpdateCar}/>
-
-      
+      <Stack.Screen name="CarAddress" component={CarAddress}/>
 
 
     </Stack.Navigator>
@@ -220,8 +236,7 @@ const BottomTabNav = () => {
   const {isLogin, infoUser} = useContext(AppContext);
   // console.log("isLogin Bottom Tabs=================>", isLogin);
   // console.log("infoUser Bottom Tabs=========>", infoUser);
-  // return <>{isLogin == false ? <StackBegin /> : <Main />}</>;
-  return  <Main/>;
+  return <>{isLogin == false ? <StackBegin /> : <Main />}</>;
 };
 //ADMIN
 export default BottomTabNav;

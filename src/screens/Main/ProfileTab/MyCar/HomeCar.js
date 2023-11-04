@@ -37,7 +37,7 @@ const HomeCar = props => {
       </View>
       <View style={{padding: 14, marginTop: 100}}>
         <View style={styles.line1}>
-          <Text style={[appStyle.text16Bold, {textAlign: 'center'}]} >
+          <Text style={[appStyle.text16Bold, {textAlign: 'center'}]}>
             Số dư:********
           </Text>
           <TouchableOpacity onPress={setIsShow}>
@@ -58,7 +58,7 @@ const HomeCar = props => {
           icon={ICON.Wallet}
           title="Ví của tôi"
           text="Theo dõi số dư và lịch sử cho thuê"
-          onPress={() => navigation.navigate('')}
+          onPress={() => navigation.navigate('MyWallet')}
         />
       </View>
     </SafeAreaView>
