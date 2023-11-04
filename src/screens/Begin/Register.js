@@ -1,5 +1,5 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import {StyleSheet, Text, ToastAndroid, TouchableOpacity, View} from 'react-native';
+import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {appStyle} from '../../constants/AppStyle';
 import AppInput from '../../components/AppInput';
@@ -9,11 +9,13 @@ import FastImage from 'react-native-fast-image';
 import * as Yup from 'yup';
 import {Formik} from 'formik';
 import {KeyboardAvoidingView} from 'native-base';
-const Register = (props) => {
-   const {navigation} = props;
-   const goBack = () => {
-     navigation.goBack('Login');
-   };
+import AxiosInstance from '../../constants/AxiosInstance';
+
+const Register = props => {
+  const {navigation} = props;
+  const goBack = () => {
+    navigation.goBack('Login');
+  };
   const validationSchema = Yup.object().shape({
     name: Yup.string().required('Tên không được để trống'),
     phoneNumber: Yup.number()
@@ -30,6 +32,30 @@ const Register = (props) => {
       .min(8, 'Mật khẩu quá ngắn ít nhất phải 8 kí tự')
       .matches(/[a-zA-Z]/, 'Mật khẩu chỉ chứa các chữ các latinh'),
   });
+  const [phoneNumber, setphoneNumber] = useState('');
+  const [password, setpassword] = useState('');
+  const [nameUser, setnameUser] = useState('');
+  const [email, setemail] = useState('');
+  const onRegister = async () => {
+    try {
+      console.log(phoneNumber, password);
+      const response = await AxiosInstance().post('user/api/register', {
+        firstName: nameUser,
+        phone: phoneNumber,
+        email: email,
+        password: password,
+        verificationCode: 999999,
+      });
+      if (response.result) {
+        ToastAndroid.show('Ðăng ki thành công', ToastAndroid.SHORT);
+        goBack();
+      } else {
+        ToastAndroid.show('Đăng ki thất bại', ToastAndroid.SHORT);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <SafeAreaView style={appStyle.container}>
       <View style={[appStyle.main, {justifyContent: 'space-evenly'}]}>
@@ -79,9 +105,11 @@ const Register = (props) => {
                   <AppInput
                     returnKeyType={'next'}
                     placeholder={'Nhập tên của bạn'}
-                    onChangeText={handleChange('name')}
-                    onBlur={handleBlur('name')}
-                    value={values.name}
+                    // onChangeText={handleChange('name')}
+                    // onBlur={handleBlur('name')}
+                    // value={values.name}
+                    onChangeText={nameUser => [setnameUser(nameUser)]}
+                    value={nameUser}
                   />
                 </View>
                 {touched.name && errors.name && (
@@ -94,9 +122,28 @@ const Register = (props) => {
                     keyboardType={'phone-pad'}
                     returnKeyType={'next'}
                     placeholder={'Nhập số điện thoại của bạn'}
-                    onChangeText={handleChange('phoneNumber')}
-                    onBlur={handleBlur('phoneNumber')}
-                    value={values.phoneNumber}
+                    // onChangeText={handleChange('phoneNumber')}
+                    // onBlur={handleBlur('phoneNumber')}
+                    // value={values.phoneNumber}
+                    onChangeText={phoneNumber => [setphoneNumber(phoneNumber)]}
+                    value={phoneNumber}
+                  />
+                </View>
+
+                {touched.phoneNumber && errors.phoneNumber && (
+                  <Text style={styles.textError}>{errors.phoneNumber}</Text>
+                )}
+                <View style={styles.viewItem}>
+                  <Text style={styles.text2}>Email</Text>
+                  <AppInput
+                    keyboardType={'phone-pad'}
+                    returnKeyType={'next'}
+                    placeholder={'Nhập email cua ban'}
+                    // onChangeText={handleChange('phoneNumber')}
+                    // onBlur={handleBlur('phoneNumber')}
+                    // value={values.phoneNumber}
+                    onChangeText={email => [setemail(email)]}
+                    value={email}
                   />
                 </View>
 
@@ -111,9 +158,11 @@ const Register = (props) => {
                     placeholder={'Nhập mật khảu'}
                     isPassword
                     secureTextEntry
-                    onChangeText={handleChange('password')}
-                    onBlur={handleBlur('password')}
-                    value={values.password}
+                    // onChangeText={handleChange('password')}
+                    // onBlur={handleBlur('password')}
+                    // value={values.password}
+                    onChangeText={password => [setpassword(password)]}
+                    value={password}
                   />
                 </View>
                 {touched.password && errors.password && (
@@ -126,9 +175,9 @@ const Register = (props) => {
                     placeholder={'Xác nhận lại mật khẩu'}
                     isPassword
                     secureTextEntry
-                    onChangeText={handleChange('rePassword')}
-                    onBlur={handleBlur('rePassword')}
-                    value={values.rePassword}
+                    // onChangeText={handleChange('rePassword')}
+                    // onBlur={handleBlur('rePassword')}
+                    // value={values.rePassword}
                   />
                 </View>
                 {touched.rePassword && errors.rePassword && (
@@ -139,7 +188,7 @@ const Register = (props) => {
                 title="Đăng kí"
                 color={COLOR.secondary}
                 fontSize={18}
-                onPress={handleSubmit}
+                onPress={onRegister}
               />
             </View>
           )}

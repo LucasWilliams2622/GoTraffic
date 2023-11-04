@@ -3,28 +3,30 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useState, useContext, useEffect } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, {useState, useContext, useEffect} from 'react';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import AppInput from '../../components/AppInput';
-import { appStyle, windowHeight } from '../../constants/AppStyle';
+import {appStyle, windowHeight} from '../../constants/AppStyle';
 import AppButton from '../../components/AppButton';
-import { COLOR } from '../../constants/Theme';
+import {COLOR} from '../../constants/Theme';
 import FastImage from 'react-native-fast-image';
-import { Center } from 'native-base';
-import { BottomSheet } from 'react-native-btr';
+import {Center} from 'native-base';
+import {BottomSheet} from 'react-native-btr';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 import * as Yup from 'yup';
-import { Formik, useFormik } from 'formik';
-import { AppContext } from '../../utils/AppContext';
+import {Formik, useFormik} from 'formik';
+import {AppContext} from '../../utils/AppContext';
 import {
   GoogleSignin,
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
+import AxiosInstance from '../../constants/AxiosInstance';
 
 const Login = props => {
   useEffect(() => {
@@ -45,30 +47,29 @@ const Login = props => {
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
-        console.log("idToken1");
-
+        console.log('idToken1');
       } else if (error.code === statusCodes.IN_PROGRESS) {
         // operation (e.g. sign in) is in progress already
-        console.log("idToken2");
-
+        console.log('idToken2');
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
         // play services not available or outdated
-        console.log("idToken3");
-
+        console.log('idToken3');
       } else {
         // some other error happened
       }
     }
   };
 
-  const { navigation } = props;
+  const {navigation} = props;
   const goRegister = () => {
     navigation.navigate('Register');
   };
   const [visible, setVisible] = useState(false);
   const [visible2, setVisible2] = useState(false);
   const [visible3, setVisible3] = useState(false);
-  const { setIsLogin } = useContext(AppContext);
+  const {setIsLogin} = useContext(AppContext);
+  const [phoneNumber, setphoneNumber] = useState('');
+  const [password, setpassword] = useState('');
 
   const toggleBottomNavigationView = () => {
     //Toggling the visibility state of the bottom sheet
@@ -114,10 +115,30 @@ const Login = props => {
       console.log(values);
     },
   });
+
+  const onLogin = async () => {
+    try {
+      console.log(phoneNumber, password);
+      const response = await AxiosInstance().post('/user/api/login', {
+        phone: phoneNumber,
+        password: password,
+      });
+      console.log(response);
+      if (response.result) {
+        setIsLogin(true);
+        ToastAndroid.show('Ðăng nhập thành công', ToastAndroid.SHORT);
+      } else {
+        ToastAndroid.show('Đăng nhập thất bại', ToastAndroid.SHORT);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <SafeAreaView style={appStyle.container}>
-      <View style={[appStyle.main, { justifyContent: 'space-evenly' }]}>
-        <View style={{ marginTop: -100 }}>
+      <View style={[appStyle.main, {justifyContent: 'space-evenly'}]}>
+        <View style={{marginTop: -100}}>
           <FastImage
             source={require('../../assets/image/logo_go_traffic.png')}
             style={styles.image}
@@ -125,7 +146,7 @@ const Login = props => {
           <Text style={styles.text1}>Đăng nhập</Text>
 
           <Formik
-            initialValues={{ phoneNumber: '', password: '' }}
+            initialValues={{phoneNumber: '', password: ''}}
             validationSchema={validationSchema}
             onSubmit={values => {
               console.log(values);
@@ -148,9 +169,13 @@ const Login = props => {
                         keyboardType={'phone-pad'}
                         returnKeyType={'next'}
                         placeholder={'Nhập số điện thoại của bạn'}
-                        onChangeText={handleChange('phoneNumber')}
-                        onBlur={handleBlur('phoneNumber')}
-                        value={values.phoneNumber}
+                        // onChangeText={handleChange('phoneNumber')}
+                        // onBlur={handleBlur('phoneNumber')}
+                        // value={values.phoneNumber}
+                        onChangeText={phoneNumber => [
+                          setphoneNumber(phoneNumber),
+                        ]}
+                        value={phoneNumber}
                       />
                     </View>
                   </View>
@@ -166,9 +191,11 @@ const Login = props => {
                         placeholder={'Nhập mật khảu'}
                         isPassword
                         secureTextEntry
-                        onChangeText={handleChange('password')}
-                        onBlur={handleBlur('password')}
-                        value={values.password}
+                        // onChangeText={handleChange('password')}
+                        // onBlur={handleBlur('password')}
+                        // value={values.password}
+                        onChangeText={password => [setpassword(password)]}
+                        value={password}
                       />
                     </View>
                   </View>
@@ -207,7 +234,7 @@ const Login = props => {
                   <Text style={styles.text4}>
                     Bạn chưa là thành viên?
                     <Text
-                      style={{ fontWeight: 'bold' }}
+                      style={{fontWeight: 'bold'}}
                       onPress={() => {
                         goRegister();
                       }}>
@@ -221,7 +248,7 @@ const Login = props => {
                   color={COLOR.secondary}
                   fontSize={18}
                   onPress={() => {
-                    setIsLogin(true);
+                    onLogin();
                   }}
                 />
               </View>
@@ -237,7 +264,7 @@ const Login = props => {
         onBackdropPress={toggleBottomNavigationView}>
         {/*Bottom Sheet inner View*/}
         <View style={styles.bottomNavigationView}>
-          <View style={{ flex: 1 }}>
+          <View style={{flex: 1}}>
             <View>
               <Text style={styles.text1InBottomSheet}>Quên mật khẩu</Text>
               <Text style={styles.text2InBottomSheet}>
@@ -264,11 +291,11 @@ const Login = props => {
             color={COLOR.secondary}
             fontSize={18}
             onPress={formik.handleSubmit}
-          // onPress={handleSubmit => {
-          //   //handleSubmit;
-          //   //setVisible(false);
-          //   //toggleBottomNavigationView2();
-          // }}
+            // onPress={handleSubmit => {
+            //   //handleSubmit;
+            //   //setVisible(false);
+            //   //toggleBottomNavigationView2();
+            // }}
           />
         </View>
       </BottomSheet>
@@ -280,7 +307,7 @@ const Login = props => {
         onBackButtonPress={toggleBottomNavigationView2}
         //Toggling the visibility state on the click of the back botton
         onBackdropPress={toggleBottomNavigationView2}
-      //Toggling the visibility state on the clicking out side of the sheet
+        //Toggling the visibility state on the clicking out side of the sheet
       >
         {/*Bottom Sheet inner View*/}
         <View style={styles.bottomNavigationView}>
@@ -290,7 +317,7 @@ const Login = props => {
               Nhập mã bạn nhận được qua email.
             </Text>
             <OTPInputView
-              style={{ width: '80%', height: 100, alignSelf: 'center' }}
+              style={{width: '80%', height: 100, alignSelf: 'center'}}
               pinCount={4}
               // code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
               // onCodeChanged = {code => { this.setState({code})}}
@@ -318,10 +345,10 @@ const Login = props => {
 
       {/*Bottom Sheet inner View*/}
       <Formik
-        initialValues={{ passwordInBottomSheet: '', rePassword: '' }}
+        initialValues={{passwordInBottomSheet: '', rePassword: ''}}
         validationSchema={validationSchema}
         onSubmit={values => {
-          console.log({ values });
+          console.log({values});
           setVisible3(false);
         }}>
         {({
@@ -338,7 +365,7 @@ const Login = props => {
             onBackButtonPress={toggleBottomNavigationView3}
             //Toggling the visibility state on the click of the back botton
             onBackdropPress={toggleBottomNavigationView3}
-          //Toggling the visibility state on the clicking out side of the sheet
+            //Toggling the visibility state on the clicking out side of the sheet
           >
             <View style={styles.bottomNavigationView2}>
               <View>
@@ -346,7 +373,7 @@ const Login = props => {
                 <Text style={styles.text2InBottomSheet}>
                   Đặt lại mật khẩu mới để tiến hành đăng nhập vào tài khoản nhé!
                 </Text>
-                <View style={{ marginBottom: 20 }}>
+                <View style={{marginBottom: 20}}>
                   <AppInput
                     returnKeyType={'done'}
                     placeholder={'Nhập mật khảu'}
@@ -363,7 +390,7 @@ const Login = props => {
                       {errors.passwordInBottomSheet}
                     </Text>
                   )}
-                <View style={{ marginBottom: 20 }}>
+                <View style={{marginBottom: 20}}>
                   <AppInput
                     returnKeyType={'done'}
                     placeholder={'Xác nhận lại mật khảu'}
