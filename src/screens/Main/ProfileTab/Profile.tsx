@@ -97,6 +97,7 @@ const Profile = props => {
             text="Xe của tôi"
             borderBottomWidth={0}
             onPress={() => navigation.navigate('HomeCar')} />
+            
         </View>
 
         <View style={[styles.viewGroup, {marginTop: 35}]}>

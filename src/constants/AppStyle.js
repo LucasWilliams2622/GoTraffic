@@ -346,4 +346,19 @@ export const appStyle = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
+  viewUpload:{ 
+    width: 170, 
+    height: 100, 
+    backgroundColor: '#D9D9D9', 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    marginTop: 10 
+  },
+
+  inputRight:{ 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    width: windowWidth * 0.4, 
+    justifyContent: 'flex-end' }
 });

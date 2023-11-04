@@ -9,19 +9,14 @@ import AppButton from '../../../../components/AppButton';
 import AppDropdown from '../../../../components/AppDropdown';
 import Brand from '../../../../components/Profile/Brand';
 import Model from '../../../../components/Profile/Model';
-
-import { listBrand, listModal } from '../../../../components/Profile/data/DataCar';
+import Year from '../../../../components/Profile/Year';
+import OptionDropdown from '../../../../components/Profile/OptionDropdown';
 import { useNavigation } from '@react-navigation/native';
 
 
 const seatNumbers = [];
 for (let i = 4; i <= 16; i++) {
     seatNumbers.push({ label: i.toString(), value: i.toString() });
-}
-
-const productionYears = [];
-for (let year = 2008; year <= 2023; year++) {
-    productionYears.push({ label: year.toString(), value: year.toString() });
 }
 
 const transmissionOptions = [
@@ -100,32 +95,12 @@ const BasicInfor = (props) => {
 
                         <Brand selectedBrand={selectedBrand} setSelectedBrand={setSelectedBrand} />
 
-
-
                         <Model
                             selectedBrand={selectedBrand}
                             selectedModel={selectedModel}
                             setSelectedModel={setSelectedModel}
                         />
-
-
-                        <View style={[appStyle.cardInfo]}>
-                            <View style={appStyle.rowContent}>
-                                <Text style={appStyle.text165}>Năm sản xuất</Text>
-                                <AppDropdown
-                                    width={windowWidth * 0.3}
-                                    height={windowHeight * 0.04}
-                                    borderWidth={0}
-                                    labelField="label"
-                                    valueField="value"
-                                    data={productionYears}
-                                    value={selectedYear}
-                                    onChange={(year) => {
-                                        setSelectedYear(year.value);
-                                    }}
-                                />
-                            </View>
-                        </View>
+                        <Year selectedYear={selectedYear} setSelectedYear={setSelectedYear} />
 
                         <View style={[appStyle.cardInfo]}>
                             <View style={appStyle.rowContent}>
@@ -148,69 +123,27 @@ const BasicInfor = (props) => {
                         <View style={appStyle.cardInfo}>
                             <View style={appStyle.rowContent}>
                                 <Text style={appStyle.text165}>Truyền động</Text>
-                                <View style={{ flexDirection: 'row', backgroundColor: COLOR.gray, borderRadius: 8 }}>
-                                    {transmissionOptions.map((option) => (
-                                        <TouchableOpacity
-                                            key={option.value}
-                                            style={[
-                                                {
-                                                    marginHorizontal: 0,
-                                                    backgroundColor:
-                                                        selectedTransmission === option.value ? 'black' : 'transparent',
-                                                    borderRadius: 8,
-                                                    padding: 5,
-
-                                                },
-                                            ]}
-                                            onPress={() => {
-                                                setSelectedTransmission(option.value);
-                                            }}
-                                        >
-                                            <Text style={{
-                                                fontSize: 16,
-                                                marginHorizontal: 3,
-                                                color: selectedTransmission === option.value ? 'white' : 'black',
-                                                fontWeight: selectedTransmission === option.value ? 'bold' : 'normal'
-                                            }}>{option.label}</Text>
-                                        </TouchableOpacity>
-                                    ))}
-                                </View>
+                                <OptionDropdown
+                                    options={transmissionOptions}
+                                    selectedOption={selectedTransmission}
+                                    setSelectedOption={setSelectedTransmission}
+                                />
                             </View>
                         </View>
 
                         <View style={[appStyle.cardInfo, { borderBottomWidth: 0 }]}>
                             <View style={[appStyle.rowContent]}>
                                 <Text style={appStyle.text165}>Nhiên liệu</Text>
-                                <View style={{ flexDirection: 'row', backgroundColor: COLOR.gray, borderRadius: 8 }}>
-                                    {fuelOptions.map((option) => (
-                                        <TouchableOpacity
-                                            key={option.value}
-                                            style={[
-                                                {
-                                                    marginHorizontal: 0,
-                                                    backgroundColor: selectedFuel === option.value ? 'black' : 'transparent',
-                                                    borderRadius: 8,
-                                                    padding: 5,
-                                                },
-                                            ]}
-                                            onPress={() => {
-                                                setSelectedFuel(option.value);
-                                            }}
-                                        >
-                                            <Text style={{
-                                                fontSize: 16,
-                                                marginHorizontal: 3,
-                                                color: selectedFuel === option.value ? 'white' : 'black',
-                                                fontWeight: selectedFuel === option.value ? 'bold' : 'normal'
-                                            }}>{option.label}</Text>
-                                        </TouchableOpacity>
-                                    ))}
-                                </View>
+                                <OptionDropdown
+                                    options={fuelOptions}
+                                    selectedOption={selectedFuel}
+                                    setSelectedOption={setSelectedFuel}
+                                />
                             </View>
                         </View>
-
                     </View>
                 </ScrollView>
+
                 <AppButton
                     title="Tiếp theo"
                     marginBottom={70}
@@ -219,7 +152,6 @@ const BasicInfor = (props) => {
             </View>
         </SafeAreaView>
     )
-
 }
 
 export default BasicInfor

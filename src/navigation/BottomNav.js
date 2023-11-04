@@ -39,8 +39,9 @@ import ExhibitOfCar from '../screens/Main/ProfileTab/MyCar/ExhibitOfCar';
 import MyWallet from '../screens/Main/ProfileTab/MyCar/MyWallet';
 import UpdateCar from '../screens/Main/ProfileTab/MyCar/UpdateCar';
 
-
-
+import HandOverReport from '../screens/Main/ProfileTab/MyCar/HandOverReport';
+import SampleContract from '../screens/Main/ProfileTab/MyCar/SampleContract';
+import LeaseCar from '../screens/Main/ProfileTab/MyCar/LeaseCar';
 import BasicInfor from '../screens/Main/ProfileTab/Car/BasicInfor';
 import DetailsInfor from '../screens/Main/ProfileTab/Car/DetailsInfor';
 import ListCar from '../screens/Main/ProfileTab/Car/ListCar';
@@ -148,7 +149,12 @@ const StackProfile = () => {
       {/* <Stack.Screen name="MyPromotion" component={MyPromotion}/> */}
       <Stack.Screen name="BasicInfor" component={BasicInfor}/>
       <Stack.Screen name="DetailsInfor" component={DetailsInfor}/>
-      <Stack.Screen name="CarAddress" component={CarAddress}/>
+      <Stack.Screen name="LeaseCar" component={LeaseCar}/>
+      <Stack.Screen name="SampleContract" component={SampleContract}/>
+      <Stack.Screen name="HandOverReport" component={HandOverReport}/>
+
+
+
 
 
     </Stack.Navigator>
@@ -231,12 +237,14 @@ const Main = () => {
     </Tab.Navigator>
   );
 };
+
 const BottomTabNav = () => {
   // const [isLogin, setfirst] = useState(true)
   const {isLogin, infoUser} = useContext(AppContext);
   // console.log("isLogin Bottom Tabs=================>", isLogin);
   // console.log("infoUser Bottom Tabs=========>", infoUser);
-  return <>{isLogin == false ? <StackBegin /> : <Main />}</>;
+  //return <>{isLogin == false ? <StackBegin /> : <Main />}</>;
+  return <Main />;
 };
 //ADMIN
 export default BottomTabNav;
