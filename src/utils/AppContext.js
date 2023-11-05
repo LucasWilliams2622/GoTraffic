@@ -24,7 +24,7 @@ export const AppContextProvider = props => {
       if (userInfoString !== null) {
         const userInfo = JSON.parse(userInfoString);
         setInfoUser(userInfo);
-        setIdUser(userInfo._id);
+        setIdUser(userInfo.id);
       }
     } catch (error) {
       console.log(error);

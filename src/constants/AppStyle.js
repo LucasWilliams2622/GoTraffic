@@ -51,8 +51,8 @@ export const appStyle = StyleSheet.create({
   },
 
   avatar: {
-    width: 60,
-    height: 60,
+    width: 90,
+    height: 90,
     alignSelf: 'center',
     justifyContent: 'center',
     borderRadius: 60,
