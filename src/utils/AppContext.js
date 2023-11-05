@@ -31,6 +31,7 @@ export const AppContextProvider = props => {
       })
       if (response.result) {
         setInfoUser(response.user)
+        console.log(response.user);
       }
     } catch (error) {
       console.log(error);

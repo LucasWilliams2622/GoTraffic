@@ -6,7 +6,7 @@ import {
   FlatList,
   Dimensions,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import {COLOR} from '../../../constants/Theme';
 import {appStyle} from '../../../constants/AppStyle';
@@ -32,6 +32,8 @@ import {
 } from '../../../types';
 import Modal from 'react-native-modal';
 import CarDetail from './CarDetail';
+import {AppContext} from '../../../utils/AppContext';
+import FastImage from 'react-native-fast-image';
 
 const RenderList: React.FC<RenderListProps<any>> = ({
   data,
@@ -82,22 +84,31 @@ const Home: React.FC = () => {
     setModalVisible(true);
   };
 
+  const {infoUser, idUser} = useContext(AppContext);
+
   return (
     <ScrollView style={[appStyle.container]}>
       <View style={[styles.headBg]}>
         <Row style={styles.nameAndPointWrapper}>
           <Column style={[styles.iconBG, styles.iconMarginRight]}>
-            <Icon name="user" color={COLOR.forth} size={23}></Icon>
+            <FastImage
+              style={{width: 40, height: 40, borderRadius: 99}}
+              source={
+                infoUser?.avatar
+                  ? {uri: infoUser.avatar}
+                  : require('../../../assets/image/logo_go_traffic.png')
+              }
+            />
           </Column>
           <Column>
-            <Text style={appStyle.text16Bold}>Lê Hoàng Gia Khánh</Text>
+            <Text style={appStyle.text16Bold}>{infoUser.name}</Text>
             <Row style={{alignItems: 'center'}}>
               <Icon
                 name="star"
                 color={COLOR.third}
                 solid
                 style={{marginRight: 5}}></Icon>
-              <Text style={appStyle.text12Bold}>Điểm thưởng</Text>
+              <Text style={appStyle.text12Bold}>{infoUser.point}</Text>
             </Row>
           </Column>
         </Row>
