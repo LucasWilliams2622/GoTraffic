@@ -8,35 +8,43 @@ import {
   Modal,
   ToastAndroid,
 } from 'react-native';
-import React, { useState, useEffect, useContext } from 'react';
-import { appStyle, windowHeight, windowWidth } from '../../../constants/AppStyle';
-import { COLOR, ICON } from '../../../constants/Theme';
+import React, {useState, useEffect, useContext} from 'react';
+import {appStyle, windowHeight, windowWidth} from '../../../constants/AppStyle';
+import {COLOR, ICON} from '../../../constants/Theme';
 import FastImage from 'react-native-fast-image';
 import AppProfile from '../../../components/AppProfile';
-import { AppContext } from '../../../utils/AppContext';
+import {AppContext} from '../../../utils/AppContext';
 import AppButton from '../../../components/AppButton';
 import AxiosInstance from '../../../constants/AxiosInstance';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Profile = props => {
-  const { navigation, route } = props;
-  const defaultName = 'Bảo';
+  const {navigation, route} = props;
+  const {setIsLogin, infoUser, idUser} = useContext(AppContext);
+
+  const defaultName = infoUser.name;
   const [name, setName] = useState(route.params?.newName || defaultName);
-  const { setIsLogin, infoUser } = useContext(AppContext);
   const [isModalVisible, setModalVisible] = useState(false);
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
-
+  const LogOut = async () => {
+    try {
+      await AsyncStorage.removeItem('userInfo');
+      setIsLogin(false);
+      console.log('Thông tin người dùng đã được xóa thành công!');
+    } catch (error) {
+      console.log('Đã xảy ra lỗi khi xóa thông tin người dùng:', error);
+    }
+  };
   const onDelete = async () => {
     try {
-      const response = await AxiosInstance().delete('user/api/delete',{
-
-      });
+      const response = await AxiosInstance().delete('user/api/delete', {});
       console.log(response);
       if (response.result) {
         setIsLogin(false);
         ToastAndroid.show('Xóa tài khoản thành công', ToastAndroid.SHORT);
-      }else {
+      } else {
         ToastAndroid.show('Xóa thất bại', ToastAndroid.SHORT);
       }
     } catch (error) {
@@ -51,10 +59,10 @@ const Profile = props => {
   }, [route.params?.newName]);
 
   const updateNewName = newName => {
-    navigation.setParams({ newName });
+    navigation.setParams({newName});
   };
   return (
-    <SafeAreaView style={[appStyle.container, { backgroundColor: COLOR.gray }]}>
+    <SafeAreaView style={[appStyle.container, {backgroundColor: COLOR.gray}]}>
       <ScrollView
         style={{
           flex: 1,
@@ -64,21 +72,21 @@ const Profile = props => {
         }}
         showsVerticalScrollIndicator={false}>
         <View style={styles.headBg}>
-          <View style={[appStyle.boxCenter, { marginTop: windowHeight * 0.12 }]}>
+          <View style={[appStyle.boxCenter, {marginTop: windowHeight * 0.12}]}>
             <FastImage
               source={require('../../../assets/image/guide/img_friends.png')}
               style={[appStyle.avatar]}></FastImage>
             <Text
               style={[
                 appStyle.text24Bold,
-                { textAlign: 'center', marginTop: 12 },
+                {textAlign: 'center', marginTop: 12},
               ]}>
               {name}
             </Text>
           </View>
         </View>
 
-        <View style={[styles.viewGroup, { marginTop: windowHeight * 0.18 }]}>
+        <View style={[styles.viewGroup, {marginTop: windowHeight * 0.18}]}>
           <AppProfile
             icon={ICON.Profile}
             text="Tài khoản của tôi"
@@ -94,7 +102,8 @@ const Profile = props => {
           <AppProfile
             icon={ICON.Address}
             text="Địa chỉ của tôi"
-            onPress={() => navigation.navigate('MyAddress')} />
+            onPress={() => navigation.navigate('MyAddress')}
+          />
 
           <AppProfile
             icon={ICON.Wallet}
@@ -104,7 +113,7 @@ const Profile = props => {
           />
         </View>
 
-        <View style={[styles.viewGroup, { marginTop: 35 }]}>
+        <View style={[styles.viewGroup, {marginTop: 35}]}>
           <AppProfile
             icon={ICON.Share}
             text="Giới thiệu bạn bè"
@@ -115,11 +124,11 @@ const Profile = props => {
             icon={ICON.Trip}
             text="Xe của tôi"
             borderBottomWidth={0}
-            onPress={() => navigation.navigate('HomeCar')} />
-
+            onPress={() => navigation.navigate('HomeCar')}
+          />
         </View>
 
-        <View style={[styles.viewGroup, { marginTop: 35 }]}>
+        <View style={[styles.viewGroup, {marginTop: 35}]}>
           <AppProfile
             icon={ICON.Key}
             text="Đổi mật khẩu"
@@ -136,54 +145,52 @@ const Profile = props => {
 
         <TouchableOpacity
           onPress={() => {
-            setIsLogin(false);
+            LogOut();
           }}>
           <View
-            style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 20 }}>
+            style={{flexDirection: 'row', alignSelf: 'center', marginTop: 20}}>
             <FastImage source={ICON.Exit} style={[appStyle.iconBig]} />
             <Text
               style={[
                 appStyle.text20,
-                { color: COLOR.exit, marginLeft: 10, fontWeight: '500' },
+                {color: COLOR.exit, marginLeft: 10, fontWeight: '500'},
               ]}>
               Đăng xuất
             </Text>
           </View>
         </TouchableOpacity>
       </ScrollView>
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={isModalVisible}>
-        <TouchableOpacity
-          style={styles.modalBackdrop}
-          onPress={toggleModal}
-        />
+      <Modal animationType="fade" transparent={true} visible={isModalVisible}>
+        <TouchableOpacity style={styles.modalBackdrop} onPress={toggleModal} />
         <View style={styles.modalContainer}>
-          <Text style={[appStyle.text20Bold, { marginVertical: 20 }]}>CẢNH BÁO</Text>
-          <Text style={[appStyle.text14, {
-            textAlign: 'center',
-            lineHeight: 20,
-            letterSpacing: 0
-          }]}>
-            Khi xóa tài khoản, các thông tin sau (nếu có) sẽ bị xóa trên hệ thống: {'\n'}
-            - Thông tin cá nhân {'\n'}
-            - Thông tin lịch sử chuyến và danh sách xe {'\n\n'}
-            Tiền ví và điểm thưởng sẽ được thanh toán theo quy định của chính sách
-            hiện hành của Mioto {'\n\n'} Việc đồng ý xóa tài khoản là bạn đã chấp nhận
-            điều khoản chính sách xóa tài khoản của Mioto. {'\n\n'} Yêu cầu xóa tài khoản
-            sẽ được xử lý trong 15 ngày làm việc. Mioto sẽ liên hệ trực tiếp với bạn qua
-            Email hoặc số điện thoại bạn đã cung cấp. {'\n\n'} Mọi thắc mắc xin liên hệ Fanpage
-            của Mioto hoặc hotline <Text style={{ fontWeight: 'bold' }}>1900 9217</Text>  để được hỗ trợ
+          <Text style={[appStyle.text20Bold, {marginVertical: 20}]}>
+            CẢNH BÁO
+          </Text>
+          <Text
+            style={[
+              appStyle.text14,
+              {
+                textAlign: 'center',
+                lineHeight: 20,
+                letterSpacing: 0,
+              },
+            ]}>
+            Khi xóa tài khoản, các thông tin sau (nếu có) sẽ bị xóa trên hệ
+            thống: {'\n'}- Thông tin cá nhân {'\n'}- Thông tin lịch sử chuyến và
+            danh sách xe {'\n\n'}
+            Tiền ví và điểm thưởng sẽ được thanh toán theo quy định của chính
+            sách hiện hành của Mioto {'\n\n'} Việc đồng ý xóa tài khoản là bạn
+            đã chấp nhận điều khoản chính sách xóa tài khoản của Mioto. {'\n\n'}{' '}
+            Yêu cầu xóa tài khoản sẽ được xử lý trong 15 ngày làm việc. Mioto sẽ
+            liên hệ trực tiếp với bạn qua Email hoặc số điện thoại bạn đã cung
+            cấp. {'\n\n'} Mọi thắc mắc xin liên hệ Fanpage của Mioto hoặc
+            hotline <Text style={{fontWeight: 'bold'}}>1900 9217</Text> để được
+            hỗ trợ
           </Text>
 
-          <AppButton
-            title="Hủy"
-            marginTop={50}
-            onPress={() => toggleModal()}
-          />
-          <TouchableOpacity onPress={()=> onDelete()}>
-            <Text style={[appStyle.text14Bold, { marginTop: 15 }]}>Xác nhận</Text>
+          <AppButton title="Hủy" marginTop={50} onPress={() => toggleModal()} />
+          <TouchableOpacity onPress={() => onDelete()}>
+            <Text style={[appStyle.text14Bold, {marginTop: 15}]}>Xác nhận</Text>
           </TouchableOpacity>
         </View>
       </Modal>
@@ -217,7 +224,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '50%',
     left: '50%',
-    transform: [{ translateX: -windowWidth * 0.45 }, { translateY: -windowHeight * 0.36 }],
+    transform: [
+      {translateX: -windowWidth * 0.45},
+      {translateY: -windowHeight * 0.36},
+    ],
     width: windowWidth * 0.9,
     height: windowHeight * 0.72,
     borderRadius: 12,

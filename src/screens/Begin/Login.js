@@ -27,14 +27,17 @@ import {
 } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import AxiosInstance from '../../constants/AxiosInstance';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = props => {
   useEffect(() => {
+    checkLoginInfo();
+
     GoogleSignin.configure({
       webClientId:
         '225655748998-h8s6r3m379t1kpijmk7pfhbgut94l2rm.apps.googleusercontent.com',
     });
-  }, []);
+  }, [idUser]);
 
   const signInGoogle = async () => {
     try {
@@ -59,7 +62,7 @@ const Login = props => {
       }
     }
   };
-
+  const { isLogin, setIsLogin, setInfoUser, setIdUser, idUser } = useContext(AppContext);
   const {navigation} = props;
   const goRegister = () => {
     navigation.navigate('Register');
@@ -67,7 +70,6 @@ const Login = props => {
   const [visible, setVisible] = useState(false);
   const [visible2, setVisible2] = useState(false);
   const [visible3, setVisible3] = useState(false);
-  const {setIsLogin} = useContext(AppContext);
   const [phoneNumber, setphoneNumber] = useState('');
   const [password, setpassword] = useState('');
 
@@ -125,6 +127,9 @@ const Login = props => {
       });
       console.log(response);
       if (response.result) {
+        setIdUser(response.user.id);
+        setInfoUser(response.user);
+        saveLoginInfo(response.user); 
         setIsLogin(true);
         ToastAndroid.show('Ðăng nhập thành công', ToastAndroid.SHORT);
       } else {
@@ -132,6 +137,35 @@ const Login = props => {
       }
     } catch (e) {
       console.log(e);
+    }
+  };
+
+  // Hàm lưu thông tin đăng nhập vào AsyncStorage
+  const saveLoginInfo = async (userInfo) => {
+    try {
+      console.log("userInfo", userInfo.avatar);
+      await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
+      console.log('Thông tin đăng nhập đã được lưu.');
+    } catch (error) {
+      console.log('Lỗi khi lưu thông tin đăng nhập:', error);
+    }
+  };
+
+  // Hàm kiểm tra thông tin đăng nhập đã tồn tại trong AsyncStorage hay chưa
+  const checkLoginInfo = async () => {
+    try {
+      const userInfo = await AsyncStorage.getItem('userInfo');
+      if (userInfo !== null) {
+        const parsedUserInfo = JSON.parse(userInfo);
+        setIdUser(parsedUserInfo._id);
+        setInfoUser(parsedUserInfo);
+        setIsLogin(true);
+        console.log('Thông tin đăng nhập đã tồn tại:', parsedUserInfo);
+      } else {
+        console.log('Không tìm thấy thông tin đăng nhập.');
+      }
+    } catch (error) {
+      console.log('Lỗi khi kiểm tra thông tin đăng nhập:', error);
     }
   };
 

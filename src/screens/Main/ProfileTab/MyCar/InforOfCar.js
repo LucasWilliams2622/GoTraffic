@@ -209,6 +209,7 @@ const InforOfCar = (props) => {
             onChangeText={(text) => setDescription(text)}
 
           />
+         
         </View>
 
         <View style={appStyle.cardInfo}>
