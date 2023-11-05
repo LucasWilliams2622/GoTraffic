@@ -12,12 +12,14 @@ const ExhibitOfCar = props => {
   const { navigation } = props;
   const [isCameraModalVisible, setIsCameraModalVisible] = useState(false);
   const [selectedImageType, setSelectedImageType] = useState(null);
+
   const [carImages, setCarImages] = useState({
     front: null,
     back: null,
     left: null,
     right: null,
   });
+
 
   const goBack = () => {
     navigation.goBack('HomeCar');
@@ -135,7 +137,7 @@ const ExhibitOfCar = props => {
     });
   };
 
-  const handleUpdate = () => { };
+  const handleUpdate = () => { console.log(carImages); };
   return (
     <SafeAreaView style={appStyle.container}>
       <Header
@@ -213,6 +215,7 @@ const ExhibitOfCar = props => {
                   <Text style={appStyle.text16}>
                     Ảnh bên trái
                   </Text>
+
                   <TouchableOpacity onPress={() => cameraModal('left')}>
                     <FastImage source={ICON.Edit} style={appStyle.iconMedium} />
                   </TouchableOpacity>
@@ -220,7 +223,15 @@ const ExhibitOfCar = props => {
                 {carImages.left ? (
                   <FastImage source={{ uri: carImages.left }} style={styles.imgCar} />
                 ) : (
-                  <FastImage source={ICON.Picture} style={styles.imgCar} />
+                  <TouchableOpacity style={styles.upLoadImage}>
+                    <Text style={{ textAlign: 'center' }}>
+                      Vui lòng chụp mặt sau của bảo hiểm
+                    </Text>
+                    <FastImage
+                      style={{ width: 30, height: 30, marginTop: 10 }}
+                      source={ICON.Picture}
+                    />
+                  </TouchableOpacity>
                 )}
               </View>
 
@@ -236,7 +247,15 @@ const ExhibitOfCar = props => {
                 {carImages.right ? (
                   <FastImage source={{ uri: carImages.right }} style={styles.imgCar} />
                 ) : (
-                  <FastImage source={ICON.Picture} style={styles.imgCar} />
+                  <TouchableOpacity style={styles.upLoadImage}>
+                    <Text style={{ textAlign: 'center' }}>
+                      Vui lòng chụp mặt sau của bảo hiểm
+                    </Text>
+                    <FastImage
+                      style={{ width: 30, height: 30, marginTop: 10 }}
+                      source={ICON.Picture}
+                    />
+                  </TouchableOpacity>
                 )}
               </View>
 
@@ -252,7 +271,15 @@ const ExhibitOfCar = props => {
                 {carImages.front ? (
                   <FastImage source={{ uri: carImages.front }} style={styles.imgCar} />
                 ) : (
-                  <FastImage source={ICON.Picture} style={styles.imgCar} />
+                  <TouchableOpacity style={styles.upLoadImage}>
+                    <Text style={{ textAlign: 'center' }}>
+                      Vui lòng chụp mặt sau của bảo hiểm
+                    </Text>
+                    <FastImage
+                      style={{ width: 30, height: 30, marginTop: 10 }}
+                      source={ICON.Picture}
+                    />
+                  </TouchableOpacity>
                 )}
               </View>
 
@@ -268,7 +295,15 @@ const ExhibitOfCar = props => {
                 {carImages.back ? (
                   <FastImage source={{ uri: carImages.back }} style={styles.imgCar} />
                 ) : (
-                  <FastImage source={ICON.Picture} style={styles.imgCar} />
+                  <TouchableOpacity style={styles.upLoadImage}>
+                    <Text style={{ textAlign: 'center' }}>
+                      Vui lòng chụp mặt sau của bảo hiểm
+                    </Text>
+                    <FastImage
+                      style={{ width: 30, height: 30, marginTop: 10 }}
+                      source={ICON.Picture}
+                    />
+                  </TouchableOpacity>
                 )}
               </View>
             </View>
@@ -280,6 +315,7 @@ const ExhibitOfCar = props => {
           />
         </View>
       </ScrollView>
+
       <Modal
         animationType='slide'
         transparent={true}

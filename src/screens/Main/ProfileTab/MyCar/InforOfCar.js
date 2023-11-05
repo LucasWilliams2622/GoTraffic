@@ -10,16 +10,17 @@ import Header from '../../../../components/Header';
 import AppInput from '../../../../components/AppInput';
 import AppDropdown from '../../../../components/AppDropdown';
 import AppButton from '../../../../components/AppButton';
-import FeatureaCheckBox from '../../../../components/Profile/FeatureaCheckbox';
+import ItemFeature from '../../../../components/Profile/ItemFeature';
 import { features } from '../../../../components/Profile/data/DataCar';
 
-const InforOfCar = props => {
-  const { navigation } = props;
+const InforOfCar = (props) => {
+  const { navigation, route } = props;
+  const updatedCarInfo = route.param?.updatedCarInfo;
+  console.log("Infor of car >>>>>>>>>>>>", updatedCarInfo);
   const [carNumber, setCarNumber] = useState('88A-289.09');
   const [description, setDescription] = useState(null);
   const [fuelConsumption, setFuelConsumption] = useState('25');
-
-
+  const [selectedFeatures, setSelectedFeatures] = useState([]);
 
   const [openAddress, setOpenAddress] = useState(false);
   const [provinces, setProvinces] = useState([]);
@@ -31,7 +32,6 @@ const InforOfCar = props => {
   const [address, setAddress] = useState(null);
   const [location, setLocation] = useState(null);
 
-  const [selectedFeatures, setSelectedFeatures] = useState([]);
 
   const goBack = () => {
     navigation.goBack('HomeCar');
@@ -46,13 +46,14 @@ const InforOfCar = props => {
     handleAddressClick();
   };
 
-  const handleCheckboxChange = (feature, value) => {
-    if (value) {
-      setSelectedFeatures((prevSelectedFeatures) => [...prevSelectedFeatures, feature]);
-    } else {
+  // feature
+  const handleFeatureSelection = (featureName) => {
+    if (selectedFeatures.includes(featureName)) {
       setSelectedFeatures((prevSelectedFeatures) =>
-        prevSelectedFeatures.filter((item) => item !== feature)
+        prevSelectedFeatures.filter((feature) => feature !== featureName)
       );
+    } else {
+      setSelectedFeatures((prevSelectedFeatures) => [...prevSelectedFeatures, featureName]);
     }
   };
 
@@ -224,25 +225,22 @@ const InforOfCar = props => {
             </View>
           </View>
         </View>
+
+        {/* Tính năng */}
         <View style={appStyle.cardInfo}>
           <Text style={appStyle.text165}>Tính năng xe</Text>
-          <FeatureaCheckBox
-            features={features}
-            selectedFeatures={selectedFeatures}
-            onCheckboxChange={handleCheckboxChange}
-          />
-        </View>
-        
-        <View style={appStyle.cardInfo}>
-          <Text style={appStyle.text165}>Tính năng đã chọn:</Text>
-          <View>
-            {selectedFeatures.map((selectedFeature, index) => (
-              <Text key={index} style={appStyle.text14}>
-                - {selectedFeature}
-              </Text>
+          <View style={[styles.featuresContainer, { marginTop: 10 }]}>
+            {features.map((feature) => (
+              <ItemFeature
+                key={feature}
+                featureName={feature}
+                isSelected={selectedFeatures.includes(feature)}
+                onPress={handleFeatureSelection}
+              />
             ))}
           </View>
         </View>
+
 
         <AppButton
           title="Cập nhật"
@@ -257,4 +255,9 @@ const InforOfCar = props => {
 export default InforOfCar;
 
 const styles = StyleSheet.create({
+  featuresContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
 });

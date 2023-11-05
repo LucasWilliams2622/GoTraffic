@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native'
 import React from 'react'
-import { appStyle } from '../../../../constants/AppStyle'
-import { ICON } from '../../../../constants/Theme'
-import Header from '../../../../components/Header'
+import { appStyle } from '../../../../../constants/AppStyle'
+import { ICON } from '../../../../../constants/Theme'
+import Header from '../../../../../components/Header'
 
 const HandOverReport = (props) => {
     const { navigation } = props;

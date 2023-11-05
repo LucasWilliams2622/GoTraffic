@@ -39,9 +39,9 @@ import ExhibitOfCar from '../screens/Main/ProfileTab/MyCar/ExhibitOfCar';
 import MyWallet from '../screens/Main/ProfileTab/MyCar/MyWallet';
 import UpdateCar from '../screens/Main/ProfileTab/MyCar/UpdateCar';
 
-import HandOverReport from '../screens/Main/ProfileTab/MyCar/HandOverReport';
-import SampleContract from '../screens/Main/ProfileTab/MyCar/SampleContract';
-import LeaseCar from '../screens/Main/ProfileTab/MyCar/LeaseCar';
+import HandOverReport from '../screens/Main/ProfileTab/MyCar/Contract/HandOverReport';
+import SampleContract from '../screens/Main/ProfileTab/MyCar/Contract/SampleContract';
+import LeaseCar from '../screens/Main/ProfileTab/MyCar/Contract/LeaseCar';
 import BasicInfor from '../screens/Main/ProfileTab/Car/BasicInfor';
 import DetailsInfor from '../screens/Main/ProfileTab/Car/DetailsInfor';
 import ListCar from '../screens/Main/ProfileTab/Car/ListCar';
