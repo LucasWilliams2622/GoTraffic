@@ -148,6 +148,11 @@ const Profile = props => {
             text="Đổi mật khẩu"
             onPress={() => navigation.navigate('ChangePassword')}
           />
+          <AppProfile
+            icon={ICON.Key}
+            text="Thành công & Thát bại"
+            onPress={() => navigation.navigate('Test2')}
+          />
 
           <AppProfile
             icon={ICON.Delete}
