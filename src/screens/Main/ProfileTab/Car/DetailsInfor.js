@@ -8,8 +8,10 @@ import SwitchToggle from 'react-native-switch-toggle';
 import AppInput from '../../../../components/AppInput';
 import FastImage from 'react-native-fast-image';
 import ItemFeature from '../../../../components/Profile/ItemFeature';
+import axios from 'axios';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import AppDropdown from '../../../../components/AppDropdown';
+import { features } from '../../../../components/Profile/data/DataCar';
 
 
 const DetailsInfor = (props) => {
@@ -48,19 +50,20 @@ const DetailsInfor = (props) => {
   const handleComplete = () => {
     const combinedInfo = {
       ...cardInfo,
-      districts,
-      provinces,
+      // districts,
+      //provinces,
+      location,
       description,
       fuelConsumption,
       price,
       selectedFeatures,
       images: carImages,
-      mainImageType: 'front',
+     // mainImageType: 'front',
     };
-    const updatedCarInfo = [...cars];
+    // const updatedCarInfo = [...cars];
 
-    updatedCarInfo.push(combinedInfo);
-    setCars(updatedCarInfo);
+    // updatedCarInfo.push(combinedInfo);
+    // setCars(updatedCarInfo);
     console.log('DetailInfo =====>', combinedInfo);
     navigation.navigate('ListCar', { updatedCarInfo: [combinedInfo] });
 
@@ -113,22 +116,7 @@ const DetailsInfor = (props) => {
     }
   };
 
-  const features = [
-    'Lốp dự phòng',
-    'Cảnh báo tốc độ',
-    'Camera hành trình',
-    'Túi khi an toàn',
-    'Khe cắm USB',
-    'BlueTooth',
-    'Camera lùi',
-    'ETC',
-    'Cửa sổ trời',
-    'Cảm biến lốp',
-    'Bản đồ',
-    'Định vị GPS',
-  ];
 
-  
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -155,6 +143,7 @@ const DetailsInfor = (props) => {
     setLocation(newAddressString);
     handleAddressClick();
   };
+  
   const handleConfirm = () => {
     setonSwitch(true);
     toggleModal();
@@ -600,7 +589,7 @@ const DetailsInfor = (props) => {
 export default DetailsInfor
 
 const styles = StyleSheet.create({
-  
+
   modalContainer: {
     backgroundColor: 'white',
     position: 'absolute',

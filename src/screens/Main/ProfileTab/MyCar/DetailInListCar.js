@@ -3,13 +3,14 @@ import {
   Text,
   TouchableOpacity,
   View,
+  SafeAreaView,
   useWindowDimensions,
 } from 'react-native';
 import React, {useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
+
 import FastImage from 'react-native-fast-image';
-import {appStyle} from '../../../../constants/AppStyle';
-import {COLOR, ICON} from '../../../../constants/Theme';
+import { appStyle } from '../../../../constants/AppStyle';
+import { COLOR, ICON } from '../../../../constants/Theme';
 import AppProfile from '../../../../components/AppProfile';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import AppInput from '../../../../components/AppInput';
@@ -99,15 +100,15 @@ const DetailInListCar = props => {
   });
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    {key: 'first', title: 'XE TỰ LÁI'},
-    {key: 'second', title: 'XE CÓ TÀI XẾ'},
+    { key: 'first', title: 'XE TỰ LÁI' },
+    { key: 'second', title: 'XE CÓ TÀI XẾ' },
   ]);
   const renderTabBar = props => (
     <TabBar
       {...props}
-      indicatorStyle={{backgroundColor: COLOR.primary}}
-      style={{backgroundColor: COLOR.white}}
-      labelStyle={{color: COLOR.black}}
+      indicatorStyle={{ backgroundColor: COLOR.primary }}
+      style={{ backgroundColor: COLOR.white }}
+      labelStyle={{ color: COLOR.black }}
     />
   );
   const [modalVisible, setModalVisible] = useState(false);
@@ -170,30 +171,34 @@ const DetailInListCar = props => {
       <View style={styles.viewTitle}>
         <Text style={styles.title}>FORD ESCAPE 2023</Text>
       </View>
-      <View style={{padding: 14}}>
+      <View style={{ padding: 14 }}>
         <View style={styles.line1}>
           <FastImage
             style={styles.imageCar}
             source={require('../../../../assets/image/logo-fb.png')}></FastImage>
-          <View style={{marginLeft: 10}}>
+          <View style={{ marginLeft: 10 }}>
             <Text style={[appStyle.text16Bold]}>FORD ESCAPE 2023</Text>
-            <Text
-              style={[
-                appStyle.text14Bold,
-                {marginTop: 10, color: COLOR.primary},
-              ]}
-              onPress={goInfor}>
-              Thông tin chung {'>'}{' '}
-            </Text>
+            <TouchableOpacity onPress={()=> 
+            //  onPress={goInfor}
+              navigation.navigate('UpdateCar')}>
+              <Text
+                style={[
+                  appStyle.text14Bold,
+                  { marginTop: 10, color: COLOR.primary },
+                ]}>
+                Thông tin chung {'>'}{' '}
+              </Text>
+            </TouchableOpacity>
+
           </View>
         </View>
       </View>
       <TabView
-        navigationState={{index, routes}}
+        navigationState={{ index, routes }}
         renderTabBar={renderTabBar}
         renderScene={renderScene}
         onIndexChange={setIndex}
-        initialLayout={{width: layout.width}}
+        initialLayout={{ width: layout.width }}
       />
     </SafeAreaView>
   );

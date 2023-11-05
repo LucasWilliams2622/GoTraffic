@@ -17,6 +17,7 @@ const NewAddress = (props) => {
     const [isSelected, setisSelected] = useState(null);
     const [onSwitch, setonSwitch] = useState(false);
     const [nickName, setNickName] = useState(null);
+    
     const [provinces, setProvinces] = useState([]);
     const [selectedProvince, setSelectedProvince] = useState(null);
     const [districts, setDistricts] = useState([]);

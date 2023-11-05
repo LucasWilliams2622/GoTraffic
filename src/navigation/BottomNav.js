@@ -37,14 +37,14 @@ import TripOfCar from '../screens/Main/ProfileTab/MyCar/TripOfCar';
 import InforOfCar from '../screens/Main/ProfileTab/MyCar/InforOfCar';
 import ExhibitOfCar from '../screens/Main/ProfileTab/MyCar/ExhibitOfCar';
 import MyWallet from '../screens/Main/ProfileTab/MyCar/MyWallet';
+import UpdateCar from '../screens/Main/ProfileTab/MyCar/UpdateCar';
+
 
 
 import BasicInfor from '../screens/Main/ProfileTab/Car/BasicInfor';
 import DetailsInfor from '../screens/Main/ProfileTab/Car/DetailsInfor';
-import CarAddress from '../screens/Main/ProfileTab/Car/CarAddress';
 import ListCar from '../screens/Main/ProfileTab/Car/ListCar';
 import MyCar from '../screens/Main/ProfileTab/MyCar';
-
 
 
 const Tab = createBottomTabNavigator();
@@ -149,6 +149,7 @@ const StackProfile = () => {
       <Stack.Screen name="BasicInfor" component={BasicInfor}/>
       <Stack.Screen name="DetailsInfor" component={DetailsInfor}/>
       <Stack.Screen name="CarAddress" component={CarAddress}/>
+
 
     </Stack.Navigator>
   );

@@ -3,16 +3,16 @@ import React from 'react'
 import FastImage from 'react-native-fast-image';
 import { COLOR, ICON } from '../../constants/Theme';
 import { appStyle, windowHeight, windowWidth } from '../../constants/AppStyle';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 
 const ItemCar = (props) => {
     const navigation = useNavigation();
 
-    const { data } = props;
-    const { selectedModel, selectedBrand, selectedYear, price, provinces, district } = data;
-
-    console.log(data);
+    //const { data } = props;
+    //const { selectedModel, selectedBrand, selectedYear, price} = data;
+    const { brand, model, year, price, location } = props;
+    // console.log(data);
 
     const goDetail = () => {
         navigation.navigate('DetailInListCar');
@@ -21,12 +21,12 @@ const ItemCar = (props) => {
     return (
         <TouchableOpacity style={styles.container} onPress={goDetail}>
             <View style={styles.carContainer}>
-                <FastImage source={ICON.MasterCard} style={styles.carImage}/>
+                <FastImage source={ICON.MasterCard} style={styles.carImage} />
                 <View style={styles.statusContainer}>
                     <Text style={styles.statusText}>Chờ duyệt</Text>
                 </View>
                 <View style={styles.detailsContainer}>
-                    <Text style={styles.carName}>{selectedBrand} {selectedModel} {selectedYear}</Text>
+                    <Text style={styles.carName}>{brand} {model} {year}</Text>
                     <View style={styles.tripContainer}>
                         <FastImage source={ICON.Star} style={appStyle.iconSmall} />
                         <FastImage source={ICON.Star} style={appStyle.iconSmall} />
@@ -37,11 +37,11 @@ const ItemCar = (props) => {
                     </View>
                     <View style={styles.priceContainer}>
                         <Text style={styles.priceLabel}>Giá tự lái: </Text>
-                        <Text style={styles.priceText}>{price}K</Text>
+                        <Text style={styles.priceText}> {price}K</Text>
                     </View>
                     <View style={styles.locationContainer}>
                         <FastImage source={ICON.Location} style={appStyle.iconMedium} />
-                        <Text style={styles.locationText}>{district} {provinces}</Text>
+                        <Text style={styles.locationText}>{location}</Text>
                     </View>
                 </View>
             </View>

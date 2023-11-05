@@ -208,3 +208,17 @@ export let listModal = {
   ]
 };
 
+export const features = [
+  'Lốp dự phòng',
+  'Cảnh báo tốc độ',
+  'Camera hành trình',
+  'Túi khi an toàn',
+  'Khe cắm USB',
+  'BlueTooth',
+  'Camera lùi',
+  'ETC',
+  'Cửa sổ trời',
+  'Cảm biến lốp',
+  'Bản đồ',
+  'Định vị GPS',
+];
