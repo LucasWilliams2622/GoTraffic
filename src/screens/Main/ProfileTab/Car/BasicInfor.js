@@ -7,44 +7,9 @@ import AppInput from '../../../../components/AppInput';
 import { ScrollView } from 'native-base';
 import AppButton from '../../../../components/AppButton';
 import AppDropdown from '../../../../components/AppDropdown';
+import { listBrand, listModal } from '../../../../components/Profile/data/DataCar';
+import { useNavigation } from '@react-navigation/native';
 
-const carBrands = [
-    { label: 'Toyota', value: 'Toyota' },
-    { label: 'Hyundai', value: 'Hyundai' },
-    { label: 'Suzuki', value: 'Suzuki' },
-    { label: 'Kia', value: 'Kia' },
-];
-
-const carModels = {
-    Toyota: [
-        { label: 'Camry', value: 'Camry' },
-        { label: 'Corolla', value: 'Corolla' },
-        { label: 'RAV4', value: 'RAV4' },
-        { label: 'Prius', value: 'Prius' },
-        { label: 'Highlander', value: 'Highlander' },
-    ],
-    Hyundai: [
-        { label: 'Elantra', value: 'Elantra' },
-        { label: 'Sonata', value: 'Sonata' },
-        { label: 'Tucson', value: 'Tucson' },
-        { label: 'Santa Fe', value: 'Santa Fe' },
-        { label: 'Kona', value: 'Kona' },
-    ],
-    Suzuki: [
-        { label: 'Swift', value: 'Swift' },
-        { label: 'Vitara', value: 'Vitara' },
-        { label: 'Jimny', value: 'Jimny' },
-        { label: 'Celerio', value: 'Celerio' },
-        { label: 'Baleno', value: 'Baleno' },
-    ],
-    Kia: [
-        { label: 'Sorento', value: 'Sorento' },
-        { label: 'Sportage', value: 'Sportage' },
-        { label: 'Optima', value: 'Optima' },
-        { label: 'Soul', value: 'Soul' },
-        { label: 'Forte', value: 'Forte' },
-    ],
-};
 
 const seatNumbers = [];
 for (let i = 4; i <= 16; i++) {
@@ -68,9 +33,9 @@ const fuelOptions = [
 ];
 
 const BasicInfor = (props) => {
-    const { navigation } = props;
-    const [value, setValue] = useState(null);
-    const [isFocus, setIsFocus] = useState(false);
+    const navigation = useNavigation();
+
+    const [carNumber, setCarNumber] = useState(null);
     const [selectedBrand, setSelectedBrand] = useState(null);
     const [selectedModel, setSelectedModel] = useState(null);
     const [selectedSeats, setSelectedSeats] = useState(null);
@@ -78,6 +43,18 @@ const BasicInfor = (props) => {
     const [selectedTransmission, setSelectedTransmission] = useState('manual');
     const [selectedFuel, setSelectedFuel] = useState('Xăng');
 
+    const handleNext = () => {
+        const carInfo = {
+            carNumber,
+            selectedBrand,
+            selectedModel,
+            selectedSeats,
+            selectedYear,
+            selectedTransmission,
+            selectedFuel
+        }
+        navigation.navigate('DetailsInfor', { carInfo: carInfo });
+    }
 
     return (
         <SafeAreaView style={appStyle.container}>
@@ -105,6 +82,9 @@ const BasicInfor = (props) => {
                                 <AppInput
                                     width={windowWidth * 0.4}
                                     placeholder=""
+                                    value={carNumber}
+                                    onChangeText={(text) => setCarNumber(text)}
+
                                 />
                             </View>
                             <Text style={{ marginTop: 5 }}>
@@ -123,7 +103,7 @@ const BasicInfor = (props) => {
                                     borderWidth={0}
                                     labelField="label"
                                     valueField="value"
-                                    data={carBrands}
+                                    data={listBrand}
                                     value={selectedBrand}
                                     onChange={(brand) => {
                                         setSelectedBrand(brand.value);
@@ -144,7 +124,7 @@ const BasicInfor = (props) => {
                                         borderWidth={0}
                                         labelField="label"
                                         valueField="value"
-                                        data={carModels[selectedBrand]}
+                                        data={listModal[selectedBrand]}
                                         value={selectedModel}
                                         onChange={(model) => {
                                             setSelectedModel(model.value);
@@ -210,7 +190,6 @@ const BasicInfor = (props) => {
                                             ]}
                                             onPress={() => {
                                                 setSelectedTransmission(option.value);
-                                                console.log("bạn đã chọn", option.label);
                                             }}
                                         >
                                             <Text style={{
@@ -242,7 +221,6 @@ const BasicInfor = (props) => {
                                             ]}
                                             onPress={() => {
                                                 setSelectedFuel(option.value);
-                                                console.log("Bạn đã chọn", option.label);
                                             }}
                                         >
                                             <Text style={{
@@ -257,17 +235,17 @@ const BasicInfor = (props) => {
                             </View>
                         </View>
 
-
                     </View>
                 </ScrollView>
                 <AppButton
                     title="Tiếp theo"
                     marginBottom={70}
-                    onPress={() => navigation.navigate('DetailsInfor')}
+                    onPress={() => handleNext()}
                 />
             </View>
         </SafeAreaView>
     )
+
 }
 
 export default BasicInfor

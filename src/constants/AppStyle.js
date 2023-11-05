@@ -314,5 +314,36 @@ export const appStyle = StyleSheet.create({
     flexDirection:'row',
     justifyContent:'space-between',
     alignItems:'center'
-  }
+  },
+  modalContainerCam: {
+    backgroundColor: 'white',
+    position: 'absolute',
+    bottom: 10,
+    alignSelf: 'center',
+    width: '100%',
+    zIndex: 1,
+    height: windowHeight * 0.18,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
+    paddingHorizontal: 10,
+    paddingBottom: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+
+  },
+
+  modalBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
