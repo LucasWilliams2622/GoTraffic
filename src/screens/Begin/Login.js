@@ -128,7 +128,6 @@ const Login = props => {
       });
       console.log(response);
       if (response.result) {
-        alert(response.user.id)
         setIdUser(response.user.id);
         setInfoUser(response.user);
         saveLoginInfo(response.user); 
