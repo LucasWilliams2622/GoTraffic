@@ -36,6 +36,8 @@ const Register = props => {
   const [password, setpassword] = useState('');
   const [nameUser, setnameUser] = useState('');
   const [email, setemail] = useState('');
+  
+  //API REGISTER
   const onRegister = async () => {
     try {
       console.log(phoneNumber, password);

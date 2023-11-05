@@ -115,7 +115,7 @@ const Login = props => {
       console.log(values);
     },
   });
-
+  //API login
   const onLogin = async () => {
     try {
       console.log(phoneNumber, password);
@@ -134,6 +134,8 @@ const Login = props => {
       console.log(e);
     }
   };
+
+  
 
   return (
     <SafeAreaView style={appStyle.container}>

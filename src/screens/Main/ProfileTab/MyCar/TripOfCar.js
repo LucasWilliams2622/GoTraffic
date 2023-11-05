@@ -1,4 +1,10 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  useWindowDimensions,
+} from 'react-native';
 import React, {useState} from 'react';
 import {FlatList} from 'native-base';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -7,12 +13,41 @@ import {COLOR} from '../../../../constants/Theme';
 import FastImage from 'react-native-fast-image';
 import ItemListCar from '../../../../components/Support/ItemListCar';
 import ItemTrip from '../../../../components/Support/ItemTrip';
+import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
+import ConfirmTrip from './RouteOfTripCar/ConfirmTrip';
+import ActiveTrip from './RouteOfTripCar/ActiveTrip';
+import CancleTrip from './RouteOfTripCar/CancleTrip';
+import FinishTrip from './RouteOfTripCar/FinishTrip';
 
-const TripOfCar = (props) => {
+
+const TripOfCar = props => {
   const {navigation} = props;
   const goBack = () => {
     navigation.goBack('HomeCar');
   };
+  const layout = useWindowDimensions();
+
+  const renderScene = SceneMap({
+    first: ConfirmTrip,
+    second: CancleTrip,
+    third: ActiveTrip,
+    forth: FinishTrip,
+  });
+  const [index, setIndex] = React.useState(0);
+  const [routes] = React.useState([
+    {key: 'first', title: 'Chờ duyệt'},
+    {key: 'second', title: 'Đã hùy'},
+    {key: 'third', title: 'Trong chuyến'},
+    {key: 'forth', title: 'Hoàn thành'},
+  ]);
+  const renderTabBar = props => (
+    <TabBar
+      {...props}
+      indicatorStyle={{backgroundColor: COLOR.primary}}
+      style={{backgroundColor: COLOR.white}}
+      labelStyle={{color: COLOR.black}}
+    />
+  );
   return (
     <SafeAreaView style={appStyle.container}>
       <View style={styles.viewTitle}>
@@ -43,12 +78,13 @@ const TripOfCar = (props) => {
           />
         </TouchableOpacity>
       </View>
-      <FlatList
-        style={appStyle.main}
-        data={DATA}
-        renderItem={({item}) => <ItemTrip data={item} />}
-        keyExtractor={item => item._id}
-        showsVerticalScrollIndicator={false}></FlatList>
+      <TabView
+        navigationState={{index, routes}}
+        renderTabBar={renderTabBar}
+        renderScene={renderScene}
+        onIndexChange={setIndex}
+        initialLayout={{width: layout.width}}
+      />
     </SafeAreaView>
   );
 };
@@ -77,23 +113,3 @@ const styles = StyleSheet.create({
     marginTop: 14,
   },
 });
-const DATA = [
-  {
-    id: 1,
-    image: require('../../../../assets/image/car.jpg'),
-    time: '21/09/2023 | 20:30',
-    name: 'KIA MORNING 2022',
-    timeStart: '21h00,17/10/2023',
-    timeEnd: '21h00,18/10/2023',
-    price: '1.600.666đ',
-  },
-  {
-    id: 2,
-    image: require('../../../../assets/image/car.jpg'),
-    time: '21/09/2023 | 20:30',
-    name: 'KIA MORNING 2022',
-    timeStart: '21h00,17/10/2023',
-    timeEnd: '21h00,18/10/2023',
-    price: '1.600.666đ',
-  },
-];
