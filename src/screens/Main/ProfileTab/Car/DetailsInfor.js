@@ -58,7 +58,7 @@ const DetailsInfor = (props) => {
       price,
       selectedFeatures,
       images: carImages,
-     // mainImageType: 'front',
+      // mainImageType: 'front',
     };
     // const updatedCarInfo = [...cars];
 
@@ -143,7 +143,7 @@ const DetailsInfor = (props) => {
     setLocation(newAddressString);
     handleAddressClick();
   };
-  
+
   const handleConfirm = () => {
     setonSwitch(true);
     toggleModal();
@@ -413,7 +413,7 @@ const DetailsInfor = (props) => {
           <View style={appStyle.cardInfo}>
             <View style={appStyle.rowContent}>
               <Text style={appStyle.text165}>Mức tiêu thụ nhiên liệu</Text>
-              <View style={{ flexDirection: 'row', alignItems: 'center', width: windowWidth * 0.4, justifyContent: 'flex-end' }}>
+              <View style={appStyle.inputRight}>
                 <AppInput
                   placeholder="0"
                   width={windowWidth * 0.15}
@@ -445,7 +445,7 @@ const DetailsInfor = (props) => {
           <View style={appStyle.cardInfo}>
             <View style={appStyle.rowContent}>
               <Text style={appStyle.text165}>Giá cho thuê</Text>
-              <View style={{ flexDirection: 'row', alignItems: 'center', width: windowWidth * 0.4, justifyContent: 'flex-end' }}>
+              <View style={appStyle.inputRight}>
                 <AppInput
                   placeholder="0"
                   width={windowWidth * 0.2}
@@ -469,36 +469,36 @@ const DetailsInfor = (props) => {
             </Text>
             <View style={[styles.featuresContainer, { paddingHorizontal: 10 }]}>
               <TouchableOpacity onPress={() => cameraModal('front')}>
-                <View style={{ width: 170, height: 100, backgroundColor: '#D9D9D9', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
-                  {carImages.front ? (
-                    <FastImage source={{ uri: carImages.front }} style={{ width: 170, height: 100 }} />
-                  ) : (
-                    <FastImage source={ICON.Picture} style={{ width: 160, height: 100 }} />
-                  )}
+                <View style={appStyle.viewUpload}>                  
+                {carImages.front ? (
+                  <FastImage source={{ uri: carImages.front }} style={{ width: 170, height: 100 }} />
+                ) : (
+                  <FastImage source={ICON.Picture} style={{ width: 160, height: 100 }} />
+                )}
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => cameraModal('back')}>
-                <View style={{ width: 170, height: 100, backgroundColor: '#D9D9D9', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
-                  {carImages.back ? (
-                    <FastImage source={{ uri: carImages.back }} style={{ width: 170, height: 100 }} />
-                  ) : (
-                    <FastImage source={ICON.Picture} style={{ width: 160, height: 100 }} />
-                  )}
+                <View style={appStyle.viewUpload}>                  
+                {carImages.back ? (
+                  <FastImage source={{ uri: carImages.back }} style={{ width: 170, height: 100 }} />
+                ) : (
+                  <FastImage source={ICON.Picture} style={{ width: 160, height: 100 }} />
+                )}
 
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => cameraModal('left')}>
-                <View style={{ width: 170, height: 100, backgroundColor: '#D9D9D9', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
-                  {carImages.left ? (
-                    <FastImage source={{ uri: carImages.left }} style={{ width: 170, height: 100 }} />
-                  ) : (
-                    <FastImage source={ICON.Picture} style={{ width: 160, height: 100 }} />
-                  )}
+                <View style={appStyle.viewUpload}>                  
+                {carImages.left ? (
+                  <FastImage source={{ uri: carImages.left }} style={{ width: 170, height: 100 }} />
+                ) : (
+                  <FastImage source={ICON.Picture} style={{ width: 160, height: 100 }} />
+                )}
 
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => cameraModal('right')}>
-                <View style={{ width: 170, height: 100, backgroundColor: '#D9D9D9', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
+                <View style={appStyle.viewUpload}>
                   {carImages.right ? (
                     <FastImage source={{ uri: carImages.right }} style={{ width: 170, height: 100 }} />
                   ) : (

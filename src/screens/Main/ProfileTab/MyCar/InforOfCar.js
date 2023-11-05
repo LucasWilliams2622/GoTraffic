@@ -1,222 +1,252 @@
-import {StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
-import {Checkbox, FlatList, ScrollView} from 'native-base';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {appStyle} from '../../../../constants/AppStyle';
-import {COLOR} from '../../../../constants/Theme';
-import FastImage from 'react-native-fast-image';
-import ItemListCar from '../../../../components/Support/ItemListCar';
-import ItemTrip from '../../../../components/Support/ItemTrip';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Checkbox, FlatList, ScrollView } from 'native-base';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { appStyle, windowWidth, windowHeight } from '../../../../constants/AppStyle';
+import { COLOR, ICON } from '../../../../constants/Theme';
+import axios from 'axios';
 
-const InforOfCar = props => {
-  const {navigation} = props;
+import Header from '../../../../components/Header';
+import AppInput from '../../../../components/AppInput';
+import AppDropdown from '../../../../components/AppDropdown';
+import AppButton from '../../../../components/AppButton';
+import ItemFeature from '../../../../components/Profile/ItemFeature';
+import { features } from '../../../../components/Profile/data/DataCar';
+
+const InforOfCar = (props) => {
+  const { navigation, route } = props;
+  const updatedCarInfo = route.param?.updatedCarInfo;
+  console.log("Infor of car >>>>>>>>>>>>", updatedCarInfo);
+  const [carNumber, setCarNumber] = useState('88A-289.09');
+  const [description, setDescription] = useState(null);
+  const [fuelConsumption, setFuelConsumption] = useState('25');
+  const [selectedFeatures, setSelectedFeatures] = useState([]);
+
+  const [openAddress, setOpenAddress] = useState(false);
+  const [provinces, setProvinces] = useState([]);
+  const [selectedProvince, setSelectedProvince] = useState(null);
+  const [districts, setDistricts] = useState([]);
+  const [selectedDistrict, setSelectedDistrict] = useState(null);
+  const [wards, setWards] = useState([]);
+  const [selectedWard, setSelectedWard] = useState(null);
+  const [address, setAddress] = useState(null);
+  const [location, setLocation] = useState(null);
+
+
   const goBack = () => {
     navigation.goBack('HomeCar');
   };
+
+  const handleAddressClick = () => {
+    setOpenAddress(!openAddress);
+  };
+  const handleAddressSubmit = () => {
+    const newAddressString = `${address}, ${selectedWard?.name}, ${selectedDistrict?.name}, ${selectedProvince?.name}`;
+    setLocation(newAddressString);
+    handleAddressClick();
+  };
+
+  // feature
+  const handleFeatureSelection = (featureName) => {
+    if (selectedFeatures.includes(featureName)) {
+      setSelectedFeatures((prevSelectedFeatures) =>
+        prevSelectedFeatures.filter((feature) => feature !== featureName)
+      );
+    } else {
+      setSelectedFeatures((prevSelectedFeatures) => [...prevSelectedFeatures, featureName]);
+    }
+  };
+
+
+  const handleUpdate = () => {
+    const updatedCarInfo = {
+      carNumber,
+      description,
+      fuelConsumption,
+      location,
+      selectedFeatures
+    };
+
+    // In ra thông tin xe đã cập nhật
+    console.log('Thông tin xe đã cập nhật:', updatedCarInfo);
+  }
+  useEffect(() => {
+    fetch('https://provinces.open-api.vn/api/p/')
+      .then((response) => response.json())
+      .then((data) => {
+        setProvinces(data);
+      })
+      .catch((error) => {
+        console.error('Lỗi khi lấy dữ liệu từ API: ', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (selectedProvince) {
+      axios.get(`https://provinces.open-api.vn/api/p/${selectedProvince.code}?depth=2`)
+        .then((response) => {
+          setDistricts(response.data.districts);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [selectedProvince]);
+
+  useEffect(() => {
+    if (selectedDistrict) {
+      axios.get(`https://provinces.open-api.vn/api/d/${selectedDistrict.code}?depth=2`)
+        .then((response) => {
+          setWards(response.data.wards);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [selectedDistrict]);
+
   return (
     <SafeAreaView style={appStyle.container}>
-      <View style={styles.viewTitle}>
-        <TouchableOpacity onPress={goBack}>
-          <FastImage
-            source={require('../../../../assets/icon/ic_left.png')}
-            style={{
-              position: 'absolute',
-              left: 10,
-              top: 20,
-              width: 20,
-              height: 20,
-            }}
-          />
-        </TouchableOpacity>
-        <Text style={styles.title}>Thông tin xe</Text>
-        <TouchableOpacity>
-          <FastImage
-            source={require('../../../../assets/icon/ic_add.png')}
-            style={{
-              position: 'absolute',
-              right: 10,
-              top: 20,
-              width: 20,
-              height: 20,
-            }}
-          />
-        </TouchableOpacity>
-      </View>
+      <Header
+        icon={ICON.Back}
+        text="Thông tin xe"
+        onPress={() => navigation.navigate('GeneralInformation')}
+      />
       <ScrollView style={appStyle.main}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginTop: 10,
-          }}>
-          <Text style={appStyle.text14}>Biển số xe</Text>
-          <Text style={appStyle.text14}>59LD-30909</Text>
-        </View>
-        <View
-          style={{
-            width: '100%',
-            height: 0.5,
-            backgroundColor: COLOR.borderColor2,
-            marginBottom: 10,
-            marginTop: 10,
-          }}
-        />
-        <View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginTop: 10,
-            }}>
-            <Text style={[appStyle.text14]}>Địa chỉ</Text>
-            <Text style={[appStyle.text14]}>Thay đổi {'>'}</Text>
+        <View style={[appStyle.cardInfo, { marginTop: 10 }]}>
+          <View style={appStyle.rowContent}>
+            <Text style={appStyle.text165}>Biển số xe</Text>
+            <AppInput
+              width={windowWidth * 0.35}
+              height={windowHeight * 0.05}
+              value={carNumber}
+              onChangeText={(carNumberNew) => setCarNumber(carNumberNew)}
+            />
           </View>
-          <Text numberOfLines={1} style={[appStyle.text12, {marginTop: 10}]}>
-            12 QL51, TT.Phú Mỹ, Tân Thành,Bà Rịa - Vũng Tàu, Việt Nam
-          </Text>
         </View>
-        <View
-          style={{
-            width: '100%',
-            height: 0.5,
-            backgroundColor: COLOR.borderColor2,
-            marginBottom: 10,
-            marginTop: 10,
-          }}
-        />
-        <View>
-          <Text style={appStyle.text16Bold}>MÔ TẢ XE</Text>
-          <TextInput style={styles.textInput} placeholder="fghk" />
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Text style={appStyle.text14}>Mức tiêu thụ nhiên liệu</Text>
-            <Text style={appStyle.text14}>0.0 lít/100km</Text>
+
+        <View style={[appStyle.cardInfo, { marginTop: 10 }]}>
+          <View style={appStyle.rowContent}>
+            <Text style={appStyle.text165}>Địa chỉ</Text>
+            <TouchableOpacity
+              style={{
+                backgroundColor: COLOR.bgHeader,
+                borderRadius: 5,
+                paddingHorizontal: 7
+              }}
+              onPress={() => handleAddressClick()}
+            >
+              <Text style={[appStyle.text12Bold, { color: COLOR.fifth, margin: 3 }]}>Thay đổi</Text>
+            </TouchableOpacity>
           </View>
-          <View
-            style={{
-              width: '100%',
-              height: 0.5,
-              backgroundColor: COLOR.borderColor2,
-              marginBottom: 10,
-              marginTop: 10,
-            }}
+          <Text>{location ? location : '12 QL51, TT.Phú Mỹ, Tân Thành,Bà Rịa - Vũng Tàu, Việt Nam'}</Text>
+
+          {openAddress && (
+            <View style={{ width: '100%', height: windowHeight * 0.4, justifyContent: 'space-evenly', alignItems: 'center' }}>
+              <AppDropdown
+                width={windowWidth * 0.7}
+                height={40}
+                labelField="name"
+                valueField="name"
+                placeholder="Tỉnh/Thành phố"
+                data={provinces}
+                value={selectedProvince?.name}
+                onChange={(val) => {
+                  setSelectedProvince(val);
+                  setSelectedDistrict(null);
+                  setSelectedWard(null);
+                }}
+              />
+              <AppDropdown
+                width={windowWidth * 0.7}
+                height={40}
+                labelField="name"
+                valueField="name"
+                placeholder="Quận Huyện"
+                data={districts}
+                value={selectedDistrict?.name}
+                onChange={(val) => {
+                  setSelectedDistrict(val);
+                  setSelectedWard(null);
+                }}
+              />
+              <AppDropdown
+                width={windowWidth * 0.7}
+                height={40}
+                labelField="name"
+                valueField="name"
+                placeholder="Phường Xã"
+                data={wards}
+                value={selectedWard?.name}
+                onChange={(val) => {
+                  setSelectedWard(val);
+                }}
+              />
+              <AppInput
+                width={windowWidth * 0.7}
+                height={40}
+                placeholder="Nhập địa chỉ"
+                value={address}
+                onChangeText={(text) => setAddress(text)}
+              />
+              <AppButton
+                title="Lưu"
+                width={windowWidth * 0.5}
+                height={40}
+                onPress={() => handleAddressSubmit()}
+              />
+            </View>
+          )}
+        </View>
+
+        <View style={appStyle.cardInfo}>
+          <Text style={appStyle.text165}>Mô tả xe</Text>
+          <AppInput
+            height={windowHeight * 0.17}
+            marginTop={8}
+            placeholder="Mô tả xe của bạn"
+            value={description}
+            onChangeText={(text) => setDescription(text)}
+
           />
         </View>
-        <View>
-          <Text style={appStyle.text16Bold}>TÍNH NĂNG XE</Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginTop: 20,
-            }}>
-            <Checkbox>
-              <Text style={[appStyle.text14, {width: 70}]}>Bản đồ</Text>
-            </Checkbox>
-            <Checkbox>
-              <Text style={[appStyle.text14, {width: 70}]}>Bluetooth</Text>
-            </Checkbox>
-            <Checkbox>
-              <Text style={[appStyle.text14, {width: 70}]}>Camera 360</Text>
-            </Checkbox>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginTop: 10,
-            }}>
-            <Checkbox>
-              <Text style={[appStyle.text14, {width: 70}]}>Camera cập lề</Text>
-            </Checkbox>
-            <Checkbox>
-              <Text style={[appStyle.text14, {width: 70}]}>
-                Camera hành trình
-              </Text>
-            </Checkbox>
-            <Checkbox>
-              <Text style={[appStyle.text14, {width: 70}]}>Camera lùi</Text>
-            </Checkbox>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginTop: 10,
-            }}>
-            <Checkbox>
-              <Text style={[appStyle.text14, {width: 70}]}>Cảm biến lốp</Text>
-            </Checkbox>
-            <Checkbox>
-              <Text style={[appStyle.text14, {width: 70}]}>
-                Cảm biến va chạm
-              </Text>
-            </Checkbox>
-            <Checkbox>
-              <Text style={[appStyle.text14, {width: 70}]}>
-                Cảnh báo tốc độ
-              </Text>
-            </Checkbox>
+
+        <View style={appStyle.cardInfo}>
+          <View style={appStyle.rowContent}>
+            <Text style={appStyle.text165}>Mức tiêu thụ nhiên liệu</Text>
+            <View style={appStyle.inputRight}>
+              <AppInput
+                width={windowWidth * 0.15}
+                borderWidth={0}
+                value={fuelConsumption}
+                onChangeText={(text) => setFuelConsumption(text)}
+              />
+              <Text>lít/100 km</Text>
+            </View>
           </View>
         </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginTop: 10,
-          }}>
-          <Checkbox>
-            <Text style={[appStyle.text14, {width: 70}]}>Cửa sổ trời</Text>
-          </Checkbox>
-          <Checkbox>
-            <Text style={[appStyle.text14, {width: 70}]}>Định vị GPS</Text>
-          </Checkbox>
-          <Checkbox>
-            <Text style={[appStyle.text14, {width: 70}]}>Ghế trẻ em</Text>
-          </Checkbox>
+
+        {/* Tính năng */}
+        <View style={appStyle.cardInfo}>
+          <Text style={appStyle.text165}>Tính năng xe</Text>
+          <View style={[styles.featuresContainer, { marginTop: 10 }]}>
+            {features.map((feature) => (
+              <ItemFeature
+                key={feature}
+                featureName={feature}
+                isSelected={selectedFeatures.includes(feature)}
+                onPress={handleFeatureSelection}
+              />
+            ))}
+          </View>
         </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginTop: 10,
-          }}>
-          <Checkbox>
-            <Text style={[appStyle.text14, {width: 70}]}>Khe cắm USB</Text>
-          </Checkbox>
-          <Checkbox>
-            <Text style={[appStyle.text14, {width: 70}]}>Lốp dự phòng</Text>
-          </Checkbox>
-          <Checkbox>
-            <Text style={[appStyle.text14, {width: 70}]}>Màn hình DVD</Text>
-          </Checkbox>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginTop: 10,
-          }}>
-          <Checkbox>
-            <Text style={[appStyle.text14, {width: 74}]}>
-              Nắp thùng xe bán tải
-            </Text>
-          </Checkbox>
-          <Checkbox style={{marginTop:5}}>
-            <Text style={[appStyle.text14, {width: 70}]}>ETC</Text>
-          </Checkbox>
-          <Checkbox>
-            <Text style={[appStyle.text14, {width: 70}]}>Túi khí an toàn</Text>
-          </Checkbox>
-        </View>
-        <TouchableOpacity style={styles.btn}>
-          <Text
-            style={[
-              appStyle.text16Bold,
-              {color: COLOR.white, textAlign: 'center'},
-            ]}>
-            CẬP NHẬT
-          </Text>
-        </TouchableOpacity>
+
+
+        <AppButton
+          title="Cập nhật"
+          marginBottom={70}
+          onPress={() => handleUpdate()}
+        />
       </ScrollView>
     </SafeAreaView>
   );
@@ -225,64 +255,9 @@ const InforOfCar = props => {
 export default InforOfCar;
 
 const styles = StyleSheet.create({
-  viewTitle: {
+  featuresContainer: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'space-between',
-    borderBottomWidth: 0.5,
-  },
-  image: {
-    width: '100%',
-    height: '30%',
-    position: 'absolute',
-    borderBottomRightRadius: 10,
-    borderBottomLeftRadius: 10,
-  },
-  title: {
-    fontSize: 24,
-    textAlign: 'center',
-    color: COLOR.black,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    marginTop: 14,
-  },
-  textInput: {
-    width: '100%',
-    height: 200,
-    borderWidth: 0.5,
-    marginTop: 10,
-    marginBottom: 10,
-    padding: 10,
-    justifyContent: 'flex-start',
-    paddingVertical: 0,
-  },
-  btn: {
-    backgroundColor: COLOR.primary,
-    height: 50,
-    borderRadius: 10,
-    alignContent: 'center',
-    justifyContent: 'center',
-    marginBottom: 70,
-    marginTop: 20,
   },
 });
-const DATA = [
-  {
-    id: 1,
-    image: require('../../../../assets/image/car.jpg'),
-    time: '21/09/2023 | 20:30',
-    name: 'KIA MORNING 2022',
-    timeStart: '21h00,17/10/2023',
-    timeEnd: '21h00,18/10/2023',
-    price: '1.600.666đ',
-  },
-  {
-    id: 2,
-    image: require('../../../../assets/image/car.jpg'),
-    time: '21/09/2023 | 20:30',
-    name: 'KIA MORNING 2022',
-    timeStart: '21h00,17/10/2023',
-    timeEnd: '21h00,18/10/2023',
-    price: '1.600.666đ',
-  },
-  
-];

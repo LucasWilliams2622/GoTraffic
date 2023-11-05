@@ -6,23 +6,42 @@ import {
   TouchableOpacity,
   ScrollView,
   Modal,
+  ToastAndroid,
 } from 'react-native';
-import React, {useState, useEffect, useContext} from 'react';
-import {appStyle, windowHeight, windowWidth} from '../../../constants/AppStyle';
-import {COLOR, ICON} from '../../../constants/Theme';
+import React, { useState, useEffect, useContext } from 'react';
+import { appStyle, windowHeight, windowWidth } from '../../../constants/AppStyle';
+import { COLOR, ICON } from '../../../constants/Theme';
 import FastImage from 'react-native-fast-image';
 import AppProfile from '../../../components/AppProfile';
-import {AppContext} from '../../../utils/AppContext';
+import { AppContext } from '../../../utils/AppContext';
 import AppButton from '../../../components/AppButton';
+import AxiosInstance from '../../../constants/AxiosInstance';
 
 const Profile = props => {
-  const {navigation, route} = props;
+  const { navigation, route } = props;
   const defaultName = 'Bảo';
   const [name, setName] = useState(route.params?.newName || defaultName);
-  const {setIsLogin} = useContext(AppContext);
+  const { setIsLogin, infoUser } = useContext(AppContext);
   const [isModalVisible, setModalVisible] = useState(false);
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
+  };
+
+  const onDelete = async () => {
+    try {
+      const response = await AxiosInstance().delete('user/api/delete',{
+
+      });
+      console.log(response);
+      if (response.result) {
+        setIsLogin(false);
+        ToastAndroid.show('Xóa tài khoản thành công', ToastAndroid.SHORT);
+      }else {
+        ToastAndroid.show('Xóa thất bại', ToastAndroid.SHORT);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -32,10 +51,10 @@ const Profile = props => {
   }, [route.params?.newName]);
 
   const updateNewName = newName => {
-    navigation.setParams({newName});
+    navigation.setParams({ newName });
   };
   return (
-    <SafeAreaView style={[appStyle.container, {backgroundColor: COLOR.gray}]}>
+    <SafeAreaView style={[appStyle.container, { backgroundColor: COLOR.gray }]}>
       <ScrollView
         style={{
           flex: 1,
@@ -45,21 +64,21 @@ const Profile = props => {
         }}
         showsVerticalScrollIndicator={false}>
         <View style={styles.headBg}>
-          <View style={[appStyle.boxCenter, {marginTop: windowHeight * 0.12}]}>
+          <View style={[appStyle.boxCenter, { marginTop: windowHeight * 0.12 }]}>
             <FastImage
               source={require('../../../assets/image/guide/img_friends.png')}
               style={[appStyle.avatar]}></FastImage>
             <Text
               style={[
                 appStyle.text24Bold,
-                {textAlign: 'center', marginTop: 12},
+                { textAlign: 'center', marginTop: 12 },
               ]}>
               {name}
             </Text>
           </View>
         </View>
 
-        <View style={[styles.viewGroup, {marginTop: windowHeight * 0.18}]}>
+        <View style={[styles.viewGroup, { marginTop: windowHeight * 0.18 }]}>
           <AppProfile
             icon={ICON.Profile}
             text="Tài khoản của tôi"
@@ -85,21 +104,22 @@ const Profile = props => {
           />
         </View>
 
-        <View style={[styles.viewGroup, {marginTop: 35}]}>
+        <View style={[styles.viewGroup, { marginTop: 35 }]}>
           <AppProfile
             icon={ICON.Share}
             text="Giới thiệu bạn bè"
             onPress={() => navigation.navigate('ShareWithFriend')}
           />
 
-           <AppProfile
+          <AppProfile
             icon={ICON.Trip}
             text="Xe của tôi"
             borderBottomWidth={0}
             onPress={() => navigation.navigate('HomeCar')} />
+
         </View>
 
-        <View style={[styles.viewGroup, {marginTop: 35}]}>
+        <View style={[styles.viewGroup, { marginTop: 35 }]}>
           <AppProfile
             icon={ICON.Key}
             text="Đổi mật khẩu"
@@ -119,12 +139,12 @@ const Profile = props => {
             setIsLogin(false);
           }}>
           <View
-            style={{flexDirection: 'row', alignSelf: 'center', marginTop: 20}}>
+            style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 20 }}>
             <FastImage source={ICON.Exit} style={[appStyle.iconBig]} />
             <Text
               style={[
                 appStyle.text20,
-                {color: COLOR.exit, marginLeft: 10, fontWeight: '500'},
+                { color: COLOR.exit, marginLeft: 10, fontWeight: '500' },
               ]}>
               Đăng xuất
             </Text>
@@ -162,7 +182,9 @@ const Profile = props => {
             marginTop={50}
             onPress={() => toggleModal()}
           />
-          <Text style={[appStyle.text14Bold, {marginTop: 15}]}>Xác nhận</Text>
+          <TouchableOpacity onPress={()=> onDelete()}>
+            <Text style={[appStyle.text14Bold, { marginTop: 15 }]}>Xác nhận</Text>
+          </TouchableOpacity>
         </View>
       </Modal>
     </SafeAreaView>

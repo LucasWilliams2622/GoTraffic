@@ -94,4 +94,5 @@ export const ICON = {
   Picture: require('../assets/icon/ic_picture.png'),
   Star: require('../assets/icon/ic_star.png'),
   Calendar: require('../assets/icon/ic_calendar.png'),
+  Lease1: require('../assets/image/lease1.jpg'),
 };

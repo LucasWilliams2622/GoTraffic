@@ -180,7 +180,7 @@ const DetailInListCar = props => {
             <Text style={[appStyle.text16Bold]}>FORD ESCAPE 2023</Text>
             <TouchableOpacity onPress={()=> 
             //  onPress={goInfor}
-              navigation.navigate('UpdateCar')}>
+              navigation.navigate('GeneralInformation')}>
               <Text
                 style={[
                   appStyle.text14Bold,
