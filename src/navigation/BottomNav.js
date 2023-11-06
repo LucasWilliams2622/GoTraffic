@@ -46,7 +46,9 @@ import BasicInfor from '../screens/Main/ProfileTab/Car/BasicInfor';
 import DetailsInfor from '../screens/Main/ProfileTab/Car/DetailsInfor';
 import ListCar from '../screens/Main/ProfileTab/Car/ListCar';
 import MyCar from '../screens/Main/ProfileTab/MyCar';
+import VerifyLicense from '../screens/Main/ProfileTab/Account/VerifyLicense';
 import ListCarCity from '../components/Home/Home/ListCarCity';
+import Test2 from '../test/Test2';
 
 
 const Tab = createBottomTabNavigator();
@@ -159,6 +161,9 @@ const StackProfile = () => {
       <Stack.Screen name="LeaseCar" component={LeaseCar}/>
       <Stack.Screen name="SampleContract" component={SampleContract}/>
       <Stack.Screen name="HandOverReport" component={HandOverReport}/>
+      <Stack.Screen name="VerifyLicense" component={VerifyLicense}/>
+      <Stack.Screen name="Test2" component={Test2}/>
+
 
 
 
@@ -250,7 +255,8 @@ const BottomTabNav = () => {
   const {isLogin, infoUser} = useContext(AppContext);
   // console.log("isLogin Bottom Tabs=================>", isLogin);
   // console.log("infoUser Bottom Tabs=========>", infoUser);
-  return <>{isLogin == false ? <StackBegin /> : <Main />}</>;
+  //return <>{isLogin == false ? <StackBegin /> : <Main />}</>;
+  return <Main />;
 };
 //ADMIN
 export default BottomTabNav;
