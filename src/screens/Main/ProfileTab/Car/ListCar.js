@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {COLOR, ICON} from '../../../../constants/Theme';
 import {
   appStyle,
@@ -45,7 +45,7 @@ const ListCar = props => {
   const getCarByIdUser = async () => {
     try {
       const response = await AxiosInstance().get(
-        '/car/api/list-by-id-user?idUser='+idUser,
+        '/car/api/list-by-id-user?idUser='+idUser
       );
       if (response.result) {
         console.log(response.listCar);
