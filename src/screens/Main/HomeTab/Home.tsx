@@ -6,7 +6,7 @@ import {
   FlatList,
   Dimensions,
 } from 'react-native';
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import {COLOR} from '../../../constants/Theme';
 import {appStyle} from '../../../constants/AppStyle';
@@ -35,6 +35,7 @@ import CarDetail from './CarDetail';
 import {AppContext} from '../../../utils/AppContext';
 import FastImage from 'react-native-fast-image';
 import BenefitHome from '../../../components/Home/Home/Benefit';
+import AxiosInstance from '../../../constants/AxiosInstance';
 
 const RenderList: React.FC<RenderListProps<any>> = ({
   data,
@@ -85,7 +86,27 @@ const Home: React.FC = () => {
     setModalVisible(true);
   };
 
+  // =================| Get List |====================
   const {infoUser, idUser} = useContext(AppContext);
+  const [listCar, setListCar] = useState([]);
+  const getAllCar = async () => {
+    try {
+      const response = await AxiosInstance().get('/car/api/list');
+      if (response.result) {
+        setListCar(response.listCar)
+        console.log(response.listCar);
+        
+      } else {
+        console.log('Error');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    getAllCar();
+  }, []);
 
   return (
     <ScrollView style={[appStyle.container]}>
@@ -127,7 +148,7 @@ const Home: React.FC = () => {
 
       <Section
         title="Xe dành cho bạn"
-        data={carData}
+        data={listCar}
         renderItem={({item}) => (
           <CarCardItem {...item} onPress={() => handleCarPress(item.id)} />
         )}
@@ -150,7 +171,7 @@ const Home: React.FC = () => {
 
       <Section
         title="Xe đã xem"
-        data={carData}
+        data={listCar}
         renderItem={({item}) => (
           <CarCardItem
             {...item}
@@ -177,7 +198,6 @@ const Home: React.FC = () => {
         renderItem={({item}) => <AirportPicking {...item} />}
         snapToInterval={140}
       />
-      
 
       <Section
         title="Ưu điểm của Go Traffic"
@@ -186,7 +206,7 @@ const Home: React.FC = () => {
           <BenefitHome image={item.image} width={345} height={130} />
         )}
         snapToInterval={365}
-      /> 
+      />
 
       <View
         style={{

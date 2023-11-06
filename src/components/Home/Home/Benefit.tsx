@@ -4,8 +4,6 @@ import FastImage from 'react-native-fast-image';
 import {BenefitProps, PromotionProps} from '../../../types';
 
 const BenefitHome = ({image, width, height}: BenefitProps) => {
-  console.log(typeof image);
-
   return (
     <View style={{alignItems: 'center', marginRight: 20}}>
       <FastImage

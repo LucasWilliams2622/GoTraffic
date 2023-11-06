@@ -174,15 +174,16 @@ export interface RadioButtonProps {
 
 export interface CarCardItemProps {
   id: number;
-  title: string;
+  name: string;
   image: string;
-  location: string;
-  benefit?: string;
-  type: string;
+  imageThumbnail: string;
+  locationCar: string;
+  isDelivery?: string;
+  gear: string;
   originalPrice?: number;
   price: number;
   rating: number;
-  totalRide: number;
+  numberOfBooked: number;
   onPress: () => void;
 }
 
