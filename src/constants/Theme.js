@@ -95,6 +95,7 @@ export const ICON = {
   DropDown: require('../assets/icon/ic_down.png'),
   Picture: require('../assets/icon/ic_picture.png'),
   Star: require('../assets/icon/ic_star.png'),
+  UnStar: require('../assets/icon/icon-unstar.png'),
   Calendar: require('../assets/icon/ic_calendar.png'),
   Ban: require('../assets/icon/ic_ban.png'),
 

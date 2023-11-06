@@ -48,6 +48,7 @@ import MyCar from '../screens/Main/ProfileTab/MyCar';
 import VerifyLicense from '../screens/Main/ProfileTab/Account/VerifyLicense';
 import ListCarCity from '../components/Home/Home/ListCarCity';
 import Test2 from '../test/Test2';
+import RatingTrip from '../screens/Main/TripTab/RatingTrip'
 
 
 const Tab = createBottomTabNavigator();
@@ -110,6 +111,8 @@ const StackTrip = () => {
       initialRouteName="Trip"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="Trip" component={Trip} />
+      <Stack.Screen name="RatingTrip" component={RatingTrip} />
+
     </Stack.Navigator>
   );
 };

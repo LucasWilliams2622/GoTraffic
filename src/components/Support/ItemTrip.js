@@ -4,8 +4,10 @@ import FastImage from 'react-native-fast-image';
 import {COLOR} from '../../constants/Theme';
 import {Code} from 'native-base';
 import {appStyle} from '../../constants/AppStyle';
+import { useNavigation } from '@react-navigation/native';
 
 const ItemTrip = props => {
+  const navigation = useNavigation();
   const {data} = props;
   const {image, name, time, timeStart, timeEnd, price, id} = data;
   return (
@@ -26,7 +28,7 @@ const ItemTrip = props => {
         </View>
         <Text style={[appStyle.text14Bold]}>{time}</Text>
       </View>
-      <TouchableOpacity style={styles.container}>
+      <TouchableOpacity onPress={()=> navigation.navigate('RatingTrip')} style={styles.container}>
         <View style={[{alignSelf: 'flex-start'}]}>
           <FastImage
             style={styles.image}

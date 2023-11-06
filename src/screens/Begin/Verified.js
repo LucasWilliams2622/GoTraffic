@@ -5,7 +5,6 @@ import AppButton from '../../components/AppButton';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 import { appStyle } from '../../constants/AppStyle';
 import { COLOR } from '../../constants/Theme';
-import auth from '@react-native-firebase/auth';
 
 const Verified = () => {
   const [confirm, setConfirm] = useState(null);
@@ -23,16 +22,16 @@ const Verified = () => {
     }
   }
 
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
+  // useEffect(() => {
+  //   const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+  //   return subscriber; // unsubscribe on unmount
+  // }, []);
 
-  // Handle the button press
-  async function signInWithPhoneNumber(phoneNumber) {
-    const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
-    setConfirm(confirmation);
-  }
+  // // Handle the button press
+  // async function signInWithPhoneNumber(phoneNumber) {
+  //   const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+  //   setConfirm(confirmation);
+  // }
 
   async function confirmCode() {
     try {
