@@ -38,11 +38,6 @@ const GeneralInformation = (props) => {
           onPress={() => navigation.navigate('ExhibitOfCar')}
         />
         <AppProfile
-          icon={ICON.Heart}
-          text="Danh sách chuyến "
-          onPress={() => navigation.navigate('TripOfCar')}
-        />
-        <AppProfile
           icon={ICON.Location}
           text="GPS"
           onPress={() => navigation.navigate('')}

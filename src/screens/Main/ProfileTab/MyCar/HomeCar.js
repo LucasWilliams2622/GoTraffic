@@ -66,6 +66,12 @@ const HomeCar = props => {
           text="Mẫu hợp đồng cho thuê xe"
           onPress={() => navigation.navigate('SampleContract')}
         />
+        <AppHomeCar
+          icon={ICON.Heart}
+          title="Danh sách chuyến"
+          text="Lịch sử và trạng thái các chuyến"
+          onPress={() => navigation.navigate('TripOfCar')}
+        />
       </View>
     </SafeAreaView>
   );

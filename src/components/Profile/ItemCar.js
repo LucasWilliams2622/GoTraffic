@@ -11,7 +11,7 @@ const ItemCar = (props) => {
 
     //const { data } = props;
     //const { selectedModel, selectedBrand, selectedYear, price} = data;
-    const { brand, model, year, price, location } = props;
+    const { data } = props;
     // console.log(data);
 
     const goDetail = () => {
@@ -19,34 +19,36 @@ const ItemCar = (props) => {
     };
 
     return (
-        <TouchableOpacity style={styles.container} onPress={goDetail}>
-            <View style={styles.carContainer}>
-                <FastImage source={ICON.MasterCard} style={styles.carImage} />
-                <View style={styles.statusContainer}>
-                    <Text style={styles.statusText}>Chờ duyệt</Text>
-                </View>
-                <View style={styles.detailsContainer}>
-                    <Text style={styles.carName}>{brand} {model} {year}</Text>
-                    <View style={styles.tripContainer}>
-                        <FastImage source={ICON.Star} style={appStyle.iconSmall} />
-                        <FastImage source={ICON.Star} style={appStyle.iconSmall} />
-                        <FastImage source={ICON.Star} style={appStyle.iconSmall} />
-                        <FastImage source={ICON.Star} style={appStyle.iconSmall} />
-                        <FastImage source={ICON.Star} style={appStyle.iconSmall} />
-                        <Text style={styles.tripText}>0 chuyến</Text>
-                    </View>
-                    <View style={styles.priceContainer}>
-                        <Text style={styles.priceLabel}>Giá tự lái: </Text>
-                        <Text style={styles.priceText}> {price}K</Text>
-                    </View>
-                    <View style={styles.locationContainer}>
-                        <FastImage source={ICON.Location} style={appStyle.iconMedium} />
-                        <Text style={styles.locationText}>{location}</Text>
-                    </View>
-                </View>
+      <TouchableOpacity style={styles.container} onPress={goDetail}>
+        <View style={styles.carContainer}>
+          <FastImage source={ICON.MasterCard} style={styles.carImage} />
+          <View style={styles.statusContainer}>
+            <Text style={styles.statusText}>Chờ duyệt</Text>
+          </View>
+          <View style={styles.detailsContainer}>
+            <Text style={appStyle.text16Bold}>{data.name}</Text>
+            <View style={styles.tripContainer}>
+              <FastImage source={ICON.Star} style={appStyle.iconSmall} />
+              <FastImage source={ICON.Star} style={appStyle.iconSmall} />
+              <FastImage source={ICON.Star} style={appStyle.iconSmall} />
+              <FastImage source={ICON.Star} style={appStyle.iconSmall} />
+              <FastImage source={ICON.Star} style={appStyle.iconSmall} />
+              <Text style={styles.tripText}>0 chuyến</Text>
             </View>
-        </TouchableOpacity>
-    )
+            <View style={styles.priceContainer}>
+              <Text style={styles.priceLabel}>Giá tự lái: </Text>
+              <Text style={styles.priceText}> {data.price}K</Text>
+            </View>
+            <View style={styles.locationContainer}>
+              <FastImage source={ICON.Location} style={appStyle.iconMedium} />
+              <Text style={styles.locationText}>
+                {data.locationCar} {data.city}
+              </Text>
+            </View>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
 }
 
 export default ItemCar
