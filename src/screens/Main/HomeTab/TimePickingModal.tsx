@@ -20,8 +20,11 @@ import Modal from 'react-native-modal';
 const BottomBar: React.FC<{
   startDate: string | null;
   endDate: string | null;
-}> = ({startDate, endDate}) => {
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  startTime: string;
+  endTime: string;
+  toggle: any;
+  setSelectedTime: any;
+}> = ({startDate, endDate, startTime, endTime, toggle, setSelectedTime}) => {
   return (
     <View
       style={{
@@ -40,11 +43,9 @@ const BottomBar: React.FC<{
           <Text style={{fontWeight: 'bold'}}>
             {startDate &&
               endDate &&
-              `${new Date(startDate).getHours()}h00, ${new Date(
-                startDate,
-              ).getDate()}/${new Date(startDate).getMonth() + 1} - ${new Date(
-                startDate,
-              ).getHours()}h00, ${new Date(endDate).getDate()}/${
+              `${startTime}, ${new Date(startDate).getDate()}/${
+                new Date(startDate).getMonth() + 1
+              } - ${endTime}, ${new Date(endDate).getDate()}/${
                 new Date(endDate).getMonth() + 1
               }`}
           </Text>
@@ -61,7 +62,10 @@ const BottomBar: React.FC<{
 
         <Pressable
           style={{backgroundColor: COLOR.fifth, padding: 15, borderRadius: 8}}
-          onPress={() => setIsModalVisible(true)}>
+          onPress={() => {
+            setSelectedTime({startTime, endTime, startDate, endDate});
+            toggle();
+          }}>
           <Text style={{color: COLOR.white, fontWeight: 'bold'}}>
             Tiếp theo
           </Text>
@@ -74,7 +78,8 @@ const BottomBar: React.FC<{
 const TimePickingModal: React.FC<{
   price: number;
   toggle: any;
-}> = ({price, toggle}) => {
+  setSelectedTime: any;
+}> = ({price, toggle, setSelectedTime}) => {
   const currentDate = new Date().toISOString().slice(0, 10);
   const tomorrowDate = new Date();
   tomorrowDate.setDate(tomorrowDate.getDate() + 1);
@@ -296,36 +301,103 @@ const TimePickingModal: React.FC<{
         dayComponent={renderDay}
       />
       <Modal isVisible={isTimePickerVisible}>
-        <View style={{marginTop: 22, backgroundColor: COLOR.white}}>
+        <View
+          style={{
+            marginTop: 22,
+            backgroundColor: COLOR.white,
+            padding: 20,
+          }}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Picker
-              selectedValue={startTime}
-              onValueChange={itemValue => setStartTime(itemValue)}
-              style={{flex: 0.5}}>
-              {times.map(time => (
-                <Picker.Item key={time} label={time} value={time} />
-              ))}
-            </Picker>
+            <View style={{flex: 0.5}}>
+              <Text>Nhận xe</Text>
+              <Picker
+                selectedValue={startTime}
+                onValueChange={itemValue => setStartTime(itemValue)}>
+                {times.map(time => (
+                  <Picker.Item key={time} label={time} value={time} />
+                ))}
+              </Picker>
+            </View>
 
-            <Picker
-              selectedValue={endTime}
-              onValueChange={itemValue => setEndTime(itemValue)}
-              style={{flex: 0.5}}>
-              {times.map(time => (
-                <Picker.Item key={time} label={time} value={time} />
-              ))}
-            </Picker>
+            <View style={{flex: 0.5}}>
+              <Text>Trả xe</Text>
+              <Picker
+                selectedValue={endTime}
+                onValueChange={itemValue => setEndTime(itemValue)}>
+                {times.map(time => (
+                  <Picker.Item key={time} label={time} value={time} />
+                ))}
+              </Picker>
+            </View>
           </View>
 
-          <Pressable onPress={hideTimePicker}>
-            <Text>OK</Text>
+          <Pressable
+            onPress={() => {
+              hideTimePicker();
+              setSelectedTime({startTime, endTime, startDate, endDate});
+            }}
+            style={{
+              backgroundColor: COLOR.fifth,
+              alignItems: 'center',
+              paddingVertical: 10,
+              borderRadius: 10,
+              marginTop: 15,
+            }}>
+            <Text style={{color: COLOR.white}}>Lưu</Text>
           </Pressable>
         </View>
       </Modal>
-      <Pressable onPress={showTimePicker}>
-        <Text>Chọn giờ</Text>
-      </Pressable>
-      <BottomBar startDate={startDate} endDate={endDate} />
+      <Row
+        style={{
+          justifyContent: 'space-between',
+          paddingHorizontal: 10,
+          marginTop: 50,
+        }}>
+        <Pressable
+          onPress={showTimePicker}
+          style={{
+            padding: 10,
+            borderColor: COLOR.black,
+            borderWidth: StyleSheet.hairlineWidth,
+            borderRadius: 10,
+            flex: 1,
+            marginRight: 5,
+          }}>
+          <Text>Nhận xe</Text>
+          <Row style={{alignItems: 'center', justifyContent: 'space-between'}}>
+            <Text style={{fontWeight: 'bold', color: COLOR.black}}>
+              {startTime}
+            </Text>
+            <Icon name="chevron-down" size={10} color={COLOR.black} />
+          </Row>
+        </Pressable>
+        <Pressable
+          onPress={showTimePicker}
+          style={{
+            padding: 10,
+            borderColor: COLOR.black,
+            borderWidth: StyleSheet.hairlineWidth,
+            borderRadius: 10,
+            flex: 1,
+            marginLeft: 5,
+          }}>
+          <Text>Trả xe</Text>
+          <Row style={{alignItems: 'center', justifyContent: 'space-between'}}>
+            <Text style={{fontWeight: 'bold', color: COLOR.black}}>
+              {endTime}
+            </Text>
+            <Icon name="chevron-down" size={10} color={COLOR.black} />
+          </Row>
+        </Pressable>
+      </Row>
+      <BottomBar
+        startDate={startDate}
+        endDate={endDate}
+        startTime={startTime}
+        endTime={endTime}
+        setSelectedTime={setSelectedTime}
+        toggle={toggle}
+      />
     </SafeAreaView>
   );
 };

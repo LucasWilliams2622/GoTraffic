@@ -8,7 +8,20 @@ import {Car} from '../../../types';
 import TimePickingModal from '../../../screens/Main/HomeTab/TimePickingModal';
 import ReactNativeModal from 'react-native-modal';
 
-export const TimeAndPlacePickup = (car: Car) => {
+export const TimeAndPlacePickup = ({
+  car,
+  selectedTime,
+  setSelectedTime,
+}: {
+  car: Car;
+  selectedTime: {
+    startTime: string;
+    endTime: string;
+    startDate: string;
+    endDate: string;
+  };
+  setSelectedTime: any;
+}) => {
   const [receiveCarLocation, setReceiveCarLocation] =
     useState<string>('atCarLocation');
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
@@ -26,7 +39,9 @@ export const TimeAndPlacePickup = (car: Car) => {
               </Text>
               <Pressable onPress={() => setModalVisible(true)}>
                 <Text style={{fontSize: 13.5, fontWeight: 'bold'}}>
-                  {currentDateString}
+                  {selectedTime.startTime === '' && selectedTime.endTime === ''
+                    ? currentDateString
+                    : `${selectedTime.startTime}, ${selectedTime.startDate}`}
                 </Text>
               </Pressable>
             </View>
@@ -36,7 +51,9 @@ export const TimeAndPlacePickup = (car: Car) => {
               </Text>
               <Pressable>
                 <Text style={{fontSize: 13.5, fontWeight: 'bold'}}>
-                  {returnDateString}
+                  {selectedTime.startTime === '' && selectedTime.endTime === ''
+                    ? returnDateString
+                    : `${selectedTime.endTime}, ${selectedTime.endDate}`}
                 </Text>
               </Pressable>
             </View>
@@ -49,6 +66,7 @@ export const TimeAndPlacePickup = (car: Car) => {
           <TimePickingModal
             price={car.price}
             toggle={() => setModalVisible(!isModalVisible)}
+            setSelectedTime={setSelectedTime}
           />
         </ReactNativeModal>
 

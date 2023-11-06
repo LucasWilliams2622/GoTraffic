@@ -3060,7 +3060,7 @@
 
 "@react-native-community/datetimepicker@^7.6.1":
   version "7.6.1"
-  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-7.6.1.tgz#98bdee01e3df490526ee1125e438c2030becac1f"
+  resolved "https://registry.npmjs.org/@react-native-community/datetimepicker/-/datetimepicker-7.6.1.tgz"
   integrity sha512-g66Q2Kd9Uw3eRL7kkrTsGhi+eXxNoPDRFYH6z78sZQuYjPkUQgJDDMUYgBmaBsQx/fKMtemPrCj1ulGmyi0OSw==
   dependencies:
     invariant "^2.2.4"
@@ -3080,10 +3080,10 @@
   resolved "https://registry.npmjs.org/@react-native-community/slider/-/slider-4.4.3.tgz"
   integrity sha512-WdjvGtqJfqcCiLwtbzie53Z/H6w6dIfRHhlW832D89ySAdE5DxLAsqRhDOG0eacuAxxEB+T9sGCkVMD0fa3aBg==
 
-"@react-native-firebase/app@^18.5.0":
-  version "18.6.0"
-  resolved "https://registry.npmjs.org/@react-native-firebase/app/-/app-18.6.0.tgz"
-  integrity sha512-pJwq2D0VBk8QvmIw6qZ5P3Y5Uaq4LL9NarAcTdEIA342VlhmTB1rovcYHE/F/hohdGBwFzi5qXAQnZmTxv27sg==
+"@react-native-firebase/app@^18.6.1":
+  version "18.6.1"
+  resolved "https://registry.npmjs.org/@react-native-firebase/app/-/app-18.6.1.tgz"
+  integrity sha512-lqINQLLTCmBSeln/cSPfvuJNQuwsPY9n6QyxSRRCTjyZdEPI3EY2df7isOCp8BwuxqYmkR9YhTNw2yFI72th+w==
   dependencies:
     opencollective-postinstall "^2.0.3"
     superstruct "^0.6.2"
@@ -3107,7 +3107,7 @@
 
 "@react-native-picker/picker@^2.5.1":
   version "2.5.1"
-  resolved "https://registry.yarnpkg.com/@react-native-picker/picker/-/picker-2.5.1.tgz#dfa13d5b97bfbedf1f7e7c608181a82f1d58b351"
+  resolved "https://registry.npmjs.org/@react-native-picker/picker/-/picker-2.5.1.tgz"
   integrity sha512-/sADUfQsosMRYtrqqL3ZYZSECRygj0fXtpRLqxJfwuMEoqfvfn40756R6B1alzusVvDRZFI0ari0iQid56hA/Q==
 
 "@react-native/assets-registry@^0.72.0":
@@ -3886,10 +3886,10 @@
     "@types/react" "*"
     "@types/react-native" "^0.70"
 
-"@types/react-native@*":
-  version "0.72.3"
-  resolved "https://registry.npmjs.org/@types/react-native/-/react-native-0.72.3.tgz"
-  integrity sha512-9+g+DBJIY3bG7+ZlYzKPr9kxTQxUuZQgLWZhYK4RlIcrsm3qaJhL2PU2e/K4CjnzznWCo2Islgec94x2z1pG4Q==
+"@types/react-native@*", "@types/react-native@^0.72.5":
+  version "0.72.5"
+  resolved "https://registry.npmjs.org/@types/react-native/-/react-native-0.72.5.tgz"
+  integrity sha512-HAt+EC576kbyg3+qruzbOLgVhgDHTHJ3d3rTkWRJ0wukze+l3ldWUkh1IarERHqsUlWwmkuYu0+4TQE5y1EjwA==
   dependencies:
     "@react-native/virtualized-lists" "^0.72.4"
     "@types/react" "*"
@@ -3899,14 +3899,6 @@
   resolved "https://registry.npmjs.org/@types/react-native/-/react-native-0.70.15.tgz"
   integrity sha512-wHrMQd65odOFbejFSDF7riocwLGEjkoJCF3GhH2a1vKqWbCExH361AZa/1GMG8gijAP86hkjF9gHZFHepEXaZA==
   dependencies:
-    "@types/react" "*"
-
-"@types/react-native@^0.72.5":
-  version "0.72.5"
-  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.72.5.tgz#33a0d0c3c724395ee05bb37255937dcb3fae6d5f"
-  integrity sha512-HAt+EC576kbyg3+qruzbOLgVhgDHTHJ3d3rTkWRJ0wukze+l3ldWUkh1IarERHqsUlWwmkuYu0+4TQE5y1EjwA==
-  dependencies:
-    "@react-native/virtualized-lists" "^0.72.4"
     "@types/react" "*"
 
 "@types/react-test-renderer@^18.0.0":
@@ -4208,7 +4200,7 @@ ansi-styles@^5.0.0:
 
 ansi-styles@^6.1.0:
   version "6.2.1"
-  resolved "https://registry.npmjs.org/ansi-styles/-/ansi-styles-6.2.1.tgz"
+  resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-6.2.1.tgz#0e62320cf99c21afff3b3012192546aacbfb05c5"
   integrity sha512-bN798gFfQX+viw3R7yrGWRqnrN2oRkEkUjjl4JNn4E8GxxbjtG3FbrEIIY3l8/hrwUwIeCZvi4QuOTP4MErVug==
 
 anymatch@^3.0.3, anymatch@~3.1.2:
@@ -6287,7 +6279,7 @@ fs-extra@^9.0.0:
 
 fs-minipass@^2.0.0:
   version "2.1.0"
-  resolved "https://registry.npmjs.org/fs-minipass/-/fs-minipass-2.1.0.tgz"
+  resolved "https://registry.yarnpkg.com/fs-minipass/-/fs-minipass-2.1.0.tgz#7f5036fdbf12c63c169190cbe4199c852271f9fb"
   integrity sha512-V/JgOLFCS+R6Vcq0slCuaeWEdNC3ouDlJMNIsacH2VtALiu9mV4LPrHc5cDl8k5aw6J8jwgWWpiTo5RYhmIzvg==
   dependencies:
     minipass "^3.0.0"
@@ -6306,7 +6298,7 @@ fs.realpath@^1.0.0:
 
 fsevents@^2.3.2, fsevents@~2.3.2:
   version "2.3.3"
-  resolved "https://registry.npmjs.org/fsevents/-/fsevents-2.3.3.tgz"
+  resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-2.3.3.tgz#cac6407785d03675a2a5e1a5305c697b347d90d6"
   integrity sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==
 
 function-bind@^1.1.1:
@@ -6660,7 +6652,7 @@ http-proxy-agent@^5.0.0:
 
 http-proxy-agent@^7.0.0:
   version "7.0.0"
-  resolved "https://registry.npmjs.org/http-proxy-agent/-/http-proxy-agent-7.0.0.tgz"
+  resolved "https://registry.yarnpkg.com/http-proxy-agent/-/http-proxy-agent-7.0.0.tgz#e9096c5afd071a3fce56e6252bb321583c124673"
   integrity sha512-+ZT+iBxVUQ1asugqnD6oWoRiS25AkjNfG085dKJGtGxkdwLQrMKU5wJr2bOOFAXzKcTuqq+7fZlTMgG3SRfIYQ==
   dependencies:
     agent-base "^7.1.0"
@@ -7167,7 +7159,7 @@ isexe@^2.0.0:
 
 isexe@^3.1.1:
   version "3.1.1"
-  resolved "https://registry.npmjs.org/isexe/-/isexe-3.1.1.tgz"
+  resolved "https://registry.yarnpkg.com/isexe/-/isexe-3.1.1.tgz#4a407e2bd78ddfb14bea0c27c6f7072dde775f0d"
   integrity sha512-LpB/54B+/2J5hqQ7imZHfdU31OlgQqx7ZicVlkm9kzg9/w8GKLEcFfJl/t7DCEDueOyBAD6zCCwTO6Fzs0NoEQ==
 
 isobject@^3.0.1:
@@ -8206,7 +8198,7 @@ make-dir@^4.0.0:
 
 make-fetch-happen@^11.0.3:
   version "11.1.1"
-  resolved "https://registry.npmjs.org/make-fetch-happen/-/make-fetch-happen-11.1.1.tgz"
+  resolved "https://registry.yarnpkg.com/make-fetch-happen/-/make-fetch-happen-11.1.1.tgz#85ceb98079584a9523d4bf71d32996e7e208549f"
   integrity sha512-rLWS7GCSTcEujjVBs2YqG7Y4643u8ucvCJeSRqiLYhesrDuzeuFIk37xREzAsfQaqzl8b9rNCE4m6J8tvX4Q8w==
   dependencies:
     agentkeepalive "^4.2.1"
@@ -8974,7 +8966,7 @@ minipass-sized@^1.0.3:
 
 minipass@^3.0.0:
   version "3.3.6"
-  resolved "https://registry.npmjs.org/minipass/-/minipass-3.3.6.tgz"
+  resolved "https://registry.yarnpkg.com/minipass/-/minipass-3.3.6.tgz#7bba384db3a1520d18c9c0e5251c3444e95dd94a"
   integrity sha512-DxiNidxSEK+tHG6zOIklvNOwm3hvCrbUrdtzY74U6HKTJxvIDfOUL5W5P2Ghd3DTkhhKPYGqeNUIh5qcM4YBfw==
   dependencies:
     yallist "^4.0.0"
@@ -9207,7 +9199,7 @@ node-stream-zip@^1.9.1:
 
 nopt@^6.0.0:
   version "6.0.0"
-  resolved "https://registry.npmjs.org/nopt/-/nopt-6.0.0.tgz"
+  resolved "https://registry.yarnpkg.com/nopt/-/nopt-6.0.0.tgz#245801d8ebf409c6df22ab9d95b65e1309cdb16d"
   integrity sha512-ZwLpbTgdhuZUnZzjd7nb1ZV+4DoiC6/sfiVKok72ym/4Tlf+DFdlHYmT2JPmcNNWV6Pi3SDf1kT+A4r9RTuT9g==
   dependencies:
     abbrev "^1.0.0"
@@ -9414,7 +9406,7 @@ npm@^10.2.0:
 
 npmlog@^6.0.0:
   version "6.0.2"
-  resolved "https://registry.npmjs.org/npmlog/-/npmlog-6.0.2.tgz"
+  resolved "https://registry.yarnpkg.com/npmlog/-/npmlog-6.0.2.tgz#c8166017a42f2dea92d6453168dd865186a70830"
   integrity sha512-/vBvz5Jfr9dT/aFWd0FIRf+T/Q2WBsLENygUaFUqstqsycmZAP/t5BvFJTK0viFmSUxiUKTUplWy5vt+rvKIxg==
   dependencies:
     are-we-there-yet "^3.0.0"
@@ -9572,7 +9564,7 @@ open@^7.4.2:
     is-docker "^2.0.0"
     is-wsl "^2.1.1"
 
-opencollective-postinstall@^2.0.0, opencollective-postinstall@^2.0.3:
+opencollective-postinstall@^2.0.3:
   version "2.0.3"
   resolved "https://registry.npmjs.org/opencollective-postinstall/-/opencollective-postinstall-2.0.3.tgz"
   integrity sha512-8AV/sCtuzUeTo8gQK5qDZzARrulB3egtLzFgteqB2tcT4Mw7B8Kt7JcDHmltjz6FOAHsvTevk70gZEbhM4ZS9Q==
@@ -10328,14 +10320,6 @@ react-native-fast-image@^8.6.3:
   version "8.6.3"
   resolved "https://registry.npmjs.org/react-native-fast-image/-/react-native-fast-image-8.6.3.tgz"
   integrity sha512-Sdw4ESidXCXOmQ9EcYguNY2swyoWmx53kym2zRsvi+VeFCHEdkO+WG1DK+6W81juot40bbfLNhkc63QnWtesNg==
-
-react-native-firebase@^5.6.0:
-  version "5.6.0"
-  resolved "https://registry.npmjs.org/react-native-firebase/-/react-native-firebase-5.6.0.tgz"
-  integrity sha512-I+o3zNLdIz4pxWTCSZH70M1BcPl+SdqKQfurOT0sWcaMSL2ecDqVy0PCTmN7ORt7/Z879Er6PLgA/psjArQlmw==
-  dependencies:
-    opencollective-postinstall "^2.0.0"
-    prop-types "^15.7.2"
 
 react-native-flash-message@^0.4.2:
   version "0.4.2"
@@ -11614,7 +11598,7 @@ string-width@^2.0.0:
 
 string-width@^5.0.1, string-width@^5.1.2:
   version "5.1.2"
-  resolved "https://registry.npmjs.org/string-width/-/string-width-5.1.2.tgz"
+  resolved "https://registry.yarnpkg.com/string-width/-/string-width-5.1.2.tgz#14f8daec6d81e7221d2a357e668cab73bdbca794"
   integrity sha512-HnLOCR3vjcY8beoNLtcjZ5/nxn2afmME6lhrDrebokqMap+XbeW8n9TXpPDOqdGK5qcI3oT0GKTW6wC7EMiVqA==
   dependencies:
     eastasianwidth "^0.2.0"

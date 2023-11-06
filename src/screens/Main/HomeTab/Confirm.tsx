@@ -171,9 +171,13 @@ const BottomBar: React.FC = () => {
 const Confirm: React.FC<{
   closeModal: any;
   car: Car;
-  dateStart: Date;
-  dateEnd: Date;
-}> = ({closeModal, car, dateStart, dateEnd}) => {
+  selectedTime: {
+    startTime: string;
+    endTime: string;
+    startDate: string;
+    endDate: string;
+  };
+}> = ({closeModal, car, selectedTime}) => {
   return (
     <View style={{backgroundColor: COLOR.white, flex: 1}}>
       <SafeAreaView>
@@ -260,7 +264,7 @@ const Confirm: React.FC<{
                     fontSize: 15,
                     marginTop: 5,
                   }}>
-                  21h00, 04/11/2023
+                  {selectedTime.startTime}, {selectedTime.startDate}
                 </Text>
               </View>
               <View>
@@ -275,7 +279,7 @@ const Confirm: React.FC<{
                     fontSize: 15,
                     marginTop: 5,
                   }}>
-                  20h00, 05/11/2023
+                  {selectedTime.endTime}, {selectedTime.endDate}
                 </Text>
               </View>
             </Row>

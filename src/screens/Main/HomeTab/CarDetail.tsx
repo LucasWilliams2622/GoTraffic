@@ -73,7 +73,13 @@ const BottomBar: React.FC<{
   car: Car;
   dateStart: Date;
   dateEnd: Date;
-}> = ({price, car, dateStart, dateEnd}) => {
+  selectedTime: {
+    startTime: string;
+    endTime: string;
+    startDate: string;
+    endDate: string;
+  };
+}> = ({price, car, dateStart, dateEnd, selectedTime}) => {
   const formattedPrice = useMemo(() => formatPrice(price), [price]);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   return (
@@ -103,8 +109,7 @@ const BottomBar: React.FC<{
           <Confirm
             closeModal={() => setIsModalVisible(false)}
             car={car}
-            dateStart={dateStart}
-            dateEnd={dateEnd}
+            selectedTime={selectedTime}
           />
         </Modal>
         <Pressable
@@ -131,6 +136,13 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
 
   const [dateStart, setDateStart] = useState<Date>(new Date());
   const [dateEnd, setDateEnd] = useState<Date>(new Date());
+
+  const [selectedTime, setSelectedTime] = useState<{
+    startTime: string;
+    endTime: string;
+    startDate: string;
+    endDate: string;
+  }>({startTime: '', endTime: '', startDate: '', endDate: ''});
 
   const toggleModal = () => {
     setRatingModalVisible(!isRatingModalVisible);
@@ -302,7 +314,11 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
               </Text>
             </Row>
 
-            <TimeAndPlacePickup {...car} />
+            <TimeAndPlacePickup
+              car={car}
+              selectedTime={selectedTime}
+              setSelectedTime={setSelectedTime}
+            />
 
             <View>
               <SectionTitle title="Đặc điểm" style={{marginTop: 10}} />
@@ -380,6 +396,7 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
           car={car}
           dateStart={dateStart}
           dateEnd={dateEnd}
+          selectedTime={selectedTime}
         />
       </View>
     );
