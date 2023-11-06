@@ -1,5 +1,5 @@
 import { SafeAreaView, StyleSheet, Text, View, ScrollView, TouchableOpacity, Modal, PermissionsAndroid } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { appStyle, windowHeight, windowWidth } from '../../../../constants/AppStyle';
 import Header from '../../../../components/Header';
 import { COLOR, ICON } from '../../../../constants/Theme';
@@ -8,23 +8,104 @@ import SwitchToggle from 'react-native-switch-toggle';
 import AppInput from '../../../../components/AppInput';
 import FastImage from 'react-native-fast-image';
 import ItemFeature from '../../../../components/Profile/ItemFeature';
+import axios from 'axios';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import AppDropdown from '../../../../components/AppDropdown';
+import { features } from '../../../../components/Profile/data/DataCar';
 
 
 const DetailsInfor = (props) => {
-  const { navigation } = props;
+  const { navigation, route } = props;
+  const cardInfo = route.params;
+  console.log("DAY LAF DATA", cardInfo);
+
+  const [cars, setCars] = useState([]);
+  const [description, setDescription] = useState(null);
+  const [fuelConsumption, setFuelConsumption] = useState(null);
+  const [price, setPrice] = useState(null);
   const [selectedFeatures, setSelectedFeatures] = useState([]);
+
+  // địa chỉ
+  const [openAddress, setOpenAddress] = useState(false);
+  const [provinces, setProvinces] = useState([]);
+  const [selectedProvince, setSelectedProvince] = useState(null);
+  const [districts, setDistricts] = useState([]);
+  const [selectedDistrict, setSelectedDistrict] = useState(null);
+  const [wards, setWards] = useState([]);
+  const [selectedWard, setSelectedWard] = useState(null);
+  const [address, setAddress] = useState(null);
+  const [location, setLocation] = useState(null);
+
   const [onSwitch, setonSwitch] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [isCameraModalVisible, setIsCameraModalVisible] = useState(false);
   const [selectedImageType, setSelectedImageType] = useState(null);
-  const [imageFront, setImageFront] = useState(null);
-  const [imageLeft, setImageLeft] = useState(null);
-  const [imageRight, setImageRight] = useState(null);
-  const [imageBack, setImageBack] = useState(null);
+  const [carImages, setCarImages] = useState({
+    front: null,
+    back: null,
+    left: null,
+    right: null,
+  });
 
+  const handleComplete = () => {
+    const combinedInfo = {
+      ...cardInfo,
+      // districts,
+      //provinces,
+      location,
+      description,
+      fuelConsumption,
+      price,
+      selectedFeatures,
+      images: carImages,
+      // mainImageType: 'front',
+    };
+    // const updatedCarInfo = [...cars];
 
+    // updatedCarInfo.push(combinedInfo);
+    // setCars(updatedCarInfo);
+    console.log('DetailInfo =====>', combinedInfo);
+    navigation.navigate('ListCar', { updatedCarInfo: [combinedInfo] });
 
+  };
+
+  // api địa chỉ
+  useEffect(() => {
+    fetch('https://provinces.open-api.vn/api/p/')
+      .then((response) => response.json())
+      .then((data) => {
+        setProvinces(data);
+      })
+      .catch((error) => {
+        console.error('Lỗi khi lấy dữ liệu từ API: ', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (selectedProvince) {
+      axios.get(`https://provinces.open-api.vn/api/p/${selectedProvince.code}?depth=2`)
+        .then((response) => {
+          setDistricts(response.data.districts);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [selectedProvince]);
+
+  useEffect(() => {
+    if (selectedDistrict) {
+      axios.get(`https://provinces.open-api.vn/api/d/${selectedDistrict.code}?depth=2`)
+        .then((response) => {
+          setWards(response.data.wards);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [selectedDistrict]);
+
+  // feature
   const handleFeatureSelection = (featureName) => {
     if (selectedFeatures.includes(featureName)) {
       setSelectedFeatures((prevSelectedFeatures) =>
@@ -35,20 +116,6 @@ const DetailsInfor = (props) => {
     }
   };
 
-  const features = [
-    'Lốp dự phòng',
-    'Cảnh báo tốc độ',
-    'Camera hành trình',
-    'Túi khi an toàn',
-    'Khe cắm USB',
-    'BlueTooth',
-    'Camera lùi',
-    'ETC',
-    'Cửa sổ trời',
-    'Cảm biến lốp',
-    'Bản đồ',
-    'Định vị GPS',
-  ];
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -65,6 +132,16 @@ const DetailsInfor = (props) => {
     } else {
       setonSwitch(!onSwitch);
     }
+  };
+
+  // địa chỉ
+  const handleAddressClick = () => {
+    setOpenAddress(!openAddress);
+  };
+  const handleAddressSubmit = () => {
+    const newAddressString = `${address}, ${selectedWard?.name}, ${selectedDistrict?.name}, ${selectedProvince?.name}`;
+    setLocation(newAddressString);
+    handleAddressClick();
   };
 
   const handleConfirm = () => {
@@ -91,19 +168,31 @@ const DetailsInfor = (props) => {
 
         switch (selectedImageType) {
           case 'front':
-            setImageFront(result.assets[0].uri);
+            setCarImages((prevImages) => ({
+              ...prevImages,
+              front: result.assets[0].uri,
+            }));
             console.log(result.assets[0].uri);
             break;
           case 'left':
-            setImageLeft(result.assets[0].uri);
+            setCarImages((prevImages) => ({
+              ...prevImages,
+              left: result.assets[0].uri,
+            }));
             console.log(result.assets[0].uri);
             break;
           case 'right':
-            setImageRight(result.assets[0].uri);
+            setCarImages((prevImages) => ({
+              ...prevImages,
+              right: result.assets[0].uri,
+            }));
             console.log(result.assets[0].uri);
             break;
           case 'back':
-            setImageBack(result.assets[0].uri);
+            setCarImages((prevImages) => ({
+              ...prevImages,
+              back: result.assets[0].uri,
+            }));
             console.log(result.assets[0].uri);
             break;
           default:
@@ -133,25 +222,36 @@ const DetailsInfor = (props) => {
         console.log(response.assets[0].uri);
         switch (selectedImageType) {
           case 'front':
-            setImageFront(response.assets[0].uri);
+            setCarImages((prevImages) => ({
+              ...prevImages,
+              front: response.assets[0].uri,
+            }));
             setIsCameraModalVisible(false);
             break;
           case 'left':
-            setImageLeft(response.assets[0].uri);
+            setCarImages((prevImages) => ({
+              ...prevImages,
+              left: response.assets[0].uri,
+            }));
             setIsCameraModalVisible(false);
             break;
           case 'right':
-            setImageRight(response.assets[0].uri);
+            setCarImages((prevImages) => ({
+              ...prevImages,
+              right: response.assets[0].uri,
+            }));
             setIsCameraModalVisible(false);
             break;
           case 'back':
-            setImageBack(response.assets[0].uri);
+            setCarImages((prevImages) => ({
+              ...prevImages,
+              back: response.assets[0].uri,
+            }));
             setIsCameraModalVisible(false);
             break;
           default:
             break;
         }
-        setIsCameraModalVisible(false);
       }
     });
   };
@@ -177,12 +277,69 @@ const DetailsInfor = (props) => {
                   borderRadius: 5,
                   paddingHorizontal: 7
                 }}
-              //onPress={()=> navigation.navigate('')}
+                onPress={() => handleAddressClick()}
               >
                 <Text style={[appStyle.text12Bold, { color: COLOR.fifth, margin: 3 }]}>Thay đổi</Text>
               </TouchableOpacity>
             </View>
-            <Text>0223 Nguyễn Du </Text>
+            <Text>{location ? location : 'Chưa có địa chỉ'}</Text>
+
+            {openAddress && (
+              <View style={{ width: '100%', height: windowHeight * 0.4, justifyContent: 'space-evenly', alignItems: 'center' }}>
+                <AppDropdown
+                  width={windowWidth * 0.7}
+                  height={40}
+                  labelField="name"
+                  valueField="name"
+                  placeholder="Tỉnh/Thành phố"
+                  data={provinces}
+                  value={selectedProvince?.name}
+                  onChange={(val) => {
+                    setSelectedProvince(val);
+                    setSelectedDistrict(null);
+                    setSelectedWard(null);
+                  }}
+                />
+                <AppDropdown
+                  width={windowWidth * 0.7}
+                  height={40}
+                  labelField="name"
+                  valueField="name"
+                  placeholder="Quận Huyện"
+                  data={districts}
+                  value={selectedDistrict?.name}
+                  onChange={(val) => {
+                    setSelectedDistrict(val);
+                    setSelectedWard(null);
+                  }}
+                />
+                <AppDropdown
+                  width={windowWidth * 0.7}
+                  height={40}
+                  labelField="name"
+                  valueField="name"
+                  placeholder="Phường Xã"
+                  data={wards}
+                  value={selectedWard?.name}
+                  onChange={(val) => {
+                    setSelectedWard(val);
+                  }}
+                />
+                <AppInput
+                  width={windowWidth * 0.7}
+                  height={40}
+                  placeholder="Nhập địa chỉ"
+                  value={address}
+                  onChangeText={(text) => setAddress(text)}
+                />
+                <AppButton
+                  title="Lưu"
+                  width={windowWidth * 0.5}
+                  height={40}
+                  onPress={() => handleAddressSubmit()}
+                />
+              </View>
+            )}
           </View>
 
           {/* Đặt xe nhanh */}
@@ -246,6 +403,9 @@ const DetailsInfor = (props) => {
               height={windowHeight * 0.17}
               marginTop={8}
               placeholder="Mô tả xe của bạn"
+              value={description}
+              onChangeText={(text) => setDescription(text)}
+
             />
           </View>
 
@@ -253,11 +413,13 @@ const DetailsInfor = (props) => {
           <View style={appStyle.cardInfo}>
             <View style={appStyle.rowContent}>
               <Text style={appStyle.text165}>Mức tiêu thụ nhiên liệu</Text>
-              <View style={{ flexDirection: 'row', alignItems: 'center', width: windowWidth * 0.4, justifyContent: 'flex-end' }}>
+              <View style={appStyle.inputRight}>
                 <AppInput
                   placeholder="0"
                   width={windowWidth * 0.15}
                   borderWidth={0}
+                  value={fuelConsumption}
+                  onChangeText={(text) => setFuelConsumption(text)}
                 />
                 <Text>lít/100 km</Text>
               </View>
@@ -275,7 +437,6 @@ const DetailsInfor = (props) => {
                   isSelected={selectedFeatures.includes(feature)}
                   onPress={handleFeatureSelection}
                 />
-
               ))}
             </View>
           </View>
@@ -284,12 +445,14 @@ const DetailsInfor = (props) => {
           <View style={appStyle.cardInfo}>
             <View style={appStyle.rowContent}>
               <Text style={appStyle.text165}>Giá cho thuê</Text>
-              <View style={{ flexDirection: 'row', alignItems: 'center', width: windowWidth * 0.4, justifyContent: 'flex-end' }}>
+              <View style={appStyle.inputRight}>
                 <AppInput
                   placeholder="0"
                   width={windowWidth * 0.2}
                   fontSize={18}
                   borderWidth={0}
+                  value={price}
+                  onChangeText={(text) => setPrice(text)}
                 />
                 <Text style={[appStyle.text18Bold, { color: COLOR.primary }]}>K</Text>
               </View>
@@ -306,39 +469,38 @@ const DetailsInfor = (props) => {
             </Text>
             <View style={[styles.featuresContainer, { paddingHorizontal: 10 }]}>
               <TouchableOpacity onPress={() => cameraModal('front')}>
-                <View style={{ width: 170, height: 100, backgroundColor: '#D9D9D9', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
-                  {imageFront ? (
-                    <FastImage source={{ uri: imageFront }} style={{ width: 170, height: 100 }} />
-                  ) : (
-                    <FastImage source={ICON.Picture} style={{ width: 160, height: 100 }} />
-                  )}
-
+                <View style={appStyle.viewUpload}>                  
+                {carImages.front ? (
+                  <FastImage source={{ uri: carImages.front }} style={{ width: 170, height: 100 }} />
+                ) : (
+                  <FastImage source={ICON.Picture} style={{ width: 160, height: 100 }} />
+                )}
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => cameraModal('back')}>
-                <View style={{ width: 170, height: 100, backgroundColor: '#D9D9D9', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
-                  {imageBack ? (
-                    <FastImage source={{ uri: imageBack }} style={{ width: 170, height: 100 }} />
-                  ) : (
-                    <FastImage source={ICON.Picture} style={{ width: 160, height: 100 }} />
-                  )}
+                <View style={appStyle.viewUpload}>                  
+                {carImages.back ? (
+                  <FastImage source={{ uri: carImages.back }} style={{ width: 170, height: 100 }} />
+                ) : (
+                  <FastImage source={ICON.Picture} style={{ width: 160, height: 100 }} />
+                )}
 
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => cameraModal('left')}>
-                <View style={{ width: 170, height: 100, backgroundColor: '#D9D9D9', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
-                  {imageLeft ? (
-                    <FastImage source={{ uri: imageLeft }} style={{ width: 170, height: 100 }} />
-                  ) : (
-                    <FastImage source={ICON.Picture} style={{ width: 160, height: 100 }} />
-                  )}
+                <View style={appStyle.viewUpload}>                  
+                {carImages.left ? (
+                  <FastImage source={{ uri: carImages.left }} style={{ width: 170, height: 100 }} />
+                ) : (
+                  <FastImage source={ICON.Picture} style={{ width: 160, height: 100 }} />
+                )}
 
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => cameraModal('right')}>
-                <View style={{ width: 170, height: 100, backgroundColor: '#D9D9D9', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
-                  {imageRight ? (
-                    <FastImage source={{ uri: imageRight }} style={{ width: 170, height: 100 }} />
+                <View style={appStyle.viewUpload}>
+                  {carImages.right ? (
+                    <FastImage source={{ uri: carImages.right }} style={{ width: 170, height: 100 }} />
                   ) : (
                     <FastImage source={ICON.Picture} style={{ width: 160, height: 100 }} />
                   )}
@@ -351,7 +513,7 @@ const DetailsInfor = (props) => {
         <AppButton
           title="Hoàn tất"
           marginBottom={70}
-          onPress={() => navigation.navigate('ListCar')}
+          onPress={() => handleComplete()}
         />
       </View>
 
@@ -360,7 +522,7 @@ const DetailsInfor = (props) => {
         transparent={true}
         visible={isModalVisible}>
         <TouchableOpacity
-          style={styles.modalBackdrop}
+          style={appStyle.modalBackdrop}
           onPress={toggleModal}
         />
         <View style={styles.modalContainer}>
@@ -396,10 +558,10 @@ const DetailsInfor = (props) => {
         transparent={true}
         visible={isCameraModalVisible}>
         <TouchableOpacity
-          style={styles.modalBackdrop}
-          onPress={cameraModal}
+          style={appStyle.modalBackdrop}
+          onPress={() => setIsCameraModalVisible(false)}
         />
-        <View style={styles.modalContainerCam}>
+        <View style={appStyle.modalContainerCam}>
           <AppButton
             title="Chụp ảnh"
             marginTop={5}
@@ -427,12 +589,7 @@ const DetailsInfor = (props) => {
 export default DetailsInfor
 
 const styles = StyleSheet.create({
-  modalBackdrop: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background color
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+
   modalContainer: {
     backgroundColor: 'white',
     position: 'absolute',
@@ -446,30 +603,6 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     alignSelf: 'center',
     alignItems: 'center',
-  },
-  modalContainerCam: {
-    backgroundColor: 'white',
-    position: 'absolute',
-    bottom: 10,
-    alignSelf: 'center',
-    width: '100%',
-    zIndex: 1,
-    height: windowHeight * 0.18,
-    borderTopRightRadius: 20,
-    borderTopLeftRadius: 20,
-    paddingHorizontal: 10,
-    paddingBottom: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-
   },
   featuresContainer: {
     flexDirection: 'row',

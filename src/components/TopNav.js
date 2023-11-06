@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 
 
 const TopNav = (props) => {
-    const { text, iconLeft, iconRight, screenLeft, screenRight, backgroundColor } = props;
+    const { text, iconLeft, iconRight, screenLeft, screenRight, backgroundColor, onPressRight } = props;
     const navigation = useNavigation();
     return (
         <View style={[styles.header, {
@@ -20,7 +20,8 @@ const TopNav = (props) => {
                     style={[appStyle.icon]} />
             </TouchableOpacity>
             <Text style={[appStyle.text20, { fontWeight: '500' }]}>{text}</Text>
-            <TouchableOpacity onPress={() => navigation.navigate(screenRight)}>
+            <TouchableOpacity
+                onPress={() => navigation.navigate(screenRight)}>
                 <FastImage
                     source={iconRight}
                     style={[appStyle.icon, { marginRight: 5 }]}

@@ -1,114 +1,351 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
-import {FlatList} from 'native-base';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {appStyle} from '../../../../constants/AppStyle';
-import {COLOR, ICON} from '../../../../constants/Theme';
+import { StyleSheet, Text, TouchableOpacity, View, ScrollView, Modal } from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { appStyle, windowHeight, windowWidth } from '../../../../constants/AppStyle'
+import { COLOR, ICON } from '../../../../constants/Theme';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import FastImage from 'react-native-fast-image';
-import ItemListCar from '../../../../components/Support/ItemListCar';
-import ItemTrip from '../../../../components/Support/ItemTrip';
+import Header from '../../../../components/Header';
+import AppButton from '../../../../components/AppButton';
 
 const ExhibitOfCar = props => {
-  const {navigation} = props;
+  const { navigation } = props;
+  const [isCameraModalVisible, setIsCameraModalVisible] = useState(false);
+  const [selectedImageType, setSelectedImageType] = useState(null);
+
+  const [carImages, setCarImages] = useState({
+    front: null,
+    back: null,
+    left: null,
+    right: null,
+  });
+
+
   const goBack = () => {
     navigation.goBack('HomeCar');
   };
+
+
+  const cameraModal = (imageType) => {
+    setSelectedImageType(imageType);
+    setIsCameraModalVisible(true);
+  };
+
+  const requestCameraPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: "App Camera Permission",
+          message: "App needs access to your camera ",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK"
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log("Camera permission given");
+        const result = await launchCamera();
+
+        switch (selectedImageType) {
+          case 'front':
+            setCarImages((prevImages) => ({
+              ...prevImages,
+              front: result.assets[0].uri,
+            }));
+            console.log(result.assets[0].uri);
+            break;
+          case 'left':
+            setCarImages((prevImages) => ({
+              ...prevImages,
+              left: result.assets[0].uri,
+            }));
+            console.log(result.assets[0].uri);
+            break;
+          case 'right':
+            setCarImages((prevImages) => ({
+              ...prevImages,
+              right: result.assets[0].uri,
+            }));
+            console.log(result.assets[0].uri);
+            break;
+          case 'back':
+            setCarImages((prevImages) => ({
+              ...prevImages,
+              back: result.assets[0].uri,
+            }));
+            console.log(result.assets[0].uri);
+            break;
+          default:
+            break;
+        }
+        setIsCameraModalVisible(false);
+      } else {
+        console.log("Camera permission denied");
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+
+  // Chọn ảnh từ thư viện
+  const chooseImage = () => {
+    const options = {
+      mediaType: 'photo',
+    };
+
+    launchImageLibrary(options, (response) => {
+      if (response.didCancel) {
+        console.log('Hủy chọn ảnh');
+      } else if (response.error) {
+        console.log('Lỗi:', response.error);
+      } else {
+        console.log(response.assets[0].uri);
+        switch (selectedImageType) {
+          case 'front':
+            setCarImages((prevImages) => ({
+              ...prevImages,
+              front: response.assets[0].uri,
+            }));
+            setIsCameraModalVisible(false);
+            break;
+          case 'left':
+            setCarImages((prevImages) => ({
+              ...prevImages,
+              left: response.assets[0].uri,
+            }));
+            setIsCameraModalVisible(false);
+            break;
+          case 'right':
+            setCarImages((prevImages) => ({
+              ...prevImages,
+              right: response.assets[0].uri,
+            }));
+            setIsCameraModalVisible(false);
+            break;
+          case 'back':
+            setCarImages((prevImages) => ({
+              ...prevImages,
+              back: response.assets[0].uri,
+            }));
+            setIsCameraModalVisible(false);
+            break;
+          default:
+            break;
+        }
+      }
+    });
+  };
+
+  const handleUpdate = () => { console.log(carImages); };
   return (
     <SafeAreaView style={appStyle.container}>
-      <View style={styles.viewTitle}>
-        <TouchableOpacity onPress={goBack}>
-          <FastImage
-            source={require('../../../../assets/icon/ic_left.png')}
-            style={{
-              position: 'absolute',
-              left: 10,
-              top: 20,
-              width: 20,
-              height: 20,
+      <Header
+        icon={ICON.Back}
+        text="Giấy tờ & Bảo hiểm"
+        onPress={goBack}
+      />
+      <ScrollView style={{ flex: 1, width: windowWidth, height: windowHeight * 0.8, marginBottom: 70 }}>
+        <View style={appStyle.main}>
+
+          {/* Giấy tờ xe */}
+          <View style={{ marginTop: 20 }}>
+            <Text style={[appStyle.text18Bold]}>
+              Giấy tờ của xe
+            </Text>
+            <View style={[appStyle.rowBetween, { marginTop: 10 }]}>
+              <TouchableOpacity style={styles.upLoadImage}>
+                <Text style={{ textAlign: 'center' }}>
+                  Vui lòng chụp mặt trước của giấy tờ xe
+                </Text>
+                <FastImage
+                  style={{ width: 30, height: 30, marginTop: 10 }}
+                  source={ICON.Picture}
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.upLoadImage}>
+                <Text style={{ textAlign: 'center' }}>
+                  Vui lòng chụp mặt sau của giấy tờ xe
+                </Text>
+                <FastImage
+                  style={{ width: 30, height: 30, marginTop: 10 }}
+                  source={ICON.Picture}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          {/* Bảo hiểm */}
+          <View style={{ marginTop: 20 }}>
+            <Text style={[appStyle.text18Bold]}>
+              Bảo hiểm của xe
+            </Text>
+            <View style={[appStyle.rowBetween, { marginTop: 10 }]}>
+              <TouchableOpacity style={styles.upLoadImage}>
+                <Text style={{ textAlign: 'center' }}>
+                  Vui lòng chụp mặt trước của bảo hiểm
+                </Text>
+                <FastImage
+                  style={{ width: 30, height: 30, marginTop: 10 }}
+                  source={ICON.Picture}
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.upLoadImage}>
+                <Text style={{ textAlign: 'center' }}>
+                  Vui lòng chụp mặt sau của bảo hiểm
+                </Text>
+                <FastImage
+                  style={{ width: 30, height: 30, marginTop: 10 }}
+                  source={ICON.Picture}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          {/* Xe */}
+          <View style={{ marginTop: 20 }}>
+            <Text style={[appStyle.text18Bold]}>
+              Ảnh của xe
+            </Text>
+            <View style={[appStyle.columnCenter, { marginTop: 10 }]}>
+              <View style={{ width: windowWidth * 0.9, height: windowHeight * 0.3, alignItems: 'center' }}>
+                <View style={appStyle.rowBetween}>
+                  <Text style={appStyle.text16}>
+                    Ảnh bên trái
+                  </Text>
+
+                  <TouchableOpacity onPress={() => cameraModal('left')}>
+                    <FastImage source={ICON.Edit} style={appStyle.iconMedium} />
+                  </TouchableOpacity>
+                </View>
+                {carImages.left ? (
+                  <FastImage source={{ uri: carImages.left }} style={styles.imgCar} />
+                ) : (
+                  <TouchableOpacity style={styles.upLoadImage}>
+                    <Text style={{ textAlign: 'center' }}>
+                      Vui lòng chụp mặt sau của bảo hiểm
+                    </Text>
+                    <FastImage
+                      style={{ width: 30, height: 30, marginTop: 10 }}
+                      source={ICON.Picture}
+                    />
+                  </TouchableOpacity>
+                )}
+              </View>
+
+              <View style={{ width: windowWidth * 0.9, height: windowHeight * 0.3, alignItems: 'center' }}>
+                <View style={appStyle.rowBetween}>
+                  <Text style={appStyle.text16}>
+                    Ảnh bên phải
+                  </Text>
+                  <TouchableOpacity onPress={() => cameraModal('right')}>
+                    <FastImage source={ICON.Edit} style={appStyle.iconMedium} />
+                  </TouchableOpacity>
+                </View>
+                {carImages.right ? (
+                  <FastImage source={{ uri: carImages.right }} style={styles.imgCar} />
+                ) : (
+                  <TouchableOpacity style={styles.upLoadImage}>
+                    <Text style={{ textAlign: 'center' }}>
+                      Vui lòng chụp mặt sau của bảo hiểm
+                    </Text>
+                    <FastImage
+                      style={{ width: 30, height: 30, marginTop: 10 }}
+                      source={ICON.Picture}
+                    />
+                  </TouchableOpacity>
+                )}
+              </View>
+
+              <View style={{ width: windowWidth * 0.9, height: windowHeight * 0.3, alignItems: 'center' }}>
+                <View style={appStyle.rowBetween}>
+                  <Text style={appStyle.text16}>
+                    Ảnh mặt trước
+                  </Text>
+                  <TouchableOpacity onPress={() => cameraModal('front')}>
+                    <FastImage source={ICON.Edit} style={appStyle.iconMedium} />
+                  </TouchableOpacity>
+                </View>
+                {carImages.front ? (
+                  <FastImage source={{ uri: carImages.front }} style={styles.imgCar} />
+                ) : (
+                  <TouchableOpacity style={styles.upLoadImage}>
+                    <Text style={{ textAlign: 'center' }}>
+                      Vui lòng chụp mặt sau của bảo hiểm
+                    </Text>
+                    <FastImage
+                      style={{ width: 30, height: 30, marginTop: 10 }}
+                      source={ICON.Picture}
+                    />
+                  </TouchableOpacity>
+                )}
+              </View>
+
+              <View style={{ width: windowWidth * 0.9, height: windowHeight * 0.3, alignItems: 'center' }}>
+                <View style={appStyle.rowBetween}>
+                  <Text style={appStyle.text16}>
+                    Ảnh mặt sau
+                  </Text>
+                  <TouchableOpacity onPress={() => cameraModal('back')}>
+                    <FastImage source={ICON.Edit} style={appStyle.iconMedium} />
+                  </TouchableOpacity>
+                </View>
+                {carImages.back ? (
+                  <FastImage source={{ uri: carImages.back }} style={styles.imgCar} />
+                ) : (
+                  <TouchableOpacity style={styles.upLoadImage}>
+                    <Text style={{ textAlign: 'center' }}>
+                      Vui lòng chụp mặt sau của bảo hiểm
+                    </Text>
+                    <FastImage
+                      style={{ width: 30, height: 30, marginTop: 10 }}
+                      source={ICON.Picture}
+                    />
+                  </TouchableOpacity>
+                )}
+              </View>
+            </View>
+          </View>
+          <AppButton
+            title="Cập nhật"
+            marginTop={20}
+            onPress={() => handleUpdate()}
+          />
+        </View>
+      </ScrollView>
+
+      <Modal
+        animationType='slide'
+        transparent={true}
+        visible={isCameraModalVisible}>
+        <TouchableOpacity
+          style={appStyle.modalBackdrop}
+          onPress={() => setIsCameraModalVisible(false)}
+        />
+        <View style={appStyle.modalContainerCam}>
+          <AppButton
+            title="Chụp ảnh"
+            marginTop={5}
+            onPress={() => {
+              requestCameraPermission(selectedImageType);
+              setSelectedImageType(null);
             }}
           />
-        </TouchableOpacity>
-        <Text style={styles.title}>Giấy tờ & Bảo hiểm</Text>
-        <TouchableOpacity>
-          <FastImage
-            source={require('../../../../assets/icon/ic_add.png')}
-            style={{
-              position: 'absolute',
-              right: 10,
-              top: 20,
-              width: 20,
-              height: 20,
+          <AppButton
+            title="Chọn ảnh"
+            marginTop={15}
+            backgroundColor={COLOR.background}
+            textColor={COLOR.primary}
+            onPress={() => {
+              chooseImage(selectedImageType);
+              setSelectedImageType(null);
             }}
           />
-        </TouchableOpacity>
-      </View>
-      <View style={appStyle.main}>
-        <Text style={[appStyle.text18Bold, {marginTop: 20}]}>
-          Giấy tờ của xe
-        </Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginTop: 20,
-          }}>
-          <View style={styles.upLoadImage}>
-            <Text style={{textAlign: 'center'}}>
-              Vui lòng chụp mặt trước của giấy tờ xe
-            </Text>
-            <FastImage
-              style={{width: 30, height: 30, marginTop: 10}}
-              source={ICON.Picture}
-            />
-          </View>
-          <View style={styles.upLoadImage}>
-            <Text style={{textAlign: 'center'}}>
-              Vui lòng chụp mặt sau của giấy tờ xe
-            </Text>
-            <FastImage
-              style={{width: 30, height: 30, marginTop: 10}}
-              source={ICON.Picture}
-            />
-          </View>
         </View>
-        <Text style={[appStyle.text18Bold, {marginTop: 20}]}>
-          Bảo hiểm của xe
-        </Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginTop: 20,
-          }}>
-          <View style={styles.upLoadImage}>
-            <Text style={{textAlign: 'center'}}>
-              Vui lòng chụp mặt trước của bảo hiểm
-            </Text>
-            <FastImage
-              style={{width: 30, height: 30, marginTop: 10}}
-              source={ICON.Picture}
-            />
-          </View>
-          <View style={styles.upLoadImage}>
-            <Text style={{textAlign: 'center'}}>
-              Vui lòng chụp mặt sau của bảo hiểm
-            </Text>
-            <FastImage
-              style={{width: 30, height: 30, marginTop: 10}}
-              source={ICON.Picture}
-            />
-          </View>
-        </View>
-        <TouchableOpacity style={styles.btn}>
-          <Text
-            style={[
-              appStyle.text16Bold,
-              {color: COLOR.white, textAlign: 'center'},
-            ]}>
-            CẬP NHẬT
-          </Text>
-        </TouchableOpacity>
-      </View>
+      </Modal>
+
     </SafeAreaView>
   );
 };
@@ -116,26 +353,6 @@ const ExhibitOfCar = props => {
 export default ExhibitOfCar;
 
 const styles = StyleSheet.create({
-  viewTitle: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderBottomWidth: 0.5,
-  },
-  image: {
-    width: '100%',
-    height: '30%',
-    position: 'absolute',
-    borderBottomRightRadius: 10,
-    borderBottomLeftRadius: 10,
-  },
-  title: {
-    fontSize: 24,
-    textAlign: 'center',
-    color: COLOR.black,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    marginTop: 14,
-  },
   upLoadImage: {
     height: 120,
     width: 174,
@@ -145,33 +362,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignContent: 'center',
   },
-  btn: {
-    backgroundColor: COLOR.primary,
-    height: 50,
-    borderRadius: 10,
-    alignContent: 'center',
-    justifyContent: 'center',
-    marginBottom: 70,
-    marginTop: 50,
-  },
+
+  imgCar: {
+    width: 250,
+    height: 150,
+    marginTop: 20
+  }
 });
-const DATA = [
-  {
-    id: 1,
-    image: require('../../../../assets/image/car.jpg'),
-    time: '21/09/2023 | 20:30',
-    name: 'KIA MORNING 2022',
-    timeStart: '21h00,17/10/2023',
-    timeEnd: '21h00,18/10/2023',
-    price: '1.600.666đ',
-  },
-  {
-    id: 2,
-    image: require('../../../../assets/image/car.jpg'),
-    time: '21/09/2023 | 20:30',
-    name: 'KIA MORNING 2022',
-    timeStart: '21h00,17/10/2023',
-    timeEnd: '21h00,18/10/2023',
-    price: '1.600.666đ',
-  },
-];
+

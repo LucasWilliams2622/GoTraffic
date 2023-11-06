@@ -1,20 +1,25 @@
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import React, {useMemo} from 'react';
 import {COLOR} from '../../../constants/Theme';
 import FeaturedLocationFrame from './FeaturedLocationFrame';
 import {convertTotalNumber} from '../../../utils/utils';
 import {appStyle} from '../../../constants/AppStyle';
 import {FeaturedLocationProps} from '../../../types';
+import {useNavigation} from '@react-navigation/native';
 
 const FeaturedLocation = ({title, image, totalCar}: FeaturedLocationProps) => {
   const formattedTotalCar = useMemo(
     () => convertTotalNumber(totalCar),
     [totalCar],
   );
+  const navigation = useNavigation();
   return (
-    <View
+    <TouchableOpacity
       style={{
         marginRight: 20,
+      }}
+      onPress={() => {
+        navigation.navigate('ListCarCity', {title: title});
       }}>
       <View style={styles.textWrapper}>
         <Text style={[appStyle.text16Bold, {color: COLOR.white}]}>{title}</Text>
@@ -22,7 +27,7 @@ const FeaturedLocation = ({title, image, totalCar}: FeaturedLocationProps) => {
       </View>
 
       <FeaturedLocationFrame color={COLOR.fifth} img={image} />
-    </View>
+    </TouchableOpacity>
   );
 };
 

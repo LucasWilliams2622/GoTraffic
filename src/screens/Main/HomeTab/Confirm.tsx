@@ -179,20 +179,20 @@ const Confirm: React.FC<{
   };
 }> = ({closeModal, car, selectedTime}) => {
   return (
-    <View style={{backgroundColor: COLOR.white, flex: 1}}>
+    <View style={{ backgroundColor: COLOR.white, flex: 1 }}>
       <SafeAreaView>
-        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
           <Pressable
             onPress={closeModal}
-            style={[styles.closeBtn, {position: 'absolute', left: 20}]}>
+            style={[styles.closeBtn, { position: 'absolute', left: 20 }]}>
             <Icon name="x" size={20} color={COLOR.black} />
           </Pressable>
-          <Text style={{fontSize: 22}}>Xác nhận đặt xe</Text>
+          <Text style={{ fontSize: 22 }}>Xác nhận đặt xe</Text>
         </View>
         <ScrollView style={{paddingHorizontal: 15, marginTop: 30}}>
           <Row>
             <FastImage
-              source={{uri: car.images[0]}}
+              source={{uri: car.image}}
               style={{height: 80, width: 120, borderRadius: 10}}
             />
             <View
@@ -204,7 +204,7 @@ const Confirm: React.FC<{
               }}>
               <View>
                 <Text style={{fontSize: 18, fontWeight: 'bold'}}>
-                  {car.title.toUpperCase()}
+                  {car.name.toUpperCase()}
                 </Text>
                 <Text
                   style={{
@@ -216,20 +216,20 @@ const Confirm: React.FC<{
                 </Text>
               </View>
 
-              <Row style={{alignItems: 'center', marginTop: 20}}>
+              <Row style={{ alignItems: 'center', marginTop: 20 }}>
                 <Icon name="star" color={COLOR.third} size={12} solid />
-                <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
-                  {car.owner.rating}
+                <Text style={[CarCardItemStyles.ratingText, { marginLeft: 5 }]}>
+                  {car.User.rating}
                 </Text>
                 <Text
                   style={[
                     CarCardItemStyles.dot,
-                    {marginLeft: 5, marginRight: 5},
+                    { marginLeft: 5, marginRight: 5 },
                   ]}>
                   ·
                 </Text>
                 <Icon name="suitcase" color={COLOR.fifth} size={12} solid />
-                <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
+                <Text style={[CarCardItemStyles.ratingText, { marginLeft: 5 }]}>
                   {car.totalRide} chuyến
                 </Text>
               </Row>
@@ -341,8 +341,8 @@ const Confirm: React.FC<{
                 marginTop: 15,
               }}>
               <OwnerInfo
-                owner={car.owner}
-                rating={car.owner.rating}
+                owner={car.User}
+                rating={car.User.rating}
                 totalRide={car.totalRide}
               />
             </View>

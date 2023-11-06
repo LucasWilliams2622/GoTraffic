@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Modal,
+  ToastAndroid,
 } from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
 import {appStyle, windowHeight, windowWidth} from '../../../constants/AppStyle';
@@ -14,15 +15,56 @@ import FastImage from 'react-native-fast-image';
 import AppProfile from '../../../components/AppProfile';
 import {AppContext} from '../../../utils/AppContext';
 import AppButton from '../../../components/AppButton';
+import AxiosInstance from '../../../constants/AxiosInstance';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Profile = props => {
   const {navigation, route} = props;
-  const defaultName = 'Bảo';
-  const [name, setName] = useState(route.params?.newName || defaultName);
-  const {setIsLogin} = useContext(AppContext);
+  const {setIsLogin, infoUser, idUser} = useContext(AppContext);
+
+  const [name, setName] = useState(infoUser.name);
   const [isModalVisible, setModalVisible] = useState(false);
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
+  console.log(infoUser.avatar);
+
+  const toggleModal = async () => {
+    try {
+      const response = await AxiosInstance().delete(
+        '/user/api/delete?id=' + idUser,
+      );
+      if (response.result) {
+        setModalVisible(!isModalVisible);
+        await AsyncStorage.removeItem('userInfo');
+        setIsLogin(false);
+        ToastAndroid.show('Xóa tài khoản thành công', ToastAndroid.SHORT);
+      } else {
+        ToastAndroid.show('Đăng nhập thất bại', ToastAndroid.SHORT);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const LogOut = async () => {
+    try {
+      await AsyncStorage.removeItem('userInfo');
+      setIsLogin(false);
+      console.log('Thông tin người dùng đã được xóa thành công!');
+    } catch (error) {
+      console.log('Đã xảy ra lỗi khi xóa thông tin người dùng:', error);
+    }
+  };
+  const onDelete = async () => {
+    try {
+      const response = await AxiosInstance().delete('user/api/delete', {});
+      console.log(response);
+      if (response.result) {
+        setIsLogin(false);
+        ToastAndroid.show('Xóa tài khoản thành công', ToastAndroid.SHORT);
+      } else {
+        ToastAndroid.show('Xóa thất bại', ToastAndroid.SHORT);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -47,7 +89,11 @@ const Profile = props => {
         <View style={styles.headBg}>
           <View style={[appStyle.boxCenter, {marginTop: windowHeight * 0.12}]}>
             <FastImage
-              source={require('../../../assets/image/guide/img_friends.png')}
+              source={
+                infoUser.avatar
+                  ? {uri: infoUser.avatar}
+                  : require('../../../assets/image/logo_go_traffic.png')
+              }
               style={[appStyle.avatar]}></FastImage>
             <Text
               style={[
@@ -59,7 +105,7 @@ const Profile = props => {
           </View>
         </View>
 
-        <View style={[styles.viewGroup, {marginTop: windowHeight * 0.18}]}>
+        <View style={[styles.viewGroup, {marginTop: windowHeight * 0.12}]}>
           <AppProfile
             icon={ICON.Profile}
             text="Tài khoản của tôi"
@@ -71,15 +117,6 @@ const Profile = props => {
             text="Xe yêu thích"
             onPress={() => navigation.navigate('FavouriteCar')}
           />
-
-          {/* <AppProfile
-              icon={ICON.Trip}
-              text="Xe của tôi"
-              onPress={() => navigation.navigate('MyCar')} />
-            <AppProfile
-              icon={ICON.Trip}
-              text="Xe của tôi"
-              onPress={() => navigation.navigate('HomeCar')} />
 
           <AppProfile
             icon={ICON.Address}
@@ -102,11 +139,12 @@ const Profile = props => {
             onPress={() => navigation.navigate('ShareWithFriend')}
           />
 
-          {/* <AppProfile
+          <AppProfile
             icon={ICON.Trip}
             text="Xe của tôi"
             borderBottomWidth={0}
-            onPress={() => navigation.navigate('ListCar')} /> */}
+            onPress={() => navigation.navigate('HomeCar')}
+          />
         </View>
 
         <View style={[styles.viewGroup, {marginTop: 35}]}>
@@ -114,6 +152,11 @@ const Profile = props => {
             icon={ICON.Key}
             text="Đổi mật khẩu"
             onPress={() => navigation.navigate('ChangePassword')}
+          />
+          <AppProfile
+            icon={ICON.Key}
+            text="Thành công & Thát bại"
+            onPress={() => navigation.navigate('Test2')}
           />
 
           <AppProfile
@@ -126,7 +169,7 @@ const Profile = props => {
 
         <TouchableOpacity
           onPress={() => {
-            setIsLogin(false);
+            LogOut();
           }}>
           <View
             style={{flexDirection: 'row', alignSelf: 'center', marginTop: 20}}>
@@ -170,7 +213,9 @@ const Profile = props => {
           </Text>
 
           <AppButton title="Hủy" marginTop={50} onPress={() => toggleModal()} />
-          <Text style={[appStyle.text14Bold, {marginTop: 15}]}>Xác nhận</Text>
+          <TouchableOpacity onPress={() => onDelete()}>
+            <Text style={[appStyle.text14Bold, {marginTop: 15}]}>Xác nhận</Text>
+          </TouchableOpacity>
         </View>
       </Modal>
     </SafeAreaView>

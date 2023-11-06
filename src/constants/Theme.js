@@ -53,6 +53,7 @@ export const COLOR = {
   lightYellow: '#FFEEDB',
   lightGreen: '#D8F2E1',
   exit: '#F25F57',
+  warn: '#fce7e6'
 };
 
 export const ICON = {
@@ -95,4 +96,9 @@ export const ICON = {
   Picture: require('../assets/icon/ic_picture.png'),
   Star: require('../assets/icon/ic_star.png'),
   Calendar: require('../assets/icon/ic_calendar.png'),
+  Ban: require('../assets/icon/ic_ban.png'),
+
+  License: require('../assets/image/img_license.png'),
+  Poster: require('../assets/image/poster.jpg'),
+  Done: require('../assets/icon/ic_done.png'),
 };
