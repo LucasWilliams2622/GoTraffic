@@ -7,7 +7,6 @@ import {appStyle} from '../../constants/AppStyle';
 
 const ItemActiveTrip = props => {
   const {data} = props;
-  const {image, name, time, nameOfUser, phoneOfUser, timeStart, id} = data;
 
   return (
     <View>
@@ -23,16 +22,18 @@ const ItemActiveTrip = props => {
             resizeMode={'stretch'}
             source={require('../../assets/icon/ic_warning.png')}
           />
-          <Text style={[appStyle.text14, {marginLeft: 5}]}>Đang trong chuyến</Text>
+          <Text style={[appStyle.text14, {marginLeft: 5}]}>
+            Đang trong chuyến
+          </Text>
         </View>
-        <Text style={[appStyle.text14Bold]}>{time}</Text>
+        <Text style={[appStyle.text14Bold]}>{data.createdAt}</Text>
       </View>
       <TouchableOpacity style={styles.container}>
         <View style={[{alignSelf: 'flex-start'}]}>
           <FastImage
             style={styles.image}
             resizeMode={'stretch'}
-            source={image}
+            source={{uri: data.Car.imageThumbnail}}
           />
         </View>
         <View
@@ -47,11 +48,11 @@ const ItemActiveTrip = props => {
             />
             <Text style={[appStyle.text10, {marginLeft: 5}]}>Tự lái</Text>
           </View>
-          <Text style={[appStyle.text16Bold]}>{name}</Text>
+          {/* <Text style={[appStyle.text16Bold]}>{data.Car.name}</Text> */}
           <Text
             style={[appStyle.text16Bold, {width: 160, color: COLOR.orange}]}>
             <Text style={{color: COLOR.black}}>Tên người thuê: </Text>
-            {nameOfUser}
+            {/* {data.User.name} */}
           </Text>
           <Text
             style={{
@@ -61,10 +62,10 @@ const ItemActiveTrip = props => {
               marginTop: 10,
             }}>
             <Text style={{color: COLOR.black}}>SĐT: </Text>
-            {phoneOfUser}
+            {/* {data.User.phone} */}
           </Text>
           <Text style={[appStyle.text12, {marginTop: 5}]}>
-            📅 Bắt đầu: {timeStart}
+            📅 Bắt đầu: {data.timeStart}
           </Text>
         </View>
       </TouchableOpacity>

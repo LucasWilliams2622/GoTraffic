@@ -1,14 +1,52 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {appStyle} from '../../../constants/AppStyle';
 import {FlatList, ScrollView} from 'native-base';
 import {COLOR} from '../../../constants/Theme';
 import ItemTrip from '../../../components/Support/ItemTrip';
 import FastImage from 'react-native-fast-image';
+import AxiosInstance from '../../../constants/AxiosInstance';
+import ItemActiveTrip from '../../../components/Support/ItemActiveTrip';
 
 const Trip = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState('');
+  const [dataCurrent, setDataCurrent] = useState('');
+  const getCarByIdUser = async () => {
+    try {
+      const response = await AxiosInstance().get(
+        '/booking/api/get-list-complete?idOwner=1',
+      );
+      if (response.result) {
+        setData(response.booking);
+      } else {
+        console.log('Failed to get car complete');
+      }
+    } catch (error) {
+      console.log('=========>', error);
+    }
+  };
+  const getCarCurrentByIdUser = async () => {
+    try {
+      const response = await AxiosInstance().get(
+        'booking/api/get-list-current-booking-of-user?idUser=1',
+      );
+      if (response.result) {
+        console.log(response.booking);
+        setDataCurrent(response.booking);
+        setIsLoading(false);
+      } else {
+        console.log('Failed to get car complete');
+      }
+    } catch (error) {
+      console.log('=========>', error);
+    }
+  };
+  useEffect(() => {
+    getCarByIdUser();
+    getCarCurrentByIdUser();
+  }, []);
   return (
     <SafeAreaView style={appStyle.container}>
       <View style={styles.viewTitle}>
@@ -38,26 +76,19 @@ const Trip = () => {
             </Text>
           </View>
         ) : (
-          <View>
-            <FastImage
-              style={styles.imageInvisible}
-              resizeMode={'stretch'}
-              source={require('../../../assets/image/NoTrip.png')}
-            />
-            <Text
-              style={[
-                appStyle.text16,
-                {textAlign: 'center', marginBottom: 10, fontStyle: 'italic'},
-              ]}>
-              Hiện tại chưa trong chuyến
-            </Text>
-          </View>
+          <FlatList
+            style={{width: '100%', marginBottom: 65}}
+            data={dataCurrent}
+            renderItem={({item}) => <ItemActiveTrip data={item} />}
+            keyExtractor={item => item._id}
+            showsVerticalScrollIndicator={false}
+          />
         )}
 
         <Text style={styles.text1}>Đã thuê</Text>
         <FlatList
           style={{width: '100%', marginBottom: 65}}
-          data={DATA}
+          data={data}
           renderItem={({item}) => <ItemTrip data={item} />}
           keyExtractor={item => item._id}
           showsVerticalScrollIndicator={false}
@@ -73,7 +104,7 @@ const styles = StyleSheet.create({
   viewTitle: {
     flexDirection: 'row',
     justifyContent: 'center',
-    borderBottomWidth:0.5
+    borderBottomWidth: 0.5,
   },
   imageInvisible: {
     width: 192,

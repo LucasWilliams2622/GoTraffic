@@ -4,7 +4,7 @@ import FastImage from 'react-native-fast-image';
 import {COLOR} from '../../constants/Theme';
 import {Code} from 'native-base';
 import {appStyle} from '../../constants/AppStyle';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const ItemTrip = props => {
   const navigation = useNavigation();
@@ -26,19 +26,21 @@ const ItemTrip = props => {
           />
           <Text style={[appStyle.text14, {marginLeft: 5}]}>Hoàn thành</Text>
         </View>
-        <Text style={[appStyle.text14Bold]}>{time}</Text>
+        <Text style={[appStyle.text14Bold]}>{data.createdAt}</Text>
       </View>
-      <TouchableOpacity onPress={()=> navigation.navigate('RatingTrip')} style={styles.container}>
-        <View style={[{alignSelf: 'flex-start'}]}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('RatingTrip')}
+        style={styles.container}>
+        <View style={[{alignSelf: 'center',marginLeft:10}]}>
           <FastImage
             style={styles.image}
             resizeMode={'stretch'}
-            source={image}
+            source={{uri: data.Car.image}}
           />
         </View>
         <View
           style={{
-            justifyContent: 'space-between',
+            justifyContent: 'space-between',marginLeft:20
           }}>
           <View style={{flexDirection: 'row'}}>
             <FastImage
@@ -49,16 +51,22 @@ const ItemTrip = props => {
             <Text style={[appStyle.text10, {marginLeft: 5}]}>Tự lái</Text>
           </View>
           <View style={styles.line}></View>
-          <Text style={[appStyle.text16Bold]}>{name}</Text>
+          <Text style={[appStyle.text16Bold]}>{data.Car.name}</Text>
           <Text style={[appStyle.text12, {marginTop: 5}]}>
-            📅 Bắt đầu: {timeStart}
+            📅 Bắt đầu: {data.timeFrom}
           </Text>
           <Text style={[appStyle.text12, {marginTop: 5}]}>
-            📅 Kết thúc: {timeEnd}{' '}
+            📅 Kết thúc: {data.timeTo}{' '}
           </Text>
-          <Text style={{color: '#219EBC', fontWeight: '700', fontSize: 16,marginTop:10}}>
+          <Text
+            style={{
+              color: '#219EBC',
+              fontWeight: '700',
+              fontSize: 16,
+              marginTop: 10,
+            }}>
             <Text style={{color: COLOR.black}}>Tổng giá tiền : </Text>
-            {price}
+            {data.totalMoney}
           </Text>
         </View>
       </TouchableOpacity>

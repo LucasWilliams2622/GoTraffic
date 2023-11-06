@@ -7,7 +7,6 @@ import {appStyle} from '../../constants/AppStyle';
 
 const ItemConfirmTrip = props => {
   const {data} = props;
-  const {image, name, time, nameOfUser, phoneOfUser, id} = data;
 
   return (
     <View>
@@ -25,14 +24,14 @@ const ItemConfirmTrip = props => {
           />
           <Text style={[appStyle.text14, {marginLeft: 5}]}>Đang chờ duyệt</Text>
         </View>
-        <Text style={[appStyle.text14Bold]}>{time}</Text>
+        <Text style={[appStyle.text14Bold]}>{data.createdAt}</Text>
       </View>
       <TouchableOpacity style={styles.container}>
         <View style={[{alignSelf: 'center'}]}>
           <FastImage
             style={styles.image}
             resizeMode={'stretch'}
-            source={image}
+            source={{uri: data.Car.image}}
           />
         </View>
         <View
@@ -47,12 +46,12 @@ const ItemConfirmTrip = props => {
             />
             <Text style={[appStyle.text10, {marginLeft: 5}]}>Tự lái</Text>
           </View>
-          <Text style={[appStyle.text16Bold]}>{name}</Text>
+          <Text style={[appStyle.text16Bold]}>{data.Car.name}</Text>
           <Text
             style={[appStyle.text16Bold, {width: 150, color: COLOR.orange}]}
             numberOfLines={2}>
             <Text style={{color: COLOR.black}}>Tên người thuê: </Text>
-            {nameOfUser}
+            {data.User.firstName}
           </Text>
           <Text
             style={{
@@ -62,7 +61,7 @@ const ItemConfirmTrip = props => {
               marginTop: 10,
             }}>
             <Text style={{color: COLOR.black}}>SĐT: </Text>
-            {phoneOfUser}
+            {data.User.phone}
           </Text>
           <View
             style={{
@@ -70,7 +69,7 @@ const ItemConfirmTrip = props => {
               justifyContent: 'space-between',
               marginTop: 20,
             }}>
-            <TouchableOpacity >
+            <TouchableOpacity>
               <Text style={[appStyle.text14, {color: COLOR.red}]}>Hủy</Text>
             </TouchableOpacity>
             <View
