@@ -47,7 +47,7 @@ const TitleWithQuestion: React.FC<{
   );
 };
 
-const SectionWithModal: React.FC<{
+export const SectionWithModal: React.FC<{
   title: string;
   style?: StyleProp<ViewStyle | TextStyle | ImageStyle>;
   Modal?: any;
@@ -72,35 +72,44 @@ const SectionWithModal: React.FC<{
   );
 };
 
+export const Documents: React.FC = () => (
+  <View>
+    <TitleWithQuestion title="Giấy tờ thuê xe" Modal={IDModal} />
+    <Text style={{marginTop: 15, marginBottom: 15, fontWeight: 'bold'}}>
+      Chọn 1 trong 2 hình thức
+    </Text>
+    <View>
+      <Row style={{alignItems: 'center'}}>
+        <Icon name="id-card" size={20} style={{marginRight: 10, margin: 5}} />
+        <Text>GPLX & CCCD gắn chip (đối chiếu)</Text>
+      </Row>
+      <Row style={{alignItems: 'center'}}>
+        <Icon name="passport" size={20} style={{marginRight: 10, margin: 5}} />
+        <Text>GPLX (đối chiếu) & Passport (giữ lại)</Text>
+      </Row>
+    </View>
+  </View>
+);
+
+export const Collateral: React.FC = () => (
+  <View>
+    <TitleWithQuestion title="Tài sản thế chấp" Modal={CollateralModal} />
+    <Text style={{marginTop: 15}}>Miễn thế chấp</Text>
+  </View>
+);
+
 const OtherDetails: React.FC = () => {
   const [isShowMore, setShowMore] = React.useState<boolean>(false);
 
   return (
     <View>
-      <TitleWithQuestion title="Giấy tờ thuê xe" Modal={IDModal} />
-      <Text style={{marginTop: 15, marginBottom: 15, fontWeight: 'bold'}}>
-        Chọn 1 trong 2 hình thức
-      </Text>
-      <View>
-        <Row style={{alignItems: 'center'}}>
-          <Icon name="id-card" size={20} style={{marginRight: 10, margin: 5}} />
-          <Text>GPLX & CCCD gắn chip (đối chiếu)</Text>
-        </Row>
-        <Row style={{alignItems: 'center'}}>
-          <Icon
-            name="passport"
-            size={20}
-            style={{marginRight: 10, margin: 5}}
-          />
-          <Text>GPLX (đối chiếu) & Passport (giữ lại)</Text>
-        </Row>
-      </View>
+      <Documents />
+
       <View
         style={[CarCardItemStyles.separator, {marginTop: 20, marginBottom: 20}]}
       />
 
-      <TitleWithQuestion title="Tài sản thế chấp" Modal={CollateralModal} />
-      <Text style={{marginTop: 15}}>Miễn thế chấp</Text>
+      <Collateral />
       <View
         style={[CarCardItemStyles.separator, {marginTop: 20, marginBottom: 20}]}
       />

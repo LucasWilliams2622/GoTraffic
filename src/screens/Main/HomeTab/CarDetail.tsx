@@ -43,6 +43,7 @@ import {calculateAvgRating, formatPrice} from '../../../utils/utils';
 import OtherDetails from '../../../components/Home/Detail/OtherDetails';
 import Confirm from './Confirm';
 import Modal from 'react-native-modal';
+import TimePickingModal from './TimePickingModal';
 
 Geocoder.init(REACT_APP_GOOGLE_MAPS_API_KEY || '');
 
@@ -67,7 +68,12 @@ const PressableIconCarDetail = ({
   </Pressable>
 );
 
-const BottomBar: React.FC<{price: number; car: Car}> = ({price, car}) => {
+const BottomBar: React.FC<{
+  price: number;
+  car: Car;
+  dateStart: Date;
+  dateEnd: Date;
+}> = ({price, car, dateStart, dateEnd}) => {
   const formattedPrice = useMemo(() => formatPrice(price), [price]);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   return (
@@ -94,7 +100,12 @@ const BottomBar: React.FC<{price: number; car: Car}> = ({price, car}) => {
           </Pressable>
         </View>
         <Modal isVisible={isModalVisible} style={{margin: 0}}>
-          <Confirm closeModal={() => setIsModalVisible(false)} car={car} />
+          <Confirm
+            closeModal={() => setIsModalVisible(false)}
+            car={car}
+            dateStart={dateStart}
+            dateEnd={dateEnd}
+          />
         </Modal>
         <Pressable
           style={{backgroundColor: COLOR.fifth, padding: 10, borderRadius: 8}}
@@ -117,6 +128,9 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
   );
   const [isRatingModalVisible, setRatingModalVisible] =
     useState<boolean>(false);
+
+  const [dateStart, setDateStart] = useState<Date>(new Date());
+  const [dateEnd, setDateEnd] = useState<Date>(new Date());
 
   const toggleModal = () => {
     setRatingModalVisible(!isRatingModalVisible);
@@ -288,7 +302,7 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
               </Text>
             </Row>
 
-            <TimeAndPlacePickup location={car.location} />
+            <TimeAndPlacePickup {...car} />
 
             <View>
               <SectionTitle title="Đặc điểm" style={{marginTop: 10}} />
@@ -361,7 +375,12 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
           />
         </ScrollView>
         <StickyHeader name={car.title} />
-        <BottomBar price={car.price} car={car} />
+        <BottomBar
+          price={car.price}
+          car={car}
+          dateStart={dateStart}
+          dateEnd={dateEnd}
+        />
       </View>
     );
   }
