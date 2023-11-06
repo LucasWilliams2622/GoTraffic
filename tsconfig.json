@@ -3,6 +3,6 @@
       "jsx": "react",
       "esModuleInterop": true
   },
-  "include": ["./**/*.ts", "./**/*.tsx", "./**/*.d.ts"],
+  "include": ["./**/*.ts", "./**/*.tsx", "./**/*.d.ts", "src/screens/Main/ProfileTab/FavouriteCar.js"],
   "extends": "@tsconfig/react-native/tsconfig.json",
 }
