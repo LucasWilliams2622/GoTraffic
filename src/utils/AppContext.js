@@ -25,14 +25,17 @@ export const AppContextProvider = props => {
       if (userInfoString !== null) {
         const userInfo = JSON.parse(userInfoString);
         setIdUser(userInfo.id);
+        setInfoUser(userInfo)
+
       }
-      const response = await AxiosInstance().get(
-        '/user/api/get-by-id?id=' + idUser, {
-      })
-      if (response.result) {
-        setInfoUser(response.user)
-        console.log(response.user);
-      }
+
+      // const response = await AxiosInstance().get(
+      //   '/user/api/get-by-id?id=' + idUser, {
+      // })
+      // if (response.result) {
+      //   setInfoUser(response.user)
+      //   // console.log(response.user);
+      // }
     } catch (error) {
       console.log(error);
     }
