@@ -138,7 +138,6 @@ const Register = props => {
                 <View style={styles.viewItem}>
                   <Text style={styles.text2}>Email</Text>
                   <AppInput
-                    keyboardType={'phone-pad'}
                     returnKeyType={'next'}
                     placeholder={'Nhập email cua ban'}
                     // onChangeText={handleChange('phoneNumber')}
@@ -191,6 +190,7 @@ const Register = props => {
                 color={COLOR.secondary}
                 fontSize={18}
                 onPress={onRegister}
+                marginBottom={20}
               />
             </View>
           )}
