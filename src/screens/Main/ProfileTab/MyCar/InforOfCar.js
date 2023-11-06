@@ -2,6 +2,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -22,6 +23,7 @@ import AppDropdown from '../../../../components/AppDropdown';
 import AppButton from '../../../../components/AppButton';
 import ItemFeature from '../../../../components/Profile/ItemFeature';
 import {features} from '../../../../components/Profile/data/DataCar';
+import AxiosInstance from '../../../../constants/AxiosInstance';
 
 const InforOfCar = props => {
   const {navigation, route} = props;
@@ -43,6 +45,7 @@ const InforOfCar = props => {
   const [location, setLocation] = useState(null);
   const {data} = props.route.params;
   useEffect(() => {
+    console.log(data.id);
     setCarNumber(data.numberPlate);
     setLocation(data.address);
     setDescription(data.description);
@@ -122,12 +125,38 @@ const InforOfCar = props => {
     }
   }, [selectedDistrict]);
 
+  const handleUpdateCar = async () => {
+    try {
+      console.log(selectedFeatures.toString());
+      const response = await AxiosInstance().put(
+        '/car/api/update-info-car?idCar=' + data.id,
+        {
+          numberPlate: carNumber,
+          locationCar: location,
+          description: description,
+          utilities: selectedFeatures.toString(),
+        },
+      );
+      if (response.result) {
+        ToastAndroid.show(
+          'Cập nhật thông tin xe thành công',
+          ToastAndroid.SHORT,
+        );
+        navigation.navigate('ListCar', {data: data});
+      } else {
+        ToastAndroid.show('Cập nhật thông tin xe thất bại', ToastAndroid.SHORT);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <SafeAreaView style={appStyle.container}>
       <Header
         icon={ICON.Back}
         text="Thông tin xe"
-        onPress={() => navigation.navigate('GeneralInformation', {data: data})}
+        onPress={() => navigation.goBack('GeneralInformation', {data: data})}
       />
       <ScrollView style={appStyle.main}>
         <View style={[appStyle.cardInfo, {marginTop: 10}]}>
@@ -267,7 +296,7 @@ const InforOfCar = props => {
         <AppButton
           title="Cập nhật"
           marginBottom={70}
-          onPress={() => handleUpdate()}
+          onPress={() => handleUpdateCar()}
         />
       </ScrollView>
     </SafeAreaView>

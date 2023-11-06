@@ -25,21 +25,6 @@ const ListCar = props => {
   const [carData, setCarData] = useState([]);
   const {setIsLogin, infoUser, idUser} = useContext(AppContext);
 
-  // const addCar = () => {
-  //     if (updatedCarInfo) {
-  //       const { carInfo, price,provinces,wards } = updatedCarInfo;
-  //       const newCar = {
-  //         selectedModel: carInfo.selectedModel,
-  //         selectedBrand: carInfo.selectedBrand,
-  //         selectedYear: carInfo.selectedYear,
-  //         price: price,
-  //         provinces: provinces,
-  //         wards: wards,
-  //       };
-  //       setCarData((prevCarData) => [...prevCarData, newCar]);
-  //       navigation.navigate('BasicInfor')
-  //     }
-  //   };
   const getCarByIdUser = async () => {
     try {
       const response = await AxiosInstance().get(
@@ -54,13 +39,10 @@ const ListCar = props => {
       console.log('=========>', error);
     }
   };
+  
   useEffect(() => {
     getCarByIdUser();
-    const updatedCarInfo = updatedCarInfo || [];
-    if (updatedCarInfo.length > 0) {
-      setCarData([...carData, ...updatedCarInfo]);
-    }
-  }, [props.route.params]);
+  }, [carData]);
 
   return (
     <SafeAreaView style={appStyle.container}>
