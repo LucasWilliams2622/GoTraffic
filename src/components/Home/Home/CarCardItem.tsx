@@ -31,6 +31,7 @@ const CarCardItem = ({
   price,
   rating,
   numberOfBooked,
+  width= 330,
   onPress,
 }: CarCardItemProps) => {
   const [isFavorite, setIsFavorite] = React.useState<boolean>(false);
@@ -46,7 +47,7 @@ const CarCardItem = ({
     [originalPrice, price],
   );
   return (
-    <Pressable style={CarCardItemStyles.container} onPress={onPress}>
+    <Pressable style={[CarCardItemStyles.container,{width:width}]} onPress={onPress}>
       {/* <FastImage source={{uri: image}} style={CarCardItemStyles.image} /> */}
       <FastImage source={{uri: imageThumbnail}} style={CarCardItemStyles.image} />
 
@@ -141,7 +142,6 @@ export const CarCardItemStyles = StyleSheet.create({
   container: {
     marginRight: 10,
     borderRadius: 20,
-    width: 330,
     borderWidth: 0.5,
     borderColor: '#ddd',
     padding: 10,
