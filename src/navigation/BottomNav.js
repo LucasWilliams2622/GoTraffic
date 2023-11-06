@@ -21,7 +21,6 @@ import Account from '../screens/Main/ProfileTab/Account/Account';
 import Register from '../screens/Begin/Register';
 import Verified from '../screens/Begin/Verified';
 import MyCard from '../screens/Main/ProfileTab/Payment/MyCard';
-import TimePicking from '../screens/Main/HomeTab/TimePicking';
 import LocationPicking from '../screens/Main/HomeTab/LocationPicking';
 import NewCard from '../screens/Main/ProfileTab/Payment/NewCard';
 import CarDetail from '../screens/Main/HomeTab/CarDetail';
@@ -46,6 +45,10 @@ import BasicInfor from '../screens/Main/ProfileTab/Car/BasicInfor';
 import DetailsInfor from '../screens/Main/ProfileTab/Car/DetailsInfor';
 import ListCar from '../screens/Main/ProfileTab/Car/ListCar';
 import MyCar from '../screens/Main/ProfileTab/MyCar';
+import VerifyLicense from '../screens/Main/ProfileTab/Account/VerifyLicense';
+import ListCarCity from '../components/Home/Home/ListCarCity';
+import Test2 from '../test/Test2';
+import RatingTrip from '../screens/Main/TripTab/RatingTrip'
 
 
 const Tab = createBottomTabNavigator();
@@ -79,15 +82,16 @@ const StackHome = () => {
         }}
       />
       <Stack.Screen
-        name="TimePicking"
-        component={TimePicking}
-        options={{animationEnabled: true, animation: 'slide_from_bottom'}}
-      />
-      <Stack.Screen
         name="CarDetail"
         component={CarDetail}
         options={{animationEnabled: true, animation: 'slide_from_bottom'}}
       />
+        <Stack.Screen
+        name="ListCarCity"
+        component={ListCarCity}
+        options={{animationEnabled: true, animation: 'slide_from_bottom'}}
+      />
+      
     </Stack.Navigator>
   );
 };
@@ -107,6 +111,8 @@ const StackTrip = () => {
       initialRouteName="Trip"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="Trip" component={Trip} />
+      <Stack.Screen name="RatingTrip" component={RatingTrip} />
+
     </Stack.Navigator>
   );
 };
@@ -152,6 +158,9 @@ const StackProfile = () => {
       <Stack.Screen name="LeaseCar" component={LeaseCar}/>
       <Stack.Screen name="SampleContract" component={SampleContract}/>
       <Stack.Screen name="HandOverReport" component={HandOverReport}/>
+      <Stack.Screen name="VerifyLicense" component={VerifyLicense}/>
+      <Stack.Screen name="Test2" component={Test2}/>
+
 
 
 

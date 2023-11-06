@@ -4,37 +4,72 @@ import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {appStyle} from '../../../constants/AppStyle';
 import {COLOR} from '../../../constants/Theme';
 import {currentDateString, returnDateString} from '../../../utils/utils';
-import {TimeAndPlacePickupProps} from '../../../types';
+import {Car} from '../../../types';
+import TimePickingModal from '../../../screens/Main/HomeTab/TimePickingModal';
+import ReactNativeModal from 'react-native-modal';
 
-export const TimeAndPlacePickup = ({location}: TimeAndPlacePickupProps) => {
+export const TimeAndPlacePickup = ({
+  car,
+  selectedTime,
+  setSelectedTime,
+}: {
+  car: Car;
+  selectedTime: {
+    startTime: string;
+    endTime: string;
+    startDate: string;
+    endDate: string;
+  };
+  setSelectedTime: any;
+}) => {
   const [receiveCarLocation, setReceiveCarLocation] =
     useState<string>('atCarLocation');
+  const [isModalVisible, setModalVisible] = useState<boolean>(false);
   return (
     <View>
       <View style={styles.timeAndPlacePickupContainer}>
         <Text style={[appStyle.text16Bold, {marginBottom: 10}]}>
           Thời gian thuê xe
         </Text>
-        <Pressable style={styles.timeAndPlacePickupPressable}>
+        <View style={styles.timeAndPlacePickupPressable}>
           <Row style={{justifyContent: 'space-evenly'}}>
             <View>
               <Text style={{color: COLOR.borderColor, marginBottom: 5}}>
                 Nhận xe
               </Text>
-              <Text style={{fontSize: 13.5, fontWeight: 'bold'}}>
-                {currentDateString}
-              </Text>
+              <Pressable onPress={() => setModalVisible(true)}>
+                <Text style={{fontSize: 13.5, fontWeight: 'bold'}}>
+                  {selectedTime.startTime === '' && selectedTime.endTime === ''
+                    ? currentDateString
+                    : `${selectedTime.startTime}, ${selectedTime.startDate}`}
+                </Text>
+              </Pressable>
             </View>
             <View>
               <Text style={{color: COLOR.borderColor, marginBottom: 5}}>
                 Trả xe
               </Text>
-              <Text style={{fontSize: 13.5, fontWeight: 'bold'}}>
-                {returnDateString}
-              </Text>
+              <Pressable>
+                <Text style={{fontSize: 13.5, fontWeight: 'bold'}}>
+                  {selectedTime.startTime === '' && selectedTime.endTime === ''
+                    ? returnDateString
+                    : `${selectedTime.endTime}, ${selectedTime.endDate}`}
+                </Text>
+              </Pressable>
             </View>
           </Row>
-        </Pressable>
+        </View>
+        <ReactNativeModal
+          isVisible={isModalVisible}
+          style={{margin: 0}}
+          onBackdropPress={() => setModalVisible(!isModalVisible)}>
+          <TimePickingModal
+            price={car.price}
+            toggle={() => setModalVisible(!isModalVisible)}
+            setSelectedTime={setSelectedTime}
+          />
+        </ReactNativeModal>
+
         <Text style={[appStyle.text16Bold, {marginTop: 15, marginBottom: 10}]}>
           Địa điểm giao nhận xe
         </Text>
@@ -72,7 +107,7 @@ export const TimeAndPlacePickup = ({location}: TimeAndPlacePickupProps) => {
                   </Text>
                 </Row>
                 <Text style={[appStyle.text14Bold, {marginTop: 10}]}>
-                  {location}
+                  {car.location}
                 </Text>
                 <Text style={{color: COLOR.placeholder, marginTop: 10}}>
                   Địa chỉ xe cụ thể sẽ được hiển thị sau khi đặt cọc thành công

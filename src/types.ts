@@ -1,3 +1,4 @@
+import {DayProps} from 'react-native-calendars/src/calendar/day';
 import {SvgProps} from 'react-native-svg';
 
 export type CarDetailProps = {
@@ -174,15 +175,17 @@ export interface RadioButtonProps {
 
 export interface CarCardItemProps {
   id: number;
-  title: string;
+  name: string;
   image: string;
-  location: string;
-  benefit?: string;
-  type: string;
+  imageThumbnail: string;
+  locationCar: string;
+  isDelivery?: string;
+  gear: string;
   originalPrice?: number;
   price: number;
   rating: number;
-  totalRide: number;
+  numberOfBooked: number;
+  width?: any;
   onPress: () => void;
 }
 
@@ -199,6 +202,12 @@ export interface FeaturedLocationFrameProps extends SvgProps {
 
 export interface PromotionProps {
   image: string;
+  width: number;
+  height: number;
+}
+
+export interface BenefitProps {
+  image?: any;
   width: number;
   height: number;
 }
@@ -227,3 +236,19 @@ export type StackScreenParamList = {
   Home: undefined;
   CarDetail: {car_id: number; navigation: any};
 };
+
+export type DateRange = {
+  startDate: string;
+  endDate: string;
+};
+
+export type MarkedDate = {
+  startingDay?: boolean;
+  endingDay?: boolean;
+  color: string;
+  textColor: string;
+};
+
+export interface ExtendedDayProps extends DayProps {
+  price: number;
+}

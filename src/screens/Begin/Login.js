@@ -25,7 +25,6 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import auth from '@react-native-firebase/auth';
 import AxiosInstance from '../../constants/AxiosInstance';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
@@ -172,7 +171,7 @@ const Login = props => {
       const userInfo = await AsyncStorage.getItem('userInfo');
       if (userInfo !== null) {
         const parsedUserInfo = JSON.parse(userInfo);
-        setIdUser(parsedUserInfo._id);
+        setIdUser(parsedUserInfo.id);
         setInfoUser(parsedUserInfo);
         setIsLogin(true);
         console.log('Thông tin đăng nhập đã tồn tại:', parsedUserInfo);
@@ -184,6 +183,12 @@ const Login = props => {
     }
   };
 
+  useEffect(() => {
+    
+    checkLoginInfo()
+   
+  }, [idUser])
+  
   return (
     <SafeAreaView style={appStyle.container}>
       <View style={[appStyle.main, {justifyContent: 'space-evenly'}]}>

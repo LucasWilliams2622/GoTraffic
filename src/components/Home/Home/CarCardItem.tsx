@@ -21,15 +21,17 @@ import {
 import {CarCardItemProps} from '../../../types';
 
 const CarCardItem = ({
-  title,
+  name,
   image,
-  location,
-  type,
-  benefit,
+  imageThumbnail,
+  locationCar,
+  gear,
+  isDelivery,
   originalPrice,
   price,
   rating,
-  totalRide,
+  numberOfBooked,
+  width= 330,
   onPress,
 }: CarCardItemProps) => {
   const [isFavorite, setIsFavorite] = React.useState<boolean>(false);
@@ -44,10 +46,11 @@ const CarCardItem = ({
     () => calculateDiscount(originalPrice ?? 0, price),
     [originalPrice, price],
   );
-
   return (
-    <Pressable style={CarCardItemStyles.container} onPress={onPress}>
-      <FastImage source={{uri: image}} style={CarCardItemStyles.image} />
+    <Pressable style={[CarCardItemStyles.container,{width:width}]} onPress={onPress}>
+      {/* <FastImage source={{uri: image}} style={CarCardItemStyles.image} /> */}
+      <FastImage source={{uri: imageThumbnail}} style={CarCardItemStyles.image} />
+
       {originalPrice && (
         <View style={CarCardItemStyles.discount}>
           <Text style={[appStyle.text10, {color: COLOR.white, padding: 10}]}>
@@ -68,26 +71,26 @@ const CarCardItem = ({
 
       <Row style={CarCardItemStyles.row}>
         <View style={CarCardItemStyles.typeView}>
-          <Text style={appStyle.text12}>{type}</Text>
+          <Text style={appStyle.text12}>{gear}</Text>
         </View>
 
-        {benefit && (
+        {isDelivery && (
           <View style={CarCardItemStyles.benefitView}>
-            <Text style={appStyle.text12}>{benefit}</Text>
+            <Text style={appStyle.text12}>Giao xe tận nơi</Text>
           </View>
         )}
       </Row>
 
       <Row style={CarCardItemStyles.row}>
-        <Text style={[appStyle.text16Bold, CarCardItemStyles.title]}>
-          {title.toUpperCase()}
+        <Text style={[appStyle.text16Bold, CarCardItemStyles.title, {}]}>
+          {name}
         </Text>
         <ShieldIcon color={COLOR.fifth} />
       </Row>
 
       <Row style={CarCardItemStyles.locationRow}>
         <Icon name="location-dot" color={COLOR.borderColor} size={15} />
-        <Text style={CarCardItemStyles.locationText}>{location}</Text>
+        <Text style={CarCardItemStyles.locationText}>{locationCar}</Text>
       </Row>
 
       <View style={CarCardItemStyles.separator} />
@@ -96,7 +99,7 @@ const CarCardItem = ({
         <Row style={{alignItems: 'center'}}>
           <Icon name="star" color={COLOR.third} size={12} solid />
           <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
-            {rating}
+            {rating?.toFixed(1)}
           </Text>
           <Text
             style={[CarCardItemStyles.dot, {marginLeft: 5, marginRight: 5}]}>
@@ -104,7 +107,7 @@ const CarCardItem = ({
           </Text>
           <SuitcaseIcon color={COLOR.fifth} />
           <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
-            {totalRide} chuyến
+            {numberOfBooked} chuyến
           </Text>
         </Row>
 
@@ -139,7 +142,6 @@ export const CarCardItemStyles = StyleSheet.create({
   container: {
     marginRight: 10,
     borderRadius: 20,
-    width: 330,
     borderWidth: 0.5,
     borderColor: '#ddd',
     padding: 10,

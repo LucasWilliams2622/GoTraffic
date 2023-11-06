@@ -22,9 +22,10 @@ const Profile = props => {
   const {navigation, route} = props;
   const {setIsLogin, infoUser, idUser} = useContext(AppContext);
 
-  const defaultName = infoUser.name;
-  const [name, setName] = useState(route.params?.newName || defaultName);
+  const [name, setName] = useState(infoUser.name);
   const [isModalVisible, setModalVisible] = useState(false);
+  console.log(infoUser.avatar);
+
   const toggleModal = async () => {
     try {
       const response = await AxiosInstance().delete(
@@ -88,7 +89,11 @@ const Profile = props => {
         <View style={styles.headBg}>
           <View style={[appStyle.boxCenter, {marginTop: windowHeight * 0.12}]}>
             <FastImage
-              source={require('../../../assets/image/guide/img_friends.png')}
+              source={
+                infoUser.avatar
+                  ? {uri: infoUser.avatar}
+                  : require('../../../assets/image/logo_go_traffic.png')
+              }
               style={[appStyle.avatar]}></FastImage>
             <Text
               style={[
@@ -100,7 +105,7 @@ const Profile = props => {
           </View>
         </View>
 
-        <View style={[styles.viewGroup, {marginTop: windowHeight * 0.18}]}>
+        <View style={[styles.viewGroup, {marginTop: windowHeight * 0.12}]}>
           <AppProfile
             icon={ICON.Profile}
             text="Tài khoản của tôi"
@@ -147,6 +152,11 @@ const Profile = props => {
             icon={ICON.Key}
             text="Đổi mật khẩu"
             onPress={() => navigation.navigate('ChangePassword')}
+          />
+          <AppProfile
+            icon={ICON.Key}
+            text="Thành công & Thát bại"
+            onPress={() => navigation.navigate('Test2')}
           />
 
           <AppProfile

@@ -6,7 +6,7 @@ import {
   FlatList,
   Dimensions,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import {COLOR} from '../../../constants/Theme';
 import {appStyle} from '../../../constants/AppStyle';
@@ -32,6 +32,10 @@ import {
 } from '../../../types';
 import Modal from 'react-native-modal';
 import CarDetail from './CarDetail';
+import {AppContext} from '../../../utils/AppContext';
+import FastImage from 'react-native-fast-image';
+import BenefitHome from '../../../components/Home/Home/Benefit';
+import AxiosInstance from '../../../constants/AxiosInstance';
 
 const RenderList: React.FC<RenderListProps<any>> = ({
   data,
@@ -82,22 +86,51 @@ const Home: React.FC = () => {
     setModalVisible(true);
   };
 
+  // =================| Get List |====================
+  const {infoUser, idUser} = useContext(AppContext);
+  const [listCar, setListCar] = useState([]);
+  const getAllCar = async () => {
+    try {
+      const response = await AxiosInstance().get('/car/api/list');
+      if (response.result) {
+        setListCar(response.listCar)
+        console.log(response.listCar);
+        
+      } else {
+        console.log('Error');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    getAllCar();
+  }, []);
+
   return (
     <ScrollView style={[appStyle.container]}>
       <View style={[styles.headBg]}>
         <Row style={styles.nameAndPointWrapper}>
           <Column style={[styles.iconBG, styles.iconMarginRight]}>
-            <Icon name="user" color={COLOR.forth} size={23}></Icon>
+            <FastImage
+              style={{width: 40, height: 40, borderRadius: 99}}
+              source={
+                infoUser?.avatar
+                  ? {uri: infoUser.avatar}
+                  : require('../../../assets/image/logo_go_traffic.png')
+              }
+            />
           </Column>
           <Column>
-            <Text style={appStyle.text16Bold}>Lê Hoàng Gia Khánh</Text>
+            <Text style={appStyle.text16Bold}>{infoUser.name}</Text>
             <Row style={{alignItems: 'center'}}>
               <Icon
                 name="star"
                 color={COLOR.third}
                 solid
                 style={{marginRight: 5}}></Icon>
-              <Text style={appStyle.text12Bold}>Điểm thưởng</Text>
+              <Text style={appStyle.text12Bold}>{infoUser.point}</Text>
             </Row>
           </Column>
         </Row>
@@ -115,7 +148,7 @@ const Home: React.FC = () => {
 
       <Section
         title="Xe dành cho bạn"
-        data={carData}
+        data={listCar}
         renderItem={({item}) => (
           <CarCardItem {...item} onPress={() => handleCarPress(item.id)} />
         )}
@@ -138,7 +171,7 @@ const Home: React.FC = () => {
 
       <Section
         title="Xe đã xem"
-        data={carData}
+        data={listCar}
         renderItem={({item}) => (
           <CarCardItem
             {...item}
@@ -159,7 +192,6 @@ const Home: React.FC = () => {
         renderItem={({item}) => <FeaturedLocation {...item} />}
         snapToInterval={224}
       />
-
       <Section
         title="Đón xe sân bay"
         data={AirportData}
@@ -171,7 +203,7 @@ const Home: React.FC = () => {
         title="Ưu điểm của Go Traffic"
         data={benefitData}
         renderItem={({item}) => (
-          <Promotion image={item.image} width={345} height={130} />
+          <BenefitHome image={item.image} width={345} height={130} />
         )}
         snapToInterval={365}
       />

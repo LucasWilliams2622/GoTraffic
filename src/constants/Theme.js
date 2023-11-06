@@ -1,6 +1,7 @@
 export const COLOR = {
   primary: '#41cff2',
   secondary: '#8ECAE6',
+  secondary50: '#8ECAE650',
   third: '#FFB703',
   forth: '#023047',
   fifth: '#219EBC',
@@ -52,6 +53,7 @@ export const COLOR = {
   lightYellow: '#FFEEDB',
   lightGreen: '#D8F2E1',
   exit: '#F25F57',
+  warn: '#fce7e6'
 };
 
 export const ICON = {
@@ -93,6 +95,11 @@ export const ICON = {
   DropDown: require('../assets/icon/ic_down.png'),
   Picture: require('../assets/icon/ic_picture.png'),
   Star: require('../assets/icon/ic_star.png'),
+  UnStar: require('../assets/icon/icon-unstar.png'),
   Calendar: require('../assets/icon/ic_calendar.png'),
-  Lease1: require('../assets/image/lease1.jpg'),
+  Ban: require('../assets/icon/ic_ban.png'),
+
+  License: require('../assets/image/img_license.png'),
+  Poster: require('../assets/image/poster.jpg'),
+  Done: require('../assets/icon/ic_done.png'),
 };
