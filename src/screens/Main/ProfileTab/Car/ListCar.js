@@ -25,8 +25,6 @@ const ListCar = props => {
   const [carData, setCarData] = useState([]);
   const {setIsLogin, infoUser, idUser} = useContext(AppContext);
 
-  console.log('ListCar info ====', updatedCarInfo);
-
   // const addCar = () => {
   //     if (updatedCarInfo) {
   //       const { carInfo, price,provinces,wards } = updatedCarInfo;
@@ -45,10 +43,9 @@ const ListCar = props => {
   const getCarByIdUser = async () => {
     try {
       const response = await AxiosInstance().get(
-        '/car/api/list-by-id-user?idUser='+idUser
+        '/car/api/list-by-id-user?idUser=1',
       );
       if (response.result) {
-        console.log(response.listCar);
         setCarData(response.listCar);
       } else {
         console.log('Failed to get car');
