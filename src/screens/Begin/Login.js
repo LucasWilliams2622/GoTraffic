@@ -28,6 +28,7 @@ import {
 import auth from '@react-native-firebase/auth';
 import AxiosInstance from '../../constants/AxiosInstance';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
 
 const Login = props => {
   const {isLogin, setIsLogin, setInfoUser, setIdUser, idUser} =
@@ -94,7 +95,14 @@ const Login = props => {
         setInfoUser(response.user);
         saveLoginInfo(response.user);
         setIsLogin(true);
-        ToastAndroid.show('Ðăng nhập thành công', ToastAndroid.SHORT);
+        Toast.show({
+          type: 'success',
+          text1: 'Ðăng nhập thành công !',
+          visibilityTime: 2000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+        });
       } else {
         ToastAndroid.show('Đăng nhập thất bại', ToastAndroid.SHORT);
       }

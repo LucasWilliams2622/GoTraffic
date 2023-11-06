@@ -25,8 +25,22 @@ const Profile = props => {
   const defaultName = infoUser.name;
   const [name, setName] = useState(route.params?.newName || defaultName);
   const [isModalVisible, setModalVisible] = useState(false);
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
+  const toggleModal = async () => {
+    try {
+      const response = await AxiosInstance().delete(
+        '/user/api/delete?id=' + idUser,
+      );
+      if (response.result) {
+        setModalVisible(!isModalVisible);
+        await AsyncStorage.removeItem('userInfo');
+        setIsLogin(false);
+        ToastAndroid.show('Xóa tài khoản thành công', ToastAndroid.SHORT);
+      } else {
+        ToastAndroid.show('Đăng nhập thất bại', ToastAndroid.SHORT);
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
   const LogOut = async () => {
     try {

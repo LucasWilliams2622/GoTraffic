@@ -1,5 +1,5 @@
 import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, PermissionsAndroid, Modal } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { appStyle, windowHeight } from '../../../../constants/AppStyle'
 import { COLOR, ICON } from '../../../../constants/Theme'
 import FastImage from 'react-native-fast-image'
@@ -10,16 +10,59 @@ import Header from '../../../../components/Header'
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { AppContext } from '../../../../utils/AppContext'
+import AxiosInstance from '../../../../constants/AxiosInstance'
+import { useNavigation } from '@react-navigation/native';
+import Toast from 'react-native-toast-message'
 
 const UpdateProfile = (props) => {
-    const { navigation } = props;
-    const [image, setImage] = useState(null);
+    const navigation = useNavigation();
     const [imageLoaded, setImageLoaded] = useState(false)
     const [isModalVisible, setModalVisible] = useState(false);
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
-
+    const { setIsLogin, infoUser, idUser } = useContext(AppContext);
+    const [image, setImage] = useState(null);
+    const [name, setName] = useState(infoUser.name)
+    const [dob, setdob] = useState(infoUser.dob)
+    const handleUpdate = async () => {
+        try {
+            const response = await AxiosInstance().put(
+                '/user/api/update?id=' + idUser, {
+                name: name,
+                firstName: "",
+                lastName: "",
+                email: infoUser.email,
+                gender: "string",
+                dob: dob,
+                avatar: image
+            }
+            );
+            if (response.result) {
+                Toast.show({
+                    type: 'success',
+                    text1: 'Cập nhật thành công',
+                    visibilityTime: 2000,
+                    autoHide: true,
+                    topOffset: 30,
+                    bottomOffset: 40,
+                });
+                navigation.goBack();
+            } else {
+                Toast.show({
+                    type: 'error',
+                    text1: 'Cập nhật thất bại',
+                    visibilityTime: 2000,
+                    autoHide: true,
+                    topOffset: 30,
+                    bottomOffset: 40,
+                });
+            }
+        } catch (e) {
+            console.log('error', e)
+        }
+    }
 
     const requestCameraPermission = async () => {
         try {
@@ -34,9 +77,37 @@ const UpdateProfile = (props) => {
                 }
             );
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                console.log("Camera permission given");
                 const result = await launchCamera();
-                console.log(result.assets[0].uri);
+                const formData = new FormData();
+                formData.append('image', {
+                    uri: result.assets[0].uri,
+                    type: 'icon/icon_jpeg',
+                    name: 'image.jpg',
+                });
+
+                const response = await AxiosInstance("multipart/form-data").post('/car/api/upload-single-image', formData);
+                console.log(response.link);
+                if (response.result == true) {
+                    setImage(response.link);
+                    Toast.show({
+                        type: 'success',
+                        text1: 'Upload ảnh thành công',
+                        visibilityTime: 2000,
+                        autoHide: true,
+                        topOffset: 30,
+                        bottomOffset: 40,
+                    });
+                }
+                else {
+                    Toast.show({
+                        type: 'error',
+                        text1: 'Upload ảnh thất bại',
+                        visibilityTime: 2000,
+                        autoHide: true,
+                        topOffset: 30,
+                        bottomOffset: 40,
+                    });
+                }
                 setImage(result.assets[0].uri);
                 toggleModal();
 
@@ -93,7 +164,7 @@ const UpdateProfile = (props) => {
             <View style={{ width: '100%', padding: 15 }}>
                 {/* Avatar */}
                 {image ? (
-                    <FastImage source={{ uri: image }} style={[appStyle.avatar, { marginTop: 20 }]} />
+                    <FastImage source={{ uri: image }} style={[appStyle.avatar, { marginTop: 20 }]} resizeMode='stretch' />
                 ) : (
                     <FastImage source={require('../../../../assets/image/guide/img_friends.png')} style={[appStyle.avatar, { marginTop: 20 }]} />
                 )}
@@ -146,16 +217,9 @@ const UpdateProfile = (props) => {
                             AccountSchema.validate(values)
                                 .then(valid => {
                                     if (valid) {
-                                        // Dữ liệu hợp lệ, thực hiện cập nhật và chuyển đến trang Account
-                                        navigation.navigate('Account', {
-                                            newName: values.name,
-                                            newDOB: values.dob,
-                                            newSex: values.sex,
-                                        });
-                                        console.log("Lưu thành công");
-                                        console.log(values.name);
-                                        console.log(values.dob);
-                                        console.log(values.sex);
+                                        setName(values.name)
+                                        setdob(values.dob)
+                                        handleUpdate()
                                     } else {
                                         console.log("Dữ liệu không hợp lệ");
                                     }
