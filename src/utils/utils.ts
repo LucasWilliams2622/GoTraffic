@@ -1,4 +1,5 @@
 export const formatPrice = (price: number) => {
+  price = Math.round(price);
   const formattedNum =
     Math.abs(price) >= 1000
       ? Math.sign(price) * Number((Math.abs(price) / 1000).toFixed(0))
@@ -9,6 +10,11 @@ export const formatPrice = (price: number) => {
     .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
   return addComma + 'K';
+};
+
+export const formatPriceWithUnit = (price: number) => {
+  price = Math.round(price);
+  return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + 'đ';
 };
 
 export const getTotalPrice = (price: number) => {

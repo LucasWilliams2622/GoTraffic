@@ -22,7 +22,10 @@ const Cell: React.FC<{
   </View>
 );
 
-export const CancelModal: React.FC = ({isModalVisible, toggle}: any) => {
+export const CancelModal: React.FC<{isModalVisible: boolean; toggle: any}> = ({
+  isModalVisible,
+  toggle,
+}) => {
   const [contentHeight, setContentHeight] = useState(0);
 
   const onContentLayout = (event: any) => {

@@ -21,7 +21,6 @@ import Account from '../screens/Main/ProfileTab/Account/Account';
 import Register from '../screens/Begin/Register';
 import Verified from '../screens/Begin/Verified';
 import MyCard from '../screens/Main/ProfileTab/Payment/MyCard';
-import TimePicking from '../screens/Main/HomeTab/TimePicking';
 import LocationPicking from '../screens/Main/HomeTab/LocationPicking';
 import NewCard from '../screens/Main/ProfileTab/Payment/NewCard';
 import CarDetail from '../screens/Main/HomeTab/CarDetail';
@@ -39,12 +38,9 @@ import InforOfCar from '../screens/Main/ProfileTab/MyCar/InforOfCar';
 import ExhibitOfCar from '../screens/Main/ProfileTab/MyCar/ExhibitOfCar';
 import MyWallet from '../screens/Main/ProfileTab/MyCar/MyWallet';
 
-
 import BasicInfor from '../screens/Main/ProfileTab/Car/BasicInfor';
 import DetailsInfor from '../screens/Main/ProfileTab/Car/DetailsInfor';
-import MyCar from '../screens/Main/ProfileTab/MyCar'
-
-
+import MyCar from '../screens/Main/ProfileTab/MyCar';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -75,11 +71,6 @@ const StackHome = () => {
           animationEnabled: true,
           animation: 'slide_from_bottom',
         }}
-      />
-      <Stack.Screen
-        name="TimePicking"
-        component={TimePicking}
-        options={{animationEnabled: true, animation: 'slide_from_bottom'}}
       />
       <Stack.Screen
         name="CarDetail"
@@ -233,7 +224,7 @@ const BottomTabNav = () => {
   // console.log("isLogin Bottom Tabs=================>", isLogin);
   // console.log("infoUser Bottom Tabs=========>", infoUser);
   // return <>{isLogin == false ? <StackBegin /> : <Main />}</>;
-  return  <Main/>;
+  return <Main />;
 };
 //ADMIN
 export default BottomTabNav;
