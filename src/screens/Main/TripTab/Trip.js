@@ -1,14 +1,54 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {appStyle} from '../../../constants/AppStyle';
 import {FlatList, ScrollView} from 'native-base';
 import {COLOR} from '../../../constants/Theme';
 import ItemTrip from '../../../components/Support/ItemTrip';
 import FastImage from 'react-native-fast-image';
+import AxiosInstance from '../../../constants/AxiosInstance';
+import {AppContext} from '../../../utils/AppContext';
 
 const Trip = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const {infoUser, idUser} = useContext(AppContext);
+  const [listBooked, setListBooking] = useState([]);
+  const [listBookingCurrent, setListBookingCurrent] = useState([]);
+
+  const getListBookingCurrent = async () => {
+    try {
+      const response = await AxiosInstance().get(
+        '/booking/api/get-list-current-booking-of-user?idUser=' + idUser,
+      );
+      if (response.result) {
+        setListBookingCurrent(response.booking);
+        // console.log("-----------------------?",response.booking);
+
+      } else {
+        console.log('NETWORK ERROR');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const getListBooked = async () => {
+    try {
+      const response = await AxiosInstance().get(
+        '/booking/api/get-history-by-id-user?idUser=' + idUser,
+      );
+      if (response.result) {
+        setListBooking(response.booking);
+      } else {
+        console.log('NETWORK ERROR');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  useEffect(() => {
+    getListBookingCurrent();
+    getListBooked();
+  }, []);
+
   return (
     <SafeAreaView style={appStyle.container}>
       <View style={styles.viewTitle}>
@@ -22,45 +62,56 @@ const Trip = () => {
 
       <ScrollView style={appStyle.main}>
         <Text style={styles.text1}>Hiện tại</Text>
-        {isLoading ? (
-          <View>
-            <FastImage
-              style={styles.imageInvisible}
-              resizeMode={'stretch'}
-              source={require('../../../assets/image/NoTrip.png')}
-            />
-            <Text
-              style={[
-                appStyle.text16,
-                {textAlign: 'center', marginBottom: 10, fontStyle: 'italic'},
-              ]}>
-              Hiện tại chưa trong chuyến
-            </Text>
-          </View>
-        ) : (
-          <View>
-            <FastImage
-              style={styles.imageInvisible}
-              resizeMode={'stretch'}
-              source={require('../../../assets/image/NoTrip.png')}
-            />
-            <Text
-              style={[
-                appStyle.text16,
-                {textAlign: 'center', marginBottom: 10, fontStyle: 'italic'},
-              ]}>
-              Hiện tại chưa trong chuyến
-            </Text>
-          </View>
-        )}
+
+        <FlatList
+          style={{width: '100%', marginBottom: 65}}
+          data={listBookingCurrent}
+          shouldRasterizeIOS
+          showsHorizontalScrollIndicator={false}
+          renderItem={({item}) => <ItemTrip data={item} car={listBookingCurrent} />}
+          keyExtractor={item => item.id}
+          ListEmptyComponent={
+            <View>
+              <FastImage
+                style={styles.imageInvisible}
+                resizeMode={'stretch'}
+                source={require('../../../assets/image/NoTrip.png')}
+              />
+              <Text
+                style={[
+                  appStyle.text16,
+                  {textAlign: 'center', marginBottom: 10, fontStyle: 'italic'},
+                ]}>
+                Hiện tại chưa trong chuyến
+              </Text>
+            </View>
+          }
+          showsVerticalScrollIndicator={false}
+        />
 
         <Text style={styles.text1}>Đã thuê</Text>
         <FlatList
           style={{width: '100%', marginBottom: 65}}
-          data={DATA}
+          data={listBooked}
           renderItem={({item}) => <ItemTrip data={item} />}
-          keyExtractor={item => item._id}
+          keyExtractor={item => item.id}
           showsVerticalScrollIndicator={false}
+          ListEmptyComponent={
+            <View>
+              <FastImage
+                style={styles.imageInvisible}
+                resizeMode={'stretch'}
+                source={require('../../../assets/image/NoTrip.png')}
+              />
+              <Text
+                style={[
+                  appStyle.text16,
+                  {textAlign: 'center', marginBottom: 10, fontStyle: 'italic'},
+                ]}>
+               Bạn chưa có lịch sử chuyến
+              </Text>
+            </View>
+          }
         />
       </ScrollView>
     </SafeAreaView>
@@ -73,7 +124,7 @@ const styles = StyleSheet.create({
   viewTitle: {
     flexDirection: 'row',
     justifyContent: 'center',
-    borderBottomWidth:0.5
+    borderBottomWidth: 0.5,
   },
   imageInvisible: {
     width: 192,
