@@ -22,20 +22,20 @@ const UpdateProfile = (props) => {
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
-    const { setIsLogin, infoUser, idUser } = useContext(AppContext);
-    const [image, setImage] = useState(null);
+    const { setIsLogin, infoUser, idUser, currentDay, appState, setAppState } = useContext(AppContext);
+    const [image, setImage] = useState(infoUser.avatar);
     const [name, setName] = useState(infoUser.name)
     const [dob, setdob] = useState(infoUser.dob)
     const handleUpdate = async () => {
         try {
             const response = await AxiosInstance().put(
-                '/user/api/update?id=' + idUser, {
+                '/user/api/update?idUser=' + idUser, {
                 name: name,
                 firstName: "",
                 lastName: "",
                 email: infoUser.email,
-                gender: "string",
-                dob: dob,
+                gender: true,
+                dob: currentDay,
                 avatar: image
             }
             );
@@ -48,6 +48,7 @@ const UpdateProfile = (props) => {
                     topOffset: 30,
                     bottomOffset: 40,
                 });
+                setAppState(appState + 1)
                 navigation.goBack();
             } else {
                 Toast.show({
@@ -108,7 +109,7 @@ const UpdateProfile = (props) => {
                         bottomOffset: 40,
                     });
                 }
-                setImage(result.assets[0].uri);
+                // setImage(result.assets[0].uri);
                 toggleModal();
 
             } else {
@@ -163,11 +164,11 @@ const UpdateProfile = (props) => {
             />
             <View style={{ width: '100%', padding: 15 }}>
                 {/* Avatar */}
-                {image ? (
+                {/* {image !=null ? (
                     <FastImage source={{ uri: image }} style={[appStyle.avatar, { marginTop: 20 }]} resizeMode='stretch' />
                 ) : (
                     <FastImage source={require('../../../../assets/image/guide/img_friends.png')} style={[appStyle.avatar, { marginTop: 20 }]} />
-                )}
+                )} */}
 
                 {/* Capture image */}
                 <TouchableOpacity
@@ -206,9 +207,9 @@ const UpdateProfile = (props) => {
                 <KeyboardAwareScrollView behavior='padding'>
                     <Formik
                         initialValues={{
-                            name: 'Bảo',
-                            dob: '11/01/1992',
-                            sex: 'Nữ',
+                            name: infoUser.name,
+                            dob: currentDay.slice(0, 10),
+                            sex: infoUser.gender ? "Nam" : 'Nữ',
                         }}
                         validationSchema={AccountSchema}
                         onSubmit={(values, { setSubmitting }) => {

@@ -1,24 +1,26 @@
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { COLOR, ICON } from '../../../../constants/Theme';
 import FastImage from 'react-native-fast-image';
 import { appStyle, windowHeight, windowWidth } from '../../../../constants/AppStyle';
+import { useNavigation } from '@react-navigation/native';
+import { AppContext } from '../../../../utils/AppContext';
 
 const Account = (props) => {
-  const { navigation, route } = props;
+  const navigation = useNavigation();
+  const { route } = props;
 
-  const defaultName = "Bảo";
-  const defaultDob = "01/01/1992";
-  const defaultSex = "Nữ";
+  const { setIsLogin, infoUser, idUser } = useContext(AppContext);
+
+  const defaultName = infoUser.name;
+  const defaultDob = infoUser.createdAt.slice(0,10);
+  const defaultSex = infoUser.gender ? "Nam" : "Nữ";
 
   const [name, setName] = useState(route.params?.newName || defaultName);
   const [dob, setDob] = useState(route.params?.newDOB || defaultDob);
   const [sex, setSex] = useState(route.params?.newSex || defaultSex);
 
-  // const updateNewName = (newName) => {
-  //   setName(newName); // Cập nhật giá trị name trong trang "Account"
-  //   navigation.setParams({ newName }); // Cập nhật newName trên trang "Profile"
-  // };
+
 
   useEffect(() => {
     if (route.params?.newName) {
@@ -57,7 +59,7 @@ const Account = (props) => {
           <Text style={[appStyle.text12]}>
             Tham gia: 11/09/2023</Text>
         </View>
-        
+
         <View style={styles.viewEdit}>
           <View style={styles.viewText}>
             <Text style={appStyle.text14}>Ngày sinh</Text>
@@ -70,7 +72,8 @@ const Account = (props) => {
         </View>
 
         {/* Giấy phép lái xe */}
-        <View style={[styles.viewItem, {borderTopWidth: 2, borderTopColor: '#efefef', marginTop: 12}]}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('VerifyLicense')}style={[styles.viewItem, {borderTopWidth: 2, borderTopColor: '#efefef', marginTop: 12}]}>
           <View style={styles.viewChild}>
             <Text style={appStyle.text14}>Giấy phép lái xe</Text>
             <View style={styles.alert}>
@@ -86,7 +89,7 @@ const Account = (props) => {
               style={[appStyle.iconSmall, { marginTop: 3 }]}
               source={ICON.Next} />
           </View>
-        </View>
+        </TouchableOpacity>
 
         {/* Số điện thoại */}
         <View style={styles.viewItem}>

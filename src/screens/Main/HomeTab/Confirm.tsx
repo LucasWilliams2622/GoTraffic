@@ -7,30 +7,32 @@ import {
   ScrollView,
 } from 'react-native';
 import React from 'react';
-import {COLOR} from '../../../constants/Theme';
+import { COLOR } from '../../../constants/Theme';
 import Icon from 'react-native-vector-icons/FontAwesome6';
-import {Car} from '../../../types';
-import {Row} from 'native-base';
+import { Car } from '../../../types';
+import { Row } from 'native-base';
 import FastImage from 'react-native-fast-image';
-import {CarCardItemStyles} from '../../../components/Home/Home/CarCardItem';
+import { CarCardItemStyles } from '../../../components/Home/Home/CarCardItem';
 
-const Confirm: React.FC<{closeModal: any; car: Car}> = ({closeModal, car}) => {
+
+const Confirm: React.FC<{ closeModal: any; car: Car }> = ({ closeModal, car }) => {
+
   return (
-    <View style={{backgroundColor: COLOR.white, flex: 1}}>
+    <View style={{ backgroundColor: COLOR.white, flex: 1 }}>
       <SafeAreaView>
-        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
           <Pressable
             onPress={closeModal}
-            style={[styles.closeBtn, {position: 'absolute', left: 20}]}>
+            style={[styles.closeBtn, { position: 'absolute', left: 20 }]}>
             <Icon name="x" size={20} color={COLOR.black} />
           </Pressable>
-          <Text style={{fontSize: 22}}>Xác nhận đặt xe</Text>
+          <Text style={{ fontSize: 22 }}>Xác nhận đặt xe</Text>
         </View>
-        <ScrollView style={{paddingHorizontal: 15, marginTop: 10}}>
+        <ScrollView style={{ paddingHorizontal: 15, marginTop: 10 }}>
           <Row>
             <FastImage
-              source={{uri: car.images[0]}}
-              style={{height: 100, width: 150, borderRadius: 10}}
+              source={{ uri: car.images[0] }}
+              style={{ height: 100, width: 150, borderRadius: 10 }}
             />
             <View
               style={{
@@ -40,7 +42,7 @@ const Confirm: React.FC<{closeModal: any; car: Car}> = ({closeModal, car}) => {
                 justifyContent: 'space-between',
               }}>
               <View>
-                <Text style={{fontSize: 18}}>{car.title.toUpperCase()}</Text>
+                <Text style={{ fontSize: 18 }}>{car.title.toUpperCase()}</Text>
                 <Text
                   style={{
                     fontSize: 12,
@@ -51,20 +53,20 @@ const Confirm: React.FC<{closeModal: any; car: Car}> = ({closeModal, car}) => {
                 </Text>
               </View>
 
-              <Row style={{alignItems: 'center', marginTop: 20}}>
+              <Row style={{ alignItems: 'center', marginTop: 20 }}>
                 <Icon name="star" color={COLOR.third} size={12} solid />
-                <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
+                <Text style={[CarCardItemStyles.ratingText, { marginLeft: 5 }]}>
                   {car.owner.rating}
                 </Text>
                 <Text
                   style={[
                     CarCardItemStyles.dot,
-                    {marginLeft: 5, marginRight: 5},
+                    { marginLeft: 5, marginRight: 5 },
                   ]}>
                   ·
                 </Text>
                 <Icon name="suitcase" color={COLOR.fifth} size={12} solid />
-                <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
+                <Text style={[CarCardItemStyles.ratingText, { marginLeft: 5 }]}>
                   {car.totalRide} chuyến
                 </Text>
               </Row>

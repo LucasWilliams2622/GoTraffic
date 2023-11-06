@@ -174,15 +174,16 @@ export interface RadioButtonProps {
 
 export interface CarCardItemProps {
   id: number;
-  title: string;
+  name: string;
   image: string;
-  location: string;
-  benefit?: string;
-  type: string;
+  imageThumbnail: string;
+  locationCar: string;
+  isDelivery?: string;
+  gear: string;
   originalPrice?: number;
   price: number;
   rating: number;
-  totalRide: number;
+  numberOfBooked: number;
   onPress: () => void;
 }
 
@@ -199,6 +200,12 @@ export interface FeaturedLocationFrameProps extends SvgProps {
 
 export interface PromotionProps {
   image: string;
+  width: number;
+  height: number;
+}
+
+export interface BenefitProps {
+  image?: any;
   width: number;
   height: number;
 }

@@ -18,23 +18,28 @@ import {AmenitiesIconMapping} from '../../../../types';
 export const promotionData = [
   {
     id: 1,
-    image: 'https://i.imgur.com/UYiroysl.jpg',
+    image:
+      'https://vinfast-auto-vn.net/wp-content/uploads/2021/10/bang-gia-xe-o-to-vinfast.jpg',
   },
   {
     id: 2,
-    image: 'https://i.imgur.com/UPrs1EWl.jpg',
+    image:
+      'https://khuyenmaimitsu.com/domains/khuyenmaimitsu.com/files/KM%20THANG%2010/km_t10_optimized.jpg',
   },
   {
     id: 3,
-    image: 'https://i.imgur.com/MABUbpDl.jpg',
+    image:
+      'https://xevietanh.com/userfiles/images/thue-xe-du-lich-cao-cap-2.jpg',
   },
   {
     id: 4,
-    image: 'https://i.imgur.com/KZsmUi2l.jpg',
+    image:
+      'https://hyundaibinhthuan.vn/wp-content/uploads/2020/07/Banner-1200x628-V2.jpg',
   },
   {
     id: 5,
-    image: 'https://i.imgur.com/2nCt3Sbl.jpg',
+    image:
+      'https://vinfastotomiennam.com/uploads/details/2021/07/images/162192596_1459086867775421_8609258786462168109_n.jpg',
   },
 ];
 
@@ -80,52 +85,52 @@ export const featuredLocationData = [
   {
     id: 1,
     title: 'Sài Gòn',
-    image: 'https://i.imgur.com/UYiroysl.jpg',
+    image:
+      'https://statics.vinpearl.com/dac-san-sai-gon-lam-qua-0_1624720587.jpg',
     totalCar: 3250,
   },
   {
     id: 2,
     title: 'Hà Nội',
-    image: 'https://i.imgur.com/UPrs1EWl.jpg',
+    image: 'https://ehgtravel.com/wp-content/uploads/2018/04/hn01.jpg',
     totalCar: 1432,
   },
   {
     id: 3,
     title: 'Đà Nẵng',
-    image: 'https://i.imgur.com/MABUbpDl.jpg',
+    image:
+      'https://besthuecitytour.com/wp-content/uploads/2020/09/Things-To-Do-In-Da-Nang-Best-Hue-City-Tour-Travel-1.jpg',
     totalCar: 865,
   },
   {
     id: 4,
     title: 'Nha Trang',
-    image: 'https://i.imgur.com/KZsmUi2l.jpg',
+    image:
+      'http://2.bp.blogspot.com/-RtdRxLjbXyI/UmC4h1obXXI/AAAAAAAABMs/xSatQKeqhfo/s1600/vietnam+travel+-+nha+trang+3.jpg',
     totalCar: 721,
   },
   {
     id: 5,
     title: 'Hải Phòng',
-    image: 'https://i.imgur.com/2nCt3Sbl.jpg',
+    image:
+      'http://vemaybayphonglantourist.com/upload/news/hp-01-1492068307-3027.jpg',
     totalCar: 598,
   },
 ];
 
 export const AirportData = [
   {
-    id: 1,
-    title: 'Tân Sơn Nhất',
-    image: 'https://i.imgur.com/UYiroysl.jpg',
-    totalCar: 3250,
-  },
-  {
     id: 2,
     title: 'Nội Bài',
-    image: 'https://i.imgur.com/UPrs1EWl.jpg',
+    image:
+      'https://cdn.vntrip.vn/cam-nang/wp-content/uploads/2020/07/san-bay-noi-bai1.jpg',
     totalCar: 1432,
   },
   {
     id: 3,
     title: 'Đà Nẵng',
-    image: 'https://i.imgur.com/MABUbpDl.jpg',
+    image:
+      'https://media.doisongphapluat.com/thumb_x600x600/2018/09/29/san_bay_da_nang_nguoi_dua_tin.jpg',
     totalCar: 865,
   },
   {
@@ -145,23 +150,19 @@ export const AirportData = [
 export const benefitData = [
   {
     id: 1,
-    image: 'https://i.imgur.com/2nCt3Sbl.jpg',
+    image: require('../../../../assets/image/benefit1.jpg'),
   },
   {
     id: 2,
-    image: 'https://i.imgur.com/2nCt3Sbl.jpg',
+    image: require('../../../../assets/image/benefit2.jpg'),
   },
   {
     id: 3,
-    image: 'https://i.imgur.com/2nCt3Sbl.jpg',
+    image: require('../../../../assets/image/benefit3.jpg'),
   },
   {
     id: 4,
-    image: 'https://i.imgur.com/2nCt3Sbl.jpg',
-  },
-  {
-    id: 5,
-    image: 'https://i.imgur.com/2nCt3Sbl.jpg',
+    image: require('../../../../assets/image/benefit4.jpg'),
   },
 ];
 
