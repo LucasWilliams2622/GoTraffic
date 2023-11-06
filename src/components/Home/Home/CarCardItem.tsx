@@ -19,6 +19,9 @@ import {
   calculateDiscount,
 } from '../../../utils/utils';
 import {CarCardItemProps} from '../../../types';
+import AxiosInstance from '../../../constants/AxiosInstance';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const CarCardItem = ({
   name,
@@ -35,6 +38,9 @@ const CarCardItem = ({
 }: CarCardItemProps) => {
   const [isFavorite, setIsFavorite] = React.useState<boolean>(false);
 
+  const addFavorite = ()=>{
+
+  }
   const formattedPrice = useMemo(() => formatPrice(price), [price]);
   const formattedOriginalPrice = useMemo(
     () => formatPrice(originalPrice ?? 0),
