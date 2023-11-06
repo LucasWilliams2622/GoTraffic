@@ -1,6 +1,7 @@
 export const COLOR = {
   primary: '#41cff2',
   secondary: '#8ECAE6',
+  secondary50: '#8ECAE650',
   third: '#FFB703',
   forth: '#023047',
   fifth: '#219EBC',

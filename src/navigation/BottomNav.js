@@ -21,7 +21,6 @@ import Account from '../screens/Main/ProfileTab/Account/Account';
 import Register from '../screens/Begin/Register';
 import Verified from '../screens/Begin/Verified';
 import MyCard from '../screens/Main/ProfileTab/Payment/MyCard';
-import TimePicking from '../screens/Main/HomeTab/TimePicking';
 import LocationPicking from '../screens/Main/HomeTab/LocationPicking';
 import NewCard from '../screens/Main/ProfileTab/Payment/NewCard';
 import CarDetail from '../screens/Main/HomeTab/CarDetail';
@@ -80,11 +79,6 @@ const StackHome = () => {
           animationEnabled: true,
           animation: 'slide_from_bottom',
         }}
-      />
-      <Stack.Screen
-        name="TimePicking"
-        component={TimePicking}
-        options={{animationEnabled: true, animation: 'slide_from_bottom'}}
       />
       <Stack.Screen
         name="CarDetail"

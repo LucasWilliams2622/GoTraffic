@@ -1,3 +1,4 @@
+import {DayProps} from 'react-native-calendars/src/calendar/day';
 import {SvgProps} from 'react-native-svg';
 
 export type CarDetailProps = {
@@ -234,3 +235,19 @@ export type StackScreenParamList = {
   Home: undefined;
   CarDetail: {car_id: number; navigation: any};
 };
+
+export type DateRange = {
+  startDate: string;
+  endDate: string;
+};
+
+export type MarkedDate = {
+  startingDay?: boolean;
+  endingDay?: boolean;
+  color: string;
+  textColor: string;
+};
+
+export interface ExtendedDayProps extends DayProps {
+  price: number;
+}
