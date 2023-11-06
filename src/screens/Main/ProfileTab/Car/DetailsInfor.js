@@ -266,7 +266,7 @@ const DetailsInfor = props => {
         name: cardInfo.carInfo.selectedModel,
         yearOfManufacture: cardInfo.carInfo.selectedYear,
         seats: cardInfo.carInfo.selectedSeats,
-        gear: cardInfo.carInfo.selectedBrand,
+        gear: cardInfo.carInfo.selectedTransmission,
         fuel: cardInfo.carInfo.selectedFuel,
         locationCar: location,
         latitude: 0,
