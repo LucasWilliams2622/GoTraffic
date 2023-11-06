@@ -5,19 +5,24 @@ import {
   View,
   SafeAreaView,
   useWindowDimensions,
+  ToastAndroid,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import FastImage from 'react-native-fast-image';
-import { appStyle } from '../../../../constants/AppStyle';
-import { COLOR, ICON } from '../../../../constants/Theme';
+import {appStyle} from '../../../../constants/AppStyle';
+import {COLOR, ICON} from '../../../../constants/Theme';
 import AppProfile from '../../../../components/AppProfile';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import AppInput from '../../../../components/AppInput';
 import Modal from 'react-native-modal';
+import {useNavigation} from '@react-navigation/native';
+import AxiosInstance from '../../../../constants/AxiosInstance';
 
 const DetailInListCar = props => {
-  const {navigation} = props;
+  const navigation = useNavigation();
+  const {id} = props.route.params;
+  const [data, setData] = useState('');
   const goBack = () => {
     navigation.goBack('Profile');
   };
@@ -49,6 +54,43 @@ const DetailInListCar = props => {
       />
     </View>
   );
+  //api getDetail
+  const getDetailCarByIdUser = async () => {
+    try {
+      const response = await AxiosInstance().get(
+        '/car/api/get-by-id-car?idCar=' + id,
+      );
+      if (response.result) {
+        console.log(response.car);
+        setData(response.car);
+      } else {
+        console.log('Failed to get car');
+      }
+    } catch (error) {
+      console.log('=========>', error);
+    }
+  };
+  // api delete car
+  const deleteCarById = async () => {
+    try {
+      const response = await AxiosInstance().delete(
+        '/car/api/delete?idCar=' + id,
+      );
+      if (response.result) {
+        ToastAndroid.show('Xóa xe thành công', ToastAndroid.SHORT);
+        goBack();
+      } else {
+        ToastAndroid.show('Xóa xe thất bại', ToastAndroid.SHORT);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    console.log(id);
+    getDetailCarByIdUser();
+  }, []);
 
   const SecondRoute = () => (
     <View
@@ -100,15 +142,15 @@ const DetailInListCar = props => {
   });
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    { key: 'first', title: 'XE TỰ LÁI' },
-    { key: 'second', title: 'XE CÓ TÀI XẾ' },
+    {key: 'first', title: 'XE TỰ LÁI'},
+    {key: 'second', title: 'XE CÓ TÀI XẾ'},
   ]);
   const renderTabBar = props => (
     <TabBar
       {...props}
-      indicatorStyle={{ backgroundColor: COLOR.primary }}
-      style={{ backgroundColor: COLOR.white }}
-      labelStyle={{ color: COLOR.black }}
+      indicatorStyle={{backgroundColor: COLOR.primary}}
+      style={{backgroundColor: COLOR.white}}
+      labelStyle={{color: COLOR.black}}
     />
   );
   const [modalVisible, setModalVisible] = useState(false);
@@ -120,7 +162,11 @@ const DetailInListCar = props => {
           <View style={styles.modalView}>
             <Text style={appStyle.text16Bold}>Xác nhận xóa xe</Text>
             <View
-              style={{flexDirection: 'row', justifyContent: 'space-between',marginTop:20}}>
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginTop: 20,
+              }}>
               <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
                 <Text style={[appStyle.text14, {color: COLOR.red}]}>Hủy</Text>
               </TouchableOpacity>
@@ -131,7 +177,7 @@ const DetailInListCar = props => {
                   backgroundColor: COLOR.borderColor2,
                 }}
               />
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => deleteCarById()}>
                 <Text style={[appStyle.text14, {color: COLOR.green}]}>
                   Đồng ý
                 </Text>
@@ -169,36 +215,35 @@ const DetailInListCar = props => {
         source={require('../../../../assets/image/bg2.jpg')}
       />
       <View style={styles.viewTitle}>
-        <Text style={styles.title}>FORD ESCAPE 2023</Text>
+        <Text style={styles.title}>{data.name}</Text>
       </View>
-      <View style={{ padding: 14 }}>
+      <View style={{padding: 14}}>
         <View style={styles.line1}>
-          <FastImage
-            style={styles.imageCar}
-            source={require('../../../../assets/image/logo-fb.png')}></FastImage>
-          <View style={{ marginLeft: 10 }}>
-            <Text style={[appStyle.text16Bold]}>FORD ESCAPE 2023</Text>
-            <TouchableOpacity onPress={()=> 
-            //  onPress={goInfor}
-              navigation.navigate('GeneralInformation')}>
+          <FastImage style={styles.imageCar} source={data.image}></FastImage>
+          <View style={{marginLeft: 10}}>
+            <Text style={[appStyle.text16Bold]}>{data.name}</Text>
+            <TouchableOpacity
+              onPress={() =>
+                //  onPress={goInfor}
+                navigation.navigate('GeneralInformation', {data: data})
+              }>
               <Text
                 style={[
                   appStyle.text14Bold,
-                  { marginTop: 10, color: COLOR.primary },
+                  {marginTop: 10, color: COLOR.primary},
                 ]}>
                 Thông tin chung {'>'}{' '}
               </Text>
             </TouchableOpacity>
-
           </View>
         </View>
       </View>
       <TabView
-        navigationState={{ index, routes }}
+        navigationState={{index, routes}}
         renderTabBar={renderTabBar}
         renderScene={renderScene}
         onIndexChange={setIndex}
-        initialLayout={{ width: layout.width }}
+        initialLayout={{width: layout.width}}
       />
     </SafeAreaView>
   );

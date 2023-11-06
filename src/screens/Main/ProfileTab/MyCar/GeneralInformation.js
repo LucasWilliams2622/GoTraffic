@@ -1,16 +1,19 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React from 'react';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import FastImage from 'react-native-fast-image';
-import { appStyle } from '../../../../constants/AppStyle';
-import { COLOR, ICON } from '../../../../constants/Theme';
+import {appStyle} from '../../../../constants/AppStyle';
+import {COLOR, ICON} from '../../../../constants/Theme';
 import AppProfile from '../../../../components/AppProfile';
+import {useNavigation} from '@react-navigation/native';
 
-const GeneralInformation = (props) => {
-    const {navigation} = props;
-    const goBack = () => {
-      navigation.goBack('DetailInListCar');
-    };
+const GeneralInformation = props => {
+  const navigation = useNavigation();
+
+  const {data} = props.route.params;
+  const goBack = () => {
+    navigation.goBack('DetailInListCar');
+  };
   return (
     <SafeAreaView style={appStyle.container}>
       <View style={styles.viewTitle}>
@@ -30,7 +33,7 @@ const GeneralInformation = (props) => {
         <AppProfile
           icon={ICON.Warning}
           text="Thông tin xe"
-          onPress={() => navigation.navigate('InforOfCar')}
+          onPress={() => navigation.navigate('InforOfCar', {data: data})}
         />
         <AppProfile
           icon={ICON.Wallet}
@@ -45,18 +48,18 @@ const GeneralInformation = (props) => {
       </View>
     </SafeAreaView>
   );
-}
+};
 
-export default GeneralInformation
+export default GeneralInformation;
 
 const styles = StyleSheet.create({
   viewTitle: {
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems:'center',
+    alignItems: 'center',
     height: 70,
-    width:'100%',
-    borderBottomWidth:0.5
+    width: '100%',
+    borderBottomWidth: 0.5,
   },
   imageCar: {
     height: 80,

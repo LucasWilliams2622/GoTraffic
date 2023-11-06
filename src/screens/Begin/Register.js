@@ -1,4 +1,10 @@
-import {StyleSheet, Text, ToastAndroid, TouchableOpacity, View} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  ToastAndroid,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {appStyle} from '../../constants/AppStyle';
@@ -36,7 +42,7 @@ const Register = props => {
   const [password, setpassword] = useState('');
   const [nameUser, setnameUser] = useState('');
   const [email, setemail] = useState('');
-  
+
   //API REGISTER
   const onRegister = async () => {
     try {
@@ -60,142 +66,140 @@ const Register = props => {
   };
   return (
     <SafeAreaView style={appStyle.container}>
-      <View style={[appStyle.main, {justifyContent: 'space-evenly'}]}>
-        <TouchableOpacity onPress={goBack}>
-          <FastImage
-            source={require('../../assets/icon/ic_left.png')}
-            style={{
-              position: 'absolute',
-              left: 5,
-              top: 5,
-              width: 30,
-              height: 30,
-            }}
-          />
-        </TouchableOpacity>
-        <FastImage
-          source={require('../../assets/image/logo_go_traffic.png')}
-          style={styles.image}
-        />
-        <Text style={styles.text1}>Đăng kí</Text>
-        <View style={styles.view1}></View>
+      <Formik
+        initialValues={{
+          name: '',
+          phoneNumber: '',
+          password: '',
+          rePassword: '',
+        }}
+        validationSchema={validationSchema}
+        onSubmit={values => {
+          setIsLogin(true);
+          console.log(values);
+        }}>
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+          errors,
+          touched,
+        }) => (
+          <View style={[appStyle.main, {justifyContent: 'space-evenly'}]}>
+            <KeyboardAvoidingView behavior="padding">
+              <TouchableOpacity onPress={goBack}>
+                <FastImage
+                  source={require('../../assets/icon/ic_left.png')}
+                  style={{
+                    position: 'absolute',
+                    left: 5,
+                    top: 5,
+                    width: 30,
+                    height: 30,
+                  }}
+                />
+              </TouchableOpacity>
+              <FastImage
+                source={require('../../assets/image/logo_go_traffic.png')}
+                style={styles.image}
+              />
+              <Text style={styles.text1}>Đăng kí</Text>
+              <View style={styles.view1}></View>
 
-        <Formik
-          initialValues={{
-            name: '',
-            phoneNumber: '',
-            password: '',
-            rePassword: '',
-          }}
-          validationSchema={validationSchema}
-          onSubmit={values => {
-            setIsLogin(true);
-            console.log(values);
-          }}>
-          {({
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            values,
-            errors,
-            touched,
-          }) => (
-            <View>
-              <KeyboardAvoidingView behavior="padding">
-                <View style={styles.viewItem}>
-                  <Text style={styles.text2}>Tên hiện thị</Text>
-                  <AppInput
-                    returnKeyType={'next'}
-                    placeholder={'Nhập tên của bạn'}
-                    // onChangeText={handleChange('name')}
-                    // onBlur={handleBlur('name')}
-                    // value={values.name}
-                    onChangeText={nameUser => [setnameUser(nameUser)]}
-                    value={nameUser}
-                  />
-                </View>
-                {touched.name && errors.name && (
-                  <Text style={styles.textError}>{errors.name}</Text>
-                )}
+              <View style={styles.viewItem}>
+                <Text style={styles.text2}>Tên hiện thị</Text>
+                <AppInput
+                  returnKeyType={'next'}
+                  placeholder={'Nhập tên của bạn'}
+                  // onChangeText={handleChange('name')}
+                  // onBlur={handleBlur('name')}
+                  // value={values.name}
+                  onChangeText={nameUser => [setnameUser(nameUser)]}
+                  value={nameUser}
+                />
+              </View>
+              {touched.name && errors.name && (
+                <Text style={styles.textError}>{errors.name}</Text>
+              )}
 
-                <View style={styles.viewItem}>
-                  <Text style={styles.text2}>Số điện thoại</Text>
-                  <AppInput
-                    keyboardType={'phone-pad'}
-                    returnKeyType={'next'}
-                    placeholder={'Nhập số điện thoại của bạn'}
-                    // onChangeText={handleChange('phoneNumber')}
-                    // onBlur={handleBlur('phoneNumber')}
-                    // value={values.phoneNumber}
-                    onChangeText={phoneNumber => [setphoneNumber(phoneNumber)]}
-                    value={phoneNumber}
-                  />
-                </View>
+              <View style={styles.viewItem}>
+                <Text style={styles.text2}>Số điện thoại</Text>
+                <AppInput
+                  keyboardType={'phone-pad'}
+                  returnKeyType={'next'}
+                  placeholder={'Nhập số điện thoại của bạn'}
+                  // onChangeText={handleChange('phoneNumber')}
+                  // onBlur={handleBlur('phoneNumber')}
+                  // value={values.phoneNumber}
+                  onChangeText={phoneNumber => [setphoneNumber(phoneNumber)]}
+                  value={phoneNumber}
+                />
+              </View>
 
-                {touched.phoneNumber && errors.phoneNumber && (
-                  <Text style={styles.textError}>{errors.phoneNumber}</Text>
-                )}
-                <View style={styles.viewItem}>
-                  <Text style={styles.text2}>Email</Text>
-                  <AppInput
-                    keyboardType={'phone-pad'}
-                    returnKeyType={'next'}
-                    placeholder={'Nhập email cua ban'}
-                    // onChangeText={handleChange('phoneNumber')}
-                    // onBlur={handleBlur('phoneNumber')}
-                    // value={values.phoneNumber}
-                    onChangeText={email => [setemail(email)]}
-                    value={email}
-                  />
-                </View>
+              {touched.phoneNumber && errors.phoneNumber && (
+                <Text style={styles.textError}>{errors.phoneNumber}</Text>
+              )}
+              <View style={styles.viewItem}>
+                <Text style={styles.text2}>Email</Text>
+                <AppInput
+                  returnKeyType={'next'}
+                  placeholder={'Nhập email cua ban'}
+                  // onChangeText={handleChange('phoneNumber')}
+                  // onBlur={handleBlur('phoneNumber')}
+                  // value={values.phoneNumber}
+                  onChangeText={email => [setemail(email)]}
+                  value={email}
+                />
+              </View>
 
-                {touched.phoneNumber && errors.phoneNumber && (
-                  <Text style={styles.textError}>{errors.phoneNumber}</Text>
-                )}
+              {touched.phoneNumber && errors.phoneNumber && (
+                <Text style={styles.textError}>{errors.phoneNumber}</Text>
+              )}
 
-                <View style={styles.viewItem}>
-                  <Text style={styles.text2}>Mật khẩu</Text>
-                  <AppInput
-                    returnKeyType={'done'}
-                    placeholder={'Nhập mật khảu'}
-                    isPassword
-                    secureTextEntry
-                    // onChangeText={handleChange('password')}
-                    // onBlur={handleBlur('password')}
-                    // value={values.password}
-                    onChangeText={password => [setpassword(password)]}
-                    value={password}
-                  />
-                </View>
-                {touched.password && errors.password && (
-                  <Text style={styles.textError}>{errors.password}</Text>
-                )}
-                <View style={styles.viewItem}>
-                  <Text style={styles.text2}>Xác nhận lại mật khẩu</Text>
-                  <AppInput
-                    returnKeyType={'done'}
-                    placeholder={'Xác nhận lại mật khẩu'}
-                    isPassword
-                    secureTextEntry
-                    // onChangeText={handleChange('rePassword')}
-                    // onBlur={handleBlur('rePassword')}
-                    // value={values.rePassword}
-                  />
-                </View>
-                {touched.rePassword && errors.rePassword && (
-                  <Text style={styles.textError}>{errors.rePassword}</Text>
-                )}
-              </KeyboardAvoidingView>
+              <View style={styles.viewItem}>
+                <Text style={styles.text2}>Mật khẩu</Text>
+                <AppInput
+                  returnKeyType={'done'}
+                  placeholder={'Nhập mật khảu'}
+                  isPassword
+                  secureTextEntry
+                  // onChangeText={handleChange('password')}
+                  // onBlur={handleBlur('password')}
+                  // value={values.password}
+                  onChangeText={password => [setpassword(password)]}
+                  value={password}
+                />
+              </View>
+              {touched.password && errors.password && (
+                <Text style={styles.textError}>{errors.password}</Text>
+              )}
+              <View style={styles.viewItem}>
+                <Text style={styles.text2}>Xác nhận lại mật khẩu</Text>
+                <AppInput
+                  returnKeyType={'done'}
+                  placeholder={'Xác nhận lại mật khẩu'}
+                  isPassword
+                  secureTextEntry
+                  // onChangeText={handleChange('rePassword')}
+                  // onBlur={handleBlur('rePassword')}
+                  // value={values.rePassword}
+                />
+              </View>
+              {touched.rePassword && errors.rePassword && (
+                <Text style={styles.textError}>{errors.rePassword}</Text>
+              )}
               <AppButton
                 title="Đăng kí"
                 color={COLOR.secondary}
                 fontSize={18}
                 onPress={onRegister}
+                marginBottom={20}
               />
-            </View>
-          )}
-        </Formik>
-      </View>
+            </KeyboardAvoidingView>
+          </View>
+        )}
+      </Formik>
     </SafeAreaView>
   );
 };

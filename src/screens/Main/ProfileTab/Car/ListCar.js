@@ -25,30 +25,12 @@ const ListCar = props => {
   const [carData, setCarData] = useState([]);
   const {setIsLogin, infoUser, idUser} = useContext(AppContext);
 
-  console.log('ListCar info ====', updatedCarInfo);
-
-  // const addCar = () => {
-  //     if (updatedCarInfo) {
-  //       const { carInfo, price,provinces,wards } = updatedCarInfo;
-  //       const newCar = {
-  //         selectedModel: carInfo.selectedModel,
-  //         selectedBrand: carInfo.selectedBrand,
-  //         selectedYear: carInfo.selectedYear,
-  //         price: price,
-  //         provinces: provinces,
-  //         wards: wards,
-  //       };
-  //       setCarData((prevCarData) => [...prevCarData, newCar]);
-  //       navigation.navigate('BasicInfor')
-  //     }
-  //   };
   const getCarByIdUser = async () => {
     try {
       const response = await AxiosInstance().get(
-        '/car/api/list-by-id-user?idUser='+idUser
+        '/car/api/list-by-id-user?idUser=1',
       );
       if (response.result) {
-        console.log(response.listCar);
         setCarData(response.listCar);
       } else {
         console.log('Failed to get car');
@@ -57,13 +39,10 @@ const ListCar = props => {
       console.log('=========>', error);
     }
   };
+  
   useEffect(() => {
     getCarByIdUser();
-    const updatedCarInfo = updatedCarInfo || [];
-    if (updatedCarInfo.length > 0) {
-      setCarData([...carData, ...updatedCarInfo]);
-    }
-  }, [props.route.params]);
+  }, [carData]);
 
   return (
     <SafeAreaView style={appStyle.container}>
