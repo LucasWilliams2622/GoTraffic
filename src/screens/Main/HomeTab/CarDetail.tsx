@@ -43,11 +43,12 @@ import {calculateAvgRating, formatPrice} from '../../../utils/utils';
 import OtherDetails from '../../../components/Home/Detail/OtherDetails';
 import Confirm from './Confirm';
 import Modal from 'react-native-modal';
+import AxiosInstance from '../../../constants/AxiosInstance';
 
 Geocoder.init(REACT_APP_GOOGLE_MAPS_API_KEY || '');
 
 export const SectionTitle: React.FC<{
-  title: string;
+  name: string;
   style?: StyleProp<ViewStyle | TextStyle | ImageStyle>;
 }> = ({title, style}) => {
   return <Text style={[styles.SectionTitle, style]}>{title}</Text>;
@@ -121,12 +122,29 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
   const toggleModal = () => {
     setRatingModalVisible(!isRatingModalVisible);
   };
+  const [detailCar, setDetailCar] = useState(null);
 
+  const getDetailCar = async () => {
+    try {
+      const response = await AxiosInstance().get(
+        '/car/api/get-by-id-car?idCar=' + car_id,
+      );
+      if (response.result) {
+        console.log(response);
+        setDetailCar(response.car);
+      } else {
+        console.log('Error to get detail car');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
   const [isFavorite, setIsFavorite] = React.useState<boolean>(false);
 
-  const car: Car | undefined = carDetailData.find(x => x.id == car_id);
+  const car: Car | undefined = detailCar;
 
   useEffect(() => {
+    getDetailCar();
     if (car) {
       Geocoder.from(car.location)
         .then(json => {
@@ -260,20 +278,20 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
             [{nativeEvent: {contentOffset: {y: scrollY}}}],
             {useNativeDriver: false},
           )}>
-          <SlideShow images={car.images} close={close} scrollY={scrollY} />
+          {/* <SlideShow images={car.images} close={close} scrollY={scrollY} /> */}
 
           <View style={{paddingHorizontal: 10, paddingVertical: 20}}>
             {/* Car title and rating info */}
             <Row style={{alignItems: 'center'}}>
               <Text style={[appStyle.text16Bold, {marginRight: 10}]}>
-                {car.title.toUpperCase()}
+                {car.name.toUpperCase()}
               </Text>
               <ShieldIcon color={COLOR.fifth} />
             </Row>
             <Row style={{alignItems: 'center'}}>
               <Icon name="star" color={COLOR.third} size={12} solid />
               <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
-                {calculateAvgRating(car.rating)}
+                {car.rating}
               </Text>
               <Text
                 style={[
@@ -300,7 +318,7 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
                   width: '100%',
                   justifyContent: 'space-evenly',
                 }}>
-                {car.features.map((feature, index) => {
+                {/* {car.feautilitiestures.map((feature, index) => {
                   const icons = [StickIcon, SeatIcon, GasolineIcon, EngineIcon];
                   return (
                     <FeatureItem
@@ -310,7 +328,7 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
                       feature={feature}
                     />
                   );
-                })}
+                })} */}
               </Row>
             </View>
             <View style={[CarCardItemStyles.separator, {marginTop: 20}]} />
@@ -336,17 +354,17 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
             )}
             <View>
               <SectionTitle title="Chủ xe" style={{marginTop: 10}} />
-              <OwnerInfo
+              {/* <OwnerInfo
                 owner={car.owner}
-                rating={car.owner.rating}
+                rating={car.User.rating}
                 totalRide={car.totalRide}
-              />
+              /> */}
             </View>
             <View style={[CarCardItemStyles.separator, {marginTop: 20}]} />
             {car.rating.length > 0 && (
               <View>
                 <SectionTitle title="Đánh giá" style={{marginTop: 10}} />
-                <Rating rating={car.rating} toggleModal={toggleModal} />
+                {/* <Rating rating={car.rating} toggleModal={toggleModal} /> */}
               </View>
             )}
             <View style={[CarCardItemStyles.separator, {marginTop: 20}]} />
@@ -354,13 +372,13 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
           </View>
 
           <View style={{width: '100%', height: 70}}></View>
-          <RatingModal
+          {/* <RatingModal
             isRatingModalVisible={isRatingModalVisible}
             toggleModal={toggleModal}
             rating={car.rating}
-          />
+          /> */}
         </ScrollView>
-        <StickyHeader name={car.title} />
+        <StickyHeader name={car.name} />
         <BottomBar price={car.price} car={car} />
       </View>
     );
