@@ -88,13 +88,13 @@ const Profile = props => {
         showsVerticalScrollIndicator={false}>
         <View style={styles.headBg}>
           <View style={[appStyle.boxCenter, {marginTop: windowHeight * 0.12}]}>
-            <FastImage
+            {/* <FastImage
               source={
                 infoUser.avatar
                   ? {uri:infoUser.avatar}
                   : require('../../../assets/image/guide/img_friends.png')
               }
-              style={[appStyle.avatar]}></FastImage>
+              style={[appStyle.avatar]}></FastImage> */}
             <Text
               style={[
                 appStyle.text24Bold,

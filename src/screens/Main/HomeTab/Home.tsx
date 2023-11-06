@@ -34,6 +34,7 @@ import Modal from 'react-native-modal';
 import CarDetail from './CarDetail';
 import {AppContext} from '../../../utils/AppContext';
 import FastImage from 'react-native-fast-image';
+import BenefitHome from '../../../components/Home/Home/Benefit';
 
 const RenderList: React.FC<RenderListProps<any>> = ({
   data,
@@ -91,14 +92,14 @@ const Home: React.FC = () => {
       <View style={[styles.headBg]}>
         <Row style={styles.nameAndPointWrapper}>
           <Column style={[styles.iconBG, styles.iconMarginRight]}>
-            <FastImage
+            {/* <FastImage
               style={{width: 40, height: 40, borderRadius: 99}}
               source={
                 infoUser?.avatar
                   ? {uri: infoUser.avatar}
                   : require('../../../assets/image/logo_go_traffic.png')
               }
-            />
+            /> */}
           </Column>
           <Column>
             <Text style={appStyle.text16Bold}>{infoUser.name}</Text>
@@ -170,22 +171,22 @@ const Home: React.FC = () => {
         renderItem={({item}) => <FeaturedLocation {...item} />}
         snapToInterval={224}
       />
-
       <Section
         title="Đón xe sân bay"
         data={AirportData}
         renderItem={({item}) => <AirportPicking {...item} />}
         snapToInterval={140}
       />
+      
 
       <Section
         title="Ưu điểm của Go Traffic"
         data={benefitData}
         renderItem={({item}) => (
-          <Promotion image={item.image} width={345} height={130} />
+          <BenefitHome image={item.image} width={345} height={130} />
         )}
         snapToInterval={365}
-      />
+      /> 
 
       <View
         style={{

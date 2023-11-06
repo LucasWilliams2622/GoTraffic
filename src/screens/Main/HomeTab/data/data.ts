@@ -99,7 +99,7 @@ export const featuredLocationData = [
     id: 3,
     title: 'Đà Nẵng',
     image:
-      'https://tse3.mm.bing.net/th?id=OIP.rIe9YoROhS0EWKufzN_okAHaE7&pid=Api&P=0&h=180',
+      'https://besthuecitytour.com/wp-content/uploads/2020/09/Things-To-Do-In-Da-Nang-Best-Hue-City-Tour-Travel-1.jpg',
     totalCar: 865,
   },
   {
@@ -119,13 +119,6 @@ export const featuredLocationData = [
 ];
 
 export const AirportData = [
-  {
-    id: 1,
-    title: 'Tân Sơn Nhất',
-    image:
-      'https://tse2.mm.bing.net/th?id=OIP.F_a1XQEHCOL8GEUwf7sX0AHaFv&pid=Api&P=0&h=180',
-    totalCar: 3250,
-  },
   {
     id: 2,
     title: 'Nội Bài',

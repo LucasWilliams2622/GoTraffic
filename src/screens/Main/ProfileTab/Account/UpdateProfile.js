@@ -109,7 +109,7 @@ const UpdateProfile = (props) => {
                         bottomOffset: 40,
                     });
                 }
-                setImage(result.assets[0].uri);
+                // setImage(result.assets[0].uri);
                 toggleModal();
 
             } else {
@@ -164,11 +164,11 @@ const UpdateProfile = (props) => {
             />
             <View style={{ width: '100%', padding: 15 }}>
                 {/* Avatar */}
-                {image !=null ? (
+                {/* {image !=null ? (
                     <FastImage source={{ uri: image }} style={[appStyle.avatar, { marginTop: 20 }]} resizeMode='stretch' />
                 ) : (
                     <FastImage source={require('../../../../assets/image/guide/img_friends.png')} style={[appStyle.avatar, { marginTop: 20 }]} />
-                )}
+                )} */}
 
                 {/* Capture image */}
                 <TouchableOpacity

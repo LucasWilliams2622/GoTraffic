@@ -203,6 +203,12 @@ export interface PromotionProps {
   height: number;
 }
 
+export interface BenefitProps {
+  image?: any;
+  width: number;
+  height: number;
+}
+
 export interface AirportPickingProps {
   id: number;
   title: string;
