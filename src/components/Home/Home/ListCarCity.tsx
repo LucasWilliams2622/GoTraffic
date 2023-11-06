@@ -4,7 +4,7 @@ import {SafeAreaView} from 'react-native';
 import Header from '../../Header';
 import {ICON} from '../../../constants/Theme';
 import {useNavigation} from '@react-navigation/native';
-import {appStyle, windowHeight} from '../../../constants/AppStyle';
+import {appStyle, windowHeight, windowWidth} from '../../../constants/AppStyle';
 import CarCardItem from './CarCardItem';
 import AxiosInstance from '../../../constants/AxiosInstance';
 const ListCarCity = props => {
@@ -51,7 +51,7 @@ const ListCarCity = props => {
               </Text>
             </View>
           }
-          renderItem={({item}) => <CarCardItem {...item} />}
+          renderItem={({item}) => <CarCardItem width={'100%'} {...item} />}
           keyExtractor={item => item.id}
         />
       </View>
