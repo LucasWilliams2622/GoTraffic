@@ -42,7 +42,7 @@ const Register = props => {
     try {
       console.log(phoneNumber, password);
       const response = await AxiosInstance().post('user/api/register', {
-        firstName: nameUser,
+        name: nameUser,
         phone: phoneNumber,
         email: email,
         password: password,
