@@ -25,7 +25,7 @@ const Profile = props => {
   const [name, setName] = useState(infoUser.name);
   const [isModalVisible, setModalVisible] = useState(false);
   console.log(infoUser.avatar);
-  
+
   const toggleModal = async () => {
     try {
       const response = await AxiosInstance().delete(
@@ -88,13 +88,13 @@ const Profile = props => {
         showsVerticalScrollIndicator={false}>
         <View style={styles.headBg}>
           <View style={[appStyle.boxCenter, {marginTop: windowHeight * 0.12}]}>
-            {/* <FastImage
+            <FastImage
               source={
                 infoUser.avatar
-                  ? {uri:infoUser.avatar}
-                  : require('../../../assets/image/guide/img_friends.png')
+                  ? {uri: infoUser.avatar}
+                  : require('../../../assets/image/logo_go_traffic.png')
               }
-              style={[appStyle.avatar]}></FastImage> */}
+              style={[appStyle.avatar]}></FastImage>
             <Text
               style={[
                 appStyle.text24Bold,

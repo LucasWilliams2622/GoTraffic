@@ -92,14 +92,14 @@ const Home: React.FC = () => {
       <View style={[styles.headBg]}>
         <Row style={styles.nameAndPointWrapper}>
           <Column style={[styles.iconBG, styles.iconMarginRight]}>
-            {/* <FastImage
+            <FastImage
               style={{width: 40, height: 40, borderRadius: 99}}
               source={
                 infoUser?.avatar
                   ? {uri: infoUser.avatar}
                   : require('../../../assets/image/logo_go_traffic.png')
               }
-            /> */}
+            />
           </Column>
           <Column>
             <Text style={appStyle.text16Bold}>{infoUser.name}</Text>
