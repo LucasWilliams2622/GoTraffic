@@ -17,11 +17,13 @@ import TopNav from '../../../../components/TopNav';
 import {Car} from '../../../../components/Profile/data/DataCar';
 import ItemCar from '../../../../components/Profile/ItemCar';
 import AxiosInstance from '../../../../constants/AxiosInstance';
+import {AppContext} from '../../../../utils/AppContext';
 
 const ListCar = props => {
   const {navigation, route} = props;
   const updatedCarInfo = route.params?.updatedCarInfo;
   const [carData, setCarData] = useState([]);
+  const {setIsLogin, infoUser, idUser} = useContext(AppContext);
 
   console.log('ListCar info ====', updatedCarInfo);
 
@@ -43,7 +45,7 @@ const ListCar = props => {
   const getCarByIdUser = async () => {
     try {
       const response = await AxiosInstance().get(
-        '/car/api/list-by-id-user?idUser=1',
+        '/car/api/list-by-id-user?idUser='+idUser,
       );
       if (response.result) {
         console.log(response.listCar);
