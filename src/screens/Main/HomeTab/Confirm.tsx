@@ -5,9 +5,10 @@ import {
   Pressable,
   StyleSheet,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
-import React, {useMemo, useState} from 'react';
-import {COLOR} from '../../../constants/Theme';
+import React, {useContext, useMemo, useState} from 'react';
+import {COLOR, ICON} from '../../../constants/Theme';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import {Car} from '../../../types';
 import {Row, TextArea} from 'native-base';
@@ -22,6 +23,10 @@ import {
   Documents,
 } from '../../../components/Home/Detail/OtherDetails';
 import {CancelModal} from '../../../components/Home/Detail/CancelModal';
+import {AppContext} from '../../../utils/AppContext';
+import FailModal from '../../../components/Profile/Modal/FailModal';
+import {appStyle} from '../../../constants/AppStyle';
+import {useNavigation} from '@react-navigation/native';
 
 const PriceRow: React.FC<{
   title: string;
@@ -116,8 +121,25 @@ const TextModal: React.FC<{
   );
 };
 
-const BottomBar: React.FC = () => {
+const BottomBar = () => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [modalLicense, setModalLicense] = useState(false);
+  const [modalCheckSurplus, setModalCheckSurplus] = useState(false)
+  const {infoUser} = useContext(AppContext);
+  const navigation = useNavigation();
+
+  const handleBooking = async () => {
+    if (!infoUser.isVerifiedDriverLicense) {
+
+      if (infoUser.surplus < 900000) {
+        setModalCheckSurplus(true)
+      } else {
+      }
+    } else {
+      setModalLicense(true);
+    }
+  };
+
   return (
     <View
       style={{
@@ -153,7 +175,7 @@ const BottomBar: React.FC = () => {
           setIsModalVisible(!isModalVisible);
         }}
       />
-      <Pressable
+      <TouchableOpacity
         style={{
           alignItems: 'center',
           justifyContent: 'center',
@@ -161,9 +183,100 @@ const BottomBar: React.FC = () => {
           paddingVertical: 15,
           borderRadius: 8,
           marginTop: 20,
+        }}
+        onPress={() => {
+          handleBooking();
         }}>
         <Text style={{color: COLOR.white}}>Gửi yêu cầu thuê xe</Text>
-      </Pressable>
+      </TouchableOpacity>
+
+      <Modal animationType="fade" transparent={true} visible={modalLicense}>
+        <View style={styles.modalCenteredContainer}>
+          <View style={styles.modalSuccessBox}>
+            <FastImage style={{width: 60, height: 60}} source={ICON.Ban} />
+            <View>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 24,
+                  marginTop: 5,
+                  fontWeight: '500',
+                  color: '#E73030',
+                }}>
+                Thất bại!
+              </Text>
+              <Text style={{textAlign: 'center', fontSize: 16, marginTop: 5}}>
+                Bạn chưa xác thực bằng lái
+              </Text>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                width: '100%',
+              }}>
+              <TouchableOpacity
+                style={{
+                  width: '45%',
+                  height: 40,
+                  backgroundColor: COLOR.warn,
+                  borderRadius: 8,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: 20,
+                }}
+                onPress={() => setModalLicense(false)}>
+                <Text style={[appStyle.text16Bold, {color: COLOR.textWarn}]}>
+                  Hủy
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  width: '45%',
+                  height: 40,
+                  backgroundColor: COLOR.blueHeader2,
+                  borderRadius: 8,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: 20,
+                }}
+                onPress={() => {
+                  navigation.navigate('VerifyLicense');
+                }}>
+                <Text style={[appStyle.text16Bold, {color: COLOR.blue}]}>
+                  Xác thực
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      <Modal
+            animationType="fade"
+            transparent={true}
+            visible={modalCheckSurplus}
+        >
+            <View style={styles.modalCenteredContainer}>
+                <View style={styles.modalSuccessBox}>
+                    <FastImage style={{ width: 60, height: 60 }} source={ICON.Ban} />
+                    <View >
+                        <Text style={{ textAlign: 'center', fontSize: 24, marginTop: 5, fontWeight: '500', color: '#E73030' }}>Thất bại!</Text>
+                        <Text style={{ textAlign: 'center', fontSize: 16, marginTop: 5 }}>Số dư ví của bạn không đủ</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', justifyContent:'space-between', width:'100%' }}>
+                        <TouchableOpacity style={{ width: '45%', height: 40, backgroundColor: COLOR.warn, borderRadius: 8, justifyContent: 'center', alignItems: 'center', marginTop: 20 }}
+                            onPress={()=>setModalCheckSurplus(false)}>
+                            <Text style={[appStyle.text16Bold, {color: COLOR.textWarn}]}>Hủy</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{ width: '45%', height: 40, backgroundColor: COLOR.blueHeader2, borderRadius: 8, justifyContent: 'center', alignItems: 'center', marginTop: 20 }}
+                             onPress={()=>{navigation.navigate('MyWallet')}}>
+                            <Text style={[appStyle.text16Bold, {color: COLOR.blue}]}>Kiểm tra ví</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
+        </Modal>
     </View>
   );
 };
@@ -175,15 +288,15 @@ const Confirm: React.FC<{
   dateEnd: Date;
 }> = ({closeModal, car, dateStart, dateEnd}) => {
   return (
-    <View style={{ backgroundColor: COLOR.white, flex: 1 }}>
+    <View style={{backgroundColor: COLOR.white, flex: 1}}>
       <SafeAreaView>
-        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{alignItems: 'center', justifyContent: 'center'}}>
           <Pressable
             onPress={closeModal}
-            style={[styles.closeBtn, { position: 'absolute', left: 20 }]}>
+            style={[styles.closeBtn, {position: 'absolute', left: 20}]}>
             <Icon name="x" size={20} color={COLOR.black} />
           </Pressable>
-          <Text style={{ fontSize: 22 }}>Xác nhận đặt xe</Text>
+          <Text style={{fontSize: 22}}>Xác nhận đặt xe</Text>
         </View>
         <ScrollView style={{paddingHorizontal: 15, marginTop: 30}}>
           <Row>
@@ -212,20 +325,20 @@ const Confirm: React.FC<{
                 </Text>
               </View>
 
-              <Row style={{ alignItems: 'center', marginTop: 20 }}>
+              <Row style={{alignItems: 'center', marginTop: 20}}>
                 <Icon name="star" color={COLOR.third} size={12} solid />
-                <Text style={[CarCardItemStyles.ratingText, { marginLeft: 5 }]}>
+                <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
                   {car.User.rating}
                 </Text>
                 <Text
                   style={[
                     CarCardItemStyles.dot,
-                    { marginLeft: 5, marginRight: 5 },
+                    {marginLeft: 5, marginRight: 5},
                   ]}>
                   ·
                 </Text>
                 <Icon name="suitcase" color={COLOR.fifth} size={12} solid />
-                <Text style={[CarCardItemStyles.ratingText, { marginLeft: 5 }]}>
+                <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
                   {car.totalRide} chuyến
                 </Text>
               </Row>
@@ -486,5 +599,25 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  modalCenteredContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalSuccessBox: {
+    backgroundColor: 'white',
+    width: '80%',
+    borderRadius: 8,
+    padding: 15,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
 });
