@@ -46,6 +46,7 @@ import BasicInfor from '../screens/Main/ProfileTab/Car/BasicInfor';
 import DetailsInfor from '../screens/Main/ProfileTab/Car/DetailsInfor';
 import ListCar from '../screens/Main/ProfileTab/Car/ListCar';
 import MyCar from '../screens/Main/ProfileTab/MyCar';
+import ListCarCity from '../components/Home/Home/ListCarCity';
 
 
 const Tab = createBottomTabNavigator();
@@ -88,6 +89,12 @@ const StackHome = () => {
         component={CarDetail}
         options={{animationEnabled: true, animation: 'slide_from_bottom'}}
       />
+        <Stack.Screen
+        name="ListCarCity"
+        component={ListCarCity}
+        options={{animationEnabled: true, animation: 'slide_from_bottom'}}
+      />
+      
     </Stack.Navigator>
   );
 };

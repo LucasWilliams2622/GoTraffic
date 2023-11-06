@@ -98,7 +98,7 @@ const CarCardItem = ({
         <Row style={{alignItems: 'center'}}>
           <Icon name="star" color={COLOR.third} size={12} solid />
           <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
-            {rating.toFixed(1)}
+            {rating?.toFixed(1)}
           </Text>
           <Text
             style={[CarCardItemStyles.dot, {marginLeft: 5, marginRight: 5}]}>
