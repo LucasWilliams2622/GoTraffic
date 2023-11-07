@@ -12,10 +12,14 @@ const ItemTrip = props => {
   const {data} = props;
 
   const {image, name, time, timeStart, timeEnd, price, id} = data;
-  const goDetail = () => {
-    //console.log('ID', data.id);
-    navigation.navigate('RatingTrip', {id: data.id});
+  const checkStatus = () => {
+    if (data.status == 5) {
+      navigation.navigate('RatingTrip', {id: data.id});
+    } else {
+      navigation.navigate('DetailCar', {id: data.id});
+    }
   };
+
   return (
     <View>
       <View
@@ -52,12 +56,12 @@ const ItemTrip = props => {
         </View>
         <Text style={[appStyle.text14Bold]}>{data.updatedAt.slice(0, 10)}</Text>
       </View>
-      <TouchableOpacity onPress={() => goDetail()} style={styles.container}>
+      <TouchableOpacity onPress={() => checkStatus()} style={styles.container}>
         <View style={[{alignSelf: 'flex-start'}]}>
           <FastImage
             style={styles.image}
             resizeMode={'stretch'}
-            source={{uri:image}}
+            source={{uri: image}}
           />
         </View>
         <View
