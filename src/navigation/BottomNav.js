@@ -49,7 +49,8 @@ import VerifyLicense from '../screens/Main/ProfileTab/Account/VerifyLicense';
 import ListCarCity from '../components/Home/Home/ListCarCity';
 import Test2 from '../test/Test2';
 import RatingTrip from '../screens/Main/TripTab/RatingTrip';
-import Recharge from '../screens/Main/ProfileTab/MyCar/Recharge'
+import Recharge from '../screens/Main/ProfileTab/MyCar/Recharge';
+
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -158,7 +159,6 @@ const StackProfile = () => {
       <Stack.Screen name="VerifyLicense" component={VerifyLicense} />
       <Stack.Screen name="Test2" component={Test2} />
       <Stack.Screen name="Recharge" component={Recharge} />
-
     </Stack.Navigator>
   );
 };

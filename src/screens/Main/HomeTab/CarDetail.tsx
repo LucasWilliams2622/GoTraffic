@@ -39,18 +39,25 @@ import {OwnerInfo} from '../../../components/Home/Detail/OwnerInfo';
 import {Rating} from '../../../components/Home/Detail/Rating';
 import {RatingModal} from '../../../components/Home/Detail/RatingModal';
 import {Car, CarDetailProps, PressableIconProps} from '../../../types';
-import {calculateAvgRating, formatPrice} from '../../../utils/utils';
+import {
+  calculateAvgRating,
+  currentDateString,
+  currentDay,
+  currentTimeString,
+  formatPrice,
+  returnTimeString,
+  tomorrow,
+} from '../../../utils/utils';
 import OtherDetails from '../../../components/Home/Detail/OtherDetails';
 import Confirm from './Confirm';
 import Modal from 'react-native-modal';
-import AxiosInstance from '../../../constants/AxiosInstance';
 import TimePickingModal from './TimePickingModal';
-
+import axios from 'axios';
 
 Geocoder.init(REACT_APP_GOOGLE_MAPS_API_KEY || '');
 
 export const SectionTitle: React.FC<{
-  name: string;
+  title: string;
   style?: StyleProp<ViewStyle | TextStyle | ImageStyle>;
 }> = ({title, style}) => {
   return <Text style={[styles.SectionTitle, style]}>{title}</Text>;
@@ -73,16 +80,30 @@ const PressableIconCarDetail = ({
 const BottomBar: React.FC<{
   price: number;
   car: Car;
-  dateStart: Date;
-  dateEnd: Date;
   selectedTime: {
     startTime: string;
     endTime: string;
-    startDate: string;
-    endDate: string;
+    startDate: Date;
+    endDate: Date;
   };
-}> = ({price, car, dateStart, dateEnd, selectedTime}) => {
-  const formattedPrice = useMemo(() => formatPrice(price), [price]);
+  closeCarDetail: () => void;
+}> = ({price, car, selectedTime, closeCarDetail}) => {
+  let total = 0;
+  for (
+    let d = new Date(selectedTime.startDate);
+    d < selectedTime.endDate;
+    d.setDate(d.getDate() + 1)
+  ) {
+    if (d.getDay() === 0 || d.getDay() === 6) {
+      // 0: Sunday, 6: Saturday
+      total += price * 1.1; // 10% increase for weekends
+    } else {
+      total += price;
+    }
+  }
+
+  const formattedPrice = useMemo(() => formatPrice(total), [total]);
+
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   return (
     <View
@@ -99,7 +120,11 @@ const BottomBar: React.FC<{
       }}>
       <Row style={{display: 'flex', justifyContent: 'space-between'}}>
         <View>
-          <Text>Số ngày thuê: 1 ngày</Text>
+          <Text>
+            Số ngày thuê:{' '}
+            {selectedTime.endDate.getDate() - selectedTime.startDate.getDate()}{' '}
+            ngày
+          </Text>
           <Pressable>
             <Text
               style={{color: COLOR.fifth, fontSize: 18, fontWeight: 'bold'}}>
@@ -112,6 +137,8 @@ const BottomBar: React.FC<{
             closeModal={() => setIsModalVisible(false)}
             car={car}
             selectedTime={selectedTime}
+            totalCost={total}
+            closeCarDetail={closeCarDetail}
           />
         </Modal>
         <Pressable
@@ -140,38 +167,41 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
   const [dateEnd, setDateEnd] = useState<Date>(new Date());
 
   const [selectedTime, setSelectedTime] = useState<{
-    startTime: string;
-    endTime: string;
-    startDate: string;
-    endDate: string;
-  }>({startTime: '', endTime: '', startDate: '', endDate: ''});
+    startTime: string | null;
+    endTime: string | null;
+    startDate: Date | null;
+    endDate: Date | null;
+  }>({
+    startTime: currentTimeString,
+    endTime: returnTimeString,
+    startDate: currentDay,
+    endDate: tomorrow,
+  });
 
   const toggleModal = () => {
     setRatingModalVisible(!isRatingModalVisible);
   };
-  const [detailCar, setDetailCar] = useState(null);
 
-  const getDetailCar = async () => {
-    try {
-      const response = await AxiosInstance().get(
-        '/car/api/get-by-id-car?idCar=' + car_id,
-      );
-      if (response.result) {
-        console.log(response);
-        setDetailCar(response.car);
-      } else {
-        console.log('Error to get detail car');
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
   const [isFavorite, setIsFavorite] = React.useState<boolean>(false);
 
-  const car: Car | undefined = detailCar;
+  // const car: Car | undefined = carDetailData.find(x => x.id == car_id);
+  const [car, setCar] = useState<Car | undefined>(undefined);
+
+  const getCar = async () => {
+    const response = await axios.get(
+      `http://103.57.129.166:3000/car/api/get-by-id-car?idCar=${car_id}`,
+    );
+    const responseData = response.data;
+    const car = responseData.car;
+    setCar(car);
+    console.log(car);
+  };
 
   useEffect(() => {
-    getDetailCar();
+    getCar();
+  }, []);
+
+  useEffect(() => {
     if (car) {
       Geocoder.from(car.location)
         .then(json => {
@@ -305,7 +335,9 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
             [{nativeEvent: {contentOffset: {y: scrollY}}}],
             {useNativeDriver: false},
           )}>
-          {/* <SlideShow images={car.images} close={close} scrollY={scrollY} /> */}
+          {car.images && (
+            <SlideShow images={car.images} close={close} scrollY={scrollY} />
+          )}
 
           <View style={{paddingHorizontal: 10, paddingVertical: 20}}>
             {/* Car title and rating info */}
@@ -338,30 +370,37 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
               selectedTime={selectedTime}
               setSelectedTime={setSelectedTime}
             />
+            {car.features && (
+              <View>
+                <SectionTitle title="Đặc điểm" style={{marginTop: 10}} />
+                <Row
+                  style={{
+                    marginTop: 20,
+                    flex: 1,
+                    flexDirection: 'row',
+                    width: '100%',
+                    justifyContent: 'space-evenly',
+                  }}>
+                  {car.features.map((feature, index) => {
+                    const icons = [
+                      StickIcon,
+                      SeatIcon,
+                      GasolineIcon,
+                      EngineIcon,
+                    ];
+                    return (
+                      <FeatureItem
+                        key={index}
+                        icon={icons[index]}
+                        color={COLOR.fifth}
+                        feature={feature}
+                      />
+                    );
+                  })}
+                </Row>
+              </View>
+            )}
 
-            <View>
-              <SectionTitle title="Đặc điểm" style={{marginTop: 10}} />
-              <Row
-                style={{
-                  marginTop: 20,
-                  flex: 1,
-                  flexDirection: 'row',
-                  width: '100%',
-                  justifyContent: 'space-evenly',
-                }}>
-                {/* {car.feautilitiestures.map((feature, index) => {
-                  const icons = [StickIcon, SeatIcon, GasolineIcon, EngineIcon];
-                  return (
-                    <FeatureItem
-                      key={index}
-                      icon={icons[index]}
-                      color={COLOR.fifth}
-                      feature={feature}
-                    />
-                  );
-                })} */}
-              </Row>
-            </View>
             <View style={[CarCardItemStyles.separator, {marginTop: 20}]} />
             <View>
               <SectionTitle title="Mô tả" style={{marginTop: 10}} />
@@ -383,19 +422,22 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
                 />
               </View>
             )}
-            <View>
-              <SectionTitle title="Chủ xe" style={{marginTop: 10}} />
-              {/* <OwnerInfo
-                owner={car.owner}
-                rating={car.User.rating}
-                totalRide={car.totalRide}
-              /> */}
-            </View>
+            {car.owner && (
+              <View>
+                <SectionTitle title="Chủ xe" style={{marginTop: 10}} />
+                <OwnerInfo
+                  owner={car.owner}
+                  rating={car.owner.rating}
+                  totalRide={car.totalRide}
+                />
+              </View>
+            )}
+
             <View style={[CarCardItemStyles.separator, {marginTop: 20}]} />
             {car.rating.length > 0 && (
               <View>
                 <SectionTitle title="Đánh giá" style={{marginTop: 10}} />
-                {/* <Rating rating={car.rating} toggleModal={toggleModal} /> */}
+                <Rating rating={car.rating} toggleModal={toggleModal} />
               </View>
             )}
             <View style={[CarCardItemStyles.separator, {marginTop: 20}]} />
@@ -410,13 +452,13 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
           /> */}
         </ScrollView>
         <StickyHeader name={car.name} />
-        <BottomBar 
-          price={car.price} 
-          car={car} 
+        <BottomBar
+          price={car.price}
+          car={car}
           dateStart={dateStart}
           dateEnd={dateEnd}
           selectedTime={selectedTime}
-
+          closeCarDetail={close}
         />
       </View>
     );
