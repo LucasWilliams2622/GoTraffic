@@ -13,7 +13,6 @@ import {appStyle} from '../../constants/AppStyle';
 
 const ItemCancleTrip = props => {
   const {data} = props;
-  const {image, name, time, nameOfUser, phoneOfUser, id} = data;
 
   return (
     <View>
@@ -31,14 +30,14 @@ const ItemCancleTrip = props => {
           />
           <Text style={[appStyle.text14, {marginLeft: 5}]}>Đã hủy</Text>
         </View>
-        <Text style={[appStyle.text14Bold]}>{time}</Text>
+        <Text style={[appStyle.text14Bold]}>{data.createdAt}</Text>
       </View>
       <TouchableOpacity style={styles.container}>
         <View style={[{alignSelf: 'flex-start'}]}>
           <FastImage
             style={styles.image}
             resizeMode={'stretch'}
-            source={image}
+            source={{uri: data.Car.imageThumbnail}}
           />
         </View>
         <View
@@ -53,11 +52,11 @@ const ItemCancleTrip = props => {
             />
             <Text style={[appStyle.text10, {marginLeft: 5}]}>Tự lái</Text>
           </View>
-          <Text style={[appStyle.text16Bold]}>{name}</Text>
+          <Text style={[appStyle.text16Bold]}>{data.Car.name}</Text>
           <Text
             style={[appStyle.text16Bold, {width: 160, color: COLOR.orange}]}>
             <Text style={{color: COLOR.black}}>Tên người thuê: </Text>
-            {nameOfUser}
+            {data.User.name}
           </Text>
           <Text
             style={{
@@ -67,7 +66,7 @@ const ItemCancleTrip = props => {
               marginTop: 10,
             }}>
             <Text style={{color: COLOR.black}}>SĐT: </Text>
-            {phoneOfUser}
+            {data.User.phone}
           </Text>
         </View>
       </TouchableOpacity>
