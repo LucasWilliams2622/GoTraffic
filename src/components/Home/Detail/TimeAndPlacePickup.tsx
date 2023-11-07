@@ -3,7 +3,11 @@ import React, {useState} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {appStyle} from '../../../constants/AppStyle';
 import {COLOR} from '../../../constants/Theme';
-import {currentDateString, returnDateString} from '../../../utils/utils';
+import {
+  currentDateString,
+  formatDate,
+  returnDateString,
+} from '../../../utils/utils';
 import {Car} from '../../../types';
 import TimePickingModal from '../../../screens/Main/HomeTab/TimePickingModal';
 import ReactNativeModal from 'react-native-modal';
@@ -15,10 +19,10 @@ export const TimeAndPlacePickup = ({
 }: {
   car: Car;
   selectedTime: {
-    startTime: string;
-    endTime: string;
-    startDate: string;
-    endDate: string;
+    startTime: Date | null;
+    endTime: Date | null;
+    startDate: Date | null;
+    endDate: Date | null;
   };
   setSelectedTime: any;
 }) => {
@@ -39,9 +43,12 @@ export const TimeAndPlacePickup = ({
               </Text>
               <Pressable onPress={() => setModalVisible(true)}>
                 <Text style={{fontSize: 13.5, fontWeight: 'bold'}}>
-                  {selectedTime.startTime === '' && selectedTime.endTime === ''
+                  {selectedTime.startTime === null &&
+                  selectedTime.endTime === null
                     ? currentDateString
-                    : `${selectedTime.startTime}, ${selectedTime.startDate}`}
+                    : `${selectedTime.startDate?.getHours()}h ${selectedTime.startDate?.getMinutes()}, ${formatDate(
+                        selectedTime.startDate,
+                      )}`}
                 </Text>
               </Pressable>
             </View>
@@ -51,9 +58,12 @@ export const TimeAndPlacePickup = ({
               </Text>
               <Pressable>
                 <Text style={{fontSize: 13.5, fontWeight: 'bold'}}>
-                  {selectedTime.startTime === '' && selectedTime.endTime === ''
+                  {selectedTime.startTime === null &&
+                  selectedTime.endTime === null
                     ? returnDateString
-                    : `${selectedTime.endTime}, ${selectedTime.endDate}`}
+                    : `${selectedTime.endDate?.getHours()}h ${selectedTime.endDate?.getMinutes()}, ${formatDate(
+                        selectedTime.endDate,
+                      )}`}
                 </Text>
               </Pressable>
             </View>

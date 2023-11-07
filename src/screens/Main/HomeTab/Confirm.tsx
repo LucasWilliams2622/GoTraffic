@@ -5,10 +5,9 @@ import {
   Pressable,
   StyleSheet,
   ScrollView,
-  TouchableOpacity,
 } from 'react-native';
 import React, {useContext, useMemo, useState} from 'react';
-import {COLOR, ICON} from '../../../constants/Theme';
+import {COLOR} from '../../../constants/Theme';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import {Car} from '../../../types';
 import {Row, TextArea} from 'native-base';
@@ -16,17 +15,19 @@ import FastImage from 'react-native-fast-image';
 import {CarCardItemStyles} from '../../../components/Home/Home/CarCardItem';
 import ShieldIcon from '../../../assets/icon/ic_shield_verified';
 import {OwnerInfo} from '../../../components/Home/Detail/OwnerInfo';
-import {formatPriceWithUnit} from '../../../utils/utils';
+import {formatDate, formatPriceWithUnit} from '../../../utils/utils';
 import Modal from 'react-native-modal';
 import {
   Collateral,
   Documents,
 } from '../../../components/Home/Detail/OtherDetails';
 import {CancelModal} from '../../../components/Home/Detail/CancelModal';
+import LicenseModal from '../../../components/Profile/Modal/LicenseModal';
+import VerifyLicense from '../ProfileTab/Account/VerifyLicense';
 import {AppContext} from '../../../utils/AppContext';
+import axios from 'axios';
 import FailModal from '../../../components/Profile/Modal/FailModal';
-import {appStyle} from '../../../constants/AppStyle';
-import {useNavigation} from '@react-navigation/native';
+import SuccessModal from '../../../components/Profile/Modal/SuccessModal';
 
 const PriceRow: React.FC<{
   title: string;
@@ -121,25 +122,74 @@ const TextModal: React.FC<{
   );
 };
 
-const BottomBar = () => {
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-  const [modalLicense, setModalLicense] = useState(false);
-  const [modalCheckSurplus, setModalCheckSurplus] = useState(false)
+const BottomBar: React.FC<{
+  car: Car;
+  deposit: number;
+  startDate: Date;
+  endDate: Date;
+  closeModal: any;
+  closeCarDetail?: () => void;
+}> = ({car, deposit, startDate, endDate, closeModal, closeCarDetail}) => {
+  const [isCancelModalVisible, setIsCancelModalVisible] =
+    useState<boolean>(false);
+  const [isLicenseModalVisible, setIsLicenseModalVisible] =
+    useState<boolean>(false);
+  const [isSuccessModalVisible, setIsSuccessModalVisible] =
+    useState<boolean>(false);
+  const [isFailModalVisible, setIsFailModalVisible] = useState<boolean>(false);
+
   const {infoUser} = useContext(AppContext);
-  const navigation = useNavigation();
 
-  const handleBooking = async () => {
-    if (!infoUser.isVerifiedDriverLicense) {
-
-      if (infoUser.surplus < 900000) {
-        setModalCheckSurplus(true)
-      } else {
-      }
-    } else {
-      setModalLicense(true);
+  const closeModals = () => {
+    setIsCancelModalVisible(false);
+    setIsLicenseModalVisible(false);
+    setIsSuccessModalVisible(false);
+    setIsFailModalVisible(false);
+    closeModal();
+    if (closeCarDetail) {
+      closeCarDetail();
     }
   };
 
+  const handleConfirm = async () => {
+    if (infoUser['isVerifiedDriverLicense']) {
+      let data = JSON.stringify({
+        idUser: infoUser['id'],
+        idCar: car.id,
+        timeFrom: startDate,
+        timeTo: endDate,
+        totalMoney: deposit,
+      });
+
+      let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: 'http://103.57.129.166:3000/booking/api/add',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        data: data,
+      };
+
+      axios
+        .request(config)
+        .then(response => {
+          console.log(JSON.stringify(response.data));
+          if (response.data['result'] === true) {
+            setIsSuccessModalVisible(true);
+          } else {
+            setIsFailModalVisible(true);
+          }
+        })
+        .catch(error => {
+          setIsFailModalVisible(true);
+          console.log('Error: ' + JSON.stringify(error.response));
+          console.log('Error: ' + error);
+        });
+    } else {
+      setIsLicenseModalVisible(true);
+    }
+  };
   return (
     <View
       style={{
@@ -153,7 +203,7 @@ const BottomBar = () => {
         borderTopWidth: StyleSheet.hairlineWidth,
         paddingBottom: 30,
       }}>
-      <Pressable onPress={() => setIsModalVisible(!isModalVisible)}>
+      <Pressable onPress={() => setIsCancelModalVisible(!isCancelModalVisible)}>
         <Row style={{alignItems: 'center'}}>
           <Icon name="circle-check" size={20} color={COLOR.fifth} solid />
           <Text style={{fontSize: 12, fontWeight: 'bold', marginLeft: 5}}>
@@ -170,12 +220,17 @@ const BottomBar = () => {
         </Row>
       </Pressable>
       <CancelModal
-        isModalVisible={isModalVisible}
+        isModalVisible={isCancelModalVisible}
         toggle={() => {
-          setIsModalVisible(!isModalVisible);
+          setIsCancelModalVisible(!isCancelModalVisible);
         }}
       />
-      <TouchableOpacity
+      <FailModal isVisible={isFailModalVisible} onCancel={closeModals} />
+      <SuccessModal
+        isVisible={isSuccessModalVisible}
+        onNavigate={closeModals}
+      />
+      <Pressable
         style={{
           alignItems: 'center',
           justifyContent: 'center',
@@ -184,99 +239,13 @@ const BottomBar = () => {
           borderRadius: 8,
           marginTop: 20,
         }}
-        onPress={() => {
-          handleBooking();
-        }}>
+        onPress={handleConfirm}>
         <Text style={{color: COLOR.white}}>Gửi yêu cầu thuê xe</Text>
-      </TouchableOpacity>
-
-      <Modal animationType="fade" transparent={true} visible={modalLicense}>
-        <View style={styles.modalCenteredContainer}>
-          <View style={styles.modalSuccessBox}>
-            <FastImage style={{width: 60, height: 60}} source={ICON.Ban} />
-            <View>
-              <Text
-                style={{
-                  textAlign: 'center',
-                  fontSize: 24,
-                  marginTop: 5,
-                  fontWeight: '500',
-                  color: '#E73030',
-                }}>
-                Thất bại!
-              </Text>
-              <Text style={{textAlign: 'center', fontSize: 16, marginTop: 5}}>
-                Bạn chưa xác thực bằng lái
-              </Text>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                width: '100%',
-              }}>
-              <TouchableOpacity
-                style={{
-                  width: '45%',
-                  height: 40,
-                  backgroundColor: COLOR.warn,
-                  borderRadius: 8,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginTop: 20,
-                }}
-                onPress={() => setModalLicense(false)}>
-                <Text style={[appStyle.text16Bold, {color: COLOR.textWarn}]}>
-                  Hủy
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  width: '45%',
-                  height: 40,
-                  backgroundColor: COLOR.blueHeader2,
-                  borderRadius: 8,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginTop: 20,
-                }}
-                onPress={() => {
-                  navigation.navigate('VerifyLicense');
-                }}>
-                <Text style={[appStyle.text16Bold, {color: COLOR.blue}]}>
-                  Xác thực
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
-
-      <Modal
-            animationType="fade"
-            transparent={true}
-            visible={modalCheckSurplus}
-        >
-            <View style={styles.modalCenteredContainer}>
-                <View style={styles.modalSuccessBox}>
-                    <FastImage style={{ width: 60, height: 60 }} source={ICON.Ban} />
-                    <View >
-                        <Text style={{ textAlign: 'center', fontSize: 24, marginTop: 5, fontWeight: '500', color: '#E73030' }}>Thất bại!</Text>
-                        <Text style={{ textAlign: 'center', fontSize: 16, marginTop: 5 }}>Số dư ví của bạn không đủ</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', justifyContent:'space-between', width:'100%' }}>
-                        <TouchableOpacity style={{ width: '45%', height: 40, backgroundColor: COLOR.warn, borderRadius: 8, justifyContent: 'center', alignItems: 'center', marginTop: 20 }}
-                            onPress={()=>setModalCheckSurplus(false)}>
-                            <Text style={[appStyle.text16Bold, {color: COLOR.textWarn}]}>Hủy</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{ width: '45%', height: 40, backgroundColor: COLOR.blueHeader2, borderRadius: 8, justifyContent: 'center', alignItems: 'center', marginTop: 20 }}
-                             onPress={()=>{navigation.navigate('MyWallet')}}>
-                            <Text style={[appStyle.text16Bold, {color: COLOR.blue}]}>Kiểm tra ví</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </View>
-        </Modal>
+      </Pressable>
+      <VerifyLicense
+        isVisible={isLicenseModalVisible}
+        onClose={() => setIsLicenseModalVisible(false)}
+      />
     </View>
   );
 };
@@ -287,10 +256,13 @@ const Confirm: React.FC<{
   selectedTime: {
     startTime: string;
     endTime: string;
-    startDate: string;
-    endDate: string;
+    startDate: Date;
+    endDate: Date;
   };
-}> = ({closeModal, car, selectedTime}) => {
+  totalCost: number;
+  closeCarDetail?: () => void;
+}> = ({closeModal, car, selectedTime, totalCost, closeCarDetail}) => {
+  const deposit: number = 0.3 * totalCost;
   return (
     <View style={{backgroundColor: COLOR.white, flex: 1}}>
       <SafeAreaView>
@@ -329,23 +301,25 @@ const Confirm: React.FC<{
                 </Text>
               </View>
 
-              <Row style={{alignItems: 'center', marginTop: 20}}>
-                <Icon name="star" color={COLOR.third} size={12} solid />
-                <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
-                  {car.User.rating}
-                </Text>
-                <Text
-                  style={[
-                    CarCardItemStyles.dot,
-                    {marginLeft: 5, marginRight: 5},
-                  ]}>
-                  ·
-                </Text>
-                <Icon name="suitcase" color={COLOR.fifth} size={12} solid />
-                <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
-                  {car.totalRide} chuyến
-                </Text>
-              </Row>
+              {car.owner && (
+                <Row style={{alignItems: 'center', marginTop: 20}}>
+                  <Icon name="star" color={COLOR.third} size={12} solid />
+                  <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
+                    {car.owner.rating}
+                  </Text>
+                  <Text
+                    style={[
+                      CarCardItemStyles.dot,
+                      {marginLeft: 5, marginRight: 5},
+                    ]}>
+                    ·
+                  </Text>
+                  <Icon name="suitcase" color={COLOR.fifth} size={12} solid />
+                  <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
+                    {car.totalRide} chuyến
+                  </Text>
+                </Row>
+              )}
             </View>
           </Row>
           <View style={[CarCardItemStyles.separator, {marginTop: 20}]} />
@@ -377,7 +351,8 @@ const Confirm: React.FC<{
                     fontSize: 15,
                     marginTop: 5,
                   }}>
-                  {selectedTime.startTime}, {selectedTime.startDate}
+                  {`${selectedTime.startDate?.getHours()}h ${selectedTime.startDate?.getMinutes()}`}
+                  , {formatDate(selectedTime.startDate)}
                 </Text>
               </View>
               <View>
@@ -392,7 +367,8 @@ const Confirm: React.FC<{
                     fontSize: 15,
                     marginTop: 5,
                   }}>
-                  {selectedTime.endTime}, {selectedTime.endDate}
+                  {`${selectedTime.endDate?.getHours()}h ${selectedTime.endDate?.getMinutes()}`}
+                  , {formatDate(selectedTime.endDate)}
                 </Text>
               </View>
             </Row>
@@ -436,30 +412,32 @@ const Confirm: React.FC<{
               </Pressable>
             </View>
           </View>
-          <View
-            style={{
-              backgroundColor: COLOR.placeholder10,
-              marginLeft: -15,
-              marginRight: -15,
-              paddingHorizontal: 15,
-              paddingVertical: 15,
-              marginTop: 20,
-            }}>
-            <Text style={{fontWeight: 'bold', fontSize: 16}}>Chủ xe</Text>
+          {car.owner && (
             <View
               style={{
-                backgroundColor: COLOR.white,
-                padding: 10,
-                borderRadius: 15,
-                marginTop: 15,
+                backgroundColor: COLOR.placeholder10,
+                marginLeft: -15,
+                marginRight: -15,
+                paddingHorizontal: 15,
+                paddingVertical: 15,
+                marginTop: 20,
               }}>
-              <OwnerInfo
-                owner={car.User}
-                rating={car.User.rating}
-                totalRide={car.totalRide}
-              />
+              <Text style={{fontWeight: 'bold', fontSize: 16}}>Chủ xe</Text>
+              <View
+                style={{
+                  backgroundColor: COLOR.white,
+                  padding: 10,
+                  borderRadius: 15,
+                  marginTop: 15,
+                }}>
+                <OwnerInfo
+                  owner={car.owner}
+                  rating={car.owner.rating}
+                  totalRide={car.totalRide}
+                />
+              </View>
             </View>
-          </View>
+          )}
           <View style={{marginTop: 20}}>
             <Row style={{justifyContent: 'space-between', marginBottom: 10}}>
               <Text>Lời nhắn cho chủ xe</Text>
@@ -553,13 +531,13 @@ const Confirm: React.FC<{
               <View style={[CarCardItemStyles.separator, {marginTop: 20}]} />
               <PriceRow
                 title="Tổng cộng"
-                price={car.price + 0.266 * car.price}
+                price={totalCost + 0.266 * totalCost}
                 style1stRow={{fontWeight: 'bold'}}
                 style2ndRow={{color: COLOR.black}}
               />
               <PriceRow
                 title="Đặt cọc qua ứng dụng"
-                price={0.3 * car.price}
+                price={deposit}
                 style1stRow={{fontWeight: 'bold'}}
                 style2ndRow={{color: COLOR.fifth}}
                 icon={true}
@@ -568,7 +546,7 @@ const Confirm: React.FC<{
               />
               <PriceRow
                 title="Thanh toán khi nhận xe"
-                price={car.price + 0.266 * car.price - 0.3 * car.price}
+                price={totalCost + 0.266 * totalCost - 0.3 * totalCost}
                 style1stRow={{fontWeight: 'bold'}}
                 style2ndRow={{color: COLOR.fifth}}
                 icon={true}
@@ -586,7 +564,14 @@ const Confirm: React.FC<{
           <View style={{height: 150}}></View>
         </ScrollView>
       </SafeAreaView>
-      <BottomBar />
+      <BottomBar
+        car={car}
+        deposit={deposit}
+        startDate={selectedTime.startDate}
+        endDate={selectedTime.endDate}
+        closeModal={closeModal}
+        closeCarDetail={closeCarDetail}
+      />
     </View>
   );
 };
@@ -603,25 +588,5 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  modalCenteredContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalSuccessBox: {
-    backgroundColor: 'white',
-    width: '80%',
-    borderRadius: 8,
-    padding: 15,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
   },
 });

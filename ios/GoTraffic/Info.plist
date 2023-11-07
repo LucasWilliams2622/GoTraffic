@@ -50,12 +50,19 @@
 	<dict>
 		<key>NSExceptionDomains</key>
 		<dict>
+			<key>103.57.129.166</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
 			<key>localhost</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
 			</dict>
 		</dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
@@ -72,21 +79,19 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-  <false/>
+	<false/>
 	<key>CFBundleURLTypes</key>
 	<array>
-	<dict>
-		<key>CFBundleURLSchemes</key>
-		<array>
-		<string>fb248850361474761</string>
-		</array>
-	</dict>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb248850361474761</string>
+			</array>
+		</dict>
 	</array>
 	<key>FacebookAppID</key>
 	<string>248850361474761</string>
 	<key>FacebookDisplayName</key>
 	<string>GoTraffic</string>
-
-	
 </dict>
 </plist>
