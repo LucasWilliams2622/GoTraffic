@@ -17,7 +17,7 @@ const Trip = () => {
   const getListBookingCurrent = async () => {
     try {
       const response = await AxiosInstance().get(
-        '/booking/api/get-list-current-booking-of-user?idUser=' + idUser,
+        '/booking/api/get-list-current-booking-of-user?idUser=' + 1,
       );
       if (response.result) {
         setListBookingCurrent(response.booking);
@@ -32,7 +32,7 @@ const Trip = () => {
   const getListBooked = async () => {
     try {
       const response = await AxiosInstance().get(
-        '/booking/api/get-history-by-id-user?idUser=' + idUser,
+        '/booking/api/get-history-by-id-user?idUser=' + 1,
       );
       if (response.result) {
         setListBooking(response.booking);

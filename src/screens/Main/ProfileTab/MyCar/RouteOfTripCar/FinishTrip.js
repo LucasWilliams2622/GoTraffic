@@ -2,6 +2,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import {appStyle} from '../../../../../constants/AppStyle';
 import ItemTrip from '../../../../../components/Support/ItemTrip';
+import ItemComplete from '../../../../../components/Support/ItemComplete';
 import {FlatList} from 'native-base';
 import AxiosInstance from '../../../../../constants/AxiosInstance';
 
@@ -29,7 +30,7 @@ const FinishTrip = () => {
       <FlatList
         style={appStyle.main}
         data={data}
-        renderItem={({item}) => <ItemTrip data={item} />}
+        renderItem={({item}) => <ItemComplete data={item} />}
         keyExtractor={item => item._id}
         showsVerticalScrollIndicator={false}></FlatList>
     </View>

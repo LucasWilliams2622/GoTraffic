@@ -7,7 +7,7 @@ import {appStyle} from '../../constants/AppStyle';
 import numeral from 'numeral';
 import {useNavigation} from '@react-navigation/native';
 
-const ItemTrip = props => {
+const ItemComplete = props => {
   const navigation = useNavigation();
   const {data} = props;
 
@@ -57,7 +57,7 @@ const ItemTrip = props => {
           <FastImage
             style={styles.image}
             resizeMode={'stretch'}
-            source={{uri:image}}
+            source={{uri: data.Car.image}}
           />
         </View>
         <View
@@ -71,11 +71,11 @@ const ItemTrip = props => {
               source={require('../../assets/image/logoMap.png')}
             />
             <Text style={[appStyle.text10, {marginLeft: 5}]}>
-              {data.isDelivery ? 'Tự lái' : ''}
+              {data.Car.isDelivery ? 'Tự lái' : ''}
             </Text>
           </View>
           <View style={styles.line}></View>
-          <Text style={[appStyle.text16Bold]}>{data.name}</Text>
+          <Text style={[appStyle.text16Bold]}>{data.Car.name}</Text>
           <Text style={[appStyle.text12, {marginTop: 5}]}>
             📅 Bắt đầu: {data.createdAt.slice(0, 10)}
           </Text>
@@ -98,7 +98,7 @@ const ItemTrip = props => {
   );
 };
 
-export default ItemTrip;
+export default ItemComplete;
 
 const styles = StyleSheet.create({
   container: {
