@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useMemo} from 'react';
+import React, {useMemo, useState, useContext} from 'react';
 import FastImage from 'react-native-fast-image';
 import {COLOR} from '../../../constants/Theme';
 import {appStyle} from '../../../constants/AppStyle';
@@ -19,8 +19,13 @@ import {
   calculateDiscount,
 } from '../../../utils/utils';
 import {CarCardItemProps} from '../../../types';
+import AxiosInstance from '../../../constants/AxiosInstance';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AppContext } from '../../../utils/AppContext';
+
 
 const CarCardItem = ({
+  id,
   name,
   image,
   imageThumbnail,
@@ -35,7 +40,24 @@ const CarCardItem = ({
   onPress,
 }: CarCardItemProps) => {
   const [isFavorite, setIsFavorite] = React.useState<boolean>(false);
+  const {setIsLogin, infoUser, idUser} = React.useContext(AppContext);
 
+  const addOrRemoveFavorite = async () => {
+    try {      
+      if (isFavorite) {
+        const response = await AxiosInstance().delete(`/favorite-car/api/delete?idUser=${idUser}&idCar=${id}`);
+          console.log(response,"Xe đã bị xóa khỏi danh sách yêu thích");
+      } else {
+        const response = await AxiosInstance().post(`/favorite-car/api/add?idUser=${idUser}&idCar=${id}`);
+          console.log(response,"Xe được thêm vào danh sách yêu thích");
+      }
+      setIsFavorite(!isFavorite);
+    } catch (error) {
+      console.log(error);
+    }
+  };  
+  
+  
   const formattedPrice = useMemo(() => formatPrice(price), [price]);
   const formattedOriginalPrice = useMemo(
     () => formatPrice(originalPrice ?? 0),
@@ -60,7 +82,7 @@ const CarCardItem = ({
       )}
       <Pressable
         style={CarCardItemStyles.pressable}
-        onPress={() => setIsFavorite(!isFavorite)}>
+        onPress={() => addOrRemoveFavorite()}>
         <Icon
           name="heart"
           color={isFavorite ? COLOR.fifth : COLOR.white}

@@ -13,7 +13,6 @@ const HomeCar = props => {
   const navigation = useNavigation();
   const { infoUser, idUser } = useContext(AppContext);
   const [hideSurplus, setHideSurplus] = useState(true);
-
   const handleButtonPress = () => {
     setHideSurplus(!hideSurplus);
   };
