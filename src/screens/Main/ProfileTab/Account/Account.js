@@ -13,7 +13,7 @@ const Account = (props) => {
   const { setIsLogin, infoUser, idUser } = useContext(AppContext);
 
   const defaultName = infoUser.name;
-  const defaultDob = infoUser.createdAt.slice(0,10);
+  const defaultDob = infoUser.dob;
   const defaultSex = infoUser.gender ? "Nam" : "Nữ";
 
   const [name, setName] = useState(route.params?.newName || defaultName);

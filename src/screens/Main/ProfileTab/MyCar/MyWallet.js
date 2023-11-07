@@ -1,18 +1,20 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
-import {FlatList} from 'native-base';
+import React, {useContext, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {appStyle} from '../../../../constants/AppStyle';
 import {COLOR, ICON} from '../../../../constants/Theme';
 import FastImage from 'react-native-fast-image';
-import ItemListCar from '../../../../components/Support/ItemListCar';
-import ItemTrip from '../../../../components/Support/ItemTrip';
+import { useNavigation } from '@react-navigation/native';
+import { AppContext } from '../../../../utils/AppContext';
+import numeral from 'numeral';
 
 const MyWallet = props => {
-  const {navigation} = props;
+  const navigation = useNavigation();
   const goBack = () => {
     navigation.goBack('HomeCar');
   };
+  const { infoUser, idUser } = useContext(AppContext);
+
   return (
     <SafeAreaView style={appStyle.container}>
       <View style={styles.viewTitle}>
@@ -35,7 +37,7 @@ const MyWallet = props => {
       <View style={[appStyle.main, {marginTop: 20}]}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text style={appStyle.text14}>Chủ ví:</Text>
-          <Text style={appStyle.text14}>Phạm Nguyễn Thế Sơn</Text>
+          <Text style={appStyle.text14}>{infoUser.name}</Text>
         </View>
         <View style={styles.containerContent}>
           <Text
@@ -50,10 +52,10 @@ const MyWallet = props => {
               appStyle.text16Bold,
               {color: COLOR.white, textAlign: 'center'},
             ]}>
-            42,567đ
+             {numeral(infoUser.surplus).format('0,0')}đ
           </Text>
           <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-            <View>
+            <TouchableOpacity onPress={()=>navigation.navigate("Recharge")}>
               <FastImage
                 style={{
                   width: 30,
@@ -66,7 +68,7 @@ const MyWallet = props => {
               <Text style={[appStyle.text14, {color: COLOR.white}]}>
                 Nạp tiền
               </Text>
-            </View>
+            </TouchableOpacity>
             <View>
               <FastImage
                 style={{
