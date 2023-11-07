@@ -26,7 +26,7 @@ const ItemActiveTrip = props => {
             Đang trong chuyến
           </Text>
         </View>
-        <Text style={[appStyle.text14Bold]}>{data.createdAt}</Text>
+        <Text style={[appStyle.text14Bold]}>{data.createdAt.slice(0, 10)}</Text>
       </View>
       <TouchableOpacity style={styles.container}>
         <View style={[{alignSelf: 'flex-start'}]}>
@@ -46,13 +46,16 @@ const ItemActiveTrip = props => {
               resizeMode={'stretch'}
               source={require('../../assets/image/logoMap.png')}
             />
-            <Text style={[appStyle.text10, {marginLeft: 5}]}>Tự lái</Text>
+            <Text style={[appStyle.text10, {marginLeft: 5}]}>
+              {' '}
+              {data.Car.isDelivery ? 'Tự lái' : ''}
+            </Text>
           </View>
           {/* <Text style={[appStyle.text16Bold]}>{data.Car.name}</Text> */}
           <Text
             style={[appStyle.text16Bold, {width: 160, color: COLOR.orange}]}>
             <Text style={{color: COLOR.black}}>Tên người thuê: </Text>
-            {/* {data.User.name} */}
+            {data.User.name}
           </Text>
           <Text
             style={{
@@ -62,10 +65,10 @@ const ItemActiveTrip = props => {
               marginTop: 10,
             }}>
             <Text style={{color: COLOR.black}}>SĐT: </Text>
-            {/* {data.User.phone} */}
+            {data.User.phone}
           </Text>
           <Text style={[appStyle.text12, {marginTop: 5}]}>
-            📅 Bắt đầu: {data.timeStart}
+            📅 Bắt đầu: {data.timeFrom}
           </Text>
         </View>
       </TouchableOpacity>
