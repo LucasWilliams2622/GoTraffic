@@ -4,9 +4,41 @@ import FastImage from 'react-native-fast-image';
 import {COLOR} from '../../constants/Theme';
 import {Code} from 'native-base';
 import {appStyle} from '../../constants/AppStyle';
+import AxiosInstance from '../../constants/AxiosInstance';
+import { ToastAndroid } from 'react-native';
 
 const ItemConfirmTrip = props => {
   const {data} = props;
+  const cancelBooking = async () => {
+    try {
+      const response = await AxiosInstance().post(
+        '/booking/api/cancel-by-owner?id=' + data.id,
+      );
+      if (response.result) {
+        console.log('Hủy thanh cong');
+        ToastAndroid.show('Hủy yêu càu đặt xe thành công', ToastAndroid.SHORT);
+      } else {
+        console.log('Failed to get car complete');
+      }
+    } catch (error) {
+      console.log('=========>', error);
+    }
+  };
+  const confirmBooking = async () => {
+    try {
+      const response = await AxiosInstance().post(
+        '/booking/api/accept?id=' + data.id,
+      );
+      if (response.result) {
+        console.log('Xác nhận thanh cong');
+        ToastAndroid.show('Xác nhận yêu càu đặt xe thành công', ToastAndroid.SHORT);
+      } else {
+        console.log('Failed to get car complete');
+      }
+    } catch (error) {
+      console.log('=========>', error);
+    }
+  };
 
   return (
     <View>
@@ -24,7 +56,7 @@ const ItemConfirmTrip = props => {
           />
           <Text style={[appStyle.text14, {marginLeft: 5}]}>Đang chờ duyệt</Text>
         </View>
-        <Text style={[appStyle.text14Bold]}>{data.createdAt}</Text>
+        <Text style={[appStyle.text14Bold]}>{data.createdAt.slice(0, 10)}</Text>
       </View>
       <TouchableOpacity style={styles.container}>
         <View style={[{alignSelf: 'center'}]}>
@@ -44,7 +76,9 @@ const ItemConfirmTrip = props => {
               resizeMode={'stretch'}
               source={require('../../assets/image/logoMap.png')}
             />
-            <Text style={[appStyle.text10, {marginLeft: 5}]}>Tự lái</Text>
+            <Text style={[appStyle.text10, {marginLeft: 5}]}>
+              {data.Car.isDelivery ? 'Tự lái' : ''}
+            </Text>
           </View>
           <Text style={[appStyle.text16Bold]}>{data.Car.name}</Text>
           <Text
@@ -69,7 +103,7 @@ const ItemConfirmTrip = props => {
               justifyContent: 'space-between',
               marginTop: 20,
             }}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={cancelBooking}>
               <Text style={[appStyle.text14, {color: COLOR.red}]}>Hủy</Text>
             </TouchableOpacity>
             <View
@@ -79,7 +113,7 @@ const ItemConfirmTrip = props => {
                 backgroundColor: COLOR.borderColor2,
               }}
             />
-            <TouchableOpacity>
+            <TouchableOpacity onPress={confirmBooking}>
               <Text style={[appStyle.text14, {color: COLOR.green}]}>
                 Đồng ý
               </Text>
