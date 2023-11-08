@@ -1,10 +1,10 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
-import React, {useState, useContext} from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {ICON, COLOR} from '../constants/Theme';
+import { StyleSheet, Text, View, Image } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { ICON, COLOR } from '../constants/Theme';
 import * as Animatable from 'react-native-animatable';
-import {AppContext} from '../utils/AppContext';
+import { AppContext } from '../utils/AppContext';
 import Login from '../screens/Begin/Login';
 import Home from '../screens/Main/HomeTab/Home';
 import Profile from '../screens/Main/ProfileTab/Profile';
@@ -49,7 +49,9 @@ import VerifyLicense from '../screens/Main/ProfileTab/Account/VerifyLicense';
 import ListCarCity from '../components/Home/Home/ListCarCity';
 import Test2 from '../test/Test2';
 import RatingTrip from '../screens/Main/TripTab/RatingTrip';
-import Recharge from '../screens/Main/ProfileTab/MyCar/Recharge'
+import Recharge from '../screens/Main/ProfileTab/MyCar/Recharge';
+import FindingCar from '../screens/Main/HomeTab/FindingCar';
+
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -57,7 +59,7 @@ const StackBegin = () => {
   return (
     <Stack.Navigator
       initialRouteName="Login"
-      screenOptions={{headerShown: false}}>
+      screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Verified" component={Verified} />
       <Stack.Screen name="Register" component={Register} />
@@ -69,7 +71,7 @@ const StackHome = () => {
   return (
     <Stack.Navigator
       initialRouteName="Home"
-      screenOptions={{headerShown: false, animationEnabled: false}}
+      screenOptions={{ headerShown: false, animationEnabled: false }}
       mode="modal">
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen
@@ -83,13 +85,15 @@ const StackHome = () => {
       <Stack.Screen
         name="CarDetail"
         component={CarDetail}
-        options={{animationEnabled: true, animation: 'slide_from_bottom'}}
+        options={{ animationEnabled: true, animation: 'slide_from_bottom' }}
       />
       <Stack.Screen
         name="ListCarCity"
         component={ListCarCity}
-        options={{animationEnabled: true, animation: 'slide_from_bottom'}}
+        options={{ animationEnabled: true, animation: 'slide_from_bottom' }}
       />
+      <Stack.Screen name="FindingCar" component={FindingCar} />
+
     </Stack.Navigator>
   );
 };
@@ -98,7 +102,7 @@ const StackNotification = () => {
   return (
     <Stack.Navigator
       initialRouteName="Notification"
-      screenOptions={{headerShown: false}}>
+      screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Notification" component={Notification} />
     </Stack.Navigator>
   );
@@ -107,7 +111,7 @@ const StackTrip = () => {
   return (
     <Stack.Navigator
       initialRouteName="Trip"
-      screenOptions={{headerShown: false}}>
+      screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Trip" component={Trip} />
       <Stack.Screen name="RatingTrip" component={RatingTrip} />
     </Stack.Navigator>
@@ -117,7 +121,7 @@ const StackSupport = () => {
   return (
     <Stack.Navigator
       initialRouteName="Support"
-      screenOptions={{headerShown: false}}>
+      screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Support" component={Support} />
     </Stack.Navigator>
   );
@@ -126,7 +130,7 @@ const StackProfile = () => {
   return (
     <Stack.Navigator
       initialRouteName="Profile"
-      screenOptions={{headerShown: false}}>
+      screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Account" component={Account} />
       <Stack.Screen name="FavouriteCar" component={FavouriteCar} />
@@ -163,14 +167,14 @@ const StackProfile = () => {
   );
 };
 const Main = () => {
-  const {infoUser, idUser, showWebView, setShowWebView} =
+  const { infoUser, idUser, showWebView, setShowWebView } =
     useContext(AppContext);
 
   return (
     <Tab.Navigator
       initialRouteName="StackHome"
-      screenOptions={({route}) => ({
-        tabBarIcon: ({focused, label, size}) => {
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, label, size }) => {
           let iconName = focused;
           if (route.name === 'StackHome') {
             iconName = focused ? ICON.HomeFocus : ICON.Home;
@@ -242,7 +246,7 @@ const Main = () => {
 
 const BottomTabNav = () => {
   // const [isLogin, setfirst] = useState(true)
-  const {isLogin, infoUser} = useContext(AppContext);
+  const { isLogin, infoUser } = useContext(AppContext);
   // console.log("isLogin Bottom Tabs=================>", isLogin);
   // console.log("infoUser Bottom Tabs=========>", infoUser);
   return <>{isLogin == false ? <StackBegin /> : <Main />}</>;
