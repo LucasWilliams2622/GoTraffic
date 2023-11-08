@@ -97,7 +97,7 @@ const RatingTrip = (props) => {
 
                     <AppButton
                         title="Đánh giá"
-                        marginTop={50}
+                        marginTop={30}
                         onPress={() => sendFeedback()}
                     />
                 </View>
