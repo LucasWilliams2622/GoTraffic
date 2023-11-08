@@ -285,6 +285,20 @@ export const appStyle = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
+  card: {
+    flexDirection: 'row',
+    marginTop: 20,
+    borderBottomWidth: 0.5,
+    borderBottomColor: COLOR.borderColor,
+    height: 50,
+    alignItems: 'center',
+    paddingLeft: 10
+  },
+  viewContainer: {
+    flex: 1,
+    padding: 15
+  },
   dropdown: {
     margin: 15,
     marginBottom: 0,
@@ -310,10 +324,10 @@ export const appStyle = StyleSheet.create({
     borderTopWidth: 0.5,
     borderTopColor: COLOR.borderColor2,
   },
-  rowContent:{
-    flexDirection:'row',
-    justifyContent:'space-between',
-    alignItems:'center'
+  rowContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
   modalContainerCam: {
     backgroundColor: 'white',
@@ -347,18 +361,19 @@ export const appStyle = StyleSheet.create({
     alignItems: 'center',
   },
 
-  viewUpload:{ 
-    width: 170, 
-    height: 100, 
-    backgroundColor: '#D9D9D9', 
-    justifyContent: 'center', 
-    alignItems: 'center', 
-    marginTop: 10 
+  viewUpload: {
+    width: 170,
+    height: 100,
+    backgroundColor: '#D9D9D9',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10
   },
 
-  inputRight:{ 
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    width: windowWidth * 0.4, 
-    justifyContent: 'flex-end' }
+  inputRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: windowWidth * 0.4,
+    justifyContent: 'flex-end'
+  }
 });

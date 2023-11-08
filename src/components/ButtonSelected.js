@@ -1,11 +1,17 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, {useState} from 'react'
 import { appStyle } from '../constants/AppStyle';
 import { COLOR } from '../constants/Theme';
 import FastImage from 'react-native-fast-image';
 
 const ButtonSelected = (props) => {
-    const {onPress, icon, iconWidth, iconHeight, text, isSelected} = props;
+    const {data} = props;
+    const {onPress, icon, iconWidth, iconHeight, text, isSelected} = data;
+    let iconSource = require('../assets/icon/ic_plane.png');    
+    if (icon) {
+        iconSource = icon;
+      }
+
     return (
         <View>
             <TouchableOpacity
@@ -13,7 +19,7 @@ const ButtonSelected = (props) => {
                    {backgroundColor: isSelected ? COLOR.blueHeader : 'transparent'}
                 ]}
                 onPress={onPress}>
-                <FastImage source={icon} resizeMode='stretch' style={[appStyle.iconMedium, {marginRight: 5 }]} />
+                <FastImage source={iconSource} resizeMode='stretch' style={[appStyle.iconMedium, {marginRight: 5 }]} />
                 <Text style={appStyle.text14}>{text}</Text>
             </TouchableOpacity>
         </View>

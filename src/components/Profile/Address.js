@@ -15,8 +15,6 @@ const Address = (props) => {
         <TouchableOpacity onPress={onPress}>
             <View style={styles.container}>
                 <View style={styles.content}>
-                    {/* <FastImage style={[appStyle.iconBig, { alignSelf: 'center' }]}
-                        source={icon} /> */}
                     <FastImage
                         style={[appStyle.iconBig, { alignSelf: 'center' }]}
                         source={type === 'Nhà riêng' ? ICON.Home : ICON.Company}
