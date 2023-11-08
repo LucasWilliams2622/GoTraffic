@@ -33,7 +33,7 @@ const ItemActiveTrip = props => {
           <FastImage
             style={styles.image}
             resizeMode={'stretch'}
-            source={{uri: data.Car.imageThumbnail}}
+            source={{uri: data.Car.image}}
           />
         </View>
         <View
@@ -51,7 +51,7 @@ const ItemActiveTrip = props => {
               {data.Car.isDelivery ? 'Tự lái' : ''}
             </Text>
           </View>
-          {/* <Text style={[appStyle.text16Bold]}>{data.Car.name}</Text> */}
+          <Text style={[appStyle.text16Bold]}>{data.Car.name}</Text>
           <Text
             style={[appStyle.text16Bold, {width: 160, color: COLOR.orange}]}>
             <Text style={{color: COLOR.black}}>Tên người thuê: </Text>

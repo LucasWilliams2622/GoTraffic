@@ -114,6 +114,7 @@ const StackTrip = () => {
       screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Trip" component={Trip} />
       <Stack.Screen name="RatingTrip" component={RatingTrip} />
+      <Stack.Screen name="DetailCar" component={DetailInListCar} />
     </Stack.Navigator>
   );
 };
