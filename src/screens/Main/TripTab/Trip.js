@@ -17,12 +17,11 @@ const Trip = () => {
   const getListBookingCurrent = async () => {
     try {
       const response = await AxiosInstance().get(
-        '/booking/api/get-list-current-booking-of-user?idUser=' + idUser,
+        '/booking/api/get-list-current-booking-of-user?idUser=' + 1,
       );
       if (response.result) {
         setListBookingCurrent(response.booking);
         // console.log("-----------------------?",response.booking);
-
       } else {
         console.log('NETWORK ERROR');
       }
@@ -33,7 +32,7 @@ const Trip = () => {
   const getListBooked = async () => {
     try {
       const response = await AxiosInstance().get(
-        '/booking/api/get-history-by-id-user?idUser=' + idUser,
+        '/booking/api/get-history-by-id-user?idUser=' + 1,
       );
       if (response.result) {
         setListBooking(response.booking);
@@ -68,7 +67,9 @@ const Trip = () => {
           data={listBookingCurrent}
           shouldRasterizeIOS
           showsHorizontalScrollIndicator={false}
-          renderItem={({item}) => <ItemTrip data={item} car={listBookingCurrent} />}
+          renderItem={({item}) => (
+            <ItemTrip data={item} car={listBookingCurrent} />
+          )}
           keyExtractor={item => item.id}
           ListEmptyComponent={
             <View>
@@ -108,7 +109,7 @@ const Trip = () => {
                   appStyle.text16,
                   {textAlign: 'center', marginBottom: 10, fontStyle: 'italic'},
                 ]}>
-               Bạn chưa có lịch sử chuyến
+                Bạn chưa có lịch sử chuyến
               </Text>
             </View>
           }

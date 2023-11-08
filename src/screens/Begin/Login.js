@@ -28,6 +28,7 @@ import {
 import AxiosInstance from '../../constants/AxiosInstance';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
+import axios from 'axios';
 
 const Login = props => {
   const {isLogin, setIsLogin, setInfoUser, setIdUser, idUser} =
@@ -84,15 +85,18 @@ const Login = props => {
   const onLogin = async () => {
     try {
       console.log(phoneNumber, password);
-      const response = await AxiosInstance().post('/user/api/login', {
-        phone: phoneNumber,
-        password: password,
-      });
-      console.log(response);
-      if (response.result) {
-        setIdUser(response.user.id);
-        setInfoUser(response.user);
-        saveLoginInfo(response.user);
+      const response = await axios.post(
+        'http://103.57.129.166:3000/user/api/login',
+        {
+          phone: phoneNumber,
+          password: password,
+        },
+      );
+      console.log(response['data']);
+      if (response.data.result) {
+        setIdUser(response['data'].user.id);
+        setInfoUser(response['data'].user);
+        saveLoginInfo(response['data'].user);
         setIsLogin(true);
         Toast.show({
           type: 'success',
@@ -103,10 +107,10 @@ const Login = props => {
           bottomOffset: 40,
         });
       } else {
-        ToastAndroid.show('Đăng nhập thất bại', ToastAndroid.SHORT);
+        // ToastAndroid.show('Đăng nhập thất bại', ToastAndroid.SHORT);
       }
     } catch (e) {
-      ToastAndroid.show('Đăng nhập thất bại', ToastAndroid.SHORT);
+      // ToastAndroid.show('Đăng nhập thất bại', ToastAndroid.SHORT);
       console.log(e);
     }
   };
@@ -184,11 +188,9 @@ const Login = props => {
   };
 
   useEffect(() => {
-    
-    checkLoginInfo()
-   
-  }, [idUser])
-  
+    checkLoginInfo();
+  }, [idUser]);
+
   return (
     <SafeAreaView style={appStyle.container}>
       <View style={[appStyle.main, {justifyContent: 'space-evenly'}]}>

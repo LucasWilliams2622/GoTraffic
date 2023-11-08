@@ -1,13 +1,12 @@
-import React, { createContext, useState, useEffect, useMemo } from 'react';
+import React, {createContext, useState, useEffect, useMemo} from 'react';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AxiosInstance from '../constants/AxiosInstance';
 
-
 export const AppContext = createContext();
 
 export const AppContextProvider = props => {
-  const { children } = props;
+  const {children} = props;
   const [isLogin, setIsLogin] = useState(false);
   const [infoUser, setInfoUser] = useState({});
   const [idUser, setIdUser] = useState('');
@@ -16,7 +15,7 @@ export const AppContextProvider = props => {
   useEffect(() => {
     getInfoUser();
 
-    return () => { };
+    return () => {};
   }, [isLogin, appState]);
 
   const getInfoUser = async () => {
@@ -26,18 +25,20 @@ export const AppContextProvider = props => {
         const userInfo = JSON.parse(userInfoString);
         setIdUser(userInfo.id);
         // setInfoUser(userInfo)
-
       }
 
-      const response = await AxiosInstance().get(
-        '/user/api/get-by-id?id=' + idUser, {
-      })
-      if (response.result) {
-        setInfoUser(response.user)
-        await AsyncStorage.setItem('userInfo', JSON.stringify(response.user));
-        // console.log(response.user);
-      }
+      // const response = await AxiosInstance().get(
+      //   '/user/api/get-by-id?id=' + idUser,
+      //   {},
+      // );
+      // if (response.result) {
+      //   setInfoUser(response.user);
+      //   await AsyncStorage.setItem('userInfo', JSON.stringify(response.user));
+      //   // console.log(response.user);
+      // }
     } catch (error) {
+      console.log('error');
+
       console.log(error);
     }
   };

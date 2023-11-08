@@ -16,10 +16,11 @@ import {formatPrice} from '../../../utils/utils';
 import {Row} from 'native-base';
 import {Picker} from '@react-native-picker/picker';
 import Modal from 'react-native-modal';
+import moment from 'moment';
 
 const BottomBar: React.FC<{
-  startDate: string | null;
-  endDate: string | null;
+  startDate: Date | null;
+  endDate: Date | null;
   startTime: string;
   endTime: string;
   toggle: any;
@@ -43,19 +44,15 @@ const BottomBar: React.FC<{
           <Text style={{fontWeight: 'bold'}}>
             {startDate &&
               endDate &&
-              `${startTime}, ${new Date(startDate).getDate()}/${
-                new Date(startDate).getMonth() + 1
-              } - ${endTime}, ${new Date(endDate).getDate()}/${
-                new Date(endDate).getMonth() + 1
+              `${startDate.getHours()}h ${startDate.getMinutes()}, ${startDate.getDate()}/${
+                startDate.getMonth() + 1
+              } - ${endDate.getHours()}h ${endDate.getMinutes()}, ${endDate.getDate()}/${
+                endDate.getMonth() + 1
               }`}
           </Text>
           <Text>
             Số ngày thuê:{' '}
-            {startDate &&
-              endDate &&
-              1 +
-                new Date(endDate).getDate() -
-                new Date(startDate).getDate()}{' '}
+            {startDate && endDate && endDate.getDate() - startDate.getDate()}{' '}
             ngày
           </Text>
         </View>
@@ -80,13 +77,12 @@ const TimePickingModal: React.FC<{
   toggle: any;
   setSelectedTime: any;
 }> = ({price, toggle, setSelectedTime}) => {
-  const currentDate = new Date().toISOString().slice(0, 10);
+  const currentDate = new Date();
   const tomorrowDate = new Date();
   tomorrowDate.setDate(tomorrowDate.getDate() + 1);
-  const tomorrowDateString = tomorrowDate.toISOString().slice(0, 10);
 
-  const [startDate, setStartDate] = useState<string | null>(currentDate);
-  const [endDate, setEndDate] = useState<string | null>(tomorrowDateString);
+  const [startDate, setStartDate] = useState<Date | null>(currentDate);
+  const [endDate, setEndDate] = useState<Date | null>(tomorrowDate);
   const [markedDates, setMarkedDates] = useState<{[key: string]: MarkedDate}>(
     {},
   );
@@ -112,8 +108,9 @@ const TimePickingModal: React.FC<{
   };
 
   const onDayPress = (day: DateData) => {
+    const selectedDate = moment.utc(day.dateString).toDate();
     if (!startDate) {
-      setStartDate(day.dateString);
+      setStartDate(selectedDate);
       setMarkedDates(prevState => ({
         ...prevState,
         [day.dateString]: {
@@ -123,7 +120,7 @@ const TimePickingModal: React.FC<{
         },
       }));
     } else if (!endDate) {
-      let dates = getDates({startDate, endDate: day.dateString});
+      let dates = getDates({startDate, endDate: selectedDate});
       let newMarkedDates: {[key: string]: MarkedDate} = {};
       dates.forEach((date, index) => {
         if (index === 0) {
@@ -142,10 +139,10 @@ const TimePickingModal: React.FC<{
           newMarkedDates[date] = {color: COLOR.sixth, textColor: 'black'};
         }
       });
-      setEndDate(day.dateString);
+      setEndDate(selectedDate);
       setMarkedDates(prevState => ({...prevState, ...newMarkedDates}));
     } else {
-      setStartDate(day.dateString);
+      setStartDate(selectedDate);
       setEndDate(null);
       setMarkedDates({
         [day.dateString]: {
@@ -184,10 +181,15 @@ const TimePickingModal: React.FC<{
       ? markedDates[date.dateString].textColor
       : 'black';
 
+    const startDateString = startDate
+      ? startDate.toISOString().split('T')[0]
+      : null;
+    const endDateString = endDate ? endDate.toISOString().split('T')[0] : null;
+
     const borderRadiusStyle =
-      startDate === date?.dateString
+      startDateString === date?.dateString
         ? {borderTopLeftRadius: 10, borderBottomLeftRadius: 10}
-        : endDate === date?.dateString
+        : endDateString === date?.dateString
         ? {borderTopRightRadius: 10, borderBottomRightRadius: 10}
         : {};
 
@@ -275,6 +277,24 @@ const TimePickingModal: React.FC<{
   };
   LocaleConfig.defaultLocale = 'vn';
 
+  const onTimeChange = (
+    itemValue: string,
+    setDate: Function,
+    setSelectedTime: Function,
+  ) => {
+    const [hours, minutes] = itemValue.split(':');
+    setDate((prevDate: Date | null) => {
+      if (prevDate) {
+        const newDate = new Date(prevDate);
+        newDate.setHours(parseInt(hours));
+        newDate.setMinutes(parseInt(minutes));
+        return newDate;
+      }
+      return prevDate;
+    });
+    setSelectedTime(itemValue); // Update the selected time state
+  };
+
   return (
     <SafeAreaView style={{backgroundColor: COLOR.white, flex: 1}}>
       <View style={{alignItems: 'center', justifyContent: 'center'}}>
@@ -312,7 +332,9 @@ const TimePickingModal: React.FC<{
               <Text>Nhận xe</Text>
               <Picker
                 selectedValue={startTime}
-                onValueChange={itemValue => setStartTime(itemValue)}>
+                onValueChange={itemValue =>
+                  onTimeChange(itemValue, setStartDate, setStartTime)
+                }>
                 {times.map(time => (
                   <Picker.Item key={time} label={time} value={time} />
                 ))}
@@ -323,7 +345,9 @@ const TimePickingModal: React.FC<{
               <Text>Trả xe</Text>
               <Picker
                 selectedValue={endTime}
-                onValueChange={itemValue => setEndTime(itemValue)}>
+                onValueChange={itemValue =>
+                  onTimeChange(itemValue, setEndDate, setEndTime)
+                }>
                 {times.map(time => (
                   <Picker.Item key={time} label={time} value={time} />
                 ))}

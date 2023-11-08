@@ -219,7 +219,9 @@ const DetailInListCar = props => {
       </View>
       <View style={{padding: 14}}>
         <View style={styles.line1}>
-          <FastImage style={styles.imageCar} source={data.image}></FastImage>
+          <FastImage
+            style={styles.imageCar}
+            source={{uri: data.imageThumbnail}}></FastImage>
           <View style={{marginLeft: 10}}>
             <Text style={[appStyle.text16Bold]}>{data.name}</Text>
             <TouchableOpacity

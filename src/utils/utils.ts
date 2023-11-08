@@ -40,8 +40,8 @@ export const convertTotalNumber = (num: number) => {
   return result;
 };
 
-const currentDay = new Date();
-const tomorrow = new Date();
+export const currentDay = new Date();
+export const tomorrow = new Date();
 tomorrow.setDate(tomorrow.getDate() + 1);
 
 const currentDayString = `${currentDay.getHours()}:00, ${currentDay.getDate()}/${
@@ -67,6 +67,19 @@ const formatTime = (date: Date) => {
 
 export const currentDateString = formatTime(currentDay);
 export const returnDateString = formatTime(tomorrow);
+export const currentTimeString = `${currentDay.getHours()}:00`;
+export const returnTimeString = `${tomorrow.getHours() + 1}:00`;
+
+export const formatDate = (date: Date) => {
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+
+  const daysOfWeek = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+  const dayOfWeek = daysOfWeek[date.getDay()];
+
+  return `${dayOfWeek}, ${day}/${month}/${year}`;
+};
 
 export const calculateAvgRating = (ratings: {rating: number}[]) => {
   const totalRatings = ratings.reduce((sum, rating) => sum + rating.rating, 0);

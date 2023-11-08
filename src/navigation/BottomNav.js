@@ -162,7 +162,6 @@ const StackProfile = () => {
       <Stack.Screen name="VerifyLicense" component={VerifyLicense} />
       <Stack.Screen name="Test2" component={Test2} />
       <Stack.Screen name="Recharge" component={Recharge} />
-
     </Stack.Navigator>
   );
 };
