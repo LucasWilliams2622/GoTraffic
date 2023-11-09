@@ -16,7 +16,8 @@ const ItemTrip = props => {
     if (data.status == 5) {
       navigation.navigate('RatingTrip', {id: data.id});
     } else {
-      navigation.navigate('DetailCar', {id: data.id});
+      console.log('id Car:' + data.idCar);
+      navigation.navigate('CarDetail', {car_id: data.idCar});
     }
   };
 

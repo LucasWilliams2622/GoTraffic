@@ -5,7 +5,33 @@ import {COLOR} from '../../../constants/Theme';
 import {FlatList, ScrollView} from 'native-base';
 import ItemNotification from '../../../components/Support/ItemNotification';
 import {appStyle} from '../../../constants/AppStyle';
+import AxiosInstance from '../../../constants/AxiosInstance';
 const Notification = () => {
+  const [data, setData] = useState('');
+  const getListNotifications = async () => {
+    try {
+      const response = await AxiosInstance().get('/api/notification');
+      if (response.result) {
+      } else {
+        console.log('NETWORK ERROR');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const getListNotificationsByIDUser = async () => {
+    try {
+      const response = await AxiosInstance().get(
+        '/notification-booking/api/get-by-user'+1,
+      );
+      if (response.result) {
+      } else {
+        console.log('NETWORK ERROR');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <SafeAreaView style={appStyle.container}>
       <View style={styles.viewTitle}>
