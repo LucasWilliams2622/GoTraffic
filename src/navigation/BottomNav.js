@@ -51,6 +51,8 @@ import Test2 from '../test/Test2';
 import RatingTrip from '../screens/Main/TripTab/RatingTrip';
 import Recharge from '../screens/Main/ProfileTab/MyCar/Recharge';
 import FindingCar from '../screens/Main/HomeTab/FindingCar';
+import FastImage from 'react-native-fast-image';
+import { appStyle } from '../constants/AppStyle';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -202,6 +204,7 @@ const Main = () => {
                 width: 60,
               }}>
               <Animatable.View animation="zoomIn" duration={2000}>
+                <FastImage source={ICON.Address} tintColor={'red'} style={appStyle.icon}/>
                 <Image
                   source={iconName}
                   style={{

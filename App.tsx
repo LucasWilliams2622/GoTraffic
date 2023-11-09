@@ -10,8 +10,8 @@ import {Provider} from 'react-redux';
 import {legacy_createStore, applyMiddleware} from 'redux';
 import rootReducer from './src/redux/reducers';
 import thunk from 'redux-thunk';
-// import Infor from './src/components/Profile/Info';
 import Toast from 'react-native-toast-message';
+import {toastConfig} from './src/configs/ToastConfig';
 
 // Tạo store Redux
 const store = legacy_createStore(rootReducer, applyMiddleware(thunk));
@@ -32,7 +32,11 @@ const App = () => {
             ) : (
               <BottomTabs />
             )}
-            <Toast />
+           <Toast
+        ref={ref => Toast.setRef(ref)}
+        config={toastConfig}
+        position="top"
+      />
           </NativeBaseProvider>
         </NavigationContainer>
       </AppContextProvider>

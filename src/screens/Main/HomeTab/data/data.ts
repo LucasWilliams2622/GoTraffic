@@ -120,6 +120,13 @@ export const featuredLocationData = [
 
 export const AirportData = [
   {
+    id: 1,
+    title: 'Tân Sơn Nhất',
+    image:
+      'https://static.vinwonders.com/production/san-bay-quoc-te-tan-son-nhat.jpg',
+    totalCar: 1432,
+  },
+  {
     id: 2,
     title: 'Nội Bài',
     image:

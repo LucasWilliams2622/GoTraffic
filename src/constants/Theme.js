@@ -103,4 +103,8 @@ export const ICON = {
   Poster: require('../assets/image/poster.jpg'),
   Done: require('../assets/icon/ic_done.png'),
   Plane: require('../assets/icon/ic_plane.png'),
+
+  cancelWhite: require('../assets/icon/ic_cancel_white.png'),
+  checkWhite: require('../assets/icon/ic_check_white.png'),
+
 };
