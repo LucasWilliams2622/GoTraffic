@@ -1,3 +1,10 @@
+import {Text, View} from 'react-native';
+import FastImage from 'react-native-fast-image';
+import {appStyle, windowHeight, windowWidth} from '../constants/AppStyle';
+import Toast from 'react-native-toast-message';
+import { ICON } from '../constants/Theme';
+import ImagePicker from 'react-native-image-crop-picker';
+
 export const formatPrice = (price: number) => {
   price = Math.round(price);
   const formattedNum =
@@ -84,4 +91,69 @@ export const formatDate = (date: Date) => {
 export const calculateAvgRating = (ratings: {rating: number}[]) => {
   const totalRatings = ratings.reduce((sum, rating) => sum + rating.rating, 0);
   return totalRatings / ratings.length;
+};
+
+export const showToastMessage = (type?: string, title?: string, icon?: any) => {
+  const topOffset = windowHeight * 0.05;
+  const containerStyle = {
+    width: windowWidth * 0.7,
+    backgroundColor: '#000000',
+    opacity: 0.8,
+  };
+
+  const child = (
+    <View
+      style={{
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#000000',
+        borderRadius: 8,
+      }}>
+      <FastImage
+        source={type === 'error' ? ICON.cancelWhite : icon || ICON.checkWhite}
+        style={{height: 32, width: 32, marginTop: 20}}
+      />
+      <Text
+        style={[
+          appStyle.text14,
+          {
+            fontWeight: '700',
+            color: '#ffff',
+            marginVertical: 16,
+            width: '85%',
+            textAlign: 'center',
+          },
+        ]}>
+        {title}
+      </Text>
+    </View>
+  );
+
+  Toast.show({
+    topOffset,
+    type: 'custom',
+    visibilityTime: 2000,
+    position: 'top',
+    props: {
+      containerStyle,
+      child,
+    },
+  });
+};
+
+export const selectImage = async (
+  width: number,
+  height: number,
+  // setImg: any,
+) => {
+  let img;
+  await ImagePicker.openPicker({
+    width: width,
+    height: height,
+    cropping: true,
+  }).then(image => {
+    // setImg(image);
+    img = image;
+  });
+  return img;
 };

@@ -11,6 +11,7 @@ export const AppContextProvider = props => {
   const [infoUser, setInfoUser] = useState({});
   const [idUser, setIdUser] = useState('');
   const [appState, setAppState] = useState(0);
+  const [notificationCount, setNotificationCount] = useState(0);
 
   useEffect(() => {
     getInfoUser();
@@ -22,23 +23,19 @@ export const AppContextProvider = props => {
     try {
       const userInfoString = await AsyncStorage.getItem('userInfo');
       if (userInfoString !== null) {
-        const userInfo = JSON.parse(userInfoString);
-        setIdUser(userInfo.id);
+        // const userInfo = JSON.parse(userInfoString);
+        // setIdUser(userInfo.id);
         // setInfoUser(userInfo)
       }
 
-      // const response = await AxiosInstance().get(
-      //   '/user/api/get-by-id?id=' + idUser,
-      //   {},
-      // );
-      // if (response.result) {
-      //   setInfoUser(response.user);
-      //   await AsyncStorage.setItem('userInfo', JSON.stringify(response.user));
-      //   // console.log(response.user);
-      // }
+      const response = await AxiosInstance().get(
+        '/user/api/get-by-id?id=' + idUser,
+      );
+      if (response.result) {
+        setInfoUser(response.user);
+        await AsyncStorage.setItem('userInfo', JSON.stringify(response.user));
+      }
     } catch (error) {
-      console.log('error');
-
       console.log(error);
     }
   };
@@ -56,6 +53,8 @@ export const AppContextProvider = props => {
       currentDay,
       appState,
       setAppState,
+      notificationCount,
+      setNotificationCount,
     };
   }, [
     isLogin,
@@ -67,6 +66,8 @@ export const AppContextProvider = props => {
     currentDay,
     appState,
     setAppState,
+    notificationCount,
+    setNotificationCount,
   ]);
   return (
     <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>

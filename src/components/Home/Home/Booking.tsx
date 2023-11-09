@@ -199,7 +199,7 @@ const DriverView = ({timeString, navigation}: ViewProps) => {
                 break;
             }
           }}>
-          <HStack space={2} alignItems="center">
+          {/* <HStack space={2} alignItems="center">
             <RadioButton
               value="lien-tinh"
               tripType={tripType}
@@ -215,7 +215,7 @@ const DriverView = ({timeString, navigation}: ViewProps) => {
               tripType={tripType}
               text="Nội thành"
             />
-          </HStack>
+          </HStack> */}
         </Radio.Group>
       </View>
 
