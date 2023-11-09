@@ -44,9 +44,9 @@ const FavouriteCar = (props) => {
         text="Xe yêu thích"
         onPress={() => navigation.navigate('Profile')}
       />
-      <View style={{ padding: 15, width: '100%', height: '100%' }}>
+      <View style={{ padding: 15, width: '100%', height: '90%' }}>
         <FlatList
-          style={{ marginBottom: 50 }}
+          style={{ marginBottom: 20 }}
           data={listCar}
           renderItem={({ item }) => <ItemCarCard {...item.Car} />}
           keyExtractor={(item, index) => index.toString()}

@@ -7,11 +7,11 @@ import { windowHeight } from '../constants/AppStyle'
 const AppInput = (props) => {
     const { backgroundColor, borderWidth, borderColor, borderRadius, paddingVertical, paddingHorizontal,
         placeholder, textColor, placeholderTextColor, keyboardAppearance, returnKeyType, autoCapitalize,
-        width,height, keyboardType, marginTop, textAlignVertical,
+        width,height, keyboardType, marginTop, textAlignVertical, justifyContent,
         editable, autoCorrect, multiline, fontSize,
         onChangeText, value, onBlur,
 
-        isPassword } = props
+        isPassword, isLocation } = props
 
     //=====================| CHANGE BOORDER COLOR |================
     const [isFocused, setIsFocused] = useState(false);
@@ -25,6 +25,8 @@ const AppInput = (props) => {
     // =======================| SHOW HIDE PASSWORD |==================
     const [isHidden, setIsHidden] = useState(true);
     const [iconSource, setIconSource] = useState(require('../assets/icon/ic_invisible.png'));
+    const [iconLocation, setIconLocation] = useState(require('../assets/icon/ic_location.png'));
+
 
     const handleToggleVisibility = () => {
         setIsHidden(!isHidden);
@@ -40,8 +42,15 @@ const AppInput = (props) => {
             borderRadius: borderRadius == null ? 6 : borderRadius,
             paddingVertical: paddingVertical == null ? 8 : paddingVertical,
             paddingHorizontal: paddingHorizontal == null ? 8 : paddingHorizontal,
-            marginTop: marginTop == null ? 0 : marginTop
+            marginTop: marginTop == null ? 0 : marginTop,
+            justifyContent: justifyContent == null ? 'space-between' : justifyContent,
         }]}>
+            {
+                isLocation == null ? (<></>)
+                    : (<TouchableOpacity style={{}}>
+                        <FastImage style={{ width: 20, height: 20, marginRight: 6 }} source={iconLocation} />
+                    </TouchableOpacity>)
+            }
             <TextInput
                 style={[styles.textInput,  {
                     color: textColor ? '#000000' : textColor,
@@ -86,13 +95,13 @@ export default AppInput
 const styles = StyleSheet.create({
     boxInput: {
         alignItems: 'center',
-        justifyContent: 'space-between',
+       // justifyContent: 'space-between',
         flexDirection: 'row',
         marginTop: 5
     },
     textInput: {
         //paddingVertical: 0,
         padding:0,
-        textAlignVertical:'top'
+        textAlignVertical:'center',
     },
 });
