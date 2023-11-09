@@ -11,6 +11,7 @@ export const AppContextProvider = props => {
   const [infoUser, setInfoUser] = useState({});
   const [idUser, setIdUser] = useState('');
   const [appState, setAppState] = useState(0);
+  const [notificationCount, setNotificationCount] = useState(0);
 
   useEffect(() => {
     getInfoUser();
@@ -52,6 +53,8 @@ export const AppContextProvider = props => {
       currentDay,
       appState,
       setAppState,
+      notificationCount,
+      setNotificationCount,
     };
   }, [
     isLogin,
@@ -63,6 +66,8 @@ export const AppContextProvider = props => {
     currentDay,
     appState,
     setAppState,
+    notificationCount,
+    setNotificationCount,
   ]);
   return (
     <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>
