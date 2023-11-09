@@ -8,11 +8,11 @@ import {appStyle} from '../../../constants/AppStyle';
 import AxiosInstance from '../../../constants/AxiosInstance';
 const Notification = () => {
   const [data, setData] = useState('');
+  const [dataTrip, setdataTrip] = useState('')
   const getListNotifications = async () => {
     try {
       const response = await AxiosInstance().get('/notification/api');
       if (response.result) {
-        console.log(response.notification);
         setData(response.notification);
       } else {
         console.log('NETWORK ERROR');
@@ -24,9 +24,11 @@ const Notification = () => {
   const getListNotificationsByIDUser = async () => {
     try {
       const response = await AxiosInstance().get(
-        '/notification-booking/api/get-by-user' + 1,
+        '/notification-booking/api/get-by-user?idUser=' + 9,
       );
       if (response.result) {
+        console.log('Trip:>>>' + response.notifications);
+        setdataTrip(response.notifications);
       } else {
         console.log('NETWORK ERROR');
       }
@@ -35,6 +37,7 @@ const Notification = () => {
     }
   };
   useEffect(() => {
+    getListNotificationsByIDUser();
     getListNotifications();
   }, []);
   return (
@@ -48,7 +51,7 @@ const Notification = () => {
         </View>
         <FlatList
           style={{width: '100%'}}
-          data={DATA}
+          data={dataTrip}
           renderItem={({item}) => <ItemNotification data={item} />}
           keyExtractor={item => item._id}
           showsVerticalScrollIndicator={false}
