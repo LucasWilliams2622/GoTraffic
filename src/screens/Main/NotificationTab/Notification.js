@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {COLOR} from '../../../constants/Theme';
 import {FlatList, ScrollView} from 'native-base';
@@ -10,8 +10,10 @@ const Notification = () => {
   const [data, setData] = useState('');
   const getListNotifications = async () => {
     try {
-      const response = await AxiosInstance().get('/api/notification');
+      const response = await AxiosInstance().get('/notification/api');
       if (response.result) {
+        console.log(response.notification);
+        setData(response.notification);
       } else {
         console.log('NETWORK ERROR');
       }
@@ -22,7 +24,7 @@ const Notification = () => {
   const getListNotificationsByIDUser = async () => {
     try {
       const response = await AxiosInstance().get(
-        '/notification-booking/api/get-by-user'+1,
+        '/notification-booking/api/get-by-user' + 1,
       );
       if (response.result) {
       } else {
@@ -32,6 +34,9 @@ const Notification = () => {
       console.log(e);
     }
   };
+  useEffect(() => {
+    getListNotifications();
+  }, []);
   return (
     <SafeAreaView style={appStyle.container}>
       <View style={styles.viewTitle}>
@@ -39,7 +44,7 @@ const Notification = () => {
       </View>
       <ScrollView>
         <View style={styles.line1}>
-          <Text style={styles.text1}>Mới</Text>
+          <Text style={styles.text1}>Thông báo chuyến</Text>
         </View>
         <FlatList
           style={{width: '100%'}}
@@ -49,11 +54,11 @@ const Notification = () => {
           showsVerticalScrollIndicator={false}
         />
         <View style={styles.line1}>
-          <Text style={styles.text1}>Trước đó</Text>
+          <Text style={styles.text1}>Thông báo ứng dụng</Text>
         </View>
         <FlatList
           style={{width: '100%', marginBottom: 65}}
-          data={DATA}
+          data={data}
           renderItem={({item}) => <ItemNotification data={item} />}
           keyExtractor={item => item._id}
           showsVerticalScrollIndicator={false}

@@ -11,6 +11,7 @@ import Profile from '../screens/Main/ProfileTab/Profile';
 import Notification from '../screens/Main/NotificationTab/Notification';
 import Support from '../screens/Main/SupportTab/Support';
 import Trip from '../screens/Main/TripTab/Trip';
+import HistoryTrip from '../screens/Main/TripTab/HistoryTrip';
 import FavouriteCar from '../screens/Main/ProfileTab/FavouriteCar';
 import MyAddress from '../screens/Main/ProfileTab/Address/MyAddress';
 import ShareWithFriend from '../screens/Main/ProfileTab/ShareWithFriend';
@@ -112,6 +113,7 @@ const StackTrip = () => {
       initialRouteName="Trip"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="Trip" component={Trip} />
+      <Stack.Screen name="HistoryTrip" component={HistoryTrip} />
       <Stack.Screen name="RatingTrip" component={RatingTrip} />
       <Stack.Screen
         name="CarDetail"
