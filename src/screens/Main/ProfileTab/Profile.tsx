@@ -17,9 +17,12 @@ import {AppContext} from '../../../utils/AppContext';
 import AppButton from '../../../components/AppButton';
 import AxiosInstance from '../../../constants/AxiosInstance';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation ,useIsFocused} from '@react-navigation/native';
 
 const Profile = props => {
-  const {navigation, route} = props;
+  const isFocused = useIsFocused();
+  const navigation = useNavigation();
+  const { route} = props;
   const {setIsLogin, infoUser, idUser} = useContext(AppContext);
 
   const [name, setName] = useState(infoUser.name);
@@ -68,14 +71,11 @@ const Profile = props => {
   };
 
   useEffect(() => {
-    if (route.params?.newName) {
-      setName(route.params.newName);
+    if (isFocused) {
     }
-  }, [route.params?.newName]);
+  }, [isFocused]);
 
-  const updateNewName = newName => {
-    navigation.setParams({newName});
-  };
+ 
   return (
     <SafeAreaView style={[appStyle.container, {backgroundColor: COLOR.gray}]}>
       <ScrollView
@@ -100,7 +100,7 @@ const Profile = props => {
                 appStyle.text24Bold,
                 {textAlign: 'center', marginTop: 12},
               ]}>
-              {name}
+              {infoUser.name}
             </Text>
           </View>
         </View>
@@ -109,7 +109,7 @@ const Profile = props => {
           <AppProfile
             icon={ICON.Profile}
             text="Tài khoản của tôi"
-            onPress={() => navigation.navigate('Account', updateNewName(name))}
+            onPress={() => navigation.navigate('Account',)}
           />
 
           <AppProfile

@@ -94,7 +94,7 @@ const Home: React.FC = () => {
       const response = await AxiosInstance().get('/car/api/list');
       if (response.result) {
         setListCar(response.listCar)
-        console.log(response.listCar);
+        // console.log(response.listCar);
         
       } else {
         console.log('Error');
