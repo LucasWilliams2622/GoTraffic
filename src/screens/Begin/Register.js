@@ -10,12 +10,13 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {appStyle} from '../../constants/AppStyle';
 import AppInput from '../../components/AppInput';
 import AppButton from '../../components/AppButton';
-import {COLOR} from '../../constants/Theme';
+import {COLOR, ICON} from '../../constants/Theme';
 import FastImage from 'react-native-fast-image';
 import * as Yup from 'yup';
 import {Formik} from 'formik';
 import {KeyboardAvoidingView} from 'native-base';
 import AxiosInstance from '../../constants/AxiosInstance';
+import { showToastMessage } from '../../utils/utils';
 
 const Register = props => {
   const {navigation} = props;
@@ -86,6 +87,8 @@ const Register = props => {
           setpassword(values.password);
           if (values.password === values.rePassword) {
             onRegister();
+          }else{
+            showToastMessage('','Mật khẩu không khớp',ICON.cancelWhite);
           }
         }}>
         {({
