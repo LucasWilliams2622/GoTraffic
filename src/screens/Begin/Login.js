@@ -29,7 +29,7 @@ import AxiosInstance from '../../constants/AxiosInstance';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
 import axios from 'axios';
-import { showToastMessage } from '../../utils/utils';
+import {showToastMessage} from '../../utils/utils';
 
 const Login = props => {
   const {isLogin, setIsLogin, setInfoUser, setIdUser, idUser} =
@@ -51,10 +51,6 @@ const Login = props => {
     setVisible2(!visible2);
   };
   const validationSchema = Yup.object().shape({
-    rePassword: Yup.string()
-      .required('Mật khẩu không được để trống')
-      .min(8, 'Mật khẩu quá ngắn ít nhất phải 8 kí tự')
-      .matches(/[a-zA-Z]/, 'Mật khẩu chỉ chứa các chữ các latinh'),
     phoneNumber: Yup.number()
       .typeError('Không phải định dạng số điện thoại')
       .positive('Số điện thoại không được có dấu trừ')
@@ -64,24 +60,8 @@ const Login = props => {
       .required('Mật khẩu không được để trống')
       .min(8, 'Mật khẩu quá ngắn ít nhất phải 8 kí tự')
       .matches(/[a-zA-Z]/, 'Mật khẩu chỉ chứa các chữ các latinh'),
-    passwordInBottomSheet: Yup.string()
-      .required('Mật khẩu không được để trống')
-      .min(8, 'Mật khẩu quá ngắn ít nhất phải 8 kí tự')
-      .matches(/[a-zA-Z]/, 'Mật khẩu chỉ chứa các chữ các latinh'),
   });
 
-  const formik = useFormik({
-    initialValues: {
-      phoneNumber: '',
-      password: '',
-      rePassword: '',
-    },
-    validationSchema: validationSchema,
-    onSubmit: values => {
-      // Xử lý logic khi submit form
-      console.log(values);
-    },
-  });
   //API login
   const onLogin = async () => {
     try {
@@ -108,7 +88,7 @@ const Login = props => {
         //   bottomOffset: 40,
         // });
 
-        showToastMessage('','Ðăng nhập thành công !')
+        showToastMessage('', 'Ðăng nhập thành công !');
       } else {
         // ToastAndroid.show('Đăng nhập thất bại', ToastAndroid.SHORT);
       }
@@ -208,8 +188,11 @@ const Login = props => {
             initialValues={{phoneNumber: '', password: ''}}
             validationSchema={validationSchema}
             onSubmit={values => {
-              console.log(values);
-              setIsLogin(true);
+              console.log(values.phoneNumber);
+              console.log(values.password);
+              setphoneNumber(values.phoneNumber);
+              setpassword(values.password);
+              onLogin();
             }}>
             {({
               handleChange,
@@ -228,13 +211,13 @@ const Login = props => {
                         keyboardType={'phone-pad'}
                         returnKeyType={'next'}
                         placeholder={'Nhập số điện thoại của bạn'}
-                        // onChangeText={handleChange('phoneNumber')}
-                        // onBlur={handleBlur('phoneNumber')}
-                        // value={values.phoneNumber}
-                        onChangeText={phoneNumber => [
-                          setphoneNumber(phoneNumber),
-                        ]}
-                        value={phoneNumber}
+                        onChangeText={handleChange('phoneNumber')}
+                        onBlur={handleBlur('phoneNumber')}
+                        value={values.phoneNumber}
+                        // onChangeText={phoneNumber => [
+                        //   setphoneNumber(phoneNumber),
+                        // ]}
+                        // value={phoneNumber}
                       />
                     </View>
                   </View>
@@ -250,11 +233,11 @@ const Login = props => {
                         placeholder={'Nhập mật khảu'}
                         isPassword
                         secureTextEntry
-                        // onChangeText={handleChange('password')}
-                        // onBlur={handleBlur('password')}
-                        // value={values.password}
-                        onChangeText={password => [setpassword(password)]}
-                        value={password}
+                        onChangeText={handleChange('password')}
+                        onBlur={handleBlur('password')}
+                        value={values.password}
+                        // onChangeText={password => [setpassword(password)]}
+                        // value={password}
                       />
                     </View>
                   </View>
@@ -301,15 +284,13 @@ const Login = props => {
                       Hãy đăng ký
                     </Text>
                   </Text>
+                  <AppButton
+                    title="Đăng nhập"
+                    color={COLOR.secondary}
+                    fontSize={18}
+                    onPress={handleSubmit}
+                  />
                 </KeyboardAvoidingView>
-                <AppButton
-                  title="Đăng nhập"
-                  color={COLOR.secondary}
-                  fontSize={18}
-                  onPress={() => {
-                    onLogin();
-                  }}
-                />
               </View>
             )}
           </Formik>

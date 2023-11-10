@@ -23,6 +23,10 @@ const Register = props => {
     navigation.goBack('Login');
   };
   const validationSchema = Yup.object().shape({
+    email: Yup.string()
+      .email('Vui lòng nhập email hợp lệ ')
+      .max(255)
+      .required('Email không được để trống'),
     name: Yup.string().required('Tên không được để trống'),
     phoneNumber: Yup.number()
       .typeError('Không phải định dạng số điện thoại')
@@ -46,13 +50,12 @@ const Register = props => {
   //API REGISTER
   const onRegister = async () => {
     try {
-      console.log(phoneNumber, password);
+      console.log(phoneNumber, email, password,nameUser);
       const response = await AxiosInstance().post('user/api/register', {
-        name: nameUser,
         phone: phoneNumber,
         email: email,
+        name: nameUser,
         password: password,
-        verificationCode: 999999,
       });
       if (response.result) {
         ToastAndroid.show('Ðăng ki thành công', ToastAndroid.SHORT);
@@ -70,13 +73,20 @@ const Register = props => {
         initialValues={{
           name: '',
           phoneNumber: '',
+          email: '',
           password: '',
           rePassword: '',
         }}
         validationSchema={validationSchema}
         onSubmit={values => {
-          setIsLogin(true);
           console.log(values);
+          setnameUser(values.name);
+          setphoneNumber(values.phoneNumber);
+          setemail(values.email);
+          setpassword(values.password);
+          if (values.password === values.rePassword) {
+            onRegister();
+          }
         }}>
         {({
           handleChange,
@@ -112,11 +122,9 @@ const Register = props => {
                 <AppInput
                   returnKeyType={'next'}
                   placeholder={'Nhập tên của bạn'}
-                  // onChangeText={handleChange('name')}
-                  // onBlur={handleBlur('name')}
-                  // value={values.name}
-                  onChangeText={nameUser => [setnameUser(nameUser)]}
-                  value={nameUser}
+                  onChangeText={handleChange('name')}
+                  onBlur={handleBlur('name')}
+                  value={values.name}
                 />
               </View>
               {touched.name && errors.name && (
@@ -129,11 +137,9 @@ const Register = props => {
                   keyboardType={'phone-pad'}
                   returnKeyType={'next'}
                   placeholder={'Nhập số điện thoại của bạn'}
-                  // onChangeText={handleChange('phoneNumber')}
-                  // onBlur={handleBlur('phoneNumber')}
-                  // value={values.phoneNumber}
-                  onChangeText={phoneNumber => [setphoneNumber(phoneNumber)]}
-                  value={phoneNumber}
+                  onChangeText={handleChange('phoneNumber')}
+                  onBlur={handleBlur('phoneNumber')}
+                  value={values.phoneNumber}
                 />
               </View>
 
@@ -145,30 +151,26 @@ const Register = props => {
                 <AppInput
                   returnKeyType={'next'}
                   placeholder={'Nhập email cua ban'}
-                  // onChangeText={handleChange('phoneNumber')}
-                  // onBlur={handleBlur('phoneNumber')}
-                  // value={values.phoneNumber}
-                  onChangeText={email => [setemail(email)]}
-                  value={email}
+                  onChangeText={handleChange('email')}
+                  onBlur={handleBlur('email')}
+                  value={values.email}
                 />
               </View>
 
-              {touched.phoneNumber && errors.phoneNumber && (
-                <Text style={styles.textError}>{errors.phoneNumber}</Text>
+              {touched.email && errors.email && (
+                <Text style={styles.textError}>{errors.email}</Text>
               )}
 
               <View style={styles.viewItem}>
                 <Text style={styles.text2}>Mật khẩu</Text>
                 <AppInput
-                  returnKeyType={'done'}
+                  returnKeyType={'next'}
                   placeholder={'Nhập mật khảu'}
                   isPassword
                   secureTextEntry
-                  // onChangeText={handleChange('password')}
-                  // onBlur={handleBlur('password')}
-                  // value={values.password}
-                  onChangeText={password => [setpassword(password)]}
-                  value={password}
+                  onChangeText={handleChange('password')}
+                  onBlur={handleBlur('password')}
+                  value={values.password}
                 />
               </View>
               {touched.password && errors.password && (
@@ -181,9 +183,9 @@ const Register = props => {
                   placeholder={'Xác nhận lại mật khẩu'}
                   isPassword
                   secureTextEntry
-                  // onChangeText={handleChange('rePassword')}
-                  // onBlur={handleBlur('rePassword')}
-                  // value={values.rePassword}
+                  onChangeText={handleChange('rePassword')}
+                  onBlur={handleBlur('rePassword')}
+                  value={values.rePassword}
                 />
               </View>
               {touched.rePassword && errors.rePassword && (
@@ -193,7 +195,7 @@ const Register = props => {
                 title="Đăng kí"
                 color={COLOR.secondary}
                 fontSize={18}
-                onPress={onRegister}
+                onPress={handleSubmit}
                 marginBottom={20}
               />
             </KeyboardAvoidingView>

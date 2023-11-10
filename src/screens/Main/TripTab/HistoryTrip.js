@@ -17,7 +17,7 @@ const HistoryTrip = () => {
   const getListBooked = async () => {
     try {
       const response = await AxiosInstance().get(
-        '/booking/api/get-history-by-id-user?idUser=' + 0,
+        '/booking/api/get-history-by-id-user?idUser=' + 9,
       );
       if (response.result) {
         setListBooking(response.booking);
