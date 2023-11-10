@@ -73,7 +73,7 @@ const Account = (props) => {
 
         {/* Giấy phép lái xe */}
         <TouchableOpacity
-          onPress={() => navigation.navigate('VerifyLicense')}style={[styles.viewItem, {borderTopWidth: 2, borderTopColor: '#efefef', marginTop: 12}]}>
+          onPress={() => navigation.navigate('VerifyLicense')} style={[styles.viewItem, {borderTopWidth: 2, borderTopColor: '#efefef', marginTop: 12}]}>
           <View style={styles.viewChild}>
             <Text style={appStyle.text14}>Giấy phép lái xe</Text>
             <View style={styles.alert}>
