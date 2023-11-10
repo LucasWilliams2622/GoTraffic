@@ -40,8 +40,8 @@ const Login = props => {
   };
   const [visible, setVisible] = useState(false);
   const [visible2, setVisible2] = useState(false);
-  const [phoneNumber, setphoneNumber] = useState('0337744148');
-  const [password, setpassword] = useState('123123abc');
+  const [phoneNumber, setphoneNumber] = useState('');
+  const [password, setpassword] = useState('');
   const [email, setemail] = useState('');
 
   const toggleBottomNavigationView = () => {
