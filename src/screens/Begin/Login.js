@@ -12,7 +12,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import AppInput from '../../components/AppInput';
 import {appStyle, windowHeight} from '../../constants/AppStyle';
 import AppButton from '../../components/AppButton';
-import {COLOR} from '../../constants/Theme';
+import {COLOR, ICON} from '../../constants/Theme';
 import FastImage from 'react-native-fast-image';
 import {Center} from 'native-base';
 import {BottomSheet} from 'react-native-btr';
@@ -90,10 +90,18 @@ const Login = props => {
 
         showToastMessage('', 'Ðăng nhập thành công !');
       } else {
-        // ToastAndroid.show('Đăng nhập thất bại', ToastAndroid.SHORT);
+        showToastMessage(
+          '',
+          'Tên đăng nhập hoặc mật khẩu không đúng',
+          ICON.cancelWhite,
+        );
       }
     } catch (e) {
-      // ToastAndroid.show('Đăng nhập thất bại', ToastAndroid.SHORT);
+      showToastMessage(
+        '',
+        'Tên đăng nhập hoặc mật khẩu không đúng',
+        ICON.cancelWhite,
+      );
       console.log(e);
     }
   };
