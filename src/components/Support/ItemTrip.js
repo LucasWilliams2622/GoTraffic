@@ -12,10 +12,18 @@ const ItemTrip = props => {
   const {data} = props;
 
   const {image, name, time, timeStart, timeEnd, price, id} = data;
-  const goDetail = () => {
-    //console.log('ID', data.id);
-    navigation.navigate('RatingTrip', {id: data.id});
+  const checkStatus = () => {
+    if (data.status == 5) {
+      navigation.navigate('RatingTrip', {id: data.id});
+    } else {
+      console.log('id Car:' + data.idCar);
+      navigation.navigate('CarDetail', {car_id: data.idCar});
+    }
   };
+  const isImageUrlValid = /^https?:\/\/.*\.(png|jpg)$/i.test(
+    data.Car.imageThumbnail,
+  );
+
   return (
     <View>
       <View
@@ -52,13 +60,21 @@ const ItemTrip = props => {
         </View>
         <Text style={[appStyle.text14Bold]}>{data.updatedAt.slice(0, 10)}</Text>
       </View>
-      <TouchableOpacity onPress={() => goDetail()} style={styles.container}>
+      <TouchableOpacity onPress={() => checkStatus()} style={styles.container}>
         <View style={[{alignSelf: 'flex-start'}]}>
-          <FastImage
-            style={styles.image}
-            resizeMode={'stretch'}
-            source={{uri:image}}
-          />
+          {!isImageUrlValid ? (
+            <FastImage
+              style={styles.image}
+              resizeMode="stretch"
+              source={require('../../assets/image/NoTrip.png')}
+            />
+          ) : (
+            <FastImage
+              style={styles.image}
+              resizeMode={'stretch'}
+              source={{uri: data.Car.imageThumbnail}}
+            />
+          )}
         </View>
         <View
           style={{
@@ -71,11 +87,11 @@ const ItemTrip = props => {
               source={require('../../assets/image/logoMap.png')}
             />
             <Text style={[appStyle.text10, {marginLeft: 5}]}>
-              {data.isDelivery ? 'Tự lái' : ''}
+              {data.Car.isDelivery ? 'Tự lái' : ''}
             </Text>
           </View>
           <View style={styles.line}></View>
-          <Text style={[appStyle.text16Bold]}>{data.name}</Text>
+          <Text style={[appStyle.text16Bold]}>{data.Car.name}</Text>
           <Text style={[appStyle.text12, {marginTop: 5}]}>
             📅 Bắt đầu: {data.createdAt.slice(0, 10)}
           </Text>
@@ -90,7 +106,7 @@ const ItemTrip = props => {
               marginTop: 10,
             }}>
             <Text style={{color: COLOR.black}}>Tổng giá tiền : </Text>
-            {numeral(data.price).format('0,0')}
+            {numeral(data.totalMoney).format('0,0')}
           </Text>
         </View>
       </TouchableOpacity>

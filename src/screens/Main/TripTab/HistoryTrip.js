@@ -1,10 +1,4 @@
-import {
-  Pressable,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {appStyle} from '../../../constants/AppStyle';
@@ -16,18 +10,17 @@ import AxiosInstance from '../../../constants/AxiosInstance';
 import {AppContext} from '../../../utils/AppContext';
 import {useNavigation} from '@react-navigation/native';
 
-const Trip = () => {
+const HistoryTrip = () => {
   const {infoUser, idUser} = useContext(AppContext);
-  const [listBookingCurrent, setListBookingCurrent] = useState([]);
+  const [listBooked, setListBooking] = useState([]);
   const navigation = useNavigation();
-
-  const getListBookingCurrent = async () => {
+  const getListBooked = async () => {
     try {
       const response = await AxiosInstance().get(
-        '/booking/api/get-list-current-booking-of-user?idUser=' + 9,
+        '/booking/api/get-history-by-id-user?idUser=' + 0,
       );
       if (response.result) {
-        setListBookingCurrent(response.booking);
+        setListBooking(response.booking);
       } else {
         console.log('NETWORK ERROR');
       }
@@ -35,40 +28,33 @@ const Trip = () => {
       console.log(e);
     }
   };
-
   useEffect(() => {
-    getListBookingCurrent();
+    getListBooked();
   }, []);
 
   return (
     <SafeAreaView style={appStyle.container}>
       <View style={styles.viewTitle}>
-        <Text style={styles.title}>Chuyến của tôi</Text>
-        <TouchableOpacity
+        <Text style={styles.title}>Lịch sử chuyến</Text>
+        <Pressable
           style={styles.logo}
-          onPress={() => {
-            navigation.navigate('HistoryTrip');
-          }}>
+          onPress={() => navigation.goBack('Trip')}>
           <FastImage
             style={styles.logo}
             resizeMode={'stretch'}
-            source={require('../../../assets/image/logoTrip.png')}
+            source={require('../../../assets/icon/ic_left.png')}
           />
-        </TouchableOpacity>
+        </Pressable>
       </View>
 
       <ScrollView style={appStyle.main}>
-        <Text style={styles.text1}>Hiện tại</Text>
-
+        <Text style={styles.text1}>Đã thuê</Text>
         <FlatList
           style={{width: '100%', marginBottom: 65}}
-          data={listBookingCurrent}
-          shouldRasterizeIOS
-          showsHorizontalScrollIndicator={false}
-          renderItem={({item}) => (
-            <ItemTrip data={item} car={listBookingCurrent} />
-          )}
+          data={listBooked}
+          renderItem={({item}) => <ItemTrip data={item} />}
           keyExtractor={item => item.id}
+          showsVerticalScrollIndicator={false}
           ListEmptyComponent={
             <View>
               <FastImage
@@ -81,18 +67,17 @@ const Trip = () => {
                   appStyle.text16,
                   {textAlign: 'center', marginBottom: 10, fontStyle: 'italic'},
                 ]}>
-                Hiện tại chưa trong chuyến
+                Bạn chưa có lịch sử chuyến
               </Text>
             </View>
           }
-          showsVerticalScrollIndicator={false}
         />
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-export default Trip;
+export default HistoryTrip;
 
 const styles = StyleSheet.create({
   viewTitle: {
@@ -131,7 +116,7 @@ const styles = StyleSheet.create({
     height: 24,
     position: 'absolute',
     alignSelf: 'center',
-    right: 10,
+    left: 10,
   },
 });
 

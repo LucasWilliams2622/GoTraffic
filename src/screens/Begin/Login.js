@@ -29,6 +29,7 @@ import AxiosInstance from '../../constants/AxiosInstance';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
 import axios from 'axios';
+import { showToastMessage } from '../../utils/utils';
 
 const Login = props => {
   const {isLogin, setIsLogin, setInfoUser, setIdUser, idUser} =
@@ -39,8 +40,8 @@ const Login = props => {
   };
   const [visible, setVisible] = useState(false);
   const [visible2, setVisible2] = useState(false);
-  const [phoneNumber, setphoneNumber] = useState('');
-  const [password, setpassword] = useState('');
+  const [phoneNumber, setphoneNumber] = useState('0337744148');
+  const [password, setpassword] = useState('123123abc');
   const [email, setemail] = useState('');
 
   const toggleBottomNavigationView = () => {
@@ -98,14 +99,16 @@ const Login = props => {
         setInfoUser(response['data'].user);
         saveLoginInfo(response['data'].user);
         setIsLogin(true);
-        Toast.show({
-          type: 'success',
-          text1: 'Ðăng nhập thành công !',
-          visibilityTime: 2000,
-          autoHide: true,
-          topOffset: 30,
-          bottomOffset: 40,
-        });
+        // Toast.show({
+        //   type: 'success',
+        //   text1: 'Ðăng nhập thành công !',
+        //   visibilityTime: 2000,
+        //   autoHide: true,
+        //   topOffset: 30,
+        //   bottomOffset: 40,
+        // });
+
+        showToastMessage('','Ðăng nhập thành công !')
       } else {
         // ToastAndroid.show('Đăng nhập thất bại', ToastAndroid.SHORT);
       }

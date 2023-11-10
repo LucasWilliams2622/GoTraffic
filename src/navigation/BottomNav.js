@@ -1,16 +1,17 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
-import React, { useState, useContext } from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { ICON, COLOR } from '../constants/Theme';
+import {StyleSheet, Text, View, Image} from 'react-native';
+import React, {useState, useContext,useEffect} from 'react';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {ICON, COLOR} from '../constants/Theme';
 import * as Animatable from 'react-native-animatable';
-import { AppContext } from '../utils/AppContext';
+import {AppContext} from '../utils/AppContext';
 import Login from '../screens/Begin/Login';
 import Home from '../screens/Main/HomeTab/Home';
 import Profile from '../screens/Main/ProfileTab/Profile';
 import Notification from '../screens/Main/NotificationTab/Notification';
 import Support from '../screens/Main/SupportTab/Support';
 import Trip from '../screens/Main/TripTab/Trip';
+import HistoryTrip from '../screens/Main/TripTab/HistoryTrip';
 import FavouriteCar from '../screens/Main/ProfileTab/FavouriteCar';
 import MyAddress from '../screens/Main/ProfileTab/Address/MyAddress';
 import ShareWithFriend from '../screens/Main/ProfileTab/ShareWithFriend';
@@ -24,7 +25,6 @@ import MyCard from '../screens/Main/ProfileTab/Payment/MyCard';
 import LocationPicking from '../screens/Main/HomeTab/LocationPicking';
 import NewCard from '../screens/Main/ProfileTab/Payment/NewCard';
 import CarDetail from '../screens/Main/HomeTab/CarDetail';
-// import MyPromotion from '../screens/Main/ProfileTab/Gift/MyPromotion';
 import HomeCar from '../screens/Main/ProfileTab/MyCar/HomeCar';
 import DetailInListCar from '../screens/Main/ProfileTab/MyCar/DetailInListCar';
 import GeneralInformation from '../screens/Main/ProfileTab/MyCar/GeneralInformation';
@@ -36,21 +36,21 @@ import TripOfCar from '../screens/Main/ProfileTab/MyCar/TripOfCar';
 import InforOfCar from '../screens/Main/ProfileTab/MyCar/InforOfCar';
 import ExhibitOfCar from '../screens/Main/ProfileTab/MyCar/ExhibitOfCar';
 import MyWallet from '../screens/Main/ProfileTab/MyCar/MyWallet';
-import UpdateCar from '../screens/Main/ProfileTab/MyCar/UpdateCar';
-
 import HandOverReport from '../screens/Main/ProfileTab/MyCar/Contract/HandOverReport';
 import SampleContract from '../screens/Main/ProfileTab/MyCar/Contract/SampleContract';
 import LeaseCar from '../screens/Main/ProfileTab/MyCar/Contract/LeaseCar';
 import BasicInfor from '../screens/Main/ProfileTab/Car/BasicInfor';
 import DetailsInfor from '../screens/Main/ProfileTab/Car/DetailsInfor';
 import ListCar from '../screens/Main/ProfileTab/Car/ListCar';
-import MyCar from '../screens/Main/ProfileTab/MyCar';
 import VerifyLicense from '../screens/Main/ProfileTab/Account/VerifyLicense';
 import ListCarCity from '../components/Home/Home/ListCarCity';
 import Test2 from '../test/Test2';
 import RatingTrip from '../screens/Main/TripTab/RatingTrip';
 import Recharge from '../screens/Main/ProfileTab/MyCar/Recharge';
 import FindingCar from '../screens/Main/HomeTab/FindingCar';
+import FastImage from 'react-native-fast-image';
+import {appStyle} from '../constants/AppStyle';
+import { Badge } from 'react-native-elements'; 
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -59,7 +59,7 @@ const StackBegin = () => {
   return (
     <Stack.Navigator
       initialRouteName="Login"
-      screenOptions={{ headerShown: false }}>
+      screenOptions={{headerShown: false}}>
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Verified" component={Verified} />
       <Stack.Screen name="Register" component={Register} />
@@ -67,11 +67,12 @@ const StackBegin = () => {
     </Stack.Navigator>
   );
 };
+
 const StackHome = () => {
   return (
     <Stack.Navigator
       initialRouteName="Home"
-      screenOptions={{ headerShown: false, animationEnabled: false }}
+      screenOptions={{headerShown: false, animationEnabled: false}}
       mode="modal">
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen
@@ -85,52 +86,75 @@ const StackHome = () => {
       <Stack.Screen
         name="CarDetail"
         component={CarDetail}
-        options={{ animationEnabled: true, animation: 'slide_from_bottom' }}
+        options={{animationEnabled: true, animation: 'slide_from_bottom'}}
       />
       <Stack.Screen
         name="ListCarCity"
         component={ListCarCity}
-        options={{ animationEnabled: true, animation: 'slide_from_bottom' }}
+        options={{animationEnabled: true, animation: 'slide_from_bottom'}}
       />
       <Stack.Screen name="FindingCar" component={FindingCar} />
-
     </Stack.Navigator>
   );
 };
 
 const StackNotification = () => {
+  const { setNotificationCount } = useContext(AppContext);
+
+  // Simulate fetching notification count from server
+  useEffect(() => {
+    // Replace this with your logic to fetch notification count
+    const fetchNotificationCount = async () => {
+      // Simulate fetching count from server
+      // const count = await yourApiCallToFetchNotificationCount();
+      setNotificationCount(2);
+    };
+
+    // Fetch notification count
+    fetchNotificationCount();
+  }, []);
+
   return (
     <Stack.Navigator
       initialRouteName="Notification"
-      screenOptions={{ headerShown: false }}>
+      screenOptions={{headerShown: false}}>
       <Stack.Screen name="Notification" component={Notification} />
     </Stack.Navigator>
   );
 };
+
 const StackTrip = () => {
   return (
     <Stack.Navigator
       initialRouteName="Trip"
-      screenOptions={{ headerShown: false }}>
+      screenOptions={{headerShown: false}}>
       <Stack.Screen name="Trip" component={Trip} />
+      <Stack.Screen name="HistoryTrip" component={HistoryTrip} />
       <Stack.Screen name="RatingTrip" component={RatingTrip} />
+      <Stack.Screen
+        name="CarDetail"
+        component={CarDetail}
+        options={{animationEnabled: true, animation: 'slide_from_bottom'}}
+      />
     </Stack.Navigator>
   );
 };
+
 const StackSupport = () => {
   return (
     <Stack.Navigator
       initialRouteName="Support"
-      screenOptions={{ headerShown: false }}>
+      screenOptions={{headerShown: false}}>
       <Stack.Screen name="Support" component={Support} />
     </Stack.Navigator>
   );
 };
+
 const StackProfile = () => {
   return (
     <Stack.Navigator
       initialRouteName="Profile"
-      screenOptions={{ headerShown: false }}>
+      screenOptions={{headerShown: false}}>
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Account" component={Account} />
       <Stack.Screen name="FavouriteCar" component={FavouriteCar} />
@@ -153,7 +177,6 @@ const StackProfile = () => {
       <Stack.Screen name="NewAddress" component={NewAddress} />
       <Stack.Screen name="MyCard" component={MyCard} />
       <Stack.Screen name="NewCard" component={NewCard} />
-      {/* <Stack.Screen name="MyPromotion" component={MyPromotion}/> */}
       <Stack.Screen name="BasicInfor" component={BasicInfor} />
       <Stack.Screen name="DetailsInfor" component={DetailsInfor} />
       <Stack.Screen name="LeaseCar" component={LeaseCar} />
@@ -165,22 +188,40 @@ const StackProfile = () => {
     </Stack.Navigator>
   );
 };
-const Main = () => {
-  const { infoUser, idUser, showWebView, setShowWebView } =
-    useContext(AppContext);
 
+const Main = () => {
+  const { infoUser, idUser, showWebView, setShowWebView, setNotificationCount, notificationCount } = useContext(AppContext);
   return (
     <Tab.Navigator
       initialRouteName="StackHome"
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, label, size }) => {
+      screenOptions={({route}) => ({
+        tabBarIcon: ({focused, label, size}) => {
           let iconName = focused;
           if (route.name === 'StackHome') {
             iconName = focused ? ICON.HomeFocus : ICON.Home;
             label = 'Trang chủ';
-          } else if (route.name === 'StackNotification') {
-            iconName = focused ? ICON.NotificationFocus : ICON.Notification;
-            label = 'Thông báo';
+          } else  if (route.name === 'StackNotification') {
+            // ... Các thiết lập khác
+            return (
+              <View style={{ position: 'relative' }}>
+                <Image
+                  source={iconName = focused ?ICON.NotificationFocus : ICON.Notification}
+                  style={{
+                    width: focused ? 26 : 24,
+                    height: focused ? 26 : 24,
+                    resizeMode: 'stretch',
+                    tintColor: focused ? COLOR.focus : COLOR.notFocus,
+                  }}
+                />
+                {notificationCount > 0 && (
+                  <Badge
+                    value={notificationCount}
+                    containerStyle={{ position: 'absolute', top: -6, right: -6 }}
+                    badgeStyle={{ backgroundColor: 'red' }}
+                  />
+                )}
+              </View>
+            );
           } else if (route.name === 'StackTrip') {
             iconName = focused ? ICON.TripFocus : ICON.Trip;
             label = 'Chuyến đi';
@@ -201,6 +242,8 @@ const Main = () => {
                 width: 60,
               }}>
               <Animatable.View animation="zoomIn" duration={2000}>
+                {}
+
                 <Image
                   source={iconName}
                   style={{
@@ -244,14 +287,12 @@ const Main = () => {
 };
 
 const BottomTabNav = () => {
-  // const [isLogin, setfirst] = useState(true)
-  const { isLogin, infoUser } = useContext(AppContext);
-  // console.log("isLogin Bottom Tabs=================>", isLogin);
-  // console.log("infoUser Bottom Tabs=========>", infoUser);
+  const {isLogin, infoUser} = useContext(AppContext);
   return <>{isLogin == false ? <StackBegin /> : <Main />}</>;
-  //return <Main />;
 };
-//ADMIN
+
 export default BottomTabNav;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  
+});

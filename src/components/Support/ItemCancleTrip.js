@@ -30,14 +30,14 @@ const ItemCancleTrip = props => {
           />
           <Text style={[appStyle.text14, {marginLeft: 5}]}>Đã hủy</Text>
         </View>
-        <Text style={[appStyle.text14Bold]}>{data.createdAt}</Text>
+        <Text style={[appStyle.text14Bold]}>{data.createdAt.slice(0, 10)}</Text>
       </View>
       <TouchableOpacity style={styles.container}>
         <View style={[{alignSelf: 'flex-start'}]}>
           <FastImage
             style={styles.image}
             resizeMode={'stretch'}
-            source={{uri: data.Car.imageThumbnail}}
+            source={{uri: data.Car.image}}
           />
         </View>
         <View
@@ -50,7 +50,9 @@ const ItemCancleTrip = props => {
               resizeMode={'stretch'}
               source={require('../../assets/image/logoMap.png')}
             />
-            <Text style={[appStyle.text10, {marginLeft: 5}]}>Tự lái</Text>
+            <Text style={[appStyle.text10, {marginLeft: 5}]}>
+              {data.Car.isDelivery ? 'Tự lái' : ''}
+            </Text>
           </View>
           <Text style={[appStyle.text16Bold]}>{data.Car.name}</Text>
           <Text

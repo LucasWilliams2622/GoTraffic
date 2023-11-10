@@ -16,14 +16,26 @@ const ItemNotification = props => {
   const {data} = props;
   const {image, title, content, time, poster, id} = data;
   const [isModalVisible, setModalVisible] = useState(false);
-
+  const isImageUrlValid = /^https?:\/\/.*\.(png|jpg)$/i.test(data.image);
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
   return (
     <TouchableOpacity style={styles.container} onPress={toggleModal}>
       <View style={[{alignSelf: 'flex-start'}]}>
-        <FastImage style={styles.logo} resizeMode={'stretch'} source={image} />
+        {!isImageUrlValid ? (
+          <FastImage
+            style={styles.image}
+            resizeMode="stretch"
+            source={require('../../assets/image/logo-fb.png')}
+          />
+        ) : (
+          <FastImage
+            style={styles.logo}
+            resizeMode={'stretch'}
+            source={{uri: data?.image}}
+          />
+        )}
       </View>
       <View
         style={{
@@ -72,7 +84,10 @@ const ItemNotification = props => {
             <Pressable
               style={styles.buttonClose}
               onPress={() => setModalVisible(!isModalVisible)}>
-              <Text style={{fontSize:15,textAlign:'center',color:COLOR.black}}>X</Text>
+              <Text
+                style={{fontSize: 15, textAlign: 'center', color: COLOR.black}}>
+                X
+              </Text>
             </Pressable>
           </View>
         </View>
@@ -134,8 +149,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLOR.gray,
     width: 20,
     height: 20,
-    position:'absolute',
-    top:5,
-    right:5
+    position: 'absolute',
+    top: 5,
+    right: 5,
   },
 });

@@ -1,11 +1,45 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {COLOR} from '../../../constants/Theme';
 import {FlatList, ScrollView} from 'native-base';
 import ItemNotification from '../../../components/Support/ItemNotification';
 import {appStyle} from '../../../constants/AppStyle';
+import AxiosInstance from '../../../constants/AxiosInstance';
 const Notification = () => {
+  const [data, setData] = useState('');
+  const [dataTrip, setdataTrip] = useState('')
+  const getListNotifications = async () => {
+    try {
+      const response = await AxiosInstance().get('/notification/api');
+      if (response.result) {
+        setData(response.notification);
+      } else {
+        console.log('NETWORK ERROR');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const getListNotificationsByIDUser = async () => {
+    try {
+      const response = await AxiosInstance().get(
+        '/notification-booking/api/get-by-user?idUser=' + 9,
+      );
+      if (response.result) {
+        console.log('Trip:>>>' + response.notifications);
+        setdataTrip(response.notifications);
+      } else {
+        console.log('NETWORK ERROR');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  useEffect(() => {
+    getListNotificationsByIDUser();
+    getListNotifications();
+  }, []);
   return (
     <SafeAreaView style={appStyle.container}>
       <View style={styles.viewTitle}>
@@ -13,21 +47,21 @@ const Notification = () => {
       </View>
       <ScrollView>
         <View style={styles.line1}>
-          <Text style={styles.text1}>Mới</Text>
+          <Text style={styles.text1}>Thông báo chuyến</Text>
         </View>
         <FlatList
           style={{width: '100%'}}
-          data={DATA}
+          data={dataTrip}
           renderItem={({item}) => <ItemNotification data={item} />}
           keyExtractor={item => item._id}
           showsVerticalScrollIndicator={false}
         />
         <View style={styles.line1}>
-          <Text style={styles.text1}>Trước đó</Text>
+          <Text style={styles.text1}>Thông báo ứng dụng</Text>
         </View>
         <FlatList
           style={{width: '100%', marginBottom: 65}}
-          data={DATA}
+          data={data}
           renderItem={({item}) => <ItemNotification data={item} />}
           keyExtractor={item => item._id}
           showsVerticalScrollIndicator={false}
