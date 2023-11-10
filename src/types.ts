@@ -165,6 +165,7 @@ export interface InputFieldProps {
 export interface ViewProps {
   timeString: string;
   navigation?: any;
+  route?: any;
 }
 
 export interface RadioButtonProps {

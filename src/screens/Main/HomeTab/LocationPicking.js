@@ -7,11 +7,36 @@ import { useNavigation } from '@react-navigation/native';
 import { COLOR, ICON } from '../../../constants/Theme';
 import AppInput from '../../../components/AppInput';
 import FastImage from 'react-native-fast-image';
-import ButtonSelected from '../../../components/ButtonSelected';
+import ItemOption from '../../../components/Profile/ItemOption';
 import ItemAddress from '../../../components/Profile/ItemAddress';
+import AxiosInstance from '../../../constants/AxiosInstance';
+import axios from 'axios';
 const LocationPicking = (props) => {
+
   const navigation = useNavigation();
-  const [locationPicking, setLocationPicking] = useState(null);
+  const [locationPicking, setLocationPicking] = useState('');
+  //const [suggestions, setSuggestions] = useState([]);
+  const [query, setQuery] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+  
+
+  const fetchSuggestions = async (text) => {
+    try {
+      const response = await axios.get(
+        `https://maps.vietmap.vn/api/autocomplete/v3?apikey=c3d0f188ff669f89042771a20656579073cffec5a8a69747&cityId=12&text=${text}`
+      );
+      console.log(response);
+      setSuggestions(response.data.suggestions);
+      
+    } catch (error) {
+      console.error('Error fetching suggestions:', error);
+    }
+  };
+
+  const handleInputChange = (text) => {
+    setQuery(text);
+    fetchSuggestions(text);
+  };
 
 
   return (
@@ -23,13 +48,21 @@ const LocationPicking = (props) => {
         onPress={() => navigation.goBack()}
       />
       <View style={appStyle.viewContainer}>
-        <AppInput
-          isLocation
-          justifyContent={'flex-start'}
-          placeholder="Nhập địa điểm"
-          value={locationPicking}
-          onChange={(text) => setLocationPicking(text)}
-        />
+        <View>
+          <AppInput
+            isLocation
+            justifyContent={'flex-start'}
+            placeholder="Nhập địa điểm"
+            value={query}
+            onChangeText={handleInputChange}
+          />
+          <FlatList
+            data={suggestions}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => <Text>{item.display}</Text>}
+          />
+        </View>
+
 
         <TouchableOpacity style={appStyle.card} onPress={() => navigation.goBack()}>
           <FastImage source={ICON.Location} style={appStyle.iconBig} />
@@ -43,7 +76,9 @@ const LocationPicking = (props) => {
         </TouchableOpacity>
 
         {/* Địa chỉ mặc định của user */}
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => {
+          navigation.navigate('SelfDrivingView', { setAddress: '603 Trần Hưng Đạo' });
+        }}>
           <View style={styles.container}>
             <View style={styles.content}>
               <FastImage
@@ -68,7 +103,7 @@ const LocationPicking = (props) => {
           <FlatList
             style={{ width: '100%', marginVertical: 10 }}
             data={plane}
-            renderItem={({ item }) => <ButtonSelected data={item} onPress={()=> navigation.navigate('Home')}/>}
+            renderItem={({ item }) => <ItemOption data={item}  />}
             keyExtractor={item => item.id}
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -86,7 +121,7 @@ const LocationPicking = (props) => {
           />
         </View>
       </View>
-    </SafeAreaView>
+    </SafeAreaView >
   );
 };
 

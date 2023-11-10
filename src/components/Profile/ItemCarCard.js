@@ -4,7 +4,6 @@ import FastImage from 'react-native-fast-image';
 import { COLOR, ICON } from '../../constants/Theme';
 import { appStyle, windowHeight, windowWidth } from '../../constants/AppStyle';
 import { useNavigation } from '@react-navigation/native';
-import { Column, Row } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import ShieldIcon from '../../assets/icon/ic_shield_verified';
 import SuitcaseIcon from '../../assets/icon/ic_suitcase';;
@@ -15,8 +14,7 @@ const ItemCarCard = (props) => {
     const { id, name, image, locationCar, gear, isDelivery,
         price,
         rating,
-        numberOfBooked,
-        onPress } = props;
+        numberOfBooked } = props;
 
     const [isFavorite, setIsFavorite] = useState(true);
     const { setIsLogin, infoUser, idUser } = useContext(AppContext);
@@ -30,7 +28,7 @@ const ItemCarCard = (props) => {
         } catch (error) {
             console.log(error);
         }
-    }
+    };
     return (
         <View style={{
             width: windowWidth * 0.8,
@@ -38,13 +36,14 @@ const ItemCarCard = (props) => {
             borderRadius: 20,
             borderWidth: 2,
             borderColor: '#ddd',
-            marginTop:10,
-            alignSelf:'center',
+            marginTop: 10,
+            alignSelf: 'center',
             padding: 10,
         }}>
             <FastImage resizeMode='stretch' source={{ uri: image }} style={styles.image} />
             <TouchableOpacity style={styles.pressable}
-                onPress={() => removeFavorite()}>
+                onPress={() => removeFavorite()}
+            >
                 <Icon
                     name="heart"
                     color={isFavorite ? COLOR.fifth : COLOR.white}

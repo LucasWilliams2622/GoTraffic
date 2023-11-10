@@ -1,17 +1,19 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useMemo} from 'react';
 import FastImage from 'react-native-fast-image';
 import {convertTotalNumber} from '../../../utils/utils';
 import {appStyle} from '../../../constants/AppStyle';
 import {AirportPickingProps} from '../../../types';
+import { useNavigation } from '@react-navigation/native';
 
 const AirportPicking = ({title, image, totalCar}: AirportPickingProps) => {
+  const navigation = useNavigation();
   const formattedTotalCar = useMemo(
     () => convertTotalNumber(totalCar),
     [totalCar],
   );
   return (
-    <View style={{marginRight: 20}}>
+    <TouchableOpacity onPress={()=> navigation.navigate('FindingCar')} style={{marginRight: 20}}>
       <View style={{alignItems: 'center'}}>
         <FastImage
           source={{uri: image}}
@@ -23,7 +25,7 @@ const AirportPicking = ({title, image, totalCar}: AirportPickingProps) => {
         </Text>
         <Text>{formattedTotalCar} xe</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
