@@ -1,14 +1,17 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState,useContext} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {COLOR} from '../../../constants/Theme';
 import {FlatList, ScrollView} from 'native-base';
 import ItemNotification from '../../../components/Support/ItemNotification';
 import {appStyle} from '../../../constants/AppStyle';
 import AxiosInstance from '../../../constants/AxiosInstance';
+import { AppContext } from '../../../utils/AppContext';
 const Notification = () => {
   const [data, setData] = useState('');
   const [dataTrip, setdataTrip] = useState('')
+  const { setNotificationCount } = useContext(AppContext);
+  
   const getListNotifications = async () => {
     try {
       const response = await AxiosInstance().get('/notification/api');
@@ -39,6 +42,7 @@ const Notification = () => {
   useEffect(() => {
     getListNotificationsByIDUser();
     getListNotifications();
+    setNotificationCount(0)
   }, []);
   return (
     <SafeAreaView style={appStyle.container}>

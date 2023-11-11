@@ -8,7 +8,6 @@ import { COLOR } from './Theme';
 
 export const windowWidth = Dimensions.get('window').width;
 export const windowHeight = Dimensions.get('window').height;
-console.log('=========>', windowHeight);
 const scaleWidth = windowWidth / 375;
 const scaleHeight = windowHeight / 667;
 
