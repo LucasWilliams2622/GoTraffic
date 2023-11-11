@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View, ScrollView, Modal } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, ScrollView, Modal, PermissionsAndroid } from 'react-native';
 import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { appStyle, windowHeight, windowWidth } from '../../../../constants/AppStyle'
@@ -7,6 +7,7 @@ import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import FastImage from 'react-native-fast-image';
 import Header from '../../../../components/Header';
 import AppButton from '../../../../components/AppButton';
+import CarImageSection from '../../../../components/Profile/CameraImageSection';
 
 const ExhibitOfCar = props => {
   const { navigation } = props;
@@ -163,16 +164,6 @@ const ExhibitOfCar = props => {
                   source={ICON.Picture}
                 />
               </TouchableOpacity>
-
-              <TouchableOpacity style={styles.upLoadImage}>
-                <Text style={{ textAlign: 'center' }}>
-                  Vui lòng chụp mặt sau của giấy tờ xe
-                </Text>
-                <FastImage
-                  style={{ width: 30, height: 30, marginTop: 10 }}
-                  source={ICON.Picture}
-                />
-              </TouchableOpacity>
             </View>
           </View>
 
@@ -191,16 +182,6 @@ const ExhibitOfCar = props => {
                   source={ICON.Picture}
                 />
               </TouchableOpacity>
-
-              <TouchableOpacity style={styles.upLoadImage}>
-                <Text style={{ textAlign: 'center' }}>
-                  Vui lòng chụp mặt sau của bảo hiểm
-                </Text>
-                <FastImage
-                  style={{ width: 30, height: 30, marginTop: 10 }}
-                  source={ICON.Picture}
-                />
-              </TouchableOpacity>
             </View>
           </View>
 
@@ -210,102 +191,37 @@ const ExhibitOfCar = props => {
               Ảnh của xe
             </Text>
             <View style={[appStyle.columnCenter, { marginTop: 10 }]}>
-              <View style={{ width: windowWidth * 0.9, height: windowHeight * 0.3, alignItems: 'center' }}>
-                <View style={appStyle.rowBetween}>
-                  <Text style={appStyle.text16}>
-                    Ảnh bên trái
-                  </Text>
+              <CarImageSection
+                title="Vui lòng chụp bên trái xe"
+                imageType="left"
+                onEdit={handleUpdate}
+                imageURI={carImages.left}
+                cameraModal={cameraModal}
+              />
 
-                  <TouchableOpacity onPress={() => cameraModal('left')}>
-                    <FastImage source={ICON.Edit} style={appStyle.iconMedium} />
-                  </TouchableOpacity>
-                </View>
-                {carImages.left ? (
-                  <FastImage source={{ uri: carImages.left }} style={styles.imgCar} />
-                ) : (
-                  <TouchableOpacity style={styles.upLoadImage}>
-                    <Text style={{ textAlign: 'center' }}>
-                      Vui lòng chụp mặt sau của bảo hiểm
-                    </Text>
-                    <FastImage
-                      style={{ width: 30, height: 30, marginTop: 10 }}
-                      source={ICON.Picture}
-                    />
-                  </TouchableOpacity>
-                )}
-              </View>
+              <CarImageSection
+                title="Vui lòng chụp bên phải xe"
+                imageType="right"
+                onEdit={handleUpdate}
+                imageURI={carImages.right}
+                cameraModal={cameraModal}
+              />
 
-              <View style={{ width: windowWidth * 0.9, height: windowHeight * 0.3, alignItems: 'center' }}>
-                <View style={appStyle.rowBetween}>
-                  <Text style={appStyle.text16}>
-                    Ảnh bên phải
-                  </Text>
-                  <TouchableOpacity onPress={() => cameraModal('right')}>
-                    <FastImage source={ICON.Edit} style={appStyle.iconMedium} />
-                  </TouchableOpacity>
-                </View>
-                {carImages.right ? (
-                  <FastImage source={{ uri: carImages.right }} style={styles.imgCar} />
-                ) : (
-                  <TouchableOpacity style={styles.upLoadImage}>
-                    <Text style={{ textAlign: 'center' }}>
-                      Vui lòng chụp mặt sau của bảo hiểm
-                    </Text>
-                    <FastImage
-                      style={{ width: 30, height: 30, marginTop: 10 }}
-                      source={ICON.Picture}
-                    />
-                  </TouchableOpacity>
-                )}
-              </View>
+              <CarImageSection
+                title="Vui lòng chụp phía trước xe"
+                imageType="front"
+                onEdit={handleUpdate}
+                imageURI={carImages.front}
+                cameraModal={cameraModal}
+              />
 
-              <View style={{ width: windowWidth * 0.9, height: windowHeight * 0.3, alignItems: 'center' }}>
-                <View style={appStyle.rowBetween}>
-                  <Text style={appStyle.text16}>
-                    Ảnh mặt trước
-                  </Text>
-                  <TouchableOpacity onPress={() => cameraModal('front')}>
-                    <FastImage source={ICON.Edit} style={appStyle.iconMedium} />
-                  </TouchableOpacity>
-                </View>
-                {carImages.front ? (
-                  <FastImage source={{ uri: carImages.front }} style={styles.imgCar} />
-                ) : (
-                  <TouchableOpacity style={styles.upLoadImage}>
-                    <Text style={{ textAlign: 'center' }}>
-                      Vui lòng chụp mặt sau của bảo hiểm
-                    </Text>
-                    <FastImage
-                      style={{ width: 30, height: 30, marginTop: 10 }}
-                      source={ICON.Picture}
-                    />
-                  </TouchableOpacity>
-                )}
-              </View>
-
-              <View style={{ width: windowWidth * 0.9, height: windowHeight * 0.3, alignItems: 'center' }}>
-                <View style={appStyle.rowBetween}>
-                  <Text style={appStyle.text16}>
-                    Ảnh mặt sau
-                  </Text>
-                  <TouchableOpacity onPress={() => cameraModal('back')}>
-                    <FastImage source={ICON.Edit} style={appStyle.iconMedium} />
-                  </TouchableOpacity>
-                </View>
-                {carImages.back ? (
-                  <FastImage source={{ uri: carImages.back }} style={styles.imgCar} />
-                ) : (
-                  <TouchableOpacity style={styles.upLoadImage}>
-                    <Text style={{ textAlign: 'center' }}>
-                      Vui lòng chụp mặt sau của bảo hiểm
-                    </Text>
-                    <FastImage
-                      style={{ width: 30, height: 30, marginTop: 10 }}
-                      source={ICON.Picture}
-                    />
-                  </TouchableOpacity>
-                )}
-              </View>
+              <CarImageSection
+                title="Vui lòng chụp phía sau xe"
+                imageType="back"
+                onEdit={handleUpdate}
+                imageURI={carImages.back}
+                cameraModal={cameraModal}
+              />
             </View>
           </View>
           <AppButton

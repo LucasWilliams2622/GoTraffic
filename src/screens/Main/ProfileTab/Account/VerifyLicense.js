@@ -27,7 +27,7 @@ import Modal from 'react-native-modal';
 import {AppContext} from '../../../../utils/AppContext';
 import axios from 'axios';
 
-const VerifyLicense = props => {
+const VerifyLicense = (props) => {
   const navigation = useNavigation();
 
   const [numberLicense, setNumberLicense] = useState(null);
