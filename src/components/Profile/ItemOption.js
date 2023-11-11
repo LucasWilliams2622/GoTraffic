@@ -3,16 +3,16 @@ import React, { useState } from 'react'
 import { appStyle } from '../../constants/AppStyle';
 import { COLOR } from '../../constants/Theme';
 import FastImage from 'react-native-fast-image';
+import { useNavigation } from '@react-navigation/native';
 
 const ItemOption = (props) => {
+    const navigation = useNavigation();
     const {data}= props;
-    const { icon, iconWidth, iconHeight, text, isSelected } = data;
+    const { icon, iconWidth, iconHeight, text } = data;
     const defaultIcon = require('../../assets/icon/ic_plane.png');
     return (
-            <TouchableOpacity
-                style={[styles.button,
-                { backgroundColor: isSelected ? COLOR.lightBlue : 'transparent' }
-                ]}>
+            <TouchableOpacity onPress={()=> navigation.navigate('Home')}
+                style={styles.button}>
                 <FastImage
                     source={icon ? icon : defaultIcon}
                     style={[appStyle.iconMedium]} />

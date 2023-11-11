@@ -9,33 +9,35 @@ import AppInput from '../../../components/AppInput';
 import FastImage from 'react-native-fast-image';
 import ItemOption from '../../../components/Profile/ItemOption';
 import ItemAddress from '../../../components/Profile/ItemAddress';
-import AxiosInstance from '../../../constants/AxiosInstance';
+import Suggestion from '../../../components/Home/Home/Suggestion';
 import axios from 'axios';
-const LocationPicking = (props) => {
 
+const LocationPicking = (props) => {
+  //console.log(">>>>>>>>>> location");
   const navigation = useNavigation();
   const [locationPicking, setLocationPicking] = useState('');
-  //const [suggestions, setSuggestions] = useState([]);
-  const [query, setQuery] = useState('');
+  const [searchText, setSearchText] = useState('');
   const [suggestions, setSuggestions] = useState([]);
-  
 
-  const fetchSuggestions = async (text) => {
+  const apikey = 'c3d0f188ff669f89042771a20656579073cffec5a8a69747';
+
+  const autoComplete = async (text) => {
     try {
-      const response = await axios.get(
-        `https://maps.vietmap.vn/api/autocomplete/v3?apikey=c3d0f188ff669f89042771a20656579073cffec5a8a69747&cityId=12&text=${text}`
-      );
-      console.log(response);
-      setSuggestions(response.data.suggestions);
-      
+      const response = await axios.get(`https://maps.vietmap.vn/api/autocomplete/v3?apikey=${apikey}&text=${text}`);
+      if (response.status === 200) {
+        console.log(response.data);
+        setSuggestions(response.data)
+      } else {
+        console.log('error');
+      }
     } catch (error) {
-      console.error('Error fetching suggestions:', error);
+
     }
-  };
+  }
 
   const handleInputChange = (text) => {
-    setQuery(text);
-    fetchSuggestions(text);
+    setSearchText(text);
+    autoComplete(text);
   };
 
 
@@ -53,13 +55,14 @@ const LocationPicking = (props) => {
             isLocation
             justifyContent={'flex-start'}
             placeholder="Nhập địa điểm"
-            value={query}
+            value={searchText}
             onChangeText={handleInputChange}
           />
           <FlatList
-            data={suggestions}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => <Text>{item.display}</Text>}
+            data={suggestions.slice(0, 5)}
+            keyExtractor={(item, index) => index.toString()}
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item }) => <Suggestion data={item} />}
           />
         </View>
 
@@ -103,7 +106,7 @@ const LocationPicking = (props) => {
           <FlatList
             style={{ width: '100%', marginVertical: 10 }}
             data={plane}
-            renderItem={({ item }) => <ItemOption data={item}  />}
+            renderItem={({ item }) => <ItemOption data={item} />}
             keyExtractor={item => item.id}
             horizontal
             showsHorizontalScrollIndicator={false}
