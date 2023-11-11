@@ -12,16 +12,16 @@ import rootReducer from './src/redux/reducers';
 import thunk from 'redux-thunk';
 import Toast from 'react-native-toast-message';
 import {toastConfig} from './src/configs/ToastConfig';
-import Test2 from './src/test/Test'
+import Test2 from './src/test/TestPickLocation'
 // Tạo store Redux
 const store = legacy_createStore(rootReducer, applyMiddleware(thunk));
 
 LogBox.ignoreLogs(['Require cycle:']);
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
-  // return(
-  //   <Test2/>
-  // )
+  return(
+    <Test2/>
+  )
 
   return (
     <Provider store={store}>
