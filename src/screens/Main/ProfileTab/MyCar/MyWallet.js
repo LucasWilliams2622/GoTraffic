@@ -7,6 +7,7 @@ import FastImage from 'react-native-fast-image';
 import { useNavigation } from '@react-navigation/native';
 import { AppContext } from '../../../../utils/AppContext';
 import numeral from 'numeral';
+import AppHeader from '../../../../components/AppHeader';
 
 const MyWallet = props => {
   const navigation = useNavigation();
@@ -17,22 +18,7 @@ const MyWallet = props => {
 
   return (
     <SafeAreaView style={appStyle.container}>
-      <View style={styles.viewTitle}>
-        <TouchableOpacity onPress={goBack}>
-          <FastImage
-            source={require('../../../../assets/icon/ic_left.png')}
-            style={{
-              position: 'absolute',
-              left: 10,
-              top: 20,
-              width: 20,
-              height: 20,
-            }}
-          />
-        </TouchableOpacity>
-        <Text style={styles.title}>Ví của tôi</Text>
-        <TouchableOpacity></TouchableOpacity>
-      </View>
+      <AppHeader title="Ví của tôi" />
       <View style={[appStyle.main, {marginTop: 20}]}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text style={appStyle.text14}>Chủ ví:</Text>

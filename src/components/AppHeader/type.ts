@@ -11,4 +11,5 @@ export type AppbarHeaderProps = {
   tintColor?: string;
   backgroundColor?: string;
   iconRightColor?: string;
+  notLeft?: boolean;
 };

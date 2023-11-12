@@ -5,23 +5,26 @@ import BottomTabs from './src/navigation/BottomNav';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Splash from './src/screens/Begin/Splash';
 import {NativeBaseProvider} from 'native-base';
-import {Text, LogBox} from 'react-native';
+import {Text, LogBox,View} from 'react-native';
 import {Provider} from 'react-redux';
 import {legacy_createStore, applyMiddleware} from 'redux';
 import rootReducer from './src/redux/reducers';
 import thunk from 'redux-thunk';
 import Toast from 'react-native-toast-message';
 import {toastConfig} from './src/configs/ToastConfig';
-import Test2 from './src/test/TestPickLocation'
+import Test2 from './src/test/TestWeb';
+import {WebView} from 'react-native-webview';
 // Tạo store Redux
 const store = legacy_createStore(rootReducer, applyMiddleware(thunk));
 
 LogBox.ignoreLogs(['Require cycle:']);
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
-  // return(
+
+  // return (
   //   <Test2/>
   // )
+ 
 
   return (
     <Provider store={store}>
@@ -33,11 +36,11 @@ const App = () => {
             ) : (
               <BottomTabs />
             )}
-           <Toast
-        ref={ref => Toast.setRef(ref)}
-        config={toastConfig}
-        position="top"
-      />
+            <Toast
+              ref={ref => Toast.setRef(ref)}
+              config={toastConfig}
+              position="top"
+            />
           </NativeBaseProvider>
         </NavigationContainer>
       </AppContextProvider>

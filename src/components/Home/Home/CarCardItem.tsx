@@ -5,11 +5,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useMemo, useState, useContext} from 'react';
+import React, { useMemo, useState, useContext } from 'react';
 import FastImage from 'react-native-fast-image';
-import {COLOR} from '../../../constants/Theme';
-import {appStyle} from '../../../constants/AppStyle';
-import {Column, Row} from 'native-base';
+import { COLOR } from '../../../constants/Theme';
+import { appStyle } from '../../../constants/AppStyle';
+import { Column, Row } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import ShieldIcon from '../../../assets/icon/ic_shield_verified';
 import SuitcaseIcon from '../../../assets/icon/ic_suitcase';
@@ -18,7 +18,7 @@ import {
   getTotalPrice,
   calculateDiscount,
 } from '../../../utils/utils';
-import {CarCardItemProps} from '../../../types';
+import { CarCardItemProps } from '../../../types';
 import AxiosInstance from '../../../constants/AxiosInstance';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AppContext } from '../../../utils/AppContext';
@@ -36,28 +36,15 @@ const CarCardItem = ({
   price,
   rating,
   numberOfBooked,
-  width= 330,
+  isFavorite,
+  width = 330,
   onPress,
 }: CarCardItemProps) => {
-  const [isFavorite, setIsFavorite] = React.useState<boolean>(false);
-  const {setIsLogin, infoUser, idUser} = React.useContext(AppContext);
+  // const [isFavorite, setIsFavorite] = React.useState<boolean>(false);
+  // const {setIsLogin, infoUser, idUser} = React.useContext(AppContext);
 
-  const addOrRemoveFavorite = async () => {
-    try {      
-      if (isFavorite) {
-        const response = await AxiosInstance().delete(`/favorite-car/api/delete?idUser=${idUser}&idCar=${id}`);
-          console.log(response,"Xe đã bị xóa khỏi danh sách yêu thích");
-      } else {
-        const response = await AxiosInstance().post(`/favorite-car/api/add?idUser=${idUser}&idCar=${id}`);
-          console.log(response,"Xe được thêm vào danh sách yêu thích");
-      }
-      setIsFavorite(!isFavorite);
-    } catch (error) {
-      console.log(error);
-    }
-  };  
-  
-  
+
+
   const formattedPrice = useMemo(() => formatPrice(price), [price]);
   const formattedOriginalPrice = useMemo(
     () => formatPrice(originalPrice ?? 0),
@@ -69,20 +56,19 @@ const CarCardItem = ({
     [originalPrice, price],
   );
   return (
-    <Pressable style={[CarCardItemStyles.container,{width:width}]} onPress={onPress}>
+    <Pressable style={[CarCardItemStyles.container, { width: width }]} onPress={onPress}>
       {/* <FastImage source={{uri: image}} style={CarCardItemStyles.image} /> */}
-      <FastImage source={{uri: imageThumbnail}} style={CarCardItemStyles.image} />
+      <FastImage source={{ uri: imageThumbnail }} style={CarCardItemStyles.image} />
 
       {originalPrice && (
         <View style={CarCardItemStyles.discount}>
-          <Text style={[appStyle.text10, {color: COLOR.white, padding: 10}]}>
+          <Text style={[appStyle.text10, { color: COLOR.white, padding: 10 }]}>
             Giảm {discountPercent}%
           </Text>
         </View>
       )}
       <Pressable
-        style={CarCardItemStyles.pressable}
-        onPress={() => addOrRemoveFavorite()}>
+        style={CarCardItemStyles.pressable}>
         <Icon
           name="heart"
           color={isFavorite ? COLOR.fifth : COLOR.white}
@@ -118,39 +104,39 @@ const CarCardItem = ({
       <View style={CarCardItemStyles.separator} />
 
       <Row style={CarCardItemStyles.priceRow}>
-        <Row style={{alignItems: 'center'}}>
+        <Row style={{ alignItems: 'center' }}>
           <Icon name="star" color={COLOR.third} size={12} solid />
-          <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
+          <Text style={[CarCardItemStyles.ratingText, { marginLeft: 5 }]}>
             {rating?.toFixed(1)}
           </Text>
           <Text
-            style={[CarCardItemStyles.dot, {marginLeft: 5, marginRight: 5}]}>
+            style={[CarCardItemStyles.dot, { marginLeft: 5, marginRight: 5 }]}>
             ·
           </Text>
           <SuitcaseIcon color={COLOR.fifth} />
-          <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
+          <Text style={[CarCardItemStyles.ratingText, { marginLeft: 5 }]}>
             {numberOfBooked} chuyến
           </Text>
         </Row>
 
-        <Column style={{alignItems: 'flex-end'}}>
-          <Row style={{alignItems: 'baseline'}}>
+        <Column style={{ alignItems: 'flex-end' }}>
+          <Row style={{ alignItems: 'baseline' }}>
             {originalPrice && (
               <Text style={CarCardItemStyles.originalPrice}>
                 {formattedOriginalPrice}
               </Text>
             )}
 
-            <Text style={{color: COLOR.fifth, fontSize: 18}}>
+            <Text style={{ color: COLOR.fifth, fontSize: 18 }}>
               {formattedPrice}
             </Text>
 
-            <Text style={{color: COLOR.borderColor, fontSize: 12}}>/ngày</Text>
+            <Text style={{ color: COLOR.borderColor, fontSize: 12 }}>/ngày</Text>
           </Row>
 
-          <Text style={{color: COLOR.borderColor, fontSize: 12, marginTop: 5}}>
+          <Text style={{ color: COLOR.borderColor, fontSize: 12, marginTop: 5 }}>
             Giá tổng{' '}
-            <Text style={{fontWeight: 'bold'}}>{formatPrice(totalPrice)}</Text>
+            <Text style={{ fontWeight: 'bold' }}>{formatPrice(totalPrice)}</Text>
           </Text>
         </Column>
       </Row>
@@ -163,6 +149,7 @@ export default CarCardItem;
 export const CarCardItemStyles = StyleSheet.create({
   container: {
     marginRight: 10,
+    marginTop: 10,
     borderRadius: 20,
     borderWidth: 0.5,
     borderColor: '#ddd',

@@ -8,11 +8,11 @@ import {appStyle} from '../../../constants/AppStyle';
 import AxiosInstance from '../../../constants/AxiosInstance';
 import { AppContext } from '../../../utils/AppContext';
 import {useIsFocused} from '@react-navigation/native';
+
 const Notification = () => {
   const [data, setData] = useState('');
   const [dataTrip, setdataTrip] = useState('')
   const { setNotificationCount } = useContext(AppContext);
-  const isFocused = useIsFocused();
   
   const getListNotifications = async () => {
     try {
@@ -33,6 +33,7 @@ const Notification = () => {
       );
       if (response.result) {
         console.log('Trip:>>>' + response.notifications);
+        setNotificationCount(response.notifications.length)
         setdataTrip(response.notifications);
       } else {
         console.log('NETWORK ERROR');
@@ -44,8 +45,8 @@ const Notification = () => {
   useEffect(() => {
     getListNotificationsByIDUser();
     getListNotifications();
-    setNotificationCount(0)
-  }, [isFocused]);
+    setNotificationCount(0);
+  }, [useIsFocused]);
   return (
     <SafeAreaView style={appStyle.container}>
       <View style={styles.viewTitle}>

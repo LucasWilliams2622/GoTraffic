@@ -4,7 +4,7 @@ import React from 'react';
 import FastImage from 'react-native-fast-image';
 import {AppbarHeaderProps} from './type';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { COLOR, ICON } from '../../constants/Theme';
+import {COLOR, ICON} from '../../constants/Theme';
 const AppHeader = ({
   title,
   onPressRight,
@@ -13,6 +13,7 @@ const AppHeader = ({
   backgroundColor = COLOR.background,
   tintColor = '#424242',
   iconRightColor = 'black',
+  notLeft = false,
 }: AppbarHeaderProps) => {
   const navigation = useNavigation();
 
@@ -20,8 +21,7 @@ const AppHeader = ({
     add: ICON.Add,
     dustBin: ICON.Ban,
     calendar: ICON.Calendar,
-    download:ICON.Download
-    
+    download: ICON.Download,
   };
   const getIcon = (icon, onPressRight) => {
     if (icon === '') {
@@ -54,19 +54,32 @@ const AppHeader = ({
             backgroundColor: backgroundColor,
           },
         ]}>
-        <TouchableOpacity
-          style={{}}
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          {iconLeft == null ? (
-            <FastImage source={ICON.Back} style={{width:20,height:20}} tintColor={tintColor}/>
-          ) : iconLeft == 'close' ? (
-            <Icon name="close" size={22} color={tintColor} />
-          ) : (
-            <FastImage source={ICON.Back} style={{width:20,height:20}} tintColor={tintColor}/>
-          )}
-        </TouchableOpacity>
+        {!notLeft ? (
+          <TouchableOpacity
+            style={{}}
+            onPress={() => {
+              navigation.goBack();
+            }}>
+            {iconLeft == null ? (
+              <FastImage
+                source={ICON.Back}
+                style={{width: 20, height: 20}}
+                tintColor={tintColor}
+              />
+            ) : iconLeft == 'close' ? (
+              <Icon name="close" size={22} color={tintColor} />
+            ) : (
+              <FastImage
+                source={ICON.Back}
+                style={{width: 20, height: 20}}
+                tintColor={tintColor}
+              />
+            )}
+          </TouchableOpacity>
+        ) : (
+          <Text>        </Text>
+        )}
+
         <Text
           style={{
             fontSize: 20,
