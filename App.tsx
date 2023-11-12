@@ -19,9 +19,9 @@ const store = legacy_createStore(rootReducer, applyMiddleware(thunk));
 LogBox.ignoreLogs(['Require cycle:']);
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
-  return(
-    <Test2/>
-  )
+  // return(
+  //   <Test2/>
+  // )
 
   return (
     <Provider store={store}>
