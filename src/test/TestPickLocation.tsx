@@ -1,81 +1,78 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import Geolocation from '@react-native-community/geolocation';
+import React, {useState} from 'react';
+import {View, Text, TouchableOpacity} from 'react-native';
+import MapView, {Marker} from 'react-native-maps';
+import axios from 'axios';
+import {REACT_APP_GOOGLE_MAPS_API_KEY} from '@env';
+import Geolib from 'geolib';
 
-const YourMapComponent = () => {
-  const [location, setLocation] = useState(null);
+const MapScreen = () => {
+  const [markerPosition, setMarkerPosition] = useState(null);
+  const [address, setAddress] = useState('');
 
-  useEffect(() => {
-    // Lấy vị trí hiện tại
-    Geolocation.getCurrentPosition(
-      position => {
-        const { latitude, longitude } = position.coords;
-        setLocation({ latitude, longitude });
-      },
-      error => console.log('Error getting location:', error),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-    );
-  }, []);
+  const handleGetLocation = async () => {
+    if (markerPosition) {
+      const {latitude, longitude} = markerPosition;
+      const apiKey = REACT_APP_GOOGLE_MAPS_API_KEY;
+      const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`;
+      console.log(latitude, longitude);
 
-  const handleGetLocation = () => {
-    if (location) {
-      console.log('Address:', 'TODO: Get address from coordinates');
-      console.log('Coordinates:', location);
+      try {
+        convertCoordinatesToAddress(latitude, longitude);
+      } catch (error) {
+        console.error('Lỗi khi gọi API:', error.message);
+      }
     }
+  };
+  const convertCoordinatesToAddress = (latitude, longitude) => {
+    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`;
+
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        const address = data.display_name;
+        console.log(address);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+  const handleMarkerPress = event => {
+    const {coordinate} = event.nativeEvent;
+    setMarkerPosition(coordinate);
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      <MapView
-        style={{ flex: 1 }}
-        initialRegion={{
-          latitude: location ? location.latitude : 0,
-          longitude: location ? location.longitude : 0,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-      >
-        {location && <Marker coordinate={location} title="Your Location" />}
+    <View style={{flex: 1}}>
+      <MapView style={{flex: 1}} onPress={event => handleMarkerPress(event)}>
+        {markerPosition && <Marker coordinate={markerPosition} />}
       </MapView>
-
-      <View style={styles.centerMarkerContainer}>
-        <Icon name="arrow-downward" size={30} color="black" />
-      </View>
-
-
-      <TouchableOpacity style={styles.selectButton} onPress={handleGetLocation}>
-        <Text style={styles.buttonText}>Select Location</Text>
+      <TouchableOpacity
+        style={{
+          position: 'absolute',
+          bottom: 16,
+          alignSelf: 'center',
+          padding: 12,
+          backgroundColor: 'blue',
+          borderRadius: 8,
+        }}
+        onPress={handleGetLocation}>
+        <Text style={{color: 'white'}}>Lấy địa chỉ</Text>
       </TouchableOpacity>
+      {address !== '' && (
+        <View
+          style={{
+            position: 'absolute',
+            bottom: 80,
+            alignSelf: 'center',
+            padding: 12,
+            backgroundColor: 'white',
+            borderRadius: 8,
+          }}>
+          <Text>{address}</Text>
+        </View>
+      )}
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  centerMarkerContainer: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    marginLeft: -15, // width/2
-    marginTop: -30, // height/2
-    zIndex: 2,
-  },
-  selectButton: {
-    position: 'absolute',
-    bottom: 16,
-    left: 16,
-    right: 16,
-    backgroundColor: 'blue',
-    padding: 16,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-});
-
-export default YourMapComponent;
+export default MapScreen;
