@@ -18,6 +18,7 @@ import ShareWithFriend from '../screens/Main/ProfileTab/ShareWithFriend';
 import ChangePassword from '../screens/Main/ProfileTab/ChangePassword';
 import UpdateProfile from '../screens/Main/ProfileTab/Account/UpdateProfile';
 import NewAddress from '../screens/Main/ProfileTab/Address/NewAddress';
+import UpdateAddress from '../screens/Main/ProfileTab/Address/UpdateAddress';
 import Account from '../screens/Main/ProfileTab/Account/Account';
 import Register from '../screens/Begin/Register';
 import Verified from '../screens/Begin/Verified';
@@ -185,6 +186,7 @@ const StackProfile = () => {
       <Stack.Screen name="ExhibitOfCar" component={ExhibitOfCar} />
       <Stack.Screen name="MyWallet" component={MyWallet} />
       <Stack.Screen name="MyAddress" component={MyAddress} />
+      <Stack.Screen name="UpdateAddress" component={UpdateAddress} />
       <Stack.Screen name="ShareWithFriend" component={ShareWithFriend} />
       <Stack.Screen name="ChangePassword" component={ChangePassword} />
       <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
