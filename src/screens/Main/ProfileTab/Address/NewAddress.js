@@ -32,19 +32,20 @@ const NewAddress = (props) => {
 
     const newAddress = async () => {
         try {
-            console.log(idUser, isSelected, nickName, selectedProvince?.name, selectedDistrict?.name, selectedWard?.name, address, onSwitch);
-            const body = {
+            console.log("abc", idUser, isSelected, nickName, selectedProvince?.name, selectedDistrict?.name, selectedWard?.name, address, onSwitch);
+            const response = await AxiosInstance().post(`/address/api/add-new-address`, {
                 idUser: idUser,
-                city: selectedProvince?.name,
-                district: selectedDistrict?.name,
-                ward: selectedWard?.name,
-                street: '', 
+                city: selectedProvince.name,
+                district: selectedDistrict.name,
+                ward: selectedWard.name,
+                street: '',
                 number: '',
                 note: nickName,
-                isDefault: onSwitch, 
-                address: address
-            };
-            const response = await AxiosInstance().post(`/address/api/add-new-address`, body);
+                address: address,
+                isDefault: onSwitch
+
+            });
+            console.log("======>",response);
             console.log('Địa chỉ mới:', response.data);
         } catch (error) {
             console.log(error);

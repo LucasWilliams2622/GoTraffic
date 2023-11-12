@@ -186,6 +186,7 @@ export interface CarCardItemProps {
   price: number;
   rating: number;
   numberOfBooked: number;
+  isFavorite: boolean;
   width?: any;
   onPress: () => void;
 }
