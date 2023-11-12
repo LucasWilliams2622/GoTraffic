@@ -18,7 +18,7 @@ import ConfirmTrip from './RouteOfTripCar/ConfirmTrip';
 import ActiveTrip from './RouteOfTripCar/ActiveTrip';
 import CancleTrip from './RouteOfTripCar/CancleTrip';
 import FinishTrip from './RouteOfTripCar/FinishTrip';
-
+import AppHeader from '../../../../components/AppHeader';
 
 const TripOfCar = props => {
   const {navigation} = props;
@@ -50,34 +50,7 @@ const TripOfCar = props => {
   );
   return (
     <SafeAreaView style={appStyle.container}>
-      <View style={styles.viewTitle}>
-        <TouchableOpacity onPress={goBack}>
-          <FastImage
-            source={require('../../../../assets/icon/ic_left.png')}
-            style={{
-              position: 'absolute',
-              left: 10,
-              top: 20,
-              width: 20,
-              height: 20,
-            }}
-          />
-        </TouchableOpacity>
-        <Text style={styles.title}>Danh sách chuyến</Text>
-
-        <TouchableOpacity>
-          <FastImage
-            source={require('../../../../assets/icon/ic_add.png')}
-            style={{
-              position: 'absolute',
-              right: 10,
-              top: 20,
-              width: 20,
-              height: 20,
-            }}
-          />
-        </TouchableOpacity>
-      </View>
+      <AppHeader title="Danh sách chuyến" />
       <TabView
         navigationState={{index, routes}}
         renderTabBar={renderTabBar}
