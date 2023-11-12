@@ -12,18 +12,15 @@ import {
   windowHeight,
   windowWidth,
 } from '../../../../constants/AppStyle';
-import FastImage from 'react-native-fast-image';
 import {useNavigation} from '@react-navigation/native';
 import {COLOR} from '../../../../constants/Theme';
 import AppHeader from '../../../../components/AppHeader';
 import {WebView} from 'react-native-webview';
 import AppInput from '../../../../components/AppInput';
-import AppButton from '../../../../components/AppButton';
-import AxiosInstance from '../../../../constants/AxiosInstance';
 import axios from 'axios';
-import QRCode from 'react-native-qrcode-svg';
 import { AppContext } from '../../../../utils/AppContext';
 import { showToastMessage } from '../../../../utils/utils';
+import AppButton from '../../../../components/AppButton';
 
 const Recharge = () => {
   const navigation = useNavigation();
@@ -93,7 +90,8 @@ const Recharge = () => {
           editable={blockInput}
         />
         <AppButton title={'Nạp'} onPress={() => handleRecharge()} />
-        <View style={{borderWidth:2,flex:1}}>
+
+        <View style={{flex:1}}>
 
         {checkoutUrl != '' && (
           <>
@@ -110,20 +108,7 @@ const Recharge = () => {
     </SafeAreaView>
   );
 
-  return (
-    <SafeAreaView style={appStyle.container}>
-      <AppHeader title="Nạp tiền" />
-      <View style={{borderWidth: 0}}>
-        <FastImage
-          style={{width: windowWidth, height: windowHeight * 0.8}}
-          source={require('../../../../assets/image/bank.png')}
-        />
-        <Text style={[appStyle.text16, {textAlign: 'center', marginTop: 8}]}>
-          Ví tiền sẽ được cập nhật sau 12h
-        </Text>
-      </View>
-    </SafeAreaView>
-  );
+ 
 };
 
 export default Recharge;
