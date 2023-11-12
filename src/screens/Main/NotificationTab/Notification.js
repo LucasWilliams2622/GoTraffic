@@ -7,10 +7,12 @@ import ItemNotification from '../../../components/Support/ItemNotification';
 import {appStyle} from '../../../constants/AppStyle';
 import AxiosInstance from '../../../constants/AxiosInstance';
 import { AppContext } from '../../../utils/AppContext';
+import {useIsFocused} from '@react-navigation/native';
 const Notification = () => {
   const [data, setData] = useState('');
   const [dataTrip, setdataTrip] = useState('')
   const { setNotificationCount } = useContext(AppContext);
+  const isFocused = useIsFocused();
   
   const getListNotifications = async () => {
     try {
@@ -43,7 +45,7 @@ const Notification = () => {
     getListNotificationsByIDUser();
     getListNotifications();
     setNotificationCount(0)
-  }, []);
+  }, [isFocused]);
   return (
     <SafeAreaView style={appStyle.container}>
       <View style={styles.viewTitle}>

@@ -9,11 +9,11 @@ import FastImage from 'react-native-fast-image';
 import AxiosInstance from '../../../constants/AxiosInstance';
 import {AppContext} from '../../../utils/AppContext';
 import {useNavigation} from '@react-navigation/native';
+import AppHeader from '../../../components/AppHeader';
 
 const HistoryTrip = () => {
   const {infoUser, idUser} = useContext(AppContext);
   const [listBooked, setListBooking] = useState([]);
-  const navigation = useNavigation();
   const getListBooked = async () => {
     try {
       const response = await AxiosInstance().get(
@@ -34,19 +34,8 @@ const HistoryTrip = () => {
 
   return (
     <SafeAreaView style={appStyle.container}>
-      <View style={styles.viewTitle}>
-        <Text style={styles.title}>Lịch sử chuyến</Text>
-        <Pressable
-          style={styles.logo}
-          onPress={() => navigation.goBack('Trip')}>
-          <FastImage
-            style={styles.logo}
-            resizeMode={'stretch'}
-            source={require('../../../assets/icon/ic_left.png')}
-          />
-        </Pressable>
-      </View>
-
+      <AppHeader title='Lịch sử chuyến'/>
+      <View style={{backgroundColor:COLOR.borderColor2,height:1,width:'100%'}}/>
       <ScrollView style={appStyle.main}>
         <Text style={styles.text1}>Đã thuê</Text>
         <FlatList
