@@ -17,14 +17,14 @@ import {AppContext} from '../../../utils/AppContext';
 import AppButton from '../../../components/AppButton';
 import AxiosInstance from '../../../constants/AxiosInstance';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation ,useIsFocused} from '@react-navigation/native';
+import {useNavigation, useIsFocused} from '@react-navigation/native';
+import {showToastMessage} from '../../../utils/utils';
 
 const Profile = props => {
   const isFocused = useIsFocused();
   const navigation = useNavigation();
-  const { route} = props;
+  const {route} = props;
   const {setIsLogin, infoUser, idUser} = useContext(AppContext);
-
   const [name, setName] = useState(infoUser.name);
   const [isModalVisible, setModalVisible] = useState(false);
   console.log(infoUser.avatar);
@@ -75,7 +75,6 @@ const Profile = props => {
     }
   }, [isFocused]);
 
- 
   return (
     <SafeAreaView style={[appStyle.container, {backgroundColor: COLOR.gray}]}>
       <ScrollView
@@ -109,7 +108,7 @@ const Profile = props => {
           <AppProfile
             icon={ICON.Profile}
             text="Tài khoản của tôi"
-            onPress={() => navigation.navigate('Account',)}
+            onPress={() => navigation.navigate('Account')}
           />
 
           <AppProfile
