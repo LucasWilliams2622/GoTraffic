@@ -16,7 +16,8 @@ import * as Yup from 'yup';
 import {Formik} from 'formik';
 import {KeyboardAvoidingView} from 'native-base';
 import AxiosInstance from '../../constants/AxiosInstance';
-import { showToastMessage } from '../../utils/utils';
+import {showToastMessage} from '../../utils/utils';
+import axios from 'axios';
 
 const Register = props => {
   const {navigation} = props;
@@ -51,18 +52,24 @@ const Register = props => {
   //API REGISTER
   const onRegister = async () => {
     try {
-      console.log(phoneNumber, email, password,nameUser);
-      const response = await AxiosInstance().post('user/api/register', {
-        phone: phoneNumber,
-        email: email,
-        name: nameUser,
-        password: password,
-      });
-      if (response.result) {
-        ToastAndroid.show('Ðăng ki thành công', ToastAndroid.SHORT);
-        goBack();
+      const response = await axios.post(
+        'http://103.57.129.166:3000/user/api/register',
+        {
+          email: email,
+          phone: phoneNumber.toString(),
+          password: password,
+          name: nameUser,
+        },
+      );
+      console.log(response.data);
+      if (response.data.result) {
+        showToastMessage('', 'Đăng kí thành công');
       } else {
-        ToastAndroid.show('Đăng ki thất bại', ToastAndroid.SHORT);
+        showToastMessage(
+          '',
+          'Đăng kí thất bại',
+          ICON.cancelWhite,
+        );
       }
     } catch (e) {
       console.log(e);
@@ -87,8 +94,8 @@ const Register = props => {
           setpassword(values.password);
           if (values.password === values.rePassword) {
             onRegister();
-          }else{
-            showToastMessage('','Mật khẩu không khớp',ICON.cancelWhite);
+          } else {
+            showToastMessage('', 'Mật khẩu không khớp', ICON.cancelWhite);
           }
         }}>
         {({

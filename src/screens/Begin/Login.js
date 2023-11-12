@@ -42,7 +42,7 @@ const Login = props => {
   const [visible2, setVisible2] = useState(false);
   const [phoneNumber, setphoneNumber] = useState('');
   const [password, setpassword] = useState('');
-  const [email, setemail] = useState('');
+  const [email, setEmail] = useState('');
 
   const toggleBottomNavigationView = () => {
     setVisible(!visible);
@@ -110,45 +110,22 @@ const Login = props => {
   const onForgotPassword = async () => {
     try {
       console.log(email);
-      const response = await AxiosInstance().put('/user/api/forgot-password', {
-        email: email,
-      });
-      console.log(response);
-      if (response.result) {
-        ToastAndroid.show(
-          'Gửi mật khẩu mới thành công thành công',
-          ToastAndroid.SHORT,
-        );
+      const response = await axios.put(
+        'http://103.57.129.166:3000/user/api/forgot-password',
+        {
+          email: email,
+        },
+      );
+      console.log(response.data);
+      if (response.data.result) {
+        showToastMessage('', 'Gửi mật khẩu mới thành công');
       } else {
-        ToastAndroid.show(
-          'Gửi mật khẩu mới thành công thất bại',
-          ToastAndroid.SHORT,
-        );
+        showToastMessage('', 'Gửi mật khẩu mới thất bại', ICON.cancelWhite);
       }
     } catch (e) {
       console.log(e);
     }
   };
-  //API changePassword
-  const onChangePassword = async () => {
-    try {
-      console.log(phoneNumber, password);
-      const response = await AxiosInstance().put('/user/api/change-password', {
-        phone: phoneNumber,
-        oldPassword: password,
-        oldPassword: password,
-      });
-      console.log(response);
-      if (response.result) {
-        ToastAndroid.show('Đổi mật khẩu thành công', ToastAndroid.SHORT);
-      } else {
-        ToastAndroid.show('Đổi mật khẩu thất bại', ToastAndroid.SHORT);
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   // Hàm lưu thông tin đăng nhập vào AsyncStorage
   const saveLoginInfo = async userInfo => {
     try {
@@ -222,10 +199,6 @@ const Login = props => {
                         onChangeText={handleChange('phoneNumber')}
                         onBlur={handleBlur('phoneNumber')}
                         value={values.phoneNumber}
-                        // onChangeText={phoneNumber => [
-                        //   setphoneNumber(phoneNumber),
-                        // ]}
-                        // value={phoneNumber}
                       />
                     </View>
                   </View>
@@ -244,8 +217,6 @@ const Login = props => {
                         onChangeText={handleChange('password')}
                         onBlur={handleBlur('password')}
                         value={values.password}
-                        // onChangeText={password => [setpassword(password)]}
-                        // value={password}
                       />
                     </View>
                   </View>
@@ -261,11 +232,7 @@ const Login = props => {
                   </Text>
                   <View style={styles.view1}></View>
                   <View style={styles.itemLoginSocial}>
-                    <TouchableOpacity
-                      style={styles.button}
-                      onPress={() => {
-                        signInGoogle();
-                      }}>
+                    <TouchableOpacity style={styles.button}>
                       <FastImage
                         style={styles.logo}
                         source={require('../../assets/image/logo-gg.png')}
@@ -320,9 +287,8 @@ const Login = props => {
                 gửi mật khẩu mới qua gmail của bạn.
               </Text>
               <AppInput
-                returnKeyType={'done'}
                 placeholder={'Nhập email của tài khoản'}
-                onChangeText={email => [setemail(email)]}
+                onChangeText={email => [setEmail(email)]}
                 value={email}
               />
             </View>
@@ -333,53 +299,9 @@ const Login = props => {
             fontSize={18}
             onPress={() => {
               setVisible(false);
-              toggleBottomNavigationView2();
               onForgotPassword();
             }}
           />
-        </View>
-      </BottomSheet>
-
-      {/*Bottom Sheet 2*/}
-      <BottomSheet
-        visible={visible2}
-        onBackButtonPress={toggleBottomNavigationView2}
-        onBackdropPress={toggleBottomNavigationView2}>
-        <View style={styles.bottomNavigationView}>
-          <View>
-            <Text style={styles.text1InBottomSheet}>Nhập mật khẩu mới</Text>
-            <Text
-              style={[appStyle.text14Bold, {marginBottom: 10, marginTop: 10}]}>
-              <Text
-                style={[appStyle.text14, {marginBottom: 10, marginTop: 10}]}>
-                Nhập mật khẩu và tiến hành thay đổi mật khẩu mới của bạn nhận
-                được qua:{' '}
-              </Text>
-              {email}.
-            </Text>
-            <View style={{marginBottom: 20}}>
-              <AppInput
-                placeholder={'Nhập mật khẩu đã được gửi qua gmail'}
-                isPassword
-                secureTextEntry
-              />
-            </View>
-            <View style={{marginBottom: 20}}>
-              <AppInput
-                placeholder={'Nhập mật khẩu mới'}
-                isPassword
-                secureTextEntry
-              />
-            </View>
-            <AppButton
-              title="Tiếp tục"
-              color={COLOR.secondary}
-              fontSize={18}
-              onPress={() => {
-                setVisible2(false);
-              }}
-            />
-          </View>
         </View>
       </BottomSheet>
     </SafeAreaView>
