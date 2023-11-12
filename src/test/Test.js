@@ -1,94 +1,53 @@
-import { Image, StyleSheet, Text, View ,TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { View, TextInput, FlatList, Text, TouchableOpacity } from 'react-native';
+import axios from 'axios';
 
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { appStyle } from '../constants/AppStyle';
-const Tab = createMaterialTopTabNavigator();
+const YourComponent = () => {
+  const [query, setQuery] = useState('');
+  const [data, setData] = useState([]);
 
-const CustomTabBar = ({ state, descriptors, navigation }) => {
+  const handleInputChange = async text => {
+    setQuery(text);
+
+    try {
+      const apiKey = 'c3d0f188ff669f89042771a20656579073cffec5a8a69747';
+      const cityId = 12;
+      const circleCenter = '10.758867051669924,106.6755666901197';
+      const circleRadius = 200;
+
+      const apiUrl = `https://maps.vietmap.vn/api/autocomplete/v3?apikey=${apiKey}&cityId=${cityId}&text=${text}&circle_center=${circleCenter}&circle_radius=${circleRadius}&layers=POI`;
+      const response = await axios.get(apiUrl);
+      const result = response.data;
+
+      console.log(result);
+
+      setData(result);
+    } catch (error) {
+      console.error('Error fetching autocomplete data:', error);
+    }
+  };
+
+  const handleItemPress = item => {
+    setQuery(item.address); // Hiển thị địa chỉ đầy đủ khi chọn một mục
+  };
+
   return (
-    <View style={styles.tabBar}>
-      {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key];
-        const label = options.tabBarLabel;
-        const isFocused = state.index === index;
-
-        const icon = options.tabBarIcon;
-        const iconColor = isFocused ? COLOR.primary : COLOR.gray;
-
-        return (
-          <TouchableOpacity
-            key={index}
-            style={styles.tabItem}
-            onPress={() => navigation.navigate(route.name)}
-          >
-            <Image source={icon} style={[styles.tabIcon, { tintColor: iconColor }]} />
-            <Text style={[styles.tabLabel, { color: isFocused ? COLOR.primary : COLOR.gray }]}>
-              {label}
-            </Text>
-          </TouchableOpacity>
-        );
-      })}
-    </View>
-  );
-};
-
-const Home = () => {
-  return (
-    <View style={appStyle.container}>
-      <View style={styles.headBg}>
-        <Tab.Navigator tabBar={(props) => <CustomTabBar {...props} />}>
-          <Tab.Screen
-            name="Home"
-            component={Test}
-            options={{
-              tabBarLabel: 'Tab 1',
-              tabBarIcon: require('../assets/icon/ic_home.png'),
-            }}
-          />
-          <Tab.Screen
-            name="Settings"
-            component={Test2}
-            options={{
-              tabBarLabel: 'Tab 2',
-              tabBarIcon: require('../assets/icon/ic_message.png'),
-            }}
-          />
-        </Tab.Navigator>
+    <View>
+      <View style={{ borderWidth: 2 }}>
+        <TextInput value={query} onChangeText={txt => handleInputChange(txt)} />
       </View>
+      <FlatList
+        data={data}
+        style={{ borderWidth: 2, height: 300, }}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={() => handleItemPress(item)}>
+            <Text>{item.address}</Text>
+          </TouchableOpacity>
+        )}
+        keyExtractor={(item, index) => index.toString()}
+      />
     </View>
   );
 };
 
-export default Home;
-
-const styles = StyleSheet.create({
-  headBg: {
-    backgroundColor: COLOR.secondary,
-    width: '100%',
-    height: '40%',
-    borderBottomLeftRadius: 12,
-    borderBottomRightRadius: 12,
-  },
-  tabBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    height: 50,
-    backgroundColor: COLOR.secondary,
-  },
-  tabItem: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection:'row'
-  },
-  tabIcon: {
-    width: 16,
-    height: 15,
-  },
-  tabLabel: {
-    fontSize: 12,
-    marginTop: 5,
-  },
-});
+export default YourComponent;
