@@ -258,39 +258,72 @@ const DetailsInfor = props => {
 
   //call api add car here
   const addNewCar = async () => {
-    try {
-      const response = await AxiosInstance().post('/car/api/add', {
-        idUser: 1,
-        idCarBrand: 1,
-        numberPlate: cardInfo.carInfo.carNumber,
-        name: cardInfo.carInfo.selectedModel,
-        yearOfManufacture: cardInfo.carInfo.selectedYear,
-        seats: cardInfo.carInfo.selectedSeats,
-        gear: cardInfo.carInfo.selectedTransmission,
-        fuel: cardInfo.carInfo.selectedFuel,
-        locationCar: location,
-        latitude: 0,
-        longitude: 0,
-        description: description,
-        fuelConsumption: parseInt(fuelConsumption),
-        isDelivery: true,
-        limitKm: 0,
-        price: price,
-        utilities: selectedFeatures.toString(),
-        image: '',
-      });
-      console.log(response);
-      if (response.result) {
-        ToastAndroid.show('Đăng xe thành công', ToastAndroid.SHORT);
-        // const updatedCarInfo = [...cars];
-        // updatedCarInfo.push(combinedInfo);
-        // setCars(updatedCarInfo);
-        navigation.navigate('ListCar');
-      } else {
-        ToastAndroid.show('Đăng xe thất bại', ToastAndroid.SHORT);
-      }
-    } catch (error) {
-      console.log(error);
+    // try {
+    //   const response = await AxiosInstance().post('/car/api/add', {
+    //     idUser: 1,
+    //     idCarBrand: 1,
+    //     numberPlate: cardInfo.carInfo.carNumber,
+    //     name: cardInfo.carInfo.selectedModel,
+    //     yearOfManufacture: cardInfo.carInfo.selectedYear,
+    //     seats: cardInfo.carInfo.selectedSeats,
+    //     gear: cardInfo.carInfo.selectedTransmission,
+    //     fuel: cardInfo.carInfo.selectedFuel,
+    //     locationCar: location,
+    //     latitude: 0,
+    //     longitude: 0,
+    //     description: description,
+    //     fuelConsumption: parseInt(fuelConsumption),
+    //     isDelivery: true,
+    //     limitKm: 0,
+    //     price: price,
+    //     utilities: selectedFeatures.toString(),
+    //     image: '',
+    //   });
+    //   console.log(response);
+    //   if (response.result) {
+    //     ToastAndroid.show('Đăng xe thành công', ToastAndroid.SHORT);
+    //     // const updatedCarInfo = [...cars];
+    //     // updatedCarInfo.push(combinedInfo);
+    //     // setCars(updatedCarInfo);
+    //     navigation.navigate('ListCar');
+    //   } else {
+    //     ToastAndroid.show('Đăng xe thất bại', ToastAndroid.SHORT);
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // }
+    //console.log(carImages.back);
+    const formData = new FormData();
+    formData.append('image', {
+      uri: carImages.back,
+      type: 'icon/icon_jpeg',
+      name: 'image.jpg',
+    });
+    formData.append('image', {
+      uri: carImages.left,
+      type: 'icon/icon_jpeg',
+      name: 'image.jpg',
+    });
+    formData.append('image', {
+      uri: carImages.front,
+      type: 'icon/icon_jpeg',
+      name: 'image.jpg',
+    });
+    formData.append('image', {
+      uri: carImages.right,
+      type: 'icon/icon_jpeg',
+      name: 'image.jpg',
+    });
+    console.log(formData);
+    const response = await AxiosInstance('multipart/form-data').post(
+      '/car/api/upload-car-images',
+      formData,
+    );
+    console.log(response);
+    if (response.result == true) {
+      ToastAndroid.show('Upload Image Success', ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show('Upload Image Failed', ToastAndroid.SHORT);
     }
   };
   return (
