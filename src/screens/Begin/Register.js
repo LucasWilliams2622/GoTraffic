@@ -18,12 +18,10 @@ import {KeyboardAvoidingView} from 'native-base';
 import AxiosInstance from '../../constants/AxiosInstance';
 import {showToastMessage} from '../../utils/utils';
 import axios from 'axios';
+import {useNavigation} from '@react-navigation/native';
 
 const Register = props => {
-  const {navigation} = props;
-  const goBack = () => {
-    navigation.goBack('Login');
-  };
+  const navigation = useNavigation();
   const validationSchema = Yup.object().shape({
     email: Yup.string()
       .email('Vui lòng nhập email hợp lệ ')
@@ -65,11 +63,7 @@ const Register = props => {
       if (response.data.result) {
         showToastMessage('', 'Đăng kí thành công');
       } else {
-        showToastMessage(
-          '',
-          'Đăng kí thất bại',
-          ICON.cancelWhite,
-        );
+        showToastMessage('', 'Đăng kí thất bại', ICON.cancelWhite);
       }
     } catch (e) {
       console.log(e);
@@ -108,25 +102,16 @@ const Register = props => {
         }) => (
           <View style={[appStyle.main, {justifyContent: 'space-evenly'}]}>
             <KeyboardAvoidingView behavior="padding">
-              <TouchableOpacity onPress={goBack}>
-                <FastImage
-                  source={require('../../assets/icon/ic_left.png')}
-                  style={{
-                    position: 'absolute',
-                    left: 5,
-                    top: 5,
-                    width: 30,
-                    height: 30,
-                  }}
-                />
+              <TouchableOpacity
+                style={{padding: 14}}
+                onPress={() => navigation.goBack()}>
+                <FastImage source={ICON.Back} style={appStyle.icon} />
               </TouchableOpacity>
               <FastImage
                 source={require('../../assets/image/logo_go_traffic.png')}
                 style={styles.image}
               />
               <Text style={styles.text1}>Đăng kí</Text>
-              <View style={styles.view1}></View>
-
               <View style={styles.viewItem}>
                 <Text style={styles.text2}>Tên hiện thị</Text>
                 <AppInput
