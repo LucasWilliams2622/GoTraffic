@@ -25,7 +25,6 @@ const FeaturedLocation = ({title, image, totalCar}: FeaturedLocationProps) => {
         <Text style={[appStyle.text16Bold, {color: COLOR.white}]}>{title}</Text>
         <Text style={{color: COLOR.white}}>{formattedTotalCar} xe</Text>
       </View>
-
       <FeaturedLocationFrame color={COLOR.fifth} img={image} />
     </TouchableOpacity>
   );

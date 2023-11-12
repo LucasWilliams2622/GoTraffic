@@ -42,7 +42,7 @@ const ListCar = props => {
   
   useEffect(() => {
     getCarByIdUser();
-  }, [carData]);
+  }, []);
 
   return (
     <SafeAreaView style={appStyle.container}>
