@@ -4,7 +4,7 @@ import { appStyle, windowHeight, windowWidth } from '../../../../../constants/Ap
 import { COLOR, ICON } from '../../../../../constants/Theme';
 import Header from '../../../../../components/Header';
 import Pdf from 'react-native-pdf';
-import RNFetchBlob from 'rn-fetch-blob';
+// import RNFetchBlob from 'rn-fetch-blob';
 import AppHeader from '../../../../../components/AppHeader';
 
 const LeaseCar = (props) => {
