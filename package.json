@@ -120,6 +120,7 @@
     "recyclerlistview": "^4.2.0",
     "redux": "^4.2.1",
     "redux-thunk": "^2.4.2",
+    "rn-fetch-blob": "^0.12.0",
     "save": "^2.9.0",
     "socket.io-client": "^4.7.2",
     "tailwind-rn": "^4.2.0",
