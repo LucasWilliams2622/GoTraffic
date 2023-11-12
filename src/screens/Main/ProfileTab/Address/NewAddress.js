@@ -1,5 +1,5 @@
 import { KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { appStyle } from '../../../../constants/AppStyle'
 import Header from '../../../../components/Header'
 import { COLOR, ICON } from '../../../../constants/Theme'
@@ -10,14 +10,17 @@ import AppButton from '../../../../components/AppButton'
 import AppDropdown from '../../../../components/AppDropdown'
 import axios from 'axios';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import Switch from '../../../../components/Switch'
+import AxiosInstance from '../../../../constants/AxiosInstance'
+import { AppContext } from '../../../../utils/AppContext'
 
 const NewAddress = (props) => {
     const { navigation } = props;
-    const [isSelected, setisSelected] = useState(null);
-    const [onSwitch, setonSwitch] = useState(false);
+    const { infoUser, idUser } = useContext(AppContext);
+
+    const [isSelected, setIsSelected] = useState(null);
+    const [onSwitch, setOnSwitch] = useState(false);
     const [nickName, setNickName] = useState(null);
-    
+
     const [provinces, setProvinces] = useState([]);
     const [selectedProvince, setSelectedProvince] = useState(null);
     const [districts, setDistricts] = useState([]);
@@ -25,26 +28,29 @@ const NewAddress = (props) => {
     const [wards, setWards] = useState([]);
     const [selectedWard, setSelectedWard] = useState(null);
     const [address, setAddress] = useState(null);
-    const [addresses, setAddresses] = useState([]);
 
 
-    const handleSaveButtonPress = () => {
-        const newAddress = {
-            type: isSelected,
-            nickName: nickName,
-            province: selectedProvince?.name,
-            district: selectedDistrict?.name,
-            ward: selectedWard?.name,
-            address: address,
-            isDefault: onSwitch,
-        };
-        const updatedAddresses = [...addresses];
-
-        updatedAddresses.push(newAddress);
-        setAddresses(updatedAddresses);
-        console.log(newAddress);
-        navigation.navigate('MyAddress', { updatedAddresses: [newAddress] });
-    };
+    const newAddress = async () => {
+        try {
+            console.log(idUser, isSelected, nickName, selectedProvince?.name, selectedDistrict?.name, selectedWard?.name, address, onSwitch);
+            const body = {
+                idUser: idUser,
+                city: selectedProvince?.name,
+                district: selectedDistrict?.name,
+                ward: selectedWard?.name,
+                street: '', 
+                number: '',
+                note: nickName,
+                isDefault: onSwitch, 
+                address: address
+            };
+            const response = await AxiosInstance().post(`/address/api/add-new-address`, body);
+            console.log('Địa chỉ mới:', response.data);
+        } catch (error) {
+            console.log(error);
+            console.log(error.response?.data);
+        }
+    }
 
     useEffect(() => {
         // Gọi API để lấy danh sách tỉnh/thành phố và set nó vào state 'provinces'
@@ -91,11 +97,11 @@ const NewAddress = (props) => {
     }, [selectedDistrict]);
 
     const handleSwitchToggle = () => {
-        setonSwitch(!onSwitch);
+        setOnSwitch(!onSwitch);
     };
 
     const handleButtonPress = (buttonName) => {
-        setisSelected(buttonName);
+        setIsSelected(buttonName);
     };
     return (
         <SafeAreaView style={[appStyle.container]}>
@@ -225,7 +231,7 @@ const NewAddress = (props) => {
                     <AppButton
                         title="Lưu"
                         marginTop={60}
-                        onPress={() => handleSaveButtonPress()}
+                        onPress={() => newAddress()}
                     />
 
                 </View>
