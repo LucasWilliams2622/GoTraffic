@@ -6,29 +6,16 @@ import {appStyle} from '../../../../constants/AppStyle';
 import {COLOR, ICON} from '../../../../constants/Theme';
 import AppProfile from '../../../../components/AppProfile';
 import {useNavigation} from '@react-navigation/native';
+import Header from '../../../../components/Header';
+import AppHeader from '../../../../components/AppHeader';
 
 const GeneralInformation = props => {
   const navigation = useNavigation();
 
   const {data} = props.route.params;
-  const goBack = () => {
-    navigation.goBack('DetailInListCar');
-  };
   return (
     <SafeAreaView style={appStyle.container}>
-      <View style={styles.viewTitle}>
-        <TouchableOpacity onPress={goBack}>
-          <FastImage
-            source={require('../../../../assets/icon/ic_left.png')}
-            style={{
-              width: 20,
-              height: 20,
-              marginLeft: -100,
-            }}
-          />
-        </TouchableOpacity>
-        <Text style={styles.title}>Thông tin chung</Text>
-      </View>
+      <AppHeader title="Thông tin chung" />
       <View style={appStyle.main}>
         <AppProfile
           icon={ICON.Warning}

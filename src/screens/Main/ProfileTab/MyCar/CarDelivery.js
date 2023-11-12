@@ -15,6 +15,7 @@ import {CalendarList} from 'react-native-calendars';
 import ToggleSwitch from 'toggle-switch-react-native';
 import {Switch} from 'native-base';
 import Slider from '@react-native-community/slider';
+import AppHeader from '../../../../components/AppHeader';
 
 const CarDelivery = props => {
   const {navigation} = props;
@@ -27,28 +28,13 @@ const CarDelivery = props => {
   const [third, setthird] = useState(0);
   const [howFar, sethowFar] = useState(0);
   const logCat = () => {
-    console.log("Trong vong: ",Math.floor(first * 100));
+    console.log('Trong vong: ', Math.floor(first * 100));
     console.log('Phi: ', Math.floor(second * 10 * 5));
     console.log('Mien phi trong vong: ', Math.floor(third * 10));
   };
   return (
     <SafeAreaView style={appStyle.container}>
-      <View style={styles.viewTitle}>
-        <TouchableOpacity onPress={goBack}>
-          <FastImage
-            source={require('../../../../assets/icon/ic_left.png')}
-            style={{
-              position: 'absolute',
-              left: 10,
-              top: 20,
-              width: 20,
-              height: 20,
-            }}
-          />
-        </TouchableOpacity>
-        <Text style={styles.title}>GIAO NHẬN XE TẬN NƠI</Text>
-        <View />
-      </View>
+      <AppHeader title="GIAO NHẬN XE TẬN NƠI" />
       <View style={[appStyle.main, {marginTop: 20}]}>
         <View
           style={{
