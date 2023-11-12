@@ -15,7 +15,7 @@ export const AppContextProvider = props => {
 
   useEffect(() => {
     getInfoUser();
-
+    getListNotificationsByIDUser()
     return () => {};
   }, [isLogin, appState]);
 
@@ -27,7 +27,6 @@ export const AppContextProvider = props => {
         // setIdUser(userInfo.id);
         // setInfoUser(userInfo)
       }
-
       const response = await AxiosInstance().get(
         '/user/api/get-by-id?id=' + idUser,
       );
@@ -39,7 +38,20 @@ export const AppContextProvider = props => {
       console.log(error);
     }
   };
-
+  const getListNotificationsByIDUser = async () => {
+    try {
+      const response = await AxiosInstance().get(
+        '/notification-booking/api/get-by-user?idUser=' + idUser,
+      );
+      if (response.result) {
+        setNotificationCount(response.notifications.length)
+      } else {
+        console.log('NETWORK ERROR');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
   const currentDay = moment().format('DD-MM-YYYY');
 
   const contextValue = useMemo(() => {

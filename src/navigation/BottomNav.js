@@ -229,7 +229,7 @@ const Main = () => {
                     tintColor: focused ? COLOR.focus : COLOR.notFocus,
                   }}
                 />
-                {notificationCount > 0 && (
+                {notificationCount <= 0 && (
                   <Badge
                     value={notificationCount}
                     containerStyle={{ position: 'absolute', top: -6, right: -6 }}
