@@ -39,6 +39,9 @@ const Surcharge = props => {
   return (
     <SafeAreaView style={appStyle.container}>
       <AppHeader title="PHỤ PHÍ" />
+      <View
+        style={{backgroundColor: COLOR.borderColor2, height: 1, width: '100%'}}
+      />
       <ScrollView style={[appStyle.main, {marginTop: 20}]}>
         {/*Visible of LimitKilometer*/}
         <View

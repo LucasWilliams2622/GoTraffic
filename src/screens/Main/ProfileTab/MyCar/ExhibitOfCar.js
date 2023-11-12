@@ -141,26 +141,28 @@ const ExhibitOfCar = props => {
   const handleUpdate = () => { console.log(carImages); };
   return (
     <SafeAreaView style={appStyle.container}>
-      <Header
-        icon={ICON.Back}
-        text="Giấy tờ & Bảo hiểm"
-        onPress={goBack}
+      <Header icon={ICON.Back} text="Giấy tờ & Bảo hiểm" onPress={goBack} />
+      <View
+        style={{backgroundColor: COLOR.borderColor2, height: 1, width: '100%'}}
       />
-      <ScrollView style={{ flex: 1, width: windowWidth, height: windowHeight * 0.8, marginBottom: 70 }}>
+      <ScrollView
+        style={{
+          flex: 1,
+          width: windowWidth,
+          height: windowHeight * 0.8,
+          marginBottom: 70,
+        }}>
         <View style={appStyle.main}>
-
           {/* Giấy tờ xe */}
-          <View style={{ marginTop: 20 }}>
-            <Text style={[appStyle.text18Bold]}>
-              Giấy tờ của xe
-            </Text>
-            <View style={[appStyle.rowBetween, { marginTop: 10 }]}>
+          <View style={{marginTop: 20}}>
+            <Text style={[appStyle.text18Bold]}>Giấy tờ của xe</Text>
+            <View style={[appStyle.rowBetween, {marginTop: 10}]}>
               <TouchableOpacity style={styles.upLoadImage}>
-                <Text style={{ textAlign: 'center' }}>
+                <Text style={{textAlign: 'center'}}>
                   Vui lòng chụp mặt trước của giấy tờ xe
                 </Text>
                 <FastImage
-                  style={{ width: 30, height: 30, marginTop: 10 }}
+                  style={{width: 30, height: 30, marginTop: 10}}
                   source={ICON.Picture}
                 />
               </TouchableOpacity>
@@ -168,17 +170,15 @@ const ExhibitOfCar = props => {
           </View>
 
           {/* Bảo hiểm */}
-          <View style={{ marginTop: 20 }}>
-            <Text style={[appStyle.text18Bold]}>
-              Bảo hiểm của xe
-            </Text>
-            <View style={[appStyle.rowBetween, { marginTop: 10 }]}>
+          <View style={{marginTop: 20}}>
+            <Text style={[appStyle.text18Bold]}>Bảo hiểm của xe</Text>
+            <View style={[appStyle.rowBetween, {marginTop: 10}]}>
               <TouchableOpacity style={styles.upLoadImage}>
-                <Text style={{ textAlign: 'center' }}>
+                <Text style={{textAlign: 'center'}}>
                   Vui lòng chụp mặt trước của bảo hiểm
                 </Text>
                 <FastImage
-                  style={{ width: 30, height: 30, marginTop: 10 }}
+                  style={{width: 30, height: 30, marginTop: 10}}
                   source={ICON.Picture}
                 />
               </TouchableOpacity>
@@ -186,11 +186,9 @@ const ExhibitOfCar = props => {
           </View>
 
           {/* Xe */}
-          <View style={{ marginTop: 20 }}>
-            <Text style={[appStyle.text18Bold]}>
-              Ảnh của xe
-            </Text>
-            <View style={[appStyle.columnCenter, { marginTop: 10 }]}>
+          <View style={{marginTop: 20}}>
+            <Text style={[appStyle.text18Bold]}>Ảnh của xe</Text>
+            <View style={[appStyle.columnCenter, {marginTop: 10}]}>
               <CarImageSection
                 title="Vui lòng chụp bên trái xe"
                 imageType="left"
@@ -233,7 +231,7 @@ const ExhibitOfCar = props => {
       </ScrollView>
 
       <Modal
-        animationType='slide'
+        animationType="slide"
         transparent={true}
         visible={isCameraModalVisible}>
         <TouchableOpacity
@@ -261,7 +259,6 @@ const ExhibitOfCar = props => {
           />
         </View>
       </Modal>
-
     </SafeAreaView>
   );
 };

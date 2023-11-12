@@ -17,7 +17,10 @@ const CalendarOfCar = props => {
 
   return (
     <SafeAreaView style={appStyle.container}>
-      <AppHeader title="LỊCH XE"  />
+      <AppHeader title="LỊCH XE" />
+      <View
+        style={{backgroundColor: COLOR.borderColor2, height: 1, width: '100%'}}
+      />
       <CalendarList
         // Callback which gets executed when visible months change in scroll view. Default = undefined
         onVisibleMonthsChange={months => {

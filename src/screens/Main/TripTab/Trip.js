@@ -66,7 +66,7 @@ const Trip = () => {
         title="Chuyến của tôi"
         icon={require('../../../assets/image/logoTrip.png')}
         onPressRight={() => navigation.navigate('HistoryTrip')}
-        iconLeft={null}
+        notLeft
       />
       <View
         style={{backgroundColor: COLOR.borderColor2, height: 1, width: '100%'}}

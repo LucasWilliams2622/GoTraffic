@@ -191,7 +191,7 @@ const DetailInListCar = props => {
         style={styles.image}
         source={require('../../../../assets/image/bg2.jpg')}
       />
-      <AppHeader title={data.name} icon={ICON.Gift} onPressRight={() => setModalVisible(true)}/>
+      <AppHeader title={data.name} icon={ICON.Delete} onPressRight={() => setModalVisible(true)}/>
       <View style={{padding: 14}}>
         <View style={styles.line1}>
           <FastImage
