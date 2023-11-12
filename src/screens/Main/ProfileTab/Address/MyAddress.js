@@ -13,13 +13,13 @@ const MyAddress = (props) => {
   const [addresses, setAddresses] = useState([]);
   const [hasAddress, setHasAddress] = useState(false);
 
-  useEffect(() => {
-    const updatedAddresses = props.route.params?.updatedAddresses || [];
-    if (updatedAddresses.length > 0) {
-      setAddresses([...addresses, ...updatedAddresses]);
-      setHasAddress(true); 
-    }
-  }, [props.route.params]);
+  // useEffect(() => {
+  //   const updatedAddresses = props.route.params?.updatedAddresses || [];
+  //   if (updatedAddresses.length > 0) {
+  //     setAddresses([...addresses, ...updatedAddresses]);
+  //     setHasAddress(true); 
+  //   }
+  // }, [props.route.params]);
 
 
   return (

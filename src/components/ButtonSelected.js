@@ -15,7 +15,7 @@ const ButtonSelected = (props) => {
                 }
                 ]}
                 onPress={onPress}>
-                <FastImage source={icon} style={[appStyle.iconMedium, { marginRight: 5 }]} />
+                <FastImage source={icon} resizeMode='stretch' style={[appStyle.iconMedium, { marginRight: 5 }]} />
                 <Text style={[appStyle.text14, {
                     color: isSelected ? COLOR.secondary : 'black',
                     fontWeight: isSelected ? 'bold' : 'normal'
