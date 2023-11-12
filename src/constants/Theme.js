@@ -1,3 +1,10 @@
+import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
+import IconEntypo from 'react-native-vector-icons/Entypo';
+import IconAntDesign from 'react-native-vector-icons/AntDesign';
+import IconIonicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
+
 export const COLOR = {
   primary: '#41cff2',
   secondary: '#8ECAE6',
@@ -108,5 +115,6 @@ export const ICON = {
   Promotion: require('../assets/icon/ic_promotion.png'),
   cancelWhite: require('../assets/icon/ic_cancel_white.png'),
   checkWhite: require('../assets/icon/ic_check_white.png'),
-
+  Download: MaterialIcons.getImageSourceSync('file-download', 20, 'black'),
+  
 };
