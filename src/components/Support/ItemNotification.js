@@ -60,26 +60,33 @@ const ItemNotification = props => {
             <FastImage
               style={styles.imageInModal}
               resizeMode={'stretch'}
-              source={poster}
+              source={require('../../assets/image/poster.jpg')}
             />
             <Text
               style={[
                 appStyle.text16Bold,
                 {width: '90%', textAlign: 'center', marginTop: 10},
               ]}>
-              ⚡️GIẢM 300K CHO LẦN ĐẦU THUÊ XE 7 CHỖ TẠI MIOTO
+              ⚡️ {title}
             </Text>
             <View style={styles.line} />
             <Text
               style={[
                 [appStyle.text14, {lineHeight: 30, paddingHorizontal: 20}],
               ]}>
-              🚘Cần tìm chân ái để cả nhà mình di chuyển thoải mái? {'\n'}
-              📲Mở Mioto,thuê ngay xe 7 chỗ rộng rãi. Nhà bao nhiêu người, Mioto
-              cũng chiều đúng ý.{'\n'} 🌟Đặc biệt, Mioto tung ưu đãi giảm 300k
-              cho lần đầu thuê xe 7 chỗ trên ứng dụng. Ưu đãi được áp dụng đến
-              hết tháng 10. {'\n'}👨‍👩‍👧‍👦Mở Mioto chớp ngay ưu đãi. Thuê liền xe,
-              rong chơi không cần nghĩ ngợi!
+              {content}
+            </Text>
+            <Text
+              style={[
+                [appStyle.text14, {lineHeight: 30, paddingHorizontal: 20}],
+              ]}>
+              Hi vọng bạn sẽ có nhiều trải nghiệp tuyệt vời cùng Go Traffic
+            </Text>
+            <Text
+              style={[
+                [appStyle.text14, {lineHeight: 30, paddingHorizontal: 20,marginTop:50,fontStyle:'italic',color:COLOR.red}],
+              ]}>
+              Cảm ơn bạn đã đồng hành cùng chúng tôi !
             </Text>
             <Pressable
               style={styles.buttonClose}
@@ -114,7 +121,7 @@ const styles = StyleSheet.create({
   },
   imageInModal: {
     width: '100%',
-    height: '30%',
+    height: '40%',
   },
   centeredView: {
     flex: 1,
@@ -122,9 +129,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalView: {
-    justifyContent: 'space-between',
+    justifyContent:'space-evenly',
     width: '100%',
-    height: '98%',
+    height: '80%',
     margin: 20,
     backgroundColor: 'white',
     alignItems: 'center',
