@@ -219,7 +219,7 @@ const Main = () => {
           } else if (route.name === 'StackNotification') {
             // ... Các thiết lập khác
             return (
-              <View style={{ position: 'relative' }}>
+              <View style={[appStyle.boxCenter,{ position: 'relative' }]}>
                 <Image
                   source={iconName = focused ? ICON.NotificationFocus : ICON.Notification}
                   style={{
@@ -236,6 +236,7 @@ const Main = () => {
                     badgeStyle={{ backgroundColor: 'red' }}
                   />
                 )}
+                {/* <Text style={[appStyle.text8,{textAlign:'center'}]}>Thông báo</Text> */}
               </View>
             );
           } else if (route.name === 'StackTrip') {
