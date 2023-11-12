@@ -31,8 +31,7 @@ const MyWallet = props => {
           />
         </TouchableOpacity>
         <Text style={styles.title}>Ví của tôi</Text>
-        <TouchableOpacity>
-        </TouchableOpacity>
+        <TouchableOpacity></TouchableOpacity>
       </View>
       <View style={[appStyle.main, {marginTop: 20}]}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -52,10 +51,10 @@ const MyWallet = props => {
               appStyle.text16Bold,
               {color: COLOR.white, textAlign: 'center'},
             ]}>
-             {numeral(infoUser.surplus).format('0,0')}đ
+            {numeral(infoUser.surplus).format('0,0')}đ
           </Text>
           <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-            <TouchableOpacity onPress={()=>navigation.navigate("Recharge")}>
+            <TouchableOpacity onPress={() => navigation.navigate('Recharge')}>
               <FastImage
                 style={{
                   width: 30,
@@ -63,6 +62,7 @@ const MyWallet = props => {
                   marginTop: 10,
                   alignSelf: 'center',
                 }}
+                tintColor={COLOR.white}
                 source={ICON.Wallet}
               />
               <Text style={[appStyle.text14, {color: COLOR.white}]}>
@@ -78,6 +78,7 @@ const MyWallet = props => {
                   alignSelf: 'center',
                 }}
                 source={ICON.Wallet}
+                tintColor={COLOR.white}
               />
               <Text style={[appStyle.text14, {color: COLOR.white}]}>
                 Rút tiền
@@ -91,6 +92,7 @@ const MyWallet = props => {
                   marginTop: 10,
                   alignSelf: 'center',
                 }}
+                tintColor={COLOR.white}
                 source={ICON.Wallet}
               />
               <Text style={[appStyle.text14, {color: COLOR.white}]}>

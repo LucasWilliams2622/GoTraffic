@@ -9,6 +9,9 @@ import { ToastAndroid } from 'react-native';
 
 const ItemConfirmTrip = props => {
   const {data} = props;
+  const isImageUrlValid = /^https?:\/\/.*\.(png|jpg)$/i.test(
+    data.Car.imageThumbnail,
+  );
   const cancelBooking = async () => {
     try {
       const response = await AxiosInstance().post(
@@ -60,11 +63,19 @@ const ItemConfirmTrip = props => {
       </View>
       <TouchableOpacity style={styles.container}>
         <View style={[{alignSelf: 'center'}]}>
-          <FastImage
-            style={styles.image}
-            resizeMode={'stretch'}
-            source={{uri: data.Car.image}}
-          />
+          {!isImageUrlValid ? (
+            <FastImage
+              style={styles.image}
+              resizeMode="stretch"
+              source={require('../../assets/image/NoTrip.png')}
+            />
+          ) : (
+            <FastImage
+              style={styles.image}
+              resizeMode={'stretch'}
+              source={{uri: data.Car.imageThumbnail}}
+            />
+          )}
         </View>
         <View
           style={{

@@ -18,9 +18,8 @@ import {AppContext} from '../../../utils/AppContext';
 import {useNavigation} from '@react-navigation/native';
 import AppHeader from '../../../components/AppHeader';
 import {useIsFocused} from '@react-navigation/native';
-import {SwipeListView} from 'react-native-swipe-list-view';
 import Swipelist from 'react-native-swipeable-list-view';
-import { showToastMessage } from '../../../utils/utils';
+import {showToastMessage} from '../../../utils/utils';
 const Trip = () => {
   const {infoUser, idUser} = useContext(AppContext);
   const [listBookingCurrent, setListBookingCurrent] = useState([]);
@@ -73,12 +72,12 @@ const Trip = () => {
         style={{backgroundColor: COLOR.borderColor2, height: 1, width: '100%'}}
       />
 
-      <ScrollView style={[appStyle.main,{marginBottom:70}]}>
+      <ScrollView style={[appStyle.main, {marginBottom: 70}]}>
         <Text style={styles.text1}>Hiện tại</Text>
-        <Swipelist 
+        <Swipelist
           data={listBookingCurrent}
           renderRightItem={(data, index) => (
-            <View key={index} >
+            <View key={index}>
               <ItemTrip data={data} car={listBookingCurrent} />
             </View>
           )}

@@ -3,12 +3,13 @@ import React, { useEffect, useState } from 'react'
 import {appStyle} from '../../../../../constants/AppStyle';
 import ItemTrip from '../../../../../components/Support/ItemTrip';
 import ItemCancleTrip from '../../../../../components/Support/ItemCancleTrip';
-
 import { FlatList } from 'native-base';
 import AxiosInstance from '../../../../../constants/AxiosInstance';
+import {useIsFocused} from '@react-navigation/native';
 
 const CancleTrip = () => {
    const [data, setData] = useState('');
+  const isFocused = useIsFocused();
    const getCarByIdUser = async () => {
      try {
        const response = await AxiosInstance().get(
@@ -25,11 +26,11 @@ const CancleTrip = () => {
    };
    useEffect(() => {
      getCarByIdUser();
-   }, []);
+   }, [isFocused]);
   return (
     <View style={{flex: 1, padding: 10}}>
       <FlatList
-        style={appStyle.main}
+        style={[appStyle.main, {marginBottom: 70}]}
         data={data}
         renderItem={({item}) => <ItemCancleTrip data={item} />}
         keyExtractor={item => item._id}

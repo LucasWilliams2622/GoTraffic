@@ -1,13 +1,36 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  ToastAndroid,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
-import {COLOR} from '../../constants/Theme';
+import {COLOR, ICON} from '../../constants/Theme';
 import {Code} from 'native-base';
 import {appStyle} from '../../constants/AppStyle';
+import AxiosInstance from '../../constants/AxiosInstance';
 
 const ItemActiveTrip = props => {
   const {data} = props;
-
+  const isImageUrlValid = /^https?:\/\/.*\.(png|jpg)$/i.test(
+    data.Car.imageThumbnail,
+  );
+  const completeBooking = async () => {
+    try {
+      const response = await AxiosInstance().post(
+        '/booking/api/complete?id=' + data.id,
+      );
+      if (response.result) {
+        ToastAndroid.show('Đã nhận được xe thành công', ToastAndroid.SHORT);
+      } else {
+        ToastAndroid.show('Đã nhận được xe thất bại', ToastAndroid.SHORT);
+      }
+    } catch (error) {
+      console.log('=========>', error);
+    }
+  };
   return (
     <View>
       <View
@@ -29,12 +52,20 @@ const ItemActiveTrip = props => {
         <Text style={[appStyle.text14Bold]}>{data.createdAt.slice(0, 10)}</Text>
       </View>
       <TouchableOpacity style={styles.container}>
-        <View style={[{alignSelf: 'flex-start'}]}>
-          <FastImage
-            style={styles.image}
-            resizeMode={'stretch'}
-            source={{uri: data.Car.image}}
-          />
+        <View style={[{alignSelf: 'center'}]}>
+          {!isImageUrlValid ? (
+            <FastImage
+              style={styles.image}
+              resizeMode="stretch"
+              source={require('../../assets/image/NoTrip.png')}
+            />
+          ) : (
+            <FastImage
+              style={styles.image}
+              resizeMode={'stretch'}
+              source={{uri: data.Car.imageThumbnail}}
+            />
+          )}
         </View>
         <View
           style={{
@@ -68,8 +99,29 @@ const ItemActiveTrip = props => {
             {data.User.phone}
           </Text>
           <Text style={[appStyle.text12, {marginTop: 5}]}>
-            📅 Bắt đầu: {data.timeFrom}
+            📅 Bắt đầu: {data.timeFrom?.slice(0, 10)}
           </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              marginTop: 20,
+            }}>
+            <FastImage
+              source={ICON.Done}
+              style={appStyle.icon}
+              tintColor={COLOR.green}
+            />
+            <TouchableOpacity onPress={completeBooking}>
+              <Text
+                style={[
+                  appStyle.text14,
+                  {color: COLOR.green, fontStyle: 'italic'},
+                ]}>
+                Đã nhận được xe
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </TouchableOpacity>
     </View>
@@ -101,7 +153,7 @@ const styles = StyleSheet.create({
   image: {
     width: 130,
     height: 120,
-    alignSelf: 'flex-start',
+    alignSelf: 'center',
     marginLeft: -20,
     borderRadius: 10,
   },
