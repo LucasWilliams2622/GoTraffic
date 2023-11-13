@@ -155,10 +155,10 @@ const UpdateProfile = props => {
       .max(50, 'Quá dài')
       .required('Bắt buộc'),
     dob: Yup.string()
-      .matches(
-        /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(194[5-9]|19[5-9]\d|20[0-2][0-3])$/,
-        'Ngày tháng năm sinh không hợp lệ, hãy nhập theo định dạng DD/MM/YYYY',
-      )
+      // .matches(
+      //   /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(194[5-9]|19[5-9]\d|20[0-2][0-3])$/,
+      //   'Ngày tháng năm sinh không hợp lệ, hãy nhập theo định dạng DD/MM/YYYY',
+      // )
       .required('Bắt buộc'),
     sex: Yup.string()
       .oneOf(

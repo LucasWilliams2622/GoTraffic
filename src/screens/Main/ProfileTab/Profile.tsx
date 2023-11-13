@@ -125,9 +125,9 @@ const Profile = props => {
 
           <AppProfile
             icon={ICON.Wallet}
-            text="Thẻ của tôi"
+            text="Ví của tôi"
             borderBottomWidth={0}
-            onPress={() => navigation.navigate('MyCard')}
+            onPress={() => navigation.navigate('MyWallet')}
           />
         </View>
 
