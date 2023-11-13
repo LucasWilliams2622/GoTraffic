@@ -1,4 +1,5 @@
 import {
+  Alert,
   Pressable,
   StyleSheet,
   Text,
@@ -9,17 +10,21 @@ import React, {useState, useEffect, useContext} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {appStyle} from '../../../constants/AppStyle';
 import {FlatList, ScrollView} from 'native-base';
-import {COLOR} from '../../../constants/Theme';
+import {COLOR, ICON} from '../../../constants/Theme';
 import ItemTrip from '../../../components/Support/ItemTrip';
 import FastImage from 'react-native-fast-image';
 import AxiosInstance from '../../../constants/AxiosInstance';
 import {AppContext} from '../../../utils/AppContext';
 import {useNavigation} from '@react-navigation/native';
-
+import AppHeader from '../../../components/AppHeader';
+import {useIsFocused} from '@react-navigation/native';
+import Swipelist from 'react-native-swipeable-list-view';
+import {showToastMessage} from '../../../utils/utils';
 const Trip = () => {
   const {infoUser, idUser} = useContext(AppContext);
   const [listBookingCurrent, setListBookingCurrent] = useState([]);
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
 
   const getListBookingCurrent = async () => {
     try {
@@ -35,57 +40,58 @@ const Trip = () => {
       console.log(e);
     }
   };
+  const cancelBooking = async id => {
+    try {
+      console.log(id);
+      const response = await AxiosInstance().post(
+        '/booking/api/cancel?id=' + id,
+      );
+      if (response.result) {
+        showToastMessage('', 'Hủy chuyến thành công');
+        getListBookingCurrent();
+      } else {
+        showToastMessage('', 'Hủy chuyến thất bại');
+      }
+    } catch (error) {
+      console.log('=========>', error);
+    }
+  };
 
   useEffect(() => {
     getListBookingCurrent();
-  }, []);
-
+  }, [isFocused]);
   return (
     <SafeAreaView style={appStyle.container}>
-      <View style={styles.viewTitle}>
-        <Text style={styles.title}>Chuyến của tôi</Text>
-        <TouchableOpacity
-          style={styles.logo}
-          onPress={() => {
-            navigation.navigate('HistoryTrip');
-          }}>
-          <FastImage
-            style={styles.logo}
-            resizeMode={'stretch'}
-            source={require('../../../assets/image/logoTrip.png')}
-          />
-        </TouchableOpacity>
-      </View>
+      <AppHeader
+        title="Chuyến của tôi"
+        icon={require('../../../assets/image/logoTrip.png')}
+        onPressRight={() => navigation.navigate('HistoryTrip')}
+        notLeft
+      />
+      <View
+        style={{backgroundColor: COLOR.borderColor2, height: 1, width: '100%'}}
+      />
 
-      <ScrollView style={appStyle.main}>
+      <ScrollView style={[appStyle.main, {marginBottom: 70}]}>
         <Text style={styles.text1}>Hiện tại</Text>
-
-        <FlatList
-          style={{width: '100%', marginBottom: 65}}
+        <Swipelist
           data={listBookingCurrent}
-          shouldRasterizeIOS
-          showsHorizontalScrollIndicator={false}
-          renderItem={({item}) => (
-            <ItemTrip data={item} car={listBookingCurrent} />
-          )}
-          keyExtractor={item => item.id}
-          ListEmptyComponent={
-            <View>
-              <FastImage
-                style={styles.imageInvisible}
-                resizeMode={'stretch'}
-                source={require('../../../assets/image/NoTrip.png')}
-              />
-              <Text
-                style={[
-                  appStyle.text16,
-                  {textAlign: 'center', marginBottom: 10, fontStyle: 'italic'},
-                ]}>
-                Hiện tại chưa trong chuyến
-              </Text>
+          renderRightItem={(data, index) => (
+            <View key={index}>
+              <ItemTrip data={data} car={listBookingCurrent} />
             </View>
-          }
-          showsVerticalScrollIndicator={false}
+          )}
+          renderHiddenItem={(data, index) => (
+            <TouchableOpacity
+              style={[styles.rightAction, {backgroundColor: 'red'}]}
+              onPress={() => {
+                console.log(data.id);
+                cancelBooking(data.id);
+              }}>
+              <FastImage source={ICON.Delete} style={appStyle.icon} />
+            </TouchableOpacity>
+          )}
+          rightOpenValue={200}
         />
       </ScrollView>
     </SafeAreaView>
@@ -132,6 +138,15 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignSelf: 'center',
     right: 10,
+  },
+  rightAction: {
+    width: '50%',
+    marginVertical: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '96%',
+    borderRadius: 20,
+    borderWidth: 1,
   },
 });
 

@@ -4,6 +4,7 @@ import {appStyle} from '../../../../constants/AppStyle';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {COLOR} from '../../../../constants/Theme';
 import FastImage from 'react-native-fast-image';
+import AppHeader from '../../../../components/AppHeader';
 
 const RentCost = props => {
   const {navigation} = props;
@@ -12,33 +13,7 @@ const RentCost = props => {
   };
   return (
     <SafeAreaView style={appStyle.container}>
-      <TouchableOpacity onPress={goBack}>
-        <FastImage
-          source={require('../../../../assets/icon/ic_left.png')}
-          style={{
-            position: 'absolute',
-            left: 10,
-            top: 20,
-            width: 20,
-            height: 20,
-          }}
-        />
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <FastImage
-          source={require('../../../../assets/icon/ic_add.png')}
-          style={{
-            position: 'absolute',
-            right: 10,
-            top: 20,
-            width: 20,
-            height: 20,
-          }}
-        />
-      </TouchableOpacity>
-      <View style={styles.viewTitle}>
-        <Text style={styles.title}>Giá xe</Text>
-      </View>
+      <AppHeader title="GIÁ XE" />
       <View style={styles.line1}>
         <Text
           style={[appStyle.text16, {color: COLOR.white, textAlign: 'center'}]}>

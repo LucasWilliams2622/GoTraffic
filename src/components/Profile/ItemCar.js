@@ -17,11 +17,26 @@ const ItemCar = props => {
     //console.log('ID', data.id);
     navigation.navigate('DetailInListCar', {id: data.id});
   };
+   const isImageUrlValid = /^https?:\/\/.*\.(png|jpg)$/i.test(
+    data.imageThumbnail,
+  );
 
   return (
     <TouchableOpacity style={styles.container} onPress={goDetail}>
       <View style={styles.carContainer}>
-        <FastImage source={ICON.MasterCard} style={styles.carImage} />
+        {!isImageUrlValid ? (
+          <FastImage
+            style={styles.carImage}
+            resizeMode="stretch"
+            source={require('../../assets/image/NoTrip.png')}
+          />
+        ) : (
+          <FastImage
+            style={styles.carImage}
+            resizeMode={'stretch'}
+            source={{uri: data.imageThumbnail}}
+          />
+        )}
         <View style={styles.statusContainer}>
           <Text style={styles.statusText}>Chờ duyệt</Text>
         </View>
@@ -69,8 +84,8 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   carImage: {
-    width: windowWidth * 0.35,
-    height: '90%',
+    width: windowWidth * 0.30,
+    height: '98%',
     alignSelf: 'center',
   },
   statusContainer: {

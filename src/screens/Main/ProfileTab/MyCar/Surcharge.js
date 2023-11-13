@@ -9,6 +9,7 @@ import {CalendarList} from 'react-native-calendars';
 import ToggleSwitch from 'toggle-switch-react-native';
 import {ScrollView, Switch} from 'native-base';
 import Slider from '@react-native-community/slider';
+import AppHeader from '../../../../components/AppHeader';
 
 const Surcharge = props => {
   const {navigation} = props;
@@ -37,22 +38,10 @@ const Surcharge = props => {
 
   return (
     <SafeAreaView style={appStyle.container}>
-      <View style={styles.viewTitle}>
-        <TouchableOpacity onPress={goBack}>
-          <FastImage
-            source={require('../../../../assets/icon/ic_left.png')}
-            style={{
-              position: 'absolute',
-              left: 10,
-              top: 20,
-              width: 20,
-              height: 20,
-            }}
-          />
-        </TouchableOpacity>
-        <Text style={styles.title}>GIAO NHẬN XE TẬN NƠI</Text>
-        <View />
-      </View>
+      <AppHeader title="PHỤ PHÍ" />
+      <View
+        style={{backgroundColor: COLOR.borderColor2, height: 1, width: '100%'}}
+      />
       <ScrollView style={[appStyle.main, {marginTop: 20}]}>
         {/*Visible of LimitKilometer*/}
         <View

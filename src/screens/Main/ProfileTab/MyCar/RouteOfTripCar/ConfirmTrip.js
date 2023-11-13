@@ -4,10 +4,12 @@ import {appStyle} from '../../../../../constants/AppStyle';
 import ItemConfirmTrip from '../../../../../components/Support/ItemConfirmTrip';
 import {FlatList} from 'native-base';
 import AxiosInstance from '../../../../../constants/AxiosInstance';
-
+import {useIsFocused} from '@react-navigation/native';
+import Swipelist from 'react-native-swipeable-list-view';
 const ConfirmTrip = () => {
-  const [data, setData] = useState('');
+  const isFocused = useIsFocused();
 
+  const [data, setData] = useState('');
   const getCarByIdUser = async () => {
     try {
       const response = await AxiosInstance().get(
@@ -27,11 +29,11 @@ const ConfirmTrip = () => {
 
   useEffect(() => {
     getCarByIdUser();
-  }, []);
+  }, [isFocused]);
   return (
     <View style={{flex: 1, padding: 10}}>
       <FlatList
-        style={appStyle.main}
+        style={[appStyle.main,{marginBottom:70}]}
         data={data}
         renderItem={({item}) => <ItemConfirmTrip data={item} />}
         keyExtractor={item => item._id}

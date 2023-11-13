@@ -16,6 +16,9 @@ const ItemComplete = props => {
     //console.log('ID', data.id);
     navigation.navigate('RatingTrip', {id: data.id});
   };
+   const isImageUrlValid = /^https?:\/\/.*\.(png|jpg)$/i.test(
+     data.Car.imageThumbnail,
+   );
   return (
     <View>
       <View
@@ -54,11 +57,19 @@ const ItemComplete = props => {
       </View>
       <TouchableOpacity onPress={() => goDetail()} style={styles.container}>
         <View style={[{alignSelf: 'flex-start'}]}>
-          <FastImage
-            style={styles.image}
-            resizeMode={'stretch'}
-            source={{uri: data.Car.image}}
-          />
+          {!isImageUrlValid ? (
+            <FastImage
+              style={styles.image}
+              resizeMode="stretch"
+              source={require('../../assets/image/NoTrip.png')}
+            />
+          ) : (
+            <FastImage
+              style={styles.image}
+              resizeMode={'stretch'}
+              source={{uri: data.Car.imageThumbnail}}
+            />
+          )}
         </View>
         <View
           style={{

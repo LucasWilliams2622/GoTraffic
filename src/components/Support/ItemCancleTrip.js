@@ -13,7 +13,9 @@ import {appStyle} from '../../constants/AppStyle';
 
 const ItemCancleTrip = props => {
   const {data} = props;
-
+ const isImageUrlValid = /^https?:\/\/.*\.(png|jpg)$/i.test(
+   data.Car.imageThumbnail,
+ );
   return (
     <View>
       <View
@@ -34,11 +36,19 @@ const ItemCancleTrip = props => {
       </View>
       <TouchableOpacity style={styles.container}>
         <View style={[{alignSelf: 'flex-start'}]}>
-          <FastImage
-            style={styles.image}
-            resizeMode={'stretch'}
-            source={{uri: data.Car.image}}
-          />
+          {!isImageUrlValid ? (
+            <FastImage
+              style={styles.image}
+              resizeMode="stretch"
+              source={require('../../assets/image/NoTrip.png')}
+            />
+          ) : (
+            <FastImage
+              style={styles.image}
+              resizeMode={'stretch'}
+              source={{uri: data.Car.imageThumbnail}}
+            />
+          )}
         </View>
         <View
           style={{

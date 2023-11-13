@@ -6,6 +6,7 @@ import {COLOR} from '../../../../constants/Theme';
 import FastImage from 'react-native-fast-image';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
 import {CalendarList} from 'react-native-calendars';
+import AppHeader from '../../../../components/AppHeader';
 
 const CalendarOfCar = props => {
   const {navigation} = props;
@@ -16,33 +17,10 @@ const CalendarOfCar = props => {
 
   return (
     <SafeAreaView style={appStyle.container}>
-      <View style={styles.viewTitle}>
-        <TouchableOpacity onPress={goBack}>
-          <FastImage
-            source={require('../../../../assets/icon/ic_left.png')}
-            style={{
-              position: 'absolute',
-              left: 10,
-              top: 20,
-              width: 20,
-              height: 20,
-            }}
-          />
-        </TouchableOpacity>
-        <Text style={styles.title}>Lịch xe</Text>
-        <TouchableOpacity>
-          <FastImage
-            source={require('../../../../assets/icon/ic_add.png')}
-            style={{
-              position: 'absolute',
-              right: 10,
-              top: 20,
-              width: 20,
-              height: 20,
-            }}
-          />
-        </TouchableOpacity>
-      </View>
+      <AppHeader title="LỊCH XE" />
+      <View
+        style={{backgroundColor: COLOR.borderColor2, height: 1, width: '100%'}}
+      />
       <CalendarList
         // Callback which gets executed when visible months change in scroll view. Default = undefined
         onVisibleMonthsChange={months => {

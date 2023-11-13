@@ -18,6 +18,7 @@ import AppInput from '../../../../components/AppInput';
 import Modal from 'react-native-modal';
 import {useNavigation} from '@react-navigation/native';
 import AxiosInstance from '../../../../constants/AxiosInstance';
+import AppHeader from '../../../../components/AppHeader';
 
 const DetailInListCar = props => {
   const navigation = useNavigation();
@@ -186,37 +187,11 @@ const DetailInListCar = props => {
           </View>
         </View>
       </Modal>
-      <TouchableOpacity onPress={goBack}>
-        <FastImage
-          source={require('../../../../assets/icon/ic_left.png')}
-          style={{
-            position: 'absolute',
-            left: 10,
-            top: 20,
-            width: 20,
-            height: 20,
-          }}
-        />
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => setModalVisible(true)}>
-        <FastImage
-          source={require('../../../../assets/icon/ic_garbage.png')}
-          style={{
-            position: 'absolute',
-            right: 10,
-            top: 20,
-            width: 20,
-            height: 20,
-          }}
-        />
-      </TouchableOpacity>
       <FastImage
         style={styles.image}
         source={require('../../../../assets/image/bg2.jpg')}
       />
-      <View style={styles.viewTitle}>
-        <Text style={styles.title}>{data.name}</Text>
-      </View>
+      <AppHeader title={data.name} icon={ICON.Delete} onPressRight={() => setModalVisible(true)}/>
       <View style={{padding: 14}}>
         <View style={styles.line1}>
           <FastImage

@@ -7,6 +7,7 @@ import FastImage from 'react-native-fast-image';
 import { useNavigation } from '@react-navigation/native';
 import { AppContext } from '../../../../utils/AppContext';
 import numeral from 'numeral';
+import AppHeader from '../../../../components/AppHeader';
 
 const MyWallet = props => {
   const navigation = useNavigation();
@@ -17,23 +18,10 @@ const MyWallet = props => {
 
   return (
     <SafeAreaView style={appStyle.container}>
-      <View style={styles.viewTitle}>
-        <TouchableOpacity onPress={goBack}>
-          <FastImage
-            source={require('../../../../assets/icon/ic_left.png')}
-            style={{
-              position: 'absolute',
-              left: 10,
-              top: 20,
-              width: 20,
-              height: 20,
-            }}
-          />
-        </TouchableOpacity>
-        <Text style={styles.title}>Ví của tôi</Text>
-        <TouchableOpacity>
-        </TouchableOpacity>
-      </View>
+      <AppHeader title="Ví của tôi" />
+      <View
+        style={{backgroundColor: COLOR.borderColor2, height: 1, width: '100%'}}
+      />
       <View style={[appStyle.main, {marginTop: 20}]}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text style={appStyle.text14}>Chủ ví:</Text>
@@ -52,10 +40,10 @@ const MyWallet = props => {
               appStyle.text16Bold,
               {color: COLOR.white, textAlign: 'center'},
             ]}>
-             {numeral(infoUser.surplus).format('0,0')}đ
+            {numeral(infoUser.surplus).format('0,0')}đ
           </Text>
           <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-            <TouchableOpacity onPress={()=>navigation.navigate("Recharge")}>
+            <TouchableOpacity onPress={() => navigation.navigate('Recharge')}>
               <FastImage
                 style={{
                   width: 30,
@@ -63,6 +51,7 @@ const MyWallet = props => {
                   marginTop: 10,
                   alignSelf: 'center',
                 }}
+                tintColor={COLOR.white}
                 source={ICON.Wallet}
               />
               <Text style={[appStyle.text14, {color: COLOR.white}]}>
@@ -78,6 +67,7 @@ const MyWallet = props => {
                   alignSelf: 'center',
                 }}
                 source={ICON.Wallet}
+                tintColor={COLOR.white}
               />
               <Text style={[appStyle.text14, {color: COLOR.white}]}>
                 Rút tiền
@@ -91,6 +81,7 @@ const MyWallet = props => {
                   marginTop: 10,
                   alignSelf: 'center',
                 }}
+                tintColor={COLOR.white}
                 source={ICON.Wallet}
               />
               <Text style={[appStyle.text14, {color: COLOR.white}]}>
@@ -158,23 +149,3 @@ const styles = StyleSheet.create({
     alignContent: 'center',
   },
 });
-const DATA = [
-  {
-    id: 1,
-    image: require('../../../../assets/image/car.jpg'),
-    time: '21/09/2023 | 20:30',
-    name: 'KIA MORNING 2022',
-    timeStart: '21h00,17/10/2023',
-    timeEnd: '21h00,18/10/2023',
-    price: '1.600.666đ',
-  },
-  {
-    id: 2,
-    image: require('../../../../assets/image/car.jpg'),
-    time: '21/09/2023 | 20:30',
-    name: 'KIA MORNING 2022',
-    timeStart: '21h00,17/10/2023',
-    timeEnd: '21h00,18/10/2023',
-    price: '1.600.666đ',
-  },
-];

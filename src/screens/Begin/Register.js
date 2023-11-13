@@ -16,13 +16,12 @@ import * as Yup from 'yup';
 import {Formik} from 'formik';
 import {KeyboardAvoidingView} from 'native-base';
 import AxiosInstance from '../../constants/AxiosInstance';
-import { showToastMessage } from '../../utils/utils';
+import {showToastMessage} from '../../utils/utils';
+import axios from 'axios';
+import {useNavigation} from '@react-navigation/native';
 
 const Register = props => {
-  const {navigation} = props;
-  const goBack = () => {
-    navigation.goBack('Login');
-  };
+  const navigation = useNavigation();
   const validationSchema = Yup.object().shape({
     email: Yup.string()
       .email('Vui lòng nhập email hợp lệ ')
@@ -51,18 +50,20 @@ const Register = props => {
   //API REGISTER
   const onRegister = async () => {
     try {
-      console.log(phoneNumber, email, password,nameUser);
-      const response = await AxiosInstance().post('user/api/register', {
-        phone: phoneNumber,
-        email: email,
-        name: nameUser,
-        password: password,
-      });
-      if (response.result) {
-        ToastAndroid.show('Ðăng ki thành công', ToastAndroid.SHORT);
-        goBack();
+      const response = await axios.post(
+        'http://103.57.129.166:3000/user/api/register',
+        {
+          email: email,
+          phone: phoneNumber.toString(),
+          password: password,
+          name: nameUser,
+        },
+      );
+      console.log(response.data);
+      if (response.data.result) {
+        showToastMessage('', 'Đăng kí thành công');
       } else {
-        ToastAndroid.show('Đăng ki thất bại', ToastAndroid.SHORT);
+        showToastMessage('', 'Đăng kí thất bại', ICON.cancelWhite);
       }
     } catch (e) {
       console.log(e);
@@ -87,8 +88,8 @@ const Register = props => {
           setpassword(values.password);
           if (values.password === values.rePassword) {
             onRegister();
-          }else{
-            showToastMessage('','Mật khẩu không khớp',ICON.cancelWhite);
+          } else {
+            showToastMessage('', 'Mật khẩu không khớp', ICON.cancelWhite);
           }
         }}>
         {({
@@ -101,25 +102,16 @@ const Register = props => {
         }) => (
           <View style={[appStyle.main, {justifyContent: 'space-evenly'}]}>
             <KeyboardAvoidingView behavior="padding">
-              <TouchableOpacity onPress={goBack}>
-                <FastImage
-                  source={require('../../assets/icon/ic_left.png')}
-                  style={{
-                    position: 'absolute',
-                    left: 5,
-                    top: 5,
-                    width: 30,
-                    height: 30,
-                  }}
-                />
+              <TouchableOpacity
+                style={{padding: 14}}
+                onPress={() => navigation.goBack()}>
+                <FastImage source={ICON.Back} style={appStyle.icon} />
               </TouchableOpacity>
               <FastImage
                 source={require('../../assets/image/logo_go_traffic.png')}
                 style={styles.image}
               />
               <Text style={styles.text1}>Đăng kí</Text>
-              <View style={styles.view1}></View>
-
               <View style={styles.viewItem}>
                 <Text style={styles.text2}>Tên hiện thị</Text>
                 <AppInput
