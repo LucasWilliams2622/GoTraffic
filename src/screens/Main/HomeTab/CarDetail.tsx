@@ -71,8 +71,9 @@ const PressableIconCarDetail = ({
   size = ICON_SIZE,
   solid,
   onPress,
+  style,
 }: PressableIconProps) => (
-  <Pressable onPress={onPress}>
+  <Pressable onPress={onPress} style={style}>
     <Icon name={name} color={color} size={size} solid={solid} />
   </Pressable>
 );
@@ -178,6 +179,8 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
     endDate: tomorrow,
   });
 
+  const [images, setImages] = useState<string[]>([]);
+
   const toggleModal = () => {
     setRatingModalVisible(!isRatingModalVisible);
   };
@@ -194,6 +197,9 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
     const responseData = response.data;
     const car = responseData.car;
     setCar(car);
+    if (car.image) {
+      setImages(JSON.parse(car.image));
+    }
     console.log(car);
   };
 
@@ -246,11 +252,12 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
           borderBottomColor: COLOR.borderColor,
           borderBottomWidth: StyleSheet.hairlineWidth,
           paddingTop: 20,
+          paddingHorizontal: 30,
         }}>
         <Row
           style={{
             display: 'flex',
-            justifyContent: 'space-evenly',
+            justifyContent: 'space-between',
             alignItems: 'center',
             paddingVertical: 30,
           }}>
@@ -275,19 +282,22 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
             </Text>
           </Row>
 
-          <PressableIconCarDetail
-            name="share-nodes"
-            color={COLOR.black}
-            size={24}
-            onPress={handleShare}
-          />
-          <PressableIconCarDetail
-            name="heart"
-            color={isFavorite ? COLOR.fifth : COLOR.black}
-            size={20}
-            solid={isFavorite}
-            onPress={() => setIsFavorite(!isFavorite)}
-          />
+          <Row style={{alignItems: 'center'}}>
+            <PressableIconCarDetail
+              name="share-nodes"
+              color={COLOR.black}
+              size={24}
+              onPress={handleShare}
+              style={{marginRight: 20}}
+            />
+            <PressableIconCarDetail
+              name="heart"
+              color={isFavorite ? COLOR.fifth : COLOR.black}
+              size={20}
+              solid={isFavorite}
+              onPress={() => setIsFavorite(!isFavorite)}
+            />
+          </Row>
         </Row>
       </Animated.View>
     );
@@ -335,8 +345,8 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
             [{nativeEvent: {contentOffset: {y: scrollY}}}],
             {useNativeDriver: false},
           )}>
-          {car.images && (
-            <SlideShow images={car.images} close={close} scrollY={scrollY} />
+          {images.length > 0 && (
+            <SlideShow images={images} close={close} scrollY={scrollY} />
           )}
 
           <View style={{paddingHorizontal: 10, paddingVertical: 20}}>
