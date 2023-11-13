@@ -6,14 +6,14 @@ import {
   TextInput,
   Platform,
 } from 'react-native';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome6';
-import { COLOR } from '../../../constants/Theme';
-import { Row, Radio, HStack } from 'native-base';
+import {COLOR} from '../../../constants/Theme';
+import {Row, Radio, HStack} from 'native-base';
 import AppButton from '../../AppButton';
 import SteeringWheel from '../../../assets/icon/ic_steering_wheel';
-import { appStyle } from '../../../constants/AppStyle';
-import { timeString } from '../../../utils/utils';
+import {appStyle} from '../../../constants/AppStyle';
+import {timeString} from '../../../utils/utils';
 import {
   ButtonConfig,
   ButtonProps,
@@ -22,10 +22,12 @@ import {
   RadioButtonProps,
   ViewProps,
 } from '../../../types';
-import { useRoute } from '@react-navigation/native';
+import {useRoute} from '@react-navigation/native';
+import ReactNativeModal from 'react-native-modal';
+import LocationPicking from '../../../screens/Main/HomeTab/LocationPicking';
 
-const Button = ({ isSelfDriving, setIsSelfDriving, config }: ButtonProps) => {
-  const { value, side, icon, text } = config;
+const Button = ({isSelfDriving, setIsSelfDriving, config}: ButtonProps) => {
+  const {value, side, icon, text} = config;
   const isActive = isSelfDriving === value;
   const handlePress = useCallback(
     () => setIsSelfDriving(value),
@@ -70,7 +72,7 @@ const BUTTONS_CONFIG: ButtonConfig[] = [
 const tomorrow = new Date();
 tomorrow.setDate(tomorrow.getDate() + 1);
 
-const Booking = ({ navigation}: any) => {
+const Booking = ({navigation}: any) => {
   const [isSelfDriving, setIsSelfDriving] = useState<boolean>(true);
 
   return (
@@ -90,7 +92,7 @@ const Booking = ({ navigation}: any) => {
       <View style={styles.contentWrapper}>
         <View style={styles.contentContainer}>
           {isSelfDriving === true ? (
-            <SelfDrivingView timeString={timeString} navigation={navigation}/>
+            <SelfDrivingView timeString={timeString} navigation={navigation} />
           ) : (
             <DriverView timeString={timeString} navigation={navigation} />
           )}
@@ -103,15 +105,16 @@ const Booking = ({ navigation}: any) => {
 };
 
 const getTextStyle = (isActive: boolean) =>
-  isActive ? { color: COLOR.white } : { color: COLOR.forth };
+  isActive ? {color: COLOR.white} : {color: COLOR.forth};
 
-const InputField = ({
+export const InputField = ({
   iconName,
   placeholderText,
   value,
-  navigation,
-  navigateTo,
 }: InputFieldProps) => {
+  const [address, setInputAddress] = useState<string>('');
+  const [isModalVisible, setModalVisible] = useState<boolean>(false);
+
   return (
     <View style={{marginBottom: 20}}>
       <Row style={{alignItems: 'center', marginBottom: 10}}>
@@ -122,10 +125,18 @@ const InputField = ({
       </Row>
       <TextInput
         placeholder={`Nhập ${placeholderText.toLowerCase()}`}
-        value={value}
+        value={value ? value : address}
         style={styles.heroInput}
-        onPressIn={() => navigation.navigate(navigateTo)}
+        onPressIn={() => setModalVisible(true)}
       />
+      <ReactNativeModal
+        isVisible={isModalVisible}
+        style={{margin: 0, display: 'flex'}}>
+        <LocationPicking
+          close={() => setModalVisible(false)}
+          setInputAddress={setInputAddress}
+        />
+      </ReactNativeModal>
     </View>
   );
 };
@@ -150,7 +161,7 @@ const SelfDrivingView = ({timeString, navigation}: ViewProps) => {
   );
 };
 
-const RadioButton = ({ value, tripType, text }: RadioButtonProps) => (
+const RadioButton = ({value, tripType, text}: RadioButtonProps) => (
   <Radio value={value} my="0.5" size="sm">
     <Text
       style={[
@@ -164,7 +175,7 @@ const RadioButton = ({ value, tripType, text }: RadioButtonProps) => (
   </Radio>
 );
 
-const DriverView = ({ timeString, navigation }: ViewProps) => {
+const DriverView = ({timeString, navigation}: ViewProps) => {
   const [tripType, setTripType] = useState<string>('lien-tinh');
   const [tripDescription, setTripDescription] = useState<string>(
     'Di chuyển ngoài thành phố, hành trình 2 chiều',
@@ -173,7 +184,7 @@ const DriverView = ({ timeString, navigation }: ViewProps) => {
   return (
     <View>
       <Text style={styles.header}>Lộ trình</Text>
-      <View style={{ alignItems: 'center' }}>
+      <View style={{alignItems: 'center'}}>
         <Radio.Group
           name="myRadioGroup"
           value={tripType}
@@ -220,8 +231,8 @@ const DriverView = ({ timeString, navigation }: ViewProps) => {
         </Radio.Group>
       </View>
 
-      <Row style={{ alignItems: 'center', marginTop: 10, marginBottom: 15 }}>
-        <Text style={[appStyle.text12, { marginRight: 5 }]}>
+      <Row style={{alignItems: 'center', marginTop: 10, marginBottom: 15}}>
+        <Text style={[appStyle.text12, {marginRight: 5}]}>
           {tripDescription}
         </Text>
         <Icon name="circle-question" color={COLOR.borderColor} size={15} />
@@ -274,7 +285,7 @@ const styles = StyleSheet.create({
     shadowColor: COLOR.black,
     shadowRadius: 4.65,
     shadowOpacity: 0.3,
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: {width: 0, height: 4},
     elevation: 5,
   },
   heroBtns: {
@@ -284,7 +295,7 @@ const styles = StyleSheet.create({
     shadowColor: COLOR.black,
     shadowRadius: 4.65,
     shadowOpacity: 0.3,
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: {width: 0, height: 4},
     elevation: 5,
     width: '100%',
   },
@@ -295,7 +306,7 @@ const styles = StyleSheet.create({
         shadowColor: COLOR.black,
         shadowRadius: 4.65,
         shadowOpacity: 0.3,
-        shadowOffset: { width: 0, height: 4 },
+        shadowOffset: {width: 0, height: 4},
         elevation: 5,
       },
     }),
@@ -331,7 +342,7 @@ const styles = StyleSheet.create({
     shadowColor: COLOR.black,
     shadowRadius: 4.65,
     shadowOpacity: 0.3,
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: {width: 0, height: 4},
     elevation: 5,
   },
   alignCenter: {
@@ -348,6 +359,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 30,
   },
   heroInput: {
+    width: 300,
     paddingVertical: 10,
     paddingLeft: 25,
     color: COLOR.black,

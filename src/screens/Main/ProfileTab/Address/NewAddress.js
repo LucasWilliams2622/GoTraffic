@@ -10,7 +10,6 @@ import AppButton from '../../../../components/AppButton'
 import AppDropdown from '../../../../components/AppDropdown'
 import axios from 'axios';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import AxiosInstance from '../../../../constants/AxiosInstance'
 import { AppContext } from '../../../../utils/AppContext'
 
 const NewAddress = (props) => {
@@ -32,21 +31,33 @@ const NewAddress = (props) => {
 
     const newAddress = async () => {
         try {
-            console.log("abc", idUser, isSelected, nickName, selectedProvince?.name, selectedDistrict?.name, selectedWard?.name, address, onSwitch);
-            const response = await AxiosInstance().post(`/address/api/add-new-address`, {
+            //console.log("abc", idUser, isSelected, nickName, selectedProvince?.name, selectedDistrict?.name, selectedWard?.name, address, onSwitch);
+            const response = await axios.post(`http://103.57.129.166:3000/address/api/add-new-address`, {
                 idUser: idUser,
-                city: selectedProvince.name,
-                district: selectedDistrict.name,
-                ward: selectedWard.name,
-                street: '',
+                city: selectedProvince?.name,
+                district: selectedDistrict?.name,
+                ward: selectedWard?.name,
+                street: isSelected,
                 number: '',
                 note: nickName,
                 address: address,
                 isDefault: onSwitch
 
             });
-            console.log("======>",response);
+            console.log("======>",response.data);
             console.log('Địa chỉ mới:', response.data);
+            const newAddressData = {
+                idUser: idUser,
+                city: selectedProvince?.name,
+                district: selectedDistrict?.name,
+                ward: selectedWard?.name,
+                street: isSelected,
+                number: '',
+                note: nickName,
+                address: address,
+                isDefault: onSwitch
+            };
+            navigation.navigate('MyAddress', { newAddressData});
         } catch (error) {
             console.log(error);
             console.log(error.response?.data);

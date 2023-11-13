@@ -86,34 +86,35 @@ export const featuredLocationData = [
     id: 1,
     title: 'Sài Gòn',
     image:
-      'https://statics.vinpearl.com/dac-san-sai-gon-lam-qua-0_1624720587.jpg',
+      'https://images.unsplash.com/photo-1636119265236-a8f8bdbf925b?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     totalCar: 3250,
   },
   {
     id: 2,
     title: 'Hà Nội',
-    image: 'https://ehgtravel.com/wp-content/uploads/2018/04/hn01.jpg',
+    image:
+      'https://images.pexels.com/photos/12506951/pexels-photo-12506951.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     totalCar: 1432,
   },
   {
     id: 3,
     title: 'Đà Nẵng',
     image:
-      'https://besthuecitytour.com/wp-content/uploads/2020/09/Things-To-Do-In-Da-Nang-Best-Hue-City-Tour-Travel-1.jpg',
+      'https://images.pexels.com/photos/14435439/pexels-photo-14435439.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     totalCar: 865,
   },
   {
     id: 4,
     title: 'Nha Trang',
     image:
-      'http://2.bp.blogspot.com/-RtdRxLjbXyI/UmC4h1obXXI/AAAAAAAABMs/xSatQKeqhfo/s1600/vietnam+travel+-+nha+trang+3.jpg',
+      'https://images.unsplash.com/photo-1689326232214-7b5d2f397276?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     totalCar: 721,
   },
   {
     id: 5,
     title: 'Hải Phòng',
     image:
-      'http://vemaybayphonglantourist.com/upload/news/hp-01-1492068307-3027.jpg',
+      'https://images.unsplash.com/photo-1670121180530-cfcba4438038?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     totalCar: 598,
   },
 ];
