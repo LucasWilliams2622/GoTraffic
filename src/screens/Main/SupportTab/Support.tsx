@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
   bgHeader: {
     backgroundColor: COLOR.bgHeader,
     width: '100%',
-    height: windowHeight * 0.25,
+    height: windowHeight * 0.18,
     borderBottomLeftRadius: 16,
     borderBottomRightRadius: 16,
   },

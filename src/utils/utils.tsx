@@ -2,7 +2,7 @@ import {Text, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {appStyle, windowHeight, windowWidth} from '../constants/AppStyle';
 import Toast from 'react-native-toast-message';
-import { ICON } from '../constants/Theme';
+import { COLOR, ICON } from '../constants/Theme';
 import ImagePicker from 'react-native-image-crop-picker';
 
 export const formatPrice = (price: number) => {
@@ -98,7 +98,7 @@ export const showToastMessage = (type?: string, title?: string, icon?: any) => {
   const containerStyle = {
     width: windowWidth * 0.7,
     backgroundColor: '#000000',
-    opacity: 0.8,
+    // opacity: 0.8,
   };
 
   const child = (
@@ -106,7 +106,7 @@ export const showToastMessage = (type?: string, title?: string, icon?: any) => {
       style={{
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#000000',
+        backgroundColor: COLOR.primary,
         borderRadius: 8,
       }}>
       <FastImage
