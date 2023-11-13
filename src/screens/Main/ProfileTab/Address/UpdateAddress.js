@@ -1,6 +1,6 @@
-import { KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, View } from 'react-native'
+import { KeyboardAvoidingView, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState, useEffect, useContext, useRoute } from 'react'
-import { appStyle } from '../../../../constants/AppStyle'
+import { appStyle, windowWidth } from '../../../../constants/AppStyle'
 import Header from '../../../../components/Header'
 import { COLOR, ICON } from '../../../../constants/Theme'
 import ButtonSelected from '../../../../components/ButtonSelected'
@@ -13,8 +13,132 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import AxiosInstance from '../../../../constants/AxiosInstance'
 import { AppContext } from '../../../../utils/AppContext'
 import { useNavigation } from '@react-navigation/native'
+import FastImage from 'react-native-fast-image'
 
-const UpdateAddress = (props) => {
+const UpdateAddress = ({ route }) => {
+  const navigation = useNavigation();
+  const { addressInfo } = route.params;
+  console.log(addressInfo);
+  const { infoUser, idUser } = useContext(AppContext);
+
+  const [isSelected, setIsSelected] = useState(null);
+  const [onSwitch, setOnSwitch] = useState(false);
+  const [nickName, setNickName] = useState(null);
+
+  const [provinces, setProvinces] = useState([]);
+  const [selectedProvince, setSelectedProvince] = useState(null);
+  const [districts, setDistricts] = useState([]);
+  const [selectedDistrict, setSelectedDistrict] = useState(null);
+  const [wards, setWards] = useState([]);
+  const [selectedWard, setSelectedWard] = useState(null);
+  const [address, setAddress] = useState(null);
+
+
+  useEffect(() => {
+    if (addressInfo) {
+      setIsSelected(addressInfo.street);
+      setNickName(addressInfo.note);
+      setSelectedProvince(addressInfo.province);
+      setSelectedDistrict(addressInfo.district);
+      setSelectedWard(addressInfo.ward);
+      setAddress(addressInfo.address);
+      setOnSwitch(addressInfo.isDefault);
+    }
+  }, [addressInfo]);
+
+  const updateAddress = async () => {
+    try {
+      const updatedAddress = {
+        id: addressInfo.id, // ID của địa chỉ cần cập nhật
+        street: isSelected, // Lựa chọn của loại địa chỉ
+        note: nickName,
+        province: selectedProvince?.name,
+        district: selectedDistrict?.name,
+        ward: selectedWard?.name,
+        address: address,
+        isDefault: onSwitch,
+      };
+
+      const response = await axios.put('http://103.57.129.166:3000/address/api/update-address-by-id', updatedAddress);
+      console.log(response.data);
+      if (response.status === 200) {
+        //console.log(response.data);
+        navigation.goBack();
+      }else{
+        console.log("lỗi quần què gì á");
+      }
+    } catch (error) {
+      console.error('Lỗi khi cập nhật địa chỉ: ', error);
+    }
+  };
+
+  const deleteAddress = async () => {
+    try {
+      if (addressInfo) {
+        const response = await axios.delete(`http://103.57.129.166:3000/address/api/delete-address-by-id?id=${addressInfo.id}`);
+        if (response.status === 200) {
+          console.log(">>>>>>>>>>>>> Xóa rồi");
+          navigation.goBack();
+        } else {
+          console.log("Lỗi xóa địa chỉ");
+        }
+      }
+    } catch (error) {
+      console.error('Lỗi khi xóa địa chỉ: ', error);
+    }
+  };
+
+  useEffect(() => {
+    // Gọi API để lấy danh sách tỉnh/thành phố và set nó vào state 'provinces'
+    fetch('https://provinces.open-api.vn/api/p/')
+      .then((response) => response.json())
+      .then((data) => {
+        setProvinces(data);
+        //console.log(data);
+        // Chọn tỉnh/thành phố mặc định (nếu muốn)
+        // setSelectedProvince(data[0]); // Chọn tỉnh/thành phố đầu tiên trong danh sách
+      })
+      .catch((error) => {
+        console.error('Lỗi khi lấy dữ liệu từ API: ', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (selectedProvince) {
+      axios.get(`https://provinces.open-api.vn/api/p/${selectedProvince.code}?depth=2`)
+        .then((response) => {
+          //alert(JSON.stringify(response.data));
+          // console.log(response.data);
+          setDistricts(response.data.districts);
+          //setSelectedDistrict(response.data.districts[0]);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [selectedProvince]);
+
+  useEffect(() => {
+    if (selectedDistrict) {
+      axios.get(`https://provinces.open-api.vn/api/d/${selectedDistrict.code}?depth=2`)
+        .then((response) => {
+          //console.log(response.data);
+          setWards(response.data.wards);
+          //setSelectedWard(response.data[0]);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [selectedDistrict]);
+
+  const handleSwitchToggle = () => {
+    setOnSwitch(!onSwitch);
+  };
+
+  const handleButtonPress = (buttonName) => {
+    setIsSelected(buttonName);
+  };
 
   return (
     <SafeAreaView style={[appStyle.container]}>
@@ -46,7 +170,6 @@ const UpdateAddress = (props) => {
               onPress={() => handleButtonPress('Khác')}
             />
           </View>
-
 
           <View>
             <Text style={[appStyle.text18, { fontWeight: '500', marginTop: 10 }]}>Tên gợi nhớ</Text>
@@ -141,10 +264,17 @@ const UpdateAddress = (props) => {
             {/* <Switch switchOn={onSwitch} onPress={handleSwitchToggle}/> */}
           </View>
 
+          <TouchableOpacity 
+          onPress={()=> deleteAddress()}
+          style={{ flexDirection: 'row', justifyContent: 'space-between', width: windowWidth * 0.28, marginTop: 10 }}>
+            <FastImage source={ICON.Delete} tintColor={COLOR.red} style={[appStyle.iconBig]} />
+            <Text style={[appStyle.text165, { color: COLOR.red }]}>Xóa địa chỉ</Text>
+          </TouchableOpacity>
+
           <AppButton
             title="Lưu"
             marginTop={60}
-            onPress={() => newAddress()}
+            onPress={() => updateAddress()}
           />
 
         </View>
