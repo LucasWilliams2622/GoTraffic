@@ -12,6 +12,8 @@ import AxiosInstance from '../../../constants/AxiosInstance';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AppContext} from '../../../utils/AppContext';
 import Toast from 'react-native-toast-message';
+import {showToastMessage} from '../../../utils/utils';
+import axios from 'axios';
 
 const RatingTrip = props => {
   const {id} = props?.route?.params;
@@ -22,35 +24,23 @@ const RatingTrip = props => {
 
   const sendFeedback = async () => {
     try {
-      const response = await AxiosInstance().post('/review/api/add', {
-        idBooking: id,
-        content: comment,
-        rating: selectedStars,
-        idUser: 9
-      });
-
-      if (response.result) {
+      const response = await axios.post(
+        'http://103.57.129.166:3000/review/api/add',
+        {
+          idBooking: id,
+          content: comment,
+          rating: selectedStars,
+        },
+      );
+      console.log(response);
+      if (response.data.result) {
         console.log(response);
         setSelectedStars(response.rating);
         setComment(response.content);
-        Toast.show({
-          type: 'success',
-          text1: 'Gửi đánh giá thành công',
-          visibilityTime: 2000,
-          autoHide: true,
-          topOffset: 30,
-          bottomOffset: 40,
-        });
+        showToastMessage('', 'Đánh giá thành công ');
         navigation.navigate('Home');
       } else {
-        Toast.show({
-          type: 'fail',
-          text1: 'Gửi đánh giá thất bại',
-          visibilityTime: 2000,
-          autoHide: true,
-          topOffset: 30,
-          bottomOffset: 40,
-        });
+        showToastMessage('', 'Đánh giá thất bại ', ICON.cancelWhite);
       }
     } catch (error) {
       console.log(error);
@@ -62,9 +52,10 @@ const RatingTrip = props => {
         '/review/api/get-by-id-booking?idBooking=' + id,
       );
       if (response.result) {
-        console.log(response);
-        if (response.review.idUser == 7) {
-          console.log('danh gia roi');
+        console.log(response.review[0].user.id);
+        if (response.review[0].user.id == 9) {
+          navigation.navigate('HistoryTrip');
+          showToastMessage('', 'Đã đánh giá rồi ');
         } else {
           console.log('chua co danh gia');
         }
