@@ -26,6 +26,7 @@ const RatingTrip = props => {
         idBooking: id,
         content: comment,
         rating: selectedStars,
+        idUser: 9
       });
 
       if (response.result) {
@@ -62,7 +63,7 @@ const RatingTrip = props => {
       );
       if (response.result) {
         console.log(response);
-        if (response.review.idUser == null) {
+        if (response.review.idUser == 7) {
           console.log('danh gia roi');
         } else {
           console.log('chua co danh gia');
