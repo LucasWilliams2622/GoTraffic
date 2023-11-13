@@ -93,9 +93,8 @@ const Home: React.FC = () => {
     try {
       const response = await AxiosInstance().get('/car/api/list');
       if (response.result) {
-        setListCar(response.listCar)
+        setListCar(response.listCar);
         // console.log(response.listCar);
-        
       } else {
         console.log('Error');
       }
@@ -173,18 +172,24 @@ const Home: React.FC = () => {
         title="Xe đã xem"
         data={listCar}
         renderItem={({item}) => (
-          <CarCardItem
-            {...item}
-            onPress={() =>
-              navigation.navigate('CarDetail', {
-                car_id: item.id,
-                navigation: navigation,
-              })
-            }
-          />
+          <CarCardItem {...item} onPress={() => handleCarPress(item.id)} />
         )}
         snapToInterval={350}
       />
+
+      <Modal
+        isVisible={isModalVisible}
+        style={{margin: 0}}
+        onBackButtonPress={() => setSelectedCarId(null)}
+        swipeThreshold={50}>
+        {selectedCarId && (
+          <CarDetail
+            car_id={selectedCarId}
+            close={() => setModalVisible(false)}
+            setSwipeEnabled={setSwipeEnabled}
+          />
+        )}
+      </Modal>
 
       <Section
         title="Địa điểm nổi bật"
