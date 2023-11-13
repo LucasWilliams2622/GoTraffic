@@ -12,7 +12,7 @@ import rootReducer from './src/redux/reducers';
 import thunk from 'redux-thunk';
 import Toast from 'react-native-toast-message';
 import {toastConfig} from './src/configs/ToastConfig';
-import Test2 from './src/test/TestWeb';
+import Test2 from './src/test/TestMultiPicker';
 import {WebView} from 'react-native-webview';
 // Tạo store Redux
 const store = legacy_createStore(rootReducer, applyMiddleware(thunk));
