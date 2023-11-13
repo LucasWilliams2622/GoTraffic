@@ -8,37 +8,59 @@ import AppButton from '../../../../components/AppButton'
 import Address from '../../../../components/Profile/Address'
 import AxiosInstance from '../../../../constants/AxiosInstance'
 import { AppContext } from '../../../../utils/AppContext'
+import { useNavigation } from '@react-navigation/native'
 
 const MyAddress = (props) => {
-  const { navigation, route } = props;
+  const navigation = useNavigation();
+  const { route } = props;
   const { idUser } = useContext(AppContext);
   const [addresses, setAddresses] = useState([]);
 
-
+  const getAddress = async () => {
+    try {
+      const response = await AxiosInstance().get(`/address/api/get-address-by-id-user?idUser=${idUser}`);
+      setAddresses(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
-    const getAddress = async () => {
-      try {
-        const response = await AxiosInstance().get(`/address/api/get-address-by-id-user?idUser=${idUser}`);
-        setAddresses(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
     if (route.params && route.params.newAddressData) {
       const newAddressData = route.params.newAddressData;
-      setAddresses([...addresses, newAddressData]);
-    } else {
-      getAddress();
+      setAddresses((prevAddresses) => [...prevAddresses, newAddressData]);
     }
-  }, [route.params, idUser, addresses]);
+  }, [route.params]);
+
+
+  useEffect(() => {
+    getAddress();
+  }, [idUser]);
+
+  // useEffect(() => {
+  //   const getAddress = async () => {
+  //     try {
+  //       const response = await AxiosInstance().get(`/address/api/get-address-by-id-user?idUser=${idUser}`);
+  //       setAddresses(response.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+
+  //   if (route.params && route.params.newAddressData) {
+  //     const newAddressData = route.params.newAddressData;
+  //     setAddresses([...addresses, newAddressData]);
+  //   } else {
+  //     getAddress();
+  //   }
+  // }, [route.params, idUser, addresses]);
+
 
   return (
     <SafeAreaView style={[appStyle.container]}>
       <Header
         icon={ICON.Back}
         text="Địa chỉ của tôi"
-        onPress={() => navigation.navigate('Profile')}
+        onPress={() => navigation.goBack()}
         marginLeft={86}
       />
 
