@@ -13,12 +13,9 @@ import ItemCarCard from '../../../components/Profile/ItemCarCard';
 
 const FavouriteCar = (props) => {
   const navigation = useNavigation();
-  // const [hasFavouriteCars, sethasFavouriteCars] = useState(false);
   const { infoUser, idUser } = useContext(AppContext);
   const [listCar, setListCar] = useState([]);
-  const [isFavorite, setIsFavorite] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-
 
   const fetchFavoriteCars = async () => {
     try {
@@ -31,11 +28,15 @@ const FavouriteCar = (props) => {
   };
 
 
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchFavoriteCars();
+    setRefreshing(false);
+  };
 
   useEffect(() => {
     fetchFavoriteCars();
   }, []);
-
 
   return (
     <SafeAreaView style={[appStyle.container]}>
@@ -71,19 +72,22 @@ const FavouriteCar = (props) => {
           data={listCar}
           shouldRasterizeIOS
           showsVerticalScrollIndicator={false}
-          // refreshControl={
-          //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          // }
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
           ListEmptyComponent={
             <View>
               <FastImage source={require('../../../assets/image/guide/img_favourite_car.png')} style={{ width: '100%', height: windowHeight * 0.75 }} />
             </View>
           }
-          renderItem={({ item }) => <CarCardItem width={'100%'} {...item.Car} />}
+          renderItem={({ item }) => <CarCardItem
+            width={'100%'}
+            {...item.Car}
+            isFavorite={item.isFavorite}
+          />}
           keyExtractor={item => item.id}
         />
       </View>
-
     </SafeAreaView>
   )
 }
