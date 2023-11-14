@@ -38,7 +38,7 @@ const RatingTrip = props => {
         setSelectedStars(response.rating);
         setComment(response.content);
         showToastMessage('', 'Đánh giá thành công ');
-        navigation.navigate('Home');
+        navigation.navigate('HistoryTrip');
       } else {
         showToastMessage('', 'Đánh giá thất bại ', ICON.cancelWhite);
       }
