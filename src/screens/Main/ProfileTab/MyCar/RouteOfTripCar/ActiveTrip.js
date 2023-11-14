@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, ToastAndroid, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {appStyle} from '../../../../../constants/AppStyle';
 import ItemActiveTrip from '../../../../../components/Support/ItemActiveTrip';
@@ -23,6 +23,21 @@ const ActiveTrip = () => {
       console.log('=========>', error);
     }
   };
+  const completeBooking = async (id) => {
+    try {
+      const response = await AxiosInstance().post(
+        '/booking/api/complete?id=' + id,
+      );
+      if (response.result) {
+        ToastAndroid.show('Đã nhận được xe thành công', ToastAndroid.SHORT);
+        getCarByIdUser();
+      } else {
+        ToastAndroid.show('Đã nhận được xe thất bại', ToastAndroid.SHORT);
+      }
+    } catch (error) {
+      console.log('=========>', error);
+    }
+  };
   useEffect(() => {
     getCarByIdUser();
   }, [isFocused]);
@@ -31,7 +46,7 @@ const ActiveTrip = () => {
       <FlatList
         style={[appStyle.main, {marginBottom: 70}]}
         data={data}
-        renderItem={({item}) => <ItemActiveTrip data={item} />}
+        renderItem={({item}) => <ItemActiveTrip data={item} handleCompelete={completeBooking}/>}
         keyExtractor={item => item._id}
         showsVerticalScrollIndicator={false}></FlatList>
     </View>

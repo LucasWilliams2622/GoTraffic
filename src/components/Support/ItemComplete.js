@@ -101,7 +101,7 @@ const ItemComplete = props => {
               marginTop: 10,
             }}>
             <Text style={{color: COLOR.black}}>Tổng giá tiền : </Text>
-            {numeral(data.price).format('0,0')}
+            {numeral(data.totalMoney).format('0,0')}
           </Text>
         </View>
       </TouchableOpacity>
