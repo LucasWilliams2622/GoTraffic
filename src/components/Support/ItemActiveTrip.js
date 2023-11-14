@@ -17,19 +17,8 @@ const ItemActiveTrip = props => {
   const isImageUrlValid = /^https?:\/\/.*\.(png|jpg)$/i.test(
     data.Car.imageThumbnail,
   );
-  const completeBooking = async () => {
-    try {
-      const response = await AxiosInstance().post(
-        '/booking/api/complete?id=' + data.id,
-      );
-      if (response.result) {
-        ToastAndroid.show('Đã nhận được xe thành công', ToastAndroid.SHORT);
-      } else {
-        ToastAndroid.show('Đã nhận được xe thất bại', ToastAndroid.SHORT);
-      }
-    } catch (error) {
-      console.log('=========>', error);
-    }
+  const confirmComplete = () => {
+    handleCompelete(data.id);
   };
   return (
     <View>
@@ -112,7 +101,7 @@ const ItemActiveTrip = props => {
               style={appStyle.icon}
               tintColor={COLOR.green}
             />
-            <TouchableOpacity onPress={handleCompelete(data.id)}>
+            <TouchableOpacity onPress={() => confirmComplete()}>
               <Text
                 style={[
                   appStyle.text14,
