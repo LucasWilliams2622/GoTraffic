@@ -13,7 +13,7 @@ import {appStyle} from '../../constants/AppStyle';
 import AxiosInstance from '../../constants/AxiosInstance';
 
 const ItemActiveTrip = props => {
-  const {data} = props;
+  const {data, handleCompelete} = props;
   const isImageUrlValid = /^https?:\/\/.*\.(png|jpg)$/i.test(
     data.Car.imageThumbnail,
   );
@@ -112,7 +112,7 @@ const ItemActiveTrip = props => {
               style={appStyle.icon}
               tintColor={COLOR.green}
             />
-            <TouchableOpacity onPress={completeBooking}>
+            <TouchableOpacity onPress={handleCompelete(data.id)}>
               <Text
                 style={[
                   appStyle.text14,
