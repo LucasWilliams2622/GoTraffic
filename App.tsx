@@ -21,9 +21,9 @@ LogBox.ignoreLogs(['Require cycle:']);
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
 
-  // return (
-  //   <Test2/>
-  // )
+  return (
+    <Test2/>
+  )
  
 
   return (

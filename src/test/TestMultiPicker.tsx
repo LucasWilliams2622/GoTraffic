@@ -1,12 +1,21 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { View, Button, Image, TouchableOpacity, StyleSheet, Text } from 'react-native';
+import React, {useState, useEffect, useRef} from 'react';
+import {
+  View,
+  Button,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  Text,
+} from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import ActionSheet from 'react-native-actionsheet';
-import { Platform } from 'react-native';
-import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
+import {Platform} from 'react-native';
+import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import AxiosInstance from '../constants/AxiosInstance';
+import { showToastMessage } from '../utils/utils';
 
 const TestMultiPicker = () => {
-  const [selectedImages, setSelectedImages] = useState(Array(6).fill(null));
+  const [selectedImages, setSelectedImages] = useState(Array(9).fill(null));
   const actionSheetRef = useRef();
 
   // Kiểm tra và yêu cầu quyền truy cập
@@ -31,15 +40,19 @@ const TestMultiPicker = () => {
       }
     }
   };
- 
 
   // Chọn hình từ thư viện hoặc chụp hình
   const showImagePickerOptions = () => {
-    actionSheetRef.current.show({ useNativeDriver: true });
+    actionSheetRef.current.show({useNativeDriver: true});
+  };
+  const removeImage = index => {
+    const updatedImages = [...selectedImages];
+    updatedImages[index] = null;
+    setSelectedImages(updatedImages);
   };
 
   // Hiển thị action sheet
-  const handleActionSheetPress = (index) => {
+  const handleActionSheetPress = index => {
     if (index === 0) {
       pickImage();
     } else if (index === 1) {
@@ -50,15 +63,14 @@ const TestMultiPicker = () => {
   // Chọn hình từ thư viện
   const pickImage = async () => {
     try {
-      const images = await ImagePicker.openPicker({
-        multiple: true,
+      const image = await ImagePicker.openPicker({
         mediaType: 'photo',
       });
-
-      // Update state with selected images
       const updatedImages = [...selectedImages];
-      for (let i = 0; i < Math.min(images.length, 6); i++) {
-        updatedImages[i] = images[i].path;
+      const emptySlotIndex = updatedImages.indexOf(null);
+      if (emptySlotIndex !== -1) {
+        updatedImages[emptySlotIndex] = image.path;
+        setSelectedImages(updatedImages);
       }
       setSelectedImages(updatedImages);
     } catch (error) {
@@ -69,7 +81,7 @@ const TestMultiPicker = () => {
   // Chụp hình
   const takePhoto = async () => {
     try {
-        await checkAndRequestPermission();
+      await checkAndRequestPermission();
       const image = await ImagePicker.openCamera({
         width: 300,
         height: 400,
@@ -91,18 +103,60 @@ const TestMultiPicker = () => {
   // Render selected images
   const renderSelectedImages = () => {
     return selectedImages.map((image, index) => (
-      <TouchableOpacity key={index} onPress={() => takePhoto()}>
+      <TouchableOpacity key={index} onPress={() => showImagePickerOptions()}>
         <View style={styles.imageContainer}>
-          {image && <Image source={{ uri: image }} style={styles.image} />}
+          {image && (
+            <View>
+              <Image source={{uri: image}} style={styles.image} />
+              <TouchableOpacity onPress={() => removeImage(index)}>
+                <Text style={styles.removeText}>Remove</Text>
+              </TouchableOpacity>
+            </View>
+          )}
           {!image && <Text>Select Image</Text>}
         </View>
       </TouchableOpacity>
     ));
   };
 
+  const getArray = async () => {
+    console.log(selectedImages);
+    const imagePaths = selectedImages
+    const formData = new FormData();
+    imagePaths.forEach((path, index) => {
+      const fileName = `image_${index + 1}.jpg`;
+      formData.append('images', {
+        uri: path,
+        type: 'image/jpeg',
+        name: fileName,
+      }); 
+    });
+  
+    try {
+      const response = await AxiosInstance('multipart/form-data').post(
+        '/car/api/upload-car-images',
+        formData,
+      );
+      
+      console.log(response.link);
+      if (response.result) 
+      {
+        showToastMessage('',"sdasd")
+        console.log("success");
+        
+      } else {
+        showToastMessage('error',"sdasd")
+        console.log("succe132123ss");
+
+
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <View style={styles.container}>
-      <Button title="Pick Images" onPress={showImagePickerOptions} />
+      <Button title="Print Array Images" onPress={() => getArray()} />
       <View style={styles.imageGrid}>{renderSelectedImages()}</View>
 
       {/* Action Sheet */}
@@ -135,6 +189,10 @@ const styles = StyleSheet.create({
   image: {
     width: 100,
     height: 100,
+  },
+  removeText: {
+    color: 'red',
+    marginTop: 5,
   },
 });
 

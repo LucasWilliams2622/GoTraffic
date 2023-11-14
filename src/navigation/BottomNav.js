@@ -328,7 +328,7 @@ const Main = () => {
 
 const BottomTabNav = () => {
   const {isLogin, infoUser} = useContext(AppContext);
-  return <>{isLogin == false ? <StackBegin /> : <Main />}</>;
+  return <>{isLogin ? <Main /> : <StackBegin />}</>;
 };
 
 export default BottomTabNav;
