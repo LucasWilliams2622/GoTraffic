@@ -56,6 +56,7 @@ const AppInput = (props) => {
                     color: textColor ? '#000000' : textColor,
                     maxWidth: '90%',
                     fontSize: fontSize == null ? 16 : fontSize,
+                    width:'100%'
                 }]}
                 onChangeText={onChangeText}
                 value={value}

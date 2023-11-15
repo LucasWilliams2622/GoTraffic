@@ -5,44 +5,13 @@ import {COLOR} from '../../constants/Theme';
 import {Code} from 'native-base';
 import {appStyle} from '../../constants/AppStyle';
 import AxiosInstance from '../../constants/AxiosInstance';
-import { ToastAndroid } from 'react-native';
+import {ToastAndroid} from 'react-native';
 
 const ItemConfirmTrip = props => {
-  const {data} = props;
+  const {data, handleDelete, handleConfirm} = props;
   const isImageUrlValid = /^https?:\/\/.*\.(png|jpg)$/i.test(
     data.Car.imageThumbnail,
   );
-  const cancelBooking = async () => {
-    try {
-      const response = await AxiosInstance().post(
-        '/booking/api/cancel-by-owner?id=' + data.id,
-      );
-      if (response.result) {
-        console.log('Hủy thanh cong');
-        ToastAndroid.show('Hủy yêu càu đặt xe thành công', ToastAndroid.SHORT);
-      } else {
-        console.log('Failed to get car complete');
-      }
-    } catch (error) {
-      console.log('=========>', error);
-    }
-  };
-  const confirmBooking = async () => {
-    try {
-      const response = await AxiosInstance().post(
-        '/booking/api/accept?id=' + data.id,
-      );
-      if (response.result) {
-        console.log('Xác nhận thanh cong');
-        ToastAndroid.show('Xác nhận yêu càu đặt xe thành công', ToastAndroid.SHORT);
-      } else {
-        console.log('Failed to get car complete');
-      }
-    } catch (error) {
-      console.log('=========>', error);
-    }
-  };
-
   return (
     <View>
       <View
@@ -114,7 +83,7 @@ const ItemConfirmTrip = props => {
               justifyContent: 'space-between',
               marginTop: 20,
             }}>
-            <TouchableOpacity onPress={cancelBooking}>
+            <TouchableOpacity onPress={handleDelete(data.id)}>
               <Text style={[appStyle.text14, {color: COLOR.red}]}>Hủy</Text>
             </TouchableOpacity>
             <View
@@ -124,7 +93,7 @@ const ItemConfirmTrip = props => {
                 backgroundColor: COLOR.borderColor2,
               }}
             />
-            <TouchableOpacity onPress={confirmBooking}>
+            <TouchableOpacity onPress={handleConfirm(data.id)}>
               <Text style={[appStyle.text14, {color: COLOR.green}]}>
                 Đồng ý
               </Text>

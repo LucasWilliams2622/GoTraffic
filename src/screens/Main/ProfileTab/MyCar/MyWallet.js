@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   containerContent: {
     height: '30%',
     width: '100%',
-    backgroundColor: COLOR.blue,
+    backgroundColor: COLOR.fifth,
     borderRadius: 10,
     marginTop: 20,
     justifyContent: 'space-evenly',

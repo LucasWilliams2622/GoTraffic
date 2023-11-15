@@ -174,8 +174,9 @@ export interface RadioButtonProps {
   text: string;
 }
 
+
 export interface CarCardItemProps {
-  id: number;
+  id: string;
   name: string;
   image: string;
   imageThumbnail: string;

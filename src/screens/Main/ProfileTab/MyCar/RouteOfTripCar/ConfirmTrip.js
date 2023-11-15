@@ -1,11 +1,13 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {appStyle} from '../../../../../constants/AppStyle';
 import ItemConfirmTrip from '../../../../../components/Support/ItemConfirmTrip';
 import {FlatList} from 'native-base';
 import AxiosInstance from '../../../../../constants/AxiosInstance';
 import {useIsFocused} from '@react-navigation/native';
 import Swipelist from 'react-native-swipeable-list-view';
+import {showToastMessage} from '../../../../../utils/utils';
+import {ICON} from '../../../../../constants/Theme';
 const ConfirmTrip = () => {
   const isFocused = useIsFocused();
 
@@ -26,6 +28,41 @@ const ConfirmTrip = () => {
       console.log('=========>', error);
     }
   };
+  const cancelBooking = async (id) => {
+    try {
+      const response = await AxiosInstance().post(
+        '/booking/api/cancel-by-owner?id=' + id,
+      );
+      if (response.result) {
+        showToastMessage('', 'Hủy yêu càu đặt xe thành công');
+        getCarByIdUser();
+      } else {
+        showToastMessage('', 'Hủy yêu càu đặt xe thất bại', ICON.cancelWhite);
+      }
+    } catch (error) {
+      console.log('=========>', error);
+    }
+  };
+  const confirmBooking = async (id) => {
+    try {
+      const response = await AxiosInstance().post(
+        '/booking/api/accept?id=' + id,
+      );
+      if (response.result) {
+        console.log('Xác nhận thanh cong');
+        showToastMessage('', 'Xác nhận yêu càu đặt xe thành công');
+        getCarByIdUser();
+      } else {
+        showToastMessage(
+          '',
+          'Xác nhận yêu càu đặt xe thất bại',
+          ICON.cancelWhite,
+        );
+      }
+    } catch (error) {
+      console.log('=========>', error);
+    }
+  };
 
   useEffect(() => {
     getCarByIdUser();
@@ -33,9 +70,15 @@ const ConfirmTrip = () => {
   return (
     <View style={{flex: 1, padding: 10}}>
       <FlatList
-        style={[appStyle.main,{marginBottom:70}]}
+        style={[appStyle.main, {marginBottom: 70}]}
         data={data}
-        renderItem={({item}) => <ItemConfirmTrip data={item} />}
+        renderItem={({item}) => (
+          <ItemConfirmTrip
+            data={item}
+            handleDelete={cancelBooking}
+            handleConfirm={confirmBooking}
+          />
+        )}
         keyExtractor={item => item._id}
         showsVerticalScrollIndicator={false}></FlatList>
     </View>

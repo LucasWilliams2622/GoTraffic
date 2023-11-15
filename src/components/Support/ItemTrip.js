@@ -1,31 +1,34 @@
 import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import FastImage from 'react-native-fast-image';
 import {COLOR} from '../../constants/Theme';
 import {Code} from 'native-base';
 import {appStyle} from '../../constants/AppStyle';
 import numeral from 'numeral';
 import {useNavigation} from '@react-navigation/native';
+import CarDetail from '../../screens/Main/HomeTab/CarDetail';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import Modal from 'react-native-modal';
 
 const ItemTrip = props => {
   const navigation = useNavigation();
+  const [isSwipeEnabled, setSwipeEnabled] = useState(true);
+  const [isModalVisible, setModalVisible] = useState(false);
   const {data} = props;
-
   const {image, name, time, timeStart, timeEnd, price, id} = data;
   const checkStatus = () => {
     if (data.status == 5) {
       navigation.navigate('RatingTrip', {id: data.id});
     } else {
       console.log('id Car:' + data.idCar);
-      navigation.navigate('CarDetail', {car_id: data.idCar});
+      setModalVisible(!isModalVisible);
     }
   };
   const isImageUrlValid = /^https?:\/\/.*\.(png|jpg)$/i.test(
     data.Car.imageThumbnail,
   );
-
   return (
-    <View>
+    <SafeAreaView>
       <View
         style={{
           flexDirection: 'row',
@@ -109,8 +112,19 @@ const ItemTrip = props => {
             {numeral(data.totalMoney).format('0,0')}
           </Text>
         </View>
+        <Modal
+          isVisible={isModalVisible}
+          style={{margin: 0}}
+          onBackButtonPress={() => setModalVisible(!isModalVisible)}
+          swipeThreshold={50}>
+          <CarDetail
+            car_id={data.idCar}
+            close={() => setModalVisible(!isModalVisible)}
+            setSwipeEnabled={setSwipeEnabled}
+          />
+        </Modal>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 

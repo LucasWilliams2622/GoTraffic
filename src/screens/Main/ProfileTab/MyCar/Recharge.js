@@ -18,16 +18,16 @@ import AppHeader from '../../../../components/AppHeader';
 import {WebView} from 'react-native-webview';
 import AppInput from '../../../../components/AppInput';
 import axios from 'axios';
-import { AppContext } from '../../../../utils/AppContext';
-import { showToastMessage } from '../../../../utils/utils';
+import {AppContext} from '../../../../utils/AppContext';
+import {showToastMessage} from '../../../../utils/utils';
 import AppButton from '../../../../components/AppButton';
 
 const Recharge = () => {
   const navigation = useNavigation();
   const [amount, setAmount] = useState(1100);
-  const [blockInput, setBlockInput] = useState(true)
+  const [blockInput, setBlockInput] = useState(true);
   const [checkoutUrl, setCheckoutUrl] = useState('');
-  const {idUser} = useContext(AppContext)
+  const {idUser} = useContext(AppContext);
   const [currentUrl, setCurrentUrl] = useState('');
 
   const handleNavigationStateChange = navState => {
@@ -43,12 +43,14 @@ const Recharge = () => {
       const response = await axios.post(
         'http://103.57.129.166:3000/user/api/recharge-by-id-user',
         {
-          id:idUser,
+          id: idUser,
           amount: parseInt(amount),
         },
       );
       console.log(response.data);
-      showToastMessage('','Thanh toán thành công')
+      setBlockInput(true);
+      setAmount(0)
+      showToastMessage('', 'Thanh toán thành công');
     } else {
       console.log('Chưa thanh toán');
     }
@@ -69,10 +71,9 @@ const Recharge = () => {
       if (response.data.data.checkoutUrl) {
         console.log('asdas');
         setCheckoutUrl(response.data.data.checkoutUrl);
-        setBlockInput(false)
-      }else{
+        setBlockInput(false);
+      } else {
         console.log('==============>');
-
       }
     } catch (error) {
       console.log(error);
@@ -81,34 +82,36 @@ const Recharge = () => {
 
   return (
     <SafeAreaView style={appStyle.container}>
-      <AppHeader title="Nạp tiền"  />
+      <AppHeader title="Nạp tiền" />
       <View style={appStyle.main}>
-        <AppInput
-          placeholder={'Nhập số tiền muốn nạp'}
-          keyboardType={'number-pad'}
-          onChangeText={txt => setAmount(txt)}
-          editable={blockInput}
-        />
-        <AppButton title={'Nạp'} onPress={() => handleRecharge()} />
-
-        <View style={{flex:1}}>
-
-        {checkoutUrl != '' && (
-          <>
-            <WebView
-              source={{uri: checkoutUrl}}
-              onNavigationStateChange={handleNavigationStateChange}
-              style={{flex: 1}}
-            />
-          </>
-        )}
+        <View style={{marginVertical: 16}}>
+          <AppInput
+            placeholder={'Nhập số tiền muốn nạp'}
+            keyboardType={'number-pad'}
+            onChangeText={txt => setAmount(txt)}
+            editable={blockInput}
+          />
         </View>
 
+        <AppButton
+          title={'Nạp'}
+          onPress={() => handleRecharge()}
+        />
+
+        <View style={{flex: 1}}>
+          {checkoutUrl != '' && (
+            <>
+              <WebView
+                source={{uri: checkoutUrl}}
+                onNavigationStateChange={handleNavigationStateChange}
+                style={{flex: 1}}
+              />
+            </>
+          )}
+        </View>
       </View>
     </SafeAreaView>
   );
-
- 
 };
 
 export default Recharge;

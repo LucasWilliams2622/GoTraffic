@@ -7,21 +7,24 @@ import {
   PermissionsAndroid,
   Modal,
 } from 'react-native';
-import React, {useState, useContext} from 'react';
-import {appStyle, windowHeight} from '../../../../constants/AppStyle';
-import {COLOR, ICON} from '../../../../constants/Theme';
+import React, { useState, useContext } from 'react';
+import { appStyle, windowHeight, windowWidth } from '../../../../constants/AppStyle';
+import { COLOR, ICON } from '../../../../constants/Theme';
 import FastImage from 'react-native-fast-image';
 import AppInput from '../../../../components/AppInput';
 import AppButton from '../../../../components/AppButton';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Header from '../../../../components/Header';
-import {Formik} from 'formik';
+import AppDropdown from '../../../../components/AppDropdown';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {AppContext} from '../../../../utils/AppContext';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { AppContext } from '../../../../utils/AppContext';
 import AxiosInstance from '../../../../constants/AxiosInstance';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
+import axios from 'axios';
 
 const UpdateProfile = props => {
   const navigation = useNavigation();
@@ -30,15 +33,20 @@ const UpdateProfile = props => {
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
-  const {setIsLogin, infoUser, idUser, currentDay, appState, setAppState} =
+  const { setIsLogin, infoUser, idUser, currentDay, appState, setAppState } =
     useContext(AppContext);
   const [image, setImage] = useState(infoUser.avatar);
   const [name, setName] = useState(infoUser.name);
   const [dob, setdob] = useState(infoUser.dob);
+  const [selectedSex, setSelectedSex] = useState(infoUser.gender);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(dob);
+
+
   const handleUpdate = async () => {
     try {
-      const response = await AxiosInstance().put(
-        '/user/api/update?idUser=' + idUser,
+      const response = await axios.put(
+        'http://103.57.129.166:3000/user/api/update?idUser=' + idUser,
         {
           name: name,
           firstName: '',
@@ -72,6 +80,22 @@ const UpdateProfile = props => {
       }
     } catch (e) {
       console.log('error', e);
+    }
+  };
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = selectedDate => {
+    hideDatePicker();
+    if (selectedDate) {
+      const formattedDate = selectedDate.toISOString().split('T')[0];
+      setSelectedDate(formattedDate);
     }
   };
 
@@ -154,18 +178,6 @@ const UpdateProfile = props => {
       .min(1, 'Quá ngắn')
       .max(50, 'Quá dài')
       .required('Bắt buộc'),
-    dob: Yup.string()
-      .matches(
-        /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(194[5-9]|19[5-9]\d|20[0-2][0-3])$/,
-        'Ngày tháng năm sinh không hợp lệ, hãy nhập theo định dạng DD/MM/YYYY',
-      )
-      .required('Bắt buộc'),
-    sex: Yup.string()
-      .oneOf(
-        ['nam', 'nữ', 'khác', 'Nam', 'Nữ', 'Khác'],
-        'Giới tính không hợp lệ',
-      )
-      .required('Bắt buộc'),
   });
   const isImageUrlValid = /^https?:\/\/.*\.(png|jpg)$/i.test(image);
   return (
@@ -174,20 +186,20 @@ const UpdateProfile = props => {
         icon={ICON.Close}
         text="Chỉnh sửa"
         onPress={() => navigation.navigate('Account')}
-        //marginLeft={106}
+      //marginLeft={106}
       />
-      <View style={{width: '100%', padding: 15}}>
+      <View style={{ width: '100%', padding: 15 }}>
         {/* Avatar */}
-        {isImageUrlValid  ? (
+        {isImageUrlValid ? (
           <FastImage
-            source={{uri: image}}
-            style={[appStyle.avatar, {marginTop: 20}]}
+            source={{ uri: image }}
+            style={[appStyle.avatar, { marginTop: 20 }]}
             resizeMode="stretch"
           />
         ) : (
           <FastImage
             source={require('../../../../assets/image/logo_go_traffic.png')}
-            style={[appStyle.avatar, {marginTop: 20}]}
+            style={[appStyle.avatar, { marginTop: 20 }]}
           />
         )}
 
@@ -206,10 +218,10 @@ const UpdateProfile = props => {
           transparent={true}
           visible={isModalVisible}>
           <TouchableOpacity
-            style={styles.modalBackdrop}
+            style={appStyle.modalBackdrop}
             onPress={toggleModal} // Close the modal when tapping outside
           />
-          <View style={styles.modalContainer}>
+          <View style={appStyle.modalContainerCam}>
             {/* Add your camera and gallery buttons here */}
             <AppButton
               title="Chụp ảnh"
@@ -231,18 +243,18 @@ const UpdateProfile = props => {
           <Formik
             initialValues={{
               name: infoUser.name,
-              dob: infoUser.dob.slice(0, 10),
-              sex: infoUser.gender ? 'Nam' : 'Nữ',
+              // dob: infoUser.dob.slice(0, 10),
+              // sex: infoUser.gender ? 'Nam' : 'Nữ',
             }}
             validationSchema={AccountSchema}
-            onSubmit={(values, {setSubmitting}) => {
+            onSubmit={(values, { setSubmitting }) => {
               // Kiểm tra tính hợp lệ bằng cách sử dụng setSubmitting
               setSubmitting(true); // Đánh dấu rằng việc xác thực đang diễn ra
               AccountSchema.validate(values)
                 .then(valid => {
                   if (valid) {
                     setName(values.name);
-                    setdob(values.dob);
+                    // setdob(values.dob);
                     handleUpdate();
                   } else {
                     console.log('Dữ liệu không hợp lệ');
@@ -261,8 +273,8 @@ const UpdateProfile = props => {
               handleSubmit,
             }) => (
               <>
-                <View style={{width: '100%', height: 'auto'}}>
-                  <Text style={[appStyle.text14, {color: COLOR.text2}]}>
+                <View style={{ width: '100%', height: 'auto' }}>
+                  <Text style={[appStyle.text14, { color: COLOR.text2 }]}>
                     Tên người dùng
                   </Text>
                   <AppInput
@@ -272,30 +284,45 @@ const UpdateProfile = props => {
                     onBlur={() => setFieldTouched('name')}
                   />
                   {touched.name && errors.name && (
-                    <Text style={{color: 'red'}}>{errors.name}</Text>
+                    <Text style={{ color: 'red' }}>{errors.name}</Text>
                   )}
                 </View>
 
-                <View style={{width: '100%', height: 'auto', marginTop: 15}}>
-                  <Text style={[appStyle.text14, {color: COLOR.text2}]}>
+                <View style={{ width: '100%', height: 'auto', marginTop: 15 }}>
+                  <Text style={[appStyle.text14, { color: COLOR.text2 }]}>
                     Ngày sinh
                   </Text>
-                  <AppInput
+                  <TouchableOpacity
+                    onPress={showDatePicker}
+                    style={{ width: '100%', justifyContent: 'center', height: windowHeight * 0.06, borderWidth: 1, borderRadius: 6, borderColor: COLOR.primary }}>
+                    <Text style={[appStyle.text16, { marginLeft: 8 }]}>{selectedDate}</Text>
+                  </TouchableOpacity>
+                  {/* <AppInput
                     placeholder="Ngày sinh"
                     value={values.dob}
                     onChangeText={handleChange('dob')}
                     onBlur={() => setFieldTouched('dob')}
                   />
                   {touched.dob && errors.dob && (
-                    <Text style={{color: 'red'}}>{errors.dob}</Text>
-                  )}
+                    <Text style={{ color: 'red' }}>{errors.dob}</Text>
+                  )} */}
                 </View>
 
-                <View style={{width: '100%', height: 'auto', marginTop: 15}}>
-                  <Text style={[appStyle.text14, {color: COLOR.text2}]}>
+                <View style={{ width: '100%', height: 'auto', marginTop: 15 }}>
+                  <Text style={[appStyle.text14, { color: COLOR.text2 }]}>
                     Giới tính
                   </Text>
-                  <AppInput
+                  <AppDropdown
+                    borderWidth={1}
+                    labelField="label"
+                    valueField="value"
+                    data={sex}
+                    value={selectedSex}
+                    onChange={(sexs) => {
+                      setSelectedSex(sexs.value);
+                    }}
+                  />
+                  {/* <AppInput
                     placeholder="Giới tính"
                     value={values.sex}
                     onChangeText={handleChange('sex')}
@@ -303,13 +330,19 @@ const UpdateProfile = props => {
                   />
                   {touched.sex && errors.sex && (
                     <Text style={{color: 'red'}}>{errors.sex}</Text>
-                  )}
+                  )} */}
                 </View>
 
                 <AppButton marginTop={30} title="Lưu" onPress={handleSubmit} />
               </>
             )}
           </Formik>
+          <DateTimePickerModal
+            isVisible={isDatePickerVisible}
+            mode="date"
+            onConfirm={handleConfirm}
+            onCancel={hideDatePicker}
+          />
         </KeyboardAwareScrollView>
       </View>
     </SafeAreaView>
@@ -338,28 +371,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     top: -25,
   },
-  modalContainer: {
-    backgroundColor: 'white',
-    position: 'absolute',
-    bottom: 10,
-    alignSelf: 'center',
-    width: '100%',
-    height: windowHeight * 0.18,
-    borderTopRightRadius: 20,
-    borderTopLeftRadius: 20,
-    paddingHorizontal: 10,
-    paddingBottom: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
   item: {
     backgroundColor: 'white',
     width: '100%',
@@ -370,10 +381,10 @@ const styles = StyleSheet.create({
     borderColor: COLOR.primary,
     marginTop: 8,
   },
-  modalBackdrop: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background color
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
 });
+
+const sex = [
+  { label: 'Nam', value: 'Nam' },
+  { label: 'Nữ', value: 'Nữ' },
+  { label: 'Khác', value: 'Khác' },
+]
