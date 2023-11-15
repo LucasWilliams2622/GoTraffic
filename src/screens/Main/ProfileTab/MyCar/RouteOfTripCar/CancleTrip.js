@@ -6,6 +6,7 @@ import ItemCancleTrip from '../../../../../components/Support/ItemCancleTrip';
 import { FlatList } from 'native-base';
 import AxiosInstance from '../../../../../constants/AxiosInstance';
 import {useIsFocused} from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
 
 const CancleTrip = () => {
    const [data, setData] = useState('');
@@ -34,29 +35,34 @@ const CancleTrip = () => {
         data={data}
         renderItem={({item}) => <ItemCancleTrip data={item} />}
         keyExtractor={item => item._id}
-        showsVerticalScrollIndicator={false}></FlatList>
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={
+          <View>
+            <FastImage
+              style={styles.imageInvisible}
+              resizeMode={'stretch'}
+              source={require('../../../../../assets/image/NoTrip.png')}
+            />
+            <Text
+              style={[
+                appStyle.text16,
+                {textAlign: 'center', marginBottom: 10, fontStyle: 'italic'},
+              ]}>
+              Bạn chưa có lịch sử chuyến
+            </Text>
+          </View>
+        }></FlatList>
     </View>
   );
 }
 
 export default CancleTrip
 
-const styles = StyleSheet.create({})
-const DATA = [
-  {
-    id: 1,
-    image: require('../../../../../assets/image/car.jpg'),
-    time: '21/09/2023 | 20:30',
-    name: 'KIA MORNING 2022',
-    nameOfUser: 'Lê Văn Hậu',
-    phoneOfUser: '0344112222',
+const styles = StyleSheet.create({
+  imageInvisible: {
+    width: 192,
+    height: 138,
+    alignSelf: 'center',
+    marginBottom: 20,
   },
-  {
-    id: 2,
-    image: require('../../../../../assets/image/car.jpg'),
-    time: '21/09/2023 | 20:30',
-    name: 'KIA MORNING 2022',
-    nameOfUser: 'Lê Văn Hậu',
-    phoneOfUser: '0344112222',
-  },
-];
+});

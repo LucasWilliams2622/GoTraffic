@@ -22,10 +22,10 @@ import Swipelist from 'react-native-swipeable-list-view';
 import {showToastMessage} from '../../../utils/utils';
 const Trip = () => {
   const {infoUser, idUser} = useContext(AppContext);
-  const [listBookingCurrent, setListBookingCurrent] = useState([]);
+  const [listBookingCurrent, setListBookingCurrent] = useState(null);
   const navigation = useNavigation();
   const isFocused = useIsFocused();
-
+  const [isLoading, setIsLoading] = useState(true);
   const getListBookingCurrent = async () => {
     try {
       const response = await AxiosInstance().get(
@@ -33,6 +33,12 @@ const Trip = () => {
       );
       if (response.result) {
         setListBookingCurrent(response.booking);
+        console.log(response.booking[0]==null);
+        if (response.booking[0] == null) {
+          setIsLoading(true);
+        } else {
+          setIsLoading(false);
+        }
       } else {
         console.log('NETWORK ERROR');
       }
@@ -74,25 +80,42 @@ const Trip = () => {
 
       <ScrollView style={[appStyle.main, {marginBottom: 70}]}>
         <Text style={styles.text1}>Hiện tại</Text>
-        <Swipelist
-          data={listBookingCurrent}
-          renderRightItem={(data, index) => (
-            <View key={index}>
-              <ItemTrip data={data} car={listBookingCurrent} />
-            </View>
-          )}
-          renderHiddenItem={(data, index) => (
-            <TouchableOpacity
-              style={[styles.rightAction, {backgroundColor: 'red'}]}
-              onPress={() => {
-                console.log(data.id);
-                cancelBooking(data.id);
-              }}>
-              <FastImage source={ICON.Delete} style={appStyle.icon} />
-            </TouchableOpacity>
-          )}
-          rightOpenValue={200}
-        />
+        {isLoading == true ? (
+          <View>
+            <FastImage
+              style={styles.imageInvisible}
+              resizeMode={'stretch'}
+              source={require('../../../assets/image/NoTrip.png')}
+            />
+            <Text
+              style={[
+                appStyle.text16,
+                {textAlign: 'center', marginBottom: 10, fontStyle: 'italic'},
+              ]}>
+              Bạn chưa có lịch sử chuyến
+            </Text>
+          </View>
+        ) : (
+          <Swipelist
+            data={listBookingCurrent}
+            renderRightItem={(data, index) => (
+              <View key={index}>
+                <ItemTrip data={data} car={listBookingCurrent} />
+              </View>
+            )}
+            renderHiddenItem={(data, index) => (
+              <TouchableOpacity
+                style={[styles.rightAction, {backgroundColor: 'red'}]}
+                onPress={() => {
+                  console.log(data.id);
+                  cancelBooking(data.id);
+                }}>
+                <FastImage source={ICON.Delete} style={appStyle.icon} />
+              </TouchableOpacity>
+            )}
+            rightOpenValue={200}
+          />
+        )}
       </ScrollView>
     </SafeAreaView>
   );
