@@ -22,6 +22,7 @@ import { CarCardItemProps } from '../../../types';
 import AxiosInstance from '../../../constants/AxiosInstance';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AppContext } from '../../../utils/AppContext';
+import axios from 'axios';
 
 
 const CarCardItem = ({
@@ -35,15 +36,27 @@ const CarCardItem = ({
   originalPrice,
   price,
   rating,
+ // isFavorite, 
   numberOfBooked,
-  isFavorite,
   width = 330,
   onPress,
 }: CarCardItemProps) => {
-  // const [isFavorite, setIsFavorite] = React.useState<boolean>(false);
-  // const {setIsLogin, infoUser, idUser} = React.useContext(AppContext);
-
-
+  const { idUser } = useContext(AppContext);
+  const [isFavorite, setIsFavorite] = useState(false);
+ const addOrRemoveFavorite = async () => {
+    try {      
+      if (isFavorite) {
+        const response = await AxiosInstance().delete(`/favorite-car/api/delete?idUser=${idUser}&idCar=${id}`);
+          console.log(response,"Xe đã bị xóa khỏi danh sách yêu thích");
+      } else {
+        const response = await AxiosInstance().post(`/favorite-car/api/add?idUser=${idUser}&idCar=${id}`);
+          console.log(response,"Xe được thêm vào danh sách yêu thích");
+      }
+      setIsFavorite(!isFavorite);
+    } catch (error) {
+      console.log(error);
+    }
+  };  
 
   const formattedPrice = useMemo(() => formatPrice(price), [price]);
   const formattedOriginalPrice = useMemo(
@@ -68,12 +81,13 @@ const CarCardItem = ({
         </View>
       )}
       <Pressable
+        onPress={() => addOrRemoveFavorite()}
         style={CarCardItemStyles.pressable}>
         <Icon
           name="heart"
-          color={isFavorite ? COLOR.fifth : COLOR.white}
+          color={isFavorite  ? COLOR.fifth : COLOR.white}
           size={20}
-          solid={isFavorite}
+          solid={isFavorite }
         />
       </Pressable>
 

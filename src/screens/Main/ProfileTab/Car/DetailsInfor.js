@@ -262,7 +262,7 @@ const DetailsInfor = props => {
       const response = await AxiosInstance().post('/car/api/add', {
         idUser: 1,
         idCarBrand: 1,
-        numberPlate: cardInfo.carInfo.carNumber,
+        numberPlate: cardInfo.carInfo.carNumber+"",
         name: cardInfo.carInfo.selectedModel,
         yearOfManufacture: cardInfo.carInfo.selectedYear,
         seats: cardInfo.carInfo.selectedSeats,

@@ -12,11 +12,12 @@ import axios from 'axios';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import AxiosInstance from '../../../../constants/AxiosInstance'
 import { AppContext } from '../../../../utils/AppContext'
-import { useNavigation } from '@react-navigation/native'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
 import FastImage from 'react-native-fast-image'
 
 const UpdateAddress = ({ route }) => {
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
   const { addressInfo } = route.params;
   console.log(addressInfo);
   const { infoUser, idUser } = useContext(AppContext);
@@ -70,7 +71,22 @@ const UpdateAddress = ({ route }) => {
     } catch (error) {
       console.error('Lỗi khi cập nhật địa chỉ: ', error);
     }
-  };
+  }
+
+    useEffect(() => {
+    const getAddress = async()=>{
+      try {
+        if(isFocused){
+          const response = await AxiosInstance().get(`/address/api/get-address-by-id-user?idUser=${idUser}`);
+          //setAddresses(response.data);
+          console.log(">>>>>>>>>> get list update");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getAddress();
+    }, [isFocused, idUser])
 
   const deleteAddress = async () => {
     try {

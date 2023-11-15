@@ -45,7 +45,6 @@ const Notification = () => {
   useEffect(() => {
     getListNotificationsByIDUser();
     getListNotifications();
-    setNotificationCount(0);
   }, [useIsFocused]);
   return (
     <SafeAreaView style={appStyle.container}>

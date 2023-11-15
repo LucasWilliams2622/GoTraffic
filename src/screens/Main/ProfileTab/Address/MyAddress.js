@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet, Text, View, FlatList } from 'react-native'
+import { SafeAreaView, StyleSheet, Text, View, FlatList, RefreshControl } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import Header from '../../../../components/Header'
 import { appStyle } from '../../../../constants/AppStyle'
@@ -24,6 +24,18 @@ const MyAddress = (props) => {
       console.log(error);
     }
   };
+  const updateAddress = async () => {
+    await getAddress();
+  };
+  
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      updateAddress();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
   useEffect(() => {
     if (route.params && route.params.newAddressData) {
       const newAddressData = route.params.newAddressData;

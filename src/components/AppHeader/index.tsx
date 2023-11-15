@@ -14,6 +14,7 @@ const AppHeader = ({
   tintColor = '#424242',
   iconRightColor = 'black',
   notLeft = false,
+  onPressLeft,
 }: AppbarHeaderProps) => {
   const navigation = useNavigation();
 
@@ -58,7 +59,7 @@ const AppHeader = ({
           <TouchableOpacity
             style={{}}
             onPress={() => {
-              navigation.goBack();
+              onPressLeft == null ? navigation.goBack() : onPressLeft;
             }}>
             {iconLeft == null ? (
               <FastImage
@@ -77,7 +78,7 @@ const AppHeader = ({
             )}
           </TouchableOpacity>
         ) : (
-          <Text>        </Text>
+          <Text> </Text>
         )}
 
         <Text

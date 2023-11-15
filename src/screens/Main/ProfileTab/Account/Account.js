@@ -15,6 +15,7 @@ import {
 } from '../../../../constants/AppStyle';
 import {useNavigation} from '@react-navigation/native';
 import {AppContext} from '../../../../utils/AppContext';
+import AppHeader from '../../../../components/AppHeader';
 
 const Account = props => {
   const navigation = useNavigation();
@@ -43,7 +44,7 @@ const Account = props => {
   }, [route.params?.newName, route.params?.newDOB, route.params?.newSex]);
   return (
     <SafeAreaView style={[appStyle.container]}>
-      <View style={styles.header}>
+      {/* <View style={styles.header}>
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('Profile', {
@@ -53,15 +54,26 @@ const Account = props => {
           <FastImage source={ICON.Back} style={[appStyle.icon]} />
         </TouchableOpacity>
         <Text style={[appStyle.text20, {fontWeight: '500'}]}>
-          Tài khoản của tôi
+          
         </Text>
-        <TouchableOpacity onPress={() => navigation.navigate('UpdateProfile')}>
+        <TouchableOpacity onPress={}>
           <FastImage
             source={ICON.Edit}
             style={[appStyle.icon, {marginRight: 5}]}
           />
         </TouchableOpacity>
-      </View>
+      </View> */}
+
+      <AppHeader
+        title="Tài khoản của tôi"
+        icon={ICON.Edit}
+        // onPressLeft={() =>
+        //   navigation.navigate('Home', {
+        //     newName: name,
+        //   })
+        // }
+        onPressRight={() => navigation.navigate('UpdateProfile')}
+      />
 
       <View style={{width: '100%', alignItems: 'center', padding: 15}}>
         <FastImage
@@ -69,13 +81,15 @@ const Account = props => {
           style={[appStyle.avatar, {marginTop: 20}]}></FastImage>
         <Text style={[appStyle.text24Bold, {marginTop: 12}]}>{name}</Text>
         <View style={{flexDirection: 'row'}}>
-          <Text style={[appStyle.text12]}>Tham gia: {infoUser.createdAt.slice(0,10)}</Text>
+          <Text style={[appStyle.text12]}>
+            Tham gia: {infoUser.createdAt.slice(0, 10)}
+          </Text>
         </View>
 
         <View style={styles.viewEdit}>
           <View style={styles.viewText}>
             <Text style={appStyle.text14}>Ngày sinh</Text>
-            <Text style={appStyle.text14}>{infoUser.dob.slice(0,10)}</Text>
+            <Text style={appStyle.text14}>{infoUser.dob.slice(0, 10)}</Text>
           </View>
           <View style={[styles.viewText, {marginTop: 8}]}>
             <Text style={appStyle.text14}>Giới tính</Text>
