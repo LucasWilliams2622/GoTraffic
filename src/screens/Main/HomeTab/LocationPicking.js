@@ -1,23 +1,27 @@
-import {View, Text, TouchableOpacity, StyleSheet, FlatList} from 'react-native';
-import React, {useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {appStyle, windowWidth} from '../../../constants/AppStyle';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import React, { useState, useContext, useEffect } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { appStyle, windowWidth } from '../../../constants/AppStyle';
 import Header from '../../../components/Header';
-import {useNavigation} from '@react-navigation/native';
-import {COLOR, ICON} from '../../../constants/Theme';
+import { useNavigation } from '@react-navigation/native';
+import { COLOR, ICON } from '../../../constants/Theme';
 import AppInput from '../../../components/AppInput';
 import FastImage from 'react-native-fast-image';
 import ItemOption from '../../../components/Profile/ItemOption';
 import ItemAddress from '../../../components/Profile/ItemAddress';
 import Suggestion from '../../../components/Home/Home/Suggestion';
 import axios from 'axios';
+import { AppContext } from '../../../utils/AppContext';
 
 const LocationPicking = props => {
   //console.log(">>>>>>>>>> location");
   const navigation = useNavigation();
+  const { idUser } = useContext(AppContext);
   const [locationPicking, setLocationPicking] = useState('');
   const [searchText, setSearchText] = useState('');
   const [suggestions, setSuggestions] = useState([]);
+  const [defaultAddress, setDefaultAddress] = useState('');
+
 
   const apikey = 'c3d0f188ff669f89042771a20656579073cffec5a8a69747';
 
@@ -36,6 +40,20 @@ const LocationPicking = props => {
       console.log(error);
     }
   };
+
+  const getDefault = async () => {
+    try {
+      const response = await axios.get(`http://103.57.129.166:3000/address/api/get-default-address?idUser=${idUser}`);
+      console.log(response.data);
+      setDefaultAddress(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getDefault();
+  }, []);
 
   const handleInputChange = text => {
     setSearchText(text);
@@ -59,7 +77,7 @@ const LocationPicking = props => {
             data={suggestions.slice(0, 5)}
             keyExtractor={(item, index) => index.toString()}
             showsVerticalScrollIndicator={false}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <Suggestion
                 data={item}
                 setInputAddress={props.setInputAddress}
@@ -73,13 +91,13 @@ const LocationPicking = props => {
           style={appStyle.card}
           onPress={() => navigation.goBack()}>
           <FastImage source={ICON.Location} style={appStyle.iconBig} />
-          <Text style={[appStyle.text165, {marginLeft: 5}]}>
+          <Text style={[appStyle.text165, { marginLeft: 5 }]}>
             Vị trí hiện tại
           </Text>
         </TouchableOpacity>
 
         {/* Navigate qua sổ địa chỉ của user  */}
-        <TouchableOpacity style={[appStyle.rowBetween, {marginTop: 10}]}>
+        <TouchableOpacity style={[appStyle.rowBetween, { marginTop: 10 }]}>
           <Text style={appStyle.text14}>Địa chỉ của tôi </Text>
           <FastImage
             source={ICON.Next}
@@ -89,48 +107,60 @@ const LocationPicking = props => {
         </TouchableOpacity>
 
         {/* Địa chỉ mặc định của user */}
-        <TouchableOpacity
-          onPress={() => {
-            props.setInputAddress('603 Trần Hưng Đạo');
-            props.close();
-          }}>
-          <View style={styles.container}>
-            <View style={styles.content}>
-              <FastImage
-                style={[appStyle.iconBig, {alignSelf: 'center'}]}
-                source={ICON.Home}
-              />
-              <View style={{marginLeft: 16}}>
-                <View
-                  style={{
-                    width: windowWidth * 0.35,
-                    justifyContent: 'flex-start',
-                    alignItems: 'center',
-                    flexDirection: 'row',
-                  }}>
-                  <Text style={[appStyle.text16, {fontWeight: '600'}]}>
-                    Nhà
-                  </Text>
-                  <View>
-                    <Text
-                      style={[
-                        appStyle.text14,
-                        {
-                          backgroundColor: COLOR.bgHeader,
-                          marginLeft: 10,
-                          borderRadius: 15,
-                          padding: 8,
-                        },
-                      ]}>
-                      Mặc định
+        {defaultAddress && defaultAddress.data && (
+
+          <TouchableOpacity
+            onPress={() => {
+              const {
+                address,
+                ward,
+                district,
+                city,
+              } = defaultAddress.data;
+              const fullAddress = `${address}, ${ward}, ${district}, ${city}`;
+              props.setInputAddress(fullAddress);
+              props.close();
+            }}>
+            <View style={styles.container}>
+              <View style={styles.content}>
+                <FastImage
+                  style={[appStyle.iconBig, { alignSelf: 'center' }]}
+                  source={ICON.Home}
+                />
+                <View style={{ marginLeft: 16 }}>
+                  <View
+                    style={{
+                      width: windowWidth * 0.35,
+                      justifyContent: 'flex-start',
+                      alignItems: 'center',
+                      flexDirection: 'row',
+                    }}>
+                    <Text style={[appStyle.text16, { fontWeight: '600' }]}>
+                      {defaultAddress.data.note}
                     </Text>
+                    <View>
+                      <Text
+                        style={[
+                          appStyle.text14,
+                          {
+                            backgroundColor: COLOR.bgHeader,
+                            marginLeft: 10,
+                            borderRadius: 15,
+                            padding: 8,
+                          },
+                        ]}>
+                        Mặc định
+                      </Text>
+                    </View>
                   </View>
+                  <Text style={[appStyle.text14]}>
+                    {defaultAddress.data.address}, {defaultAddress.data.ward}, {defaultAddress.data.district}, {defaultAddress.data.city}
+                  </Text>
                 </View>
-                <Text style={[appStyle.text14]}>603 Trần Hưng Đạo</Text>
               </View>
             </View>
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
+        )}
 
         <View
           style={{
@@ -141,21 +171,26 @@ const LocationPicking = props => {
           }}>
           <Text style={appStyle.text14}>Đưa đón sân bay </Text>
           <FlatList
-            style={{width: '100%', marginVertical: 10}}
+            style={{ width: '100%', marginVertical: 10 }}
             data={plane}
-            renderItem={({item}) => <ItemOption data={item} />}
+            renderItem={({ item }) => (
+              <ItemOption
+                data={item}
+                setInputAddress={props.setInputAddress}
+                close={props.close}
+              />)}
             keyExtractor={item => item.id}
             horizontal
             showsHorizontalScrollIndicator={false}
           />
         </View>
 
-        <View style={{marginTop: 10}}>
+        <View style={{ marginTop: 10 }}>
           <Text style={appStyle.text14}>Tìm kiếm gần đây</Text>
           <FlatList
-            style={{width: '100%', marginVertical: 10}}
+            style={{ width: '100%', marginVertical: 10 }}
             data={locationViewed}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <ItemAddress
                 data={item}
                 setInputAddress={props.setInputAddress}

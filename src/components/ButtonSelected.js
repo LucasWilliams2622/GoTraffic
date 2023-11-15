@@ -10,12 +10,17 @@ const ButtonSelected = (props) => {
         <View>
             <TouchableOpacity
                 style={[styles.button,
-                { borderColor: isSelected ? COLOR.secondary : COLOR.borderColor,
+                {
+                    borderColor: isSelected ? COLOR.secondary : COLOR.borderColor,
                     borderWidth: isSelected ? 2 : 0.7
                 }
                 ]}
                 onPress={onPress}>
-                <FastImage source={icon} resizeMode='stretch' style={[appStyle.iconMedium, { marginRight: 5 }]} />
+                <FastImage
+                    source={icon}
+                    resizeMode='stretch'
+                    tintColor={isSelected ? COLOR.secondary : 'black'}
+                    style={[appStyle.iconMedium, { marginRight: 5 }]} />
                 <Text style={[appStyle.text14, {
                     color: isSelected ? COLOR.secondary : 'black',
                     fontWeight: isSelected ? 'bold' : 'normal'

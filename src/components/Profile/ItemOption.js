@@ -7,17 +7,21 @@ import { useNavigation } from '@react-navigation/native';
 
 const ItemOption = (props) => {
     const navigation = useNavigation();
-    const {data}= props;
+    const { data } = props;
     const { icon, iconWidth, iconHeight, text } = data;
     const defaultIcon = require('../../assets/icon/ic_plane.png');
+
     return (
-            <TouchableOpacity onPress={()=> navigation.navigate('Home')}
-                style={styles.button}>
-                <FastImage
-                    source={icon ? icon : defaultIcon}
-                    style={[appStyle.iconMedium]} />
-                <Text style={[appStyle.text14, {marginLeft: 5}]}>{text}</Text>
-            </TouchableOpacity>
+        <TouchableOpacity
+            onPress={() => {
+                props.setInputAddress(text);
+                props.close();
+            }} style={styles.button}>
+            <FastImage
+                source={icon ? icon : defaultIcon}
+                style={[appStyle.iconMedium]} />
+            <Text style={[appStyle.text14, { marginLeft: 5 }]}>{text}</Text>
+        </TouchableOpacity>
     )
 }
 
@@ -34,6 +38,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center'
-        
+
     }
 })

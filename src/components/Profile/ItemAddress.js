@@ -1,16 +1,16 @@
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
-import {COLOR, ICON} from '../../constants/Theme';
-import {appStyle, windowHeight, windowWidth} from '../../constants/AppStyle';
-import {useNavigation} from '@react-navigation/native';
+import { COLOR, ICON } from '../../constants/Theme';
+import { appStyle, windowHeight, windowWidth } from '../../constants/AppStyle';
+import { useNavigation } from '@react-navigation/native';
 
 const ItemAddress = props => {
   const navigation = useNavigation();
-  const {data} = props;
-  const {name, address, onPress} = data;
+  const { data } = props;
+  const { name, address, onPress } = data;
   const goHome = () => {
-    navigation.navigate('Home', {id: data.id});
+    navigation.navigate('Home', { id: data.id });
   };
 
   return (
@@ -22,10 +22,10 @@ const ItemAddress = props => {
       <View style={styles.container}>
         <View style={styles.content}>
           <FastImage
-            style={[appStyle.iconBig, {alignSelf: 'center'}]}
+            style={[appStyle.iconBig, { alignSelf: 'center' }]}
             source={ICON.Location}
           />
-          <View style={{marginLeft: 16}}>
+          <View style={{ marginLeft: 16 }}>
             <View
               style={{
                 width: windowWidth * 0.35,
@@ -33,7 +33,7 @@ const ItemAddress = props => {
                 alignItems: 'center',
                 flexDirection: 'row',
               }}>
-              <Text style={[appStyle.text16, {fontWeight: '600'}]}>{name}</Text>
+              <Text style={[appStyle.text16, { fontWeight: '600' }]}>{name}</Text>
             </View>
             <Text style={[appStyle.text14]}>{address}</Text>
           </View>
