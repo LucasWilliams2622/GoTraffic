@@ -12,7 +12,8 @@ import ActionSheet from 'react-native-actionsheet';
 import {Platform} from 'react-native';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import AxiosInstance from '../constants/AxiosInstance';
-import { showToastMessage } from '../utils/utils';
+import {showToastMessage} from '../utils/utils';
+import axios from 'axios';
 
 const TestMultiPicker = () => {
   const [selectedImages, setSelectedImages] = useState(Array(9).fill(null));
@@ -119,44 +120,40 @@ const TestMultiPicker = () => {
     ));
   };
 
-  const getArray = async () => {
-    console.log(selectedImages);
-    const imagePaths = selectedImages
-    const formData = new FormData();
-    imagePaths.forEach((path, index) => {
-      const fileName = `image_${index + 1}.jpg`;
-      formData.append('images', {
-        uri: path,
-        type: 'image/jpeg',
-        name: fileName,
-      }); 
-    });
-  
+  const uploadImages = async () => {
     try {
-      const response = await AxiosInstance('multipart/form-data').post(
-        '/car/api/upload-car-images',
+      const formData = new FormData();
+      console.log(selectedImages);
+
+      selectedImages.forEach((uri, index) => {
+        if (uri) {
+          const fileName = `image_${index}.jpg`;
+          formData.append('images', {
+            uri,
+            type: 'image/jpeg',
+            name: fileName,
+          });
+        }
+      });
+
+      const response = await axios.post(
+        'http://103.57.129.166:3000/car/api/upload-car-images',
         formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
       );
-      
-      console.log(response.link);
-      if (response.result) 
-      {
-        showToastMessage('',"sdasd")
-        console.log("success");
-        
-      } else {
-        showToastMessage('error',"sdasd")
-        console.log("succe132123ss");
+      console.log(response.data.links);
 
-
-      }
     } catch (error) {
-      console.log(error);
+      console.error('Error uploading images:', error);
     }
   };
   return (
     <View style={styles.container}>
-      <Button title="Print Array Images" onPress={() => getArray()} />
+      <Button title="Print Array Images" onPress={() => uploadImages()} />
       <View style={styles.imageGrid}>{renderSelectedImages()}</View>
 
       {/* Action Sheet */}
