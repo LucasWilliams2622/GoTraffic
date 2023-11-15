@@ -11007,7 +11007,7 @@ react-native-swipe-modal-up-down@^1.1.0:
 
 react-native-swipeable-list-view@^0.1.2:
   version "0.1.2"
-  resolved "https://registry.npmjs.org/react-native-swipeable-list-view/-/react-native-swipeable-list-view-0.1.2.tgz"
+  resolved "https://registry.yarnpkg.com/react-native-swipeable-list-view/-/react-native-swipeable-list-view-0.1.2.tgz#5d15efc0afb1c083944ca2fa96c9d9bf6017cfaa"
   integrity sha512-88RYC1NWPVlh2x9kYSYmbz5YLtmz7bbR4s5e03ZQ5o6t/lW08Mhd6eX7P25/BAeK1f/BwUUYRmo06dShRhgDOQ==
 
 react-native-swiper@^1.6.0:
