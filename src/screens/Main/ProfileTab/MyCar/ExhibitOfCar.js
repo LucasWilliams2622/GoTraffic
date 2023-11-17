@@ -8,6 +8,7 @@ import FastImage from 'react-native-fast-image';
 import Header from '../../../../components/Header';
 import AppButton from '../../../../components/AppButton';
 import CarImageSection from '../../../../components/Profile/CameraImageSection';
+import AppHeader from '../../../../components/AppHeader';
 
 const ExhibitOfCar = props => {
   const { navigation } = props;
@@ -141,7 +142,7 @@ const ExhibitOfCar = props => {
   const handleUpdate = () => { console.log(carImages); };
   return (
     <SafeAreaView style={appStyle.container}>
-      <Header icon={ICON.Back} text="Giấy tờ & Bảo hiểm" onPress={goBack} />
+      <AppHeader title='Hợp đồng & bảo hiểm'/>
       <View
         style={{backgroundColor: COLOR.borderColor2, height: 1, width: '100%'}}
       />

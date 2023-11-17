@@ -3,15 +3,14 @@ import React from 'react'
 import { appStyle } from '../../../../../constants/AppStyle'
 import { ICON } from '../../../../../constants/Theme'
 import Header from '../../../../../components/Header'
+import AppHeader from '../../../../../components/AppHeader'
 
 const HandOverReport = (props) => {
     const { navigation } = props;
     return (
         <SafeAreaView style={appStyle.container}>
-            <Header
-                text="Biên bản bàn giao xe"
-                icon={ICON.Back}
-                onPress={() => navigation.navigate('SampleContract')}
+            <AppHeader
+                title='Biên bản giao xe'
             />
             <View style={{ width: '100%', padding: 15 }}>
 

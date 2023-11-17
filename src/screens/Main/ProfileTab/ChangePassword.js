@@ -11,6 +11,7 @@ import AxiosInstance from '../../../constants/AxiosInstance';
 import Toast from 'react-native-toast-message';
 import { AppContext } from '../../../utils/AppContext'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import AppHeader from '../../../components/AppHeader'
 
 const ChangePassword = (props) => {
   const { navigation } = props;
@@ -61,11 +62,7 @@ const ChangePassword = (props) => {
   }
   return (
     <SafeAreaView style={appStyle.container}>
-      <Header
-        text="Đổi mật khẩu"
-        icon={ICON.Back}
-        onPress={() => navigation.navigate('Profile')}
-      />
+      <AppHeader title='Đổi mật khẩu'/>
       <Formik
         initialValues={{
           currentPassword: '',

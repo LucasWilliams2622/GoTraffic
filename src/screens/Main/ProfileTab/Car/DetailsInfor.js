@@ -27,6 +27,7 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import AppDropdown from '../../../../components/AppDropdown';
 import {features} from '../../../../components/Profile/data/DataCar';
 import AxiosInstance from '../../../../constants/AxiosInstance';
+import AppHeader from '../../../../components/AppHeader';
 
 const DetailsInfor = props => {
   const {navigation, route} = props;
@@ -319,10 +320,8 @@ const DetailsInfor = props => {
   };
   return (
     <SafeAreaView style={appStyle.container}>
-      <Header
-        text="Thông tin chi tiết"
-        icon={ICON.Back}
-        onPress={() => navigation.navigate('BasicInfor')}
+      <AppHeader
+        title='Thông tin chi tiết'
       />
       <View style={{flex: 1, paddingHorizontal: 10}}>
         <ScrollView

@@ -4,6 +4,7 @@ import { appStyle, windowHeight, windowWidth } from '../../../constants/AppStyle
 import Header from '../../../components/Header'
 import { COLOR, ICON } from '../../../constants/Theme'
 import FastImage from 'react-native-fast-image'
+import AppHeader from '../../../components/AppHeader'
 
 const ShareWithFriend = (props) => {
   const { navigation } = props;
@@ -24,11 +25,10 @@ const ShareWithFriend = (props) => {
 
   return (
     <SafeAreaView style={appStyle.container}>
-        <Header
-        backgroundColor={COLOR.blueHeader2}
-          text="Giới thiệu bạn mới"
-          icon={ICON.Back}
-          onPress={() => navigation.navigate('Profile')} />
+          <AppHeader
+            title='Giới thiệu bạn mới'
+            backgroundColor={COLOR.blueHeader2}
+          />
 
       <View style={{ flex: 1 }}>
         <FastImage

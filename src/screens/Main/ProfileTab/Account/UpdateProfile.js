@@ -25,6 +25,7 @@ import AxiosInstance from '../../../../constants/AxiosInstance';
 import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import axios from 'axios';
+import AppHeader from '../../../../components/AppHeader';
 
 const UpdateProfile = props => {
   const navigation = useNavigation();
@@ -182,11 +183,8 @@ const UpdateProfile = props => {
   const isImageUrlValid = /^https?:\/\/.*\.(png|jpg)$/i.test(image);
   return (
     <SafeAreaView style={[appStyle.container]}>
-      <Header
-        icon={ICON.Close}
-        text="Chỉnh sửa"
-        onPress={() => navigation.navigate('Account')}
-      //marginLeft={106}
+      <AppHeader
+        title='Chỉnh sửa'
       />
       <View style={{ width: '100%', padding: 15 }}>
         {/* Avatar */}

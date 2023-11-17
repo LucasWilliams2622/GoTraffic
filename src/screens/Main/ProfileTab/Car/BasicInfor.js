@@ -12,6 +12,7 @@ import Model from '../../../../components/Profile/Model';
 import Year from '../../../../components/Profile/Year';
 import OptionDropdown from '../../../../components/Profile/OptionDropdown';
 import { useNavigation } from '@react-navigation/native';
+import AppHeader from '../../../../components/AppHeader';
 
 
 const seatNumbers = [];
@@ -56,11 +57,14 @@ const BasicInfor = (props) => {
 
     return (
         <SafeAreaView style={appStyle.container}>
-            <Header
+            {/* <Header
                 backgroundColor={COLOR.bgHeader}
                 text="Thông tin cơ bản"
                 icon={ICON.Back}
                 onPress={() => navigation.navigate('ListCar')}
+            /> */}
+            <AppHeader
+                title='Thông tin cơ bản'
             />
             <View style={{ flex: 1, paddingHorizontal: 10 }} >
                 <ScrollView style={{ flex: 1, width: '100%', marginBottom: 20 }}

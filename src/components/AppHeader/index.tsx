@@ -21,6 +21,7 @@ const AppHeader = ({
   const iconMap = {
     add: ICON.Add,
     dustBin: ICON.Ban,
+    close: ICON.Close,
     calendar: ICON.Calendar,
     download: ICON.Download,
   };

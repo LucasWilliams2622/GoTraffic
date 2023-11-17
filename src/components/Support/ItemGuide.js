@@ -28,13 +28,13 @@ const ItemGuide = (props) => {
                 visible={isVisible}
 
             >
+                <AppHeader
+                    title='Chuẩn bị trước chuyến đi'
+                    iconLeft={'close'}
+                />
                 <View style={{ paddingHorizontal: 15, flex: 1 }}>
-                    <AppHeader
-                        title='Chuẩn bị trước chuyến đi'
-                        iconLeft={ICON.Close}
-                        onPress={() => navigation.goBack()}
-                    />
-                   
+
+
 
                 </View>
 

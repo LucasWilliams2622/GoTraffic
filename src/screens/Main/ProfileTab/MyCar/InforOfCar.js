@@ -24,6 +24,7 @@ import AppButton from '../../../../components/AppButton';
 import ItemFeature from '../../../../components/Profile/ItemFeature';
 import {features} from '../../../../components/Profile/data/DataCar';
 import AxiosInstance from '../../../../constants/AxiosInstance';
+import AppHeader from '../../../../components/AppHeader';
 
 const InforOfCar = props => {
   const {navigation, route} = props;
@@ -153,10 +154,9 @@ const InforOfCar = props => {
 
   return (
     <SafeAreaView style={appStyle.container}>
-      <Header
-        icon={ICON.Back}
-        text="Thông tin xe"
-        onPress={() => navigation.goBack('GeneralInformation', {data: data})}
+      <AppHeader
+        title='Thông tin xe'
+        onPressLeft={() => navigation.goBack('GeneralInformation', {data: data})}
       />
       <ScrollView style={appStyle.main}>
         <View style={[appStyle.cardInfo, {marginTop: 10}]}>
