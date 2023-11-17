@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   Modal,
   PermissionsAndroid,
-  ToastAndroid,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {
@@ -27,6 +26,7 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import AppDropdown from '../../../../components/AppDropdown';
 import {features} from '../../../../components/Profile/data/DataCar';
 import AxiosInstance from '../../../../constants/AxiosInstance';
+import {showToastMessage} from '../../../../utils/utils';
 
 const DetailsInfor = props => {
   const {navigation, route} = props;
@@ -262,7 +262,7 @@ const DetailsInfor = props => {
       const response = await AxiosInstance().post('/car/api/add', {
         idUser: 1,
         idCarBrand: 1,
-        numberPlate: cardInfo.carInfo.carNumber+"",
+        numberPlate: cardInfo.carInfo.carNumber + '',
         name: cardInfo.carInfo.selectedModel,
         yearOfManufacture: cardInfo.carInfo.selectedYear,
         seats: cardInfo.carInfo.selectedSeats,
@@ -281,13 +281,13 @@ const DetailsInfor = props => {
       });
       console.log(response);
       if (response.result) {
-        ToastAndroid.show('Đăng xe thành công', ToastAndroid.SHORT);
+        showToastMessage('', 'Đăng xe thành công');
         // const updatedCarInfo = [...cars];
         // updatedCarInfo.push(combinedInfo);
         // setCars(updatedCarInfo);
         navigation.navigate('ListCar');
       } else {
-        ToastAndroid.show('Đăng xe thất bại', ToastAndroid.SHORT);
+        showToastMessage('', 'Đăng xe thất bại', ICON.cancelWhite);
       }
     } catch (error) {
       console.log(error);
@@ -311,11 +311,6 @@ const DetailsInfor = props => {
     //     formData,
     //   );
     //   console.log(response);
-    //   if (response.result == true) {
-    //     ToastAndroid.show('Upload Image Success', ToastAndroid.SHORT);
-    //   } else {
-    //     ToastAndroid.show('Upload Image Failed', ToastAndroid.SHORT);
-    //   }
   };
   return (
     <SafeAreaView style={appStyle.container}>

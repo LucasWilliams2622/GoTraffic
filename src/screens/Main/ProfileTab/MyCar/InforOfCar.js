@@ -2,7 +2,6 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -24,6 +23,7 @@ import AppButton from '../../../../components/AppButton';
 import ItemFeature from '../../../../components/Profile/ItemFeature';
 import {features} from '../../../../components/Profile/data/DataCar';
 import AxiosInstance from '../../../../constants/AxiosInstance';
+import {showToastMessage} from '../../../../utils/utils';
 
 const InforOfCar = props => {
   const {navigation, route} = props;
@@ -138,13 +138,10 @@ const InforOfCar = props => {
         },
       );
       if (response.result) {
-        ToastAndroid.show(
-          'Cập nhật thông tin xe thành công',
-          ToastAndroid.SHORT,
-        );
+        showToastMessage('Cập nhật thông tin xe thành công');
         navigation.navigate('ListCar', {data: data});
       } else {
-        ToastAndroid.show('Cập nhật thông tin xe thất bại', ToastAndroid.SHORT);
+        showToastMessage('Cập nhật thông tin xe thất bại',ICON.cancelWhite);
       }
     } catch (e) {
       console.log(e);

@@ -1,4 +1,4 @@
-import {StyleSheet, Text, ToastAndroid, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {appStyle} from '../../../../../constants/AppStyle';
 import ItemActiveTrip from '../../../../../components/Support/ItemActiveTrip';
@@ -6,6 +6,8 @@ import {FlatList} from 'native-base';
 import AxiosInstance from '../../../../../constants/AxiosInstance';
 import {useIsFocused} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
+import {showToastMessage} from '../../../../../utils/utils';
+import { ICON } from '../../../../../constants/Theme';
 
 const ActiveTrip = () => {
   const isFocused = useIsFocused();
@@ -30,10 +32,10 @@ const ActiveTrip = () => {
         '/booking/api/complete?id=' + id,
       );
       if (response.result) {
-        ToastAndroid.show('Đã nhận được xe thành công', ToastAndroid.SHORT);
+        showToastMessage('', 'Đã nhận được xe thành công');
         getCarByIdUser();
       } else {
-        ToastAndroid.show('Đã nhận được xe thất bại', ToastAndroid.SHORT);
+        showToastMessage('', 'Đã nhận được xe thất bại',ICON.cancelWhite);
       }
     } catch (error) {
       console.log('=========>', error);
