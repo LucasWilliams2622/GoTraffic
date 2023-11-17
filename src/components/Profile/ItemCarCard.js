@@ -9,26 +9,27 @@ import ShieldIcon from '../../assets/icon/ic_shield_verified';
 import SuitcaseIcon from '../../assets/icon/ic_suitcase';;
 import AxiosInstance from '../../constants/AxiosInstance';
 import { AppContext } from '../../utils/AppContext';
+import { formatPrice } from '../../utils/utils';
 
 const ItemCarCard = (props) => {
     const { id, name, image, locationCar, gear, isDelivery,
         price,
         rating,
-        numberOfBooked } = props;
+        numberOfBooked,
+        removeFromFavorites } = props;
 
     const [isFavorite, setIsFavorite] = useState(true);
     const { setIsLogin, infoUser, idUser } = useContext(AppContext);
 
-
     const removeFavorite = async () => {
         try {
-            const response = await AxiosInstance().delete(`/favorite-car/api/delete?idUser=${idUser}&idCar=${id}`);
-            console.log(response, "Xe đã bị xóa khỏi danh sách yêu thích");
-            setIsFavorite(!isFavorite);
+            await removeFromFavorites(id);
+            setIsFavorite(false);
         } catch (error) {
             console.log(error);
         }
     };
+
     return (
         <View style={{
             width: windowWidth * 0.8,
@@ -92,7 +93,7 @@ const ItemCarCard = (props) => {
 
                 <View>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={{ color: COLOR.fifth, fontSize: 18 }}>{price}</Text>
+                        <Text style={{ color: COLOR.fifth, fontSize: 18 }}>{formatPrice(price)}</Text>
                         <Text style={{ color: COLOR.borderColor, fontSize: 12 }}>/ngày</Text>
                     </View>
                     <Text style={{ color: COLOR.borderColor, fontSize: 12, marginTop: 5 }}>
