@@ -62,42 +62,57 @@ const Notification = () => {
         {loading == true ? (
           <SkeletonPlaceholder>
             <View style={{flexDirection: 'column', alignItems: 'flex-start'}}>
-              <View style={{flexDirection: 'row', marginTop: 20}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: 20,
+                  paddingHorizontal: 14,
+                }}>
                 <View style={{width: 50, height: 50, borderRadius: 50}} />
                 <View style={{marginLeft: 20}}>
-                  <View style={{width: 120, height: 20, borderRadius: 4}} />
+                  <View style={{width: 180, height: 20, borderRadius: 4}} />
                   <View
                     style={{
                       marginTop: 6,
-                      width: 80,
+                      width: 300,
                       height: 20,
                       borderRadius: 4,
                     }}
                   />
                 </View>
               </View>
-              <View style={{flexDirection: 'row', marginTop: 20}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: 20,
+                  paddingHorizontal: 14,
+                }}>
                 <View style={{width: 50, height: 50, borderRadius: 50}} />
                 <View style={{marginLeft: 20}}>
-                  <View style={{width: 120, height: 20, borderRadius: 4}} />
+                  <View style={{width: 180, height: 20, borderRadius: 4}} />
                   <View
                     style={{
                       marginTop: 6,
-                      width: 80,
+                      width: 300,
                       height: 20,
                       borderRadius: 4,
                     }}
                   />
                 </View>
               </View>
-              <View style={{flexDirection: 'row', marginTop: 20}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: 20,
+                  paddingHorizontal: 14,
+                }}>
                 <View style={{width: 50, height: 50, borderRadius: 50}} />
                 <View style={{marginLeft: 20}}>
-                  <View style={{width: 120, height: 20, borderRadius: 4}} />
+                  <View style={{width: 180, height: 20, borderRadius: 4}} />
                   <View
                     style={{
                       marginTop: 6,
-                      width: 80,
+                      width: 300,
                       height: 20,
                       borderRadius: 4,
                     }}
@@ -121,28 +136,38 @@ const Notification = () => {
         {loading == true ? (
           <SkeletonPlaceholder>
             <View style={{flexDirection: 'column', alignItems: 'flex-start'}}>
-              <View style={{flexDirection: 'row', marginTop: 20}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: 20,
+                  paddingHorizontal: 14,
+                }}>
                 <View style={{width: 50, height: 50, borderRadius: 50}} />
                 <View style={{marginLeft: 20}}>
-                  <View style={{width: 120, height: 20, borderRadius: 4}} />
+                  <View style={{width: 180, height: 20, borderRadius: 4}} />
                   <View
                     style={{
                       marginTop: 6,
-                      width: 80,
+                      width: 300,
                       height: 20,
                       borderRadius: 4,
                     }}
                   />
                 </View>
               </View>
-              <View style={{flexDirection: 'row', marginTop: 20}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: 20,
+                  paddingHorizontal: 14,
+                }}>
                 <View style={{width: 50, height: 50, borderRadius: 50}} />
                 <View style={{marginLeft: 20}}>
-                  <View style={{width: 120, height: 20, borderRadius: 4}} />
+                  <View style={{width: 180, height: 20, borderRadius: 4}} />
                   <View
                     style={{
                       marginTop: 6,
-                      width: 80,
+                      width: 300,
                       height: 20,
                       borderRadius: 4,
                     }}
