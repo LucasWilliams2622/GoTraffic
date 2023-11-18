@@ -8,6 +8,7 @@ import AppHeader from '../../../../components/AppHeader';
 
 const RentCost = props => {
   const {navigation} = props;
+  const {price} = props.route.params;
   const goBack = () => {
     navigation.goBack('DetailInListCar');
   };
@@ -20,13 +21,15 @@ const RentCost = props => {
           Giá cơ bản sẽ được sử dụng cho các ngày {'\n'} không có Giá tùy chỉnh
           thiết lập bởi chủ xe.
         </Text>
-        <Text style={[appStyle.text30Bold, {color: COLOR.primary}]}>750K</Text>
+        <Text style={[appStyle.text30Bold, {color: COLOR.primary}]}>
+          {price}K
+        </Text>
         <View
           style={{width: '30%', height: 1, backgroundColor: COLOR.primary}}
         />
         <Text
           style={[appStyle.text16, {color: COLOR.white, textAlign: 'center'}]}>
-          Giá cơ bản đề xuất {'\n'} cho mẫu xe FORD ESCAPE 2023 LÀ 750K/ngày
+          Giá cơ bản đề xuất {'\n'} cho mẫu xe FORD ESCAPE 2023 LÀ {price}K/ngày
         </Text>
       </View>
       <View
@@ -37,31 +40,31 @@ const RentCost = props => {
         }}>
         <View>
           <Text style={[appStyle.text16Bold]}>T2</Text>
-          <Text>750K</Text>
+          <Text>{price}K</Text>
         </View>
         <View>
           <Text style={[appStyle.text16Bold]}>T3</Text>
-          <Text>750K</Text>
+          <Text>{price}K</Text>
         </View>
         <View>
           <Text style={[appStyle.text16Bold]}>T4</Text>
-          <Text>750K</Text>
+          <Text>{price}K</Text>
         </View>
         <View>
           <Text style={[appStyle.text16Bold]}>T5</Text>
-          <Text>750K</Text>
+          <Text>{price}K</Text>
         </View>
         <View>
           <Text style={[appStyle.text16Bold]}>T6</Text>
-          <Text>750K</Text>
+          <Text>{price}K</Text>
         </View>
         <View>
           <Text style={[appStyle.text16Bold, {color: COLOR.orange}]}>T7</Text>
-          <Text style={{color: COLOR.orange}}>800K</Text>
+          <Text style={{color: COLOR.orange}}>{price * 1.1}K</Text>
         </View>
         <View>
           <Text style={[appStyle.text16Bold, {color: COLOR.orange}]}>CN</Text>
-          <Text style={{color: COLOR.orange}}>800K</Text>
+          <Text style={{color: COLOR.orange}}>{price * 1.1}K</Text>
         </View>
       </View>
     </SafeAreaView>
