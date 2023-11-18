@@ -60,7 +60,7 @@ const AppHeader = ({
           <TouchableOpacity
             style={{}}
             onPress={() => {
-              onPressLeft == null ? navigation.goBack() : onPressLeft;
+              onPressLeft == null ? navigation.goBack() : onPressLeft();
             }}>
             {iconLeft == null ? (
               <FastImage
@@ -69,7 +69,7 @@ const AppHeader = ({
                 tintColor={tintColor}
               />
             ) : iconLeft == 'close' ? (
-              <Icon name="close" size={22} color={tintColor} />
+              <Icon name="close" size={28} color={tintColor} />
             ) : (
               <FastImage
                 source={ICON.Back}
