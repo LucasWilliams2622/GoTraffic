@@ -8,7 +8,7 @@ import {
 import React, {useState} from 'react';
 import {appStyle} from '../../../../constants/AppStyle';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {COLOR} from '../../../../constants/Theme';
+import {COLOR, ICON} from '../../../../constants/Theme';
 import FastImage from 'react-native-fast-image';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
 import {CalendarList} from 'react-native-calendars';
@@ -16,9 +16,13 @@ import ToggleSwitch from 'toggle-switch-react-native';
 import {Switch} from 'native-base';
 import Slider from '@react-native-community/slider';
 import AppHeader from '../../../../components/AppHeader';
+import axios from 'axios';
+import {showToastMessage} from '../../../../utils/utils';
 
 const CarDelivery = props => {
   const {navigation} = props;
+  const {id} = props.route.params;
+  console.log(id);
   const goBack = () => {
     navigation.goBack('DetailInListCar');
   };
@@ -26,11 +30,32 @@ const CarDelivery = props => {
   const [first, setfirst] = useState(0);
   const [second, setsecond] = useState(0);
   const [third, setthird] = useState(0);
-  const [howFar, sethowFar] = useState(0);
   const logCat = () => {
     console.log('Trong vong: ', Math.floor(first * 100));
     console.log('Phi: ', Math.floor(second * 10 * 5));
     console.log('Mien phi trong vong: ', Math.floor(third * 10));
+  };
+  const handleUpdateDelivery = async () => {
+    try {
+      const response = await axios.put(
+        'http://103.57.129.166:3000/car/api/update-delivered-on-site?idCar=' +
+          id,
+        {
+          isDelivery: isEnabled,
+          deliveryWithin: Math.floor(first * 100) + ' km',
+          deliveryFee: Math.floor(second * 10 * 5),
+          freeDeliveryWithin: Math.floor(third * 10) + ' km',
+        },
+      );
+      if (response.data.result) {
+        goBack();
+        showToastMessage('', 'Cập nhật thành công');
+      } else {
+        showToastMessage('', 'Cập nhật thất bại', ICON.cancelWhite);
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
   return (
     <SafeAreaView style={appStyle.container}>
@@ -95,7 +120,9 @@ const CarDelivery = props => {
             />
           </View>
         ) : null}
-        <TouchableOpacity style={styles.btn} onPress={logCat}>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => handleUpdateDelivery()}>
           <Text
             style={[
               appStyle.text16Bold,

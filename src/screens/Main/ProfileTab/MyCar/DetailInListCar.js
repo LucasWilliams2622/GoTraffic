@@ -46,12 +46,12 @@ const DetailInListCar = props => {
       <AppProfile
         icon={ICON.Heart}
         text="Giao xe tận nơi"
-        onPress={() => navigation.navigate('CarDelivery')}
+        onPress={() => navigation.navigate('CarDelivery', {id: id})}
       />
       <AppProfile
         icon={ICON.Card}
         text="Phụ phí"
-        onPress={() => navigation.navigate('Surcharge')}
+        onPress={() => navigation.navigate('Surcharge', {id: id})}
       />
     </View>
   );
