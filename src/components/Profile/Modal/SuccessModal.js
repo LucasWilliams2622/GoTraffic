@@ -4,7 +4,7 @@ import FastImage from 'react-native-fast-image';
 import {COLOR, ICON} from '../../../constants/Theme';
 import {appStyle} from '../../../constants/AppStyle';
 
-const SuccessModal = ({isVisible, onNavigate}) => {
+const SuccessModal = ({isVisible, onNavigate, title, text}) => {
   return (
     <Modal animationType="fade" transparent={true} visible={isVisible}>
       <View style={styles.modalCenteredContainer}>
@@ -19,10 +19,10 @@ const SuccessModal = ({isVisible, onNavigate}) => {
                 fontWeight: '500',
                 color: '#0E3B65',
               }}>
-              Thành công!
+              {title}
             </Text>
             <Text style={{textAlign: 'center', fontSize: 16, marginTop: 5}}>
-              Bạn đã thuê được xe
+              {text}
             </Text>
           </View>
           <TouchableOpacity

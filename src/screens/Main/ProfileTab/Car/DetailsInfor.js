@@ -32,6 +32,8 @@ import ImagePicker from 'react-native-image-crop-picker';
 import ActionSheet from 'react-native-actionsheet';
 import {Platform} from 'react-native';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import AppHeader from '../../../../components/AppHeader';
+
 const DetailsInfor = props => {
   const {navigation, route} = props;
   const cardInfo = route.params;
@@ -325,10 +327,8 @@ const DetailsInfor = props => {
   };
   return (
     <SafeAreaView style={appStyle.container}>
-      <Header
-        text="Thông tin chi tiết"
-        icon={ICON.Back}
-        onPress={() => navigation.navigate('BasicInfor')}
+      <AppHeader
+        title='Thông tin chi tiết'
       />
       <View style={{flex: 1, paddingHorizontal: 10}}>
         <ScrollView

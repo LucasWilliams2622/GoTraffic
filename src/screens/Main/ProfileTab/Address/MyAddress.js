@@ -9,6 +9,7 @@ import Address from '../../../../components/Profile/Address'
 import AxiosInstance from '../../../../constants/AxiosInstance'
 import { AppContext } from '../../../../utils/AppContext'
 import { useNavigation } from '@react-navigation/native'
+import AppHeader from '../../../../components/AppHeader'
 
 const MyAddress = (props) => {
   const navigation = useNavigation();
@@ -69,11 +70,8 @@ const MyAddress = (props) => {
 
   return (
     <SafeAreaView style={[appStyle.container]}>
-      <Header
-        icon={ICON.Back}
-        text="Địa chỉ của tôi"
-        onPress={() => navigation.goBack()}
-        marginLeft={86}
+      <AppHeader
+        title='Địa chỉ của tôi'
       />
 
       <View style={{ padding: 15, width: '100%', alignItems: 'center' }}>

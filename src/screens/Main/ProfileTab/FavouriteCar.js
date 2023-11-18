@@ -9,13 +9,13 @@ import CarCardItem from '../../../components/Home/Home/CarCardItem';
 import AxiosInstance from '../../../constants/AxiosInstance';
 import { AppContext } from '../../../utils/AppContext';
 import ItemCarCard from '../../../components/Profile/ItemCarCard';
+import AppHeader from '../../../components/AppHeader'
 
 
 const FavouriteCar = (props) => {
   const navigation = useNavigation();
   const { infoUser, idUser } = useContext(AppContext);
   const [listCar, setListCar] = useState([]);
-  const [refreshing, setRefreshing] = useState(false);
 
   const fetchFavoriteCars = async () => {
     try {
@@ -27,12 +27,15 @@ const FavouriteCar = (props) => {
     }
   };
 
-
-  const onRefresh = () => {
-    setRefreshing(true);
-    fetchFavoriteCars();
-    setRefreshing(false);
-  };
+  const removeFromFavorites = async (id) => {
+    try {
+        await AxiosInstance().delete(`/favorite-car/api/delete?idUser=${idUser}&idCar=${id}`);
+        fetchFavoriteCars();
+    } catch (error) {
+        console.log(error);
+    }
+};
+ 
 
   useEffect(() => {
     fetchFavoriteCars();
@@ -40,25 +43,19 @@ const FavouriteCar = (props) => {
 
   return (
     <SafeAreaView style={[appStyle.container]}>
-      <Header
-        icon={ICON.Back}
-        text="Xe yêu thích"
-        onPress={() => navigation.navigate('Profile')}
-      />
+      <AppHeader title='Xe yêu thích'/>
       <View style={{ padding: 15, width: '100%', height: '90%' }}>
-        {/* <FlatList
+        <FlatList
           style={{ marginBottom: 20 }}
-          extraData={listUpdate}
+          //extraData={listUpdate}
           data={listCar}
           renderItem={({ item }) => (
             <ItemCarCard
               {...item.Car}
+              removeFromFavorites={removeFromFavorites}
             />
           )}
           keyExtractor={(item, index) => index.toString()}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
           ListEmptyComponent={
             <View>
               <FastImage source={require('../../../assets/image/guide/img_favourite_car.png')} style={{ width: '100%', height: windowHeight * 0.75 }} />
@@ -66,8 +63,8 @@ const FavouriteCar = (props) => {
           }
           showsVerticalScrollIndicator={false}
 
-        /> */}
-        <FlatList
+        />
+        {/* <FlatList
           style={{ marginBottom: 20 }}
           data={listCar}
           shouldRasterizeIOS
@@ -86,7 +83,7 @@ const FavouriteCar = (props) => {
             isFavorite={item.isFavorite}
           />}
           keyExtractor={item => item.id}
-        />
+        /> */}
       </View>
     </SafeAreaView>
   )

@@ -14,6 +14,8 @@ import AxiosInstance from '../../../../constants/AxiosInstance'
 import { AppContext } from '../../../../utils/AppContext'
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 import FastImage from 'react-native-fast-image'
+import AppHeader from '../../../../components/AppHeader'
+import SuccessModal from '../../../../components/Profile/Modal/SuccessModal'
 
 const UpdateAddress = ({ route }) => {
   const navigation = useNavigation();
@@ -21,6 +23,8 @@ const UpdateAddress = ({ route }) => {
   const { addressInfo } = route.params;
   console.log(addressInfo);
   const { infoUser, idUser } = useContext(AppContext);
+  const [isSuccessModalVisible, setSuccessModalVisible] = useState(false);
+
 
   const [isSelected, setIsSelected] = useState(null);
   const [onSwitch, setOnSwitch] = useState(false);
@@ -65,7 +69,7 @@ const UpdateAddress = ({ route }) => {
       if (response.status === 200) {
         //console.log(response.data);
         navigation.goBack();
-      }else{
+      } else {
         console.log("lỗi quần què gì á");
       }
     } catch (error) {
@@ -73,10 +77,10 @@ const UpdateAddress = ({ route }) => {
     }
   }
 
-    useEffect(() => {
-    const getAddress = async()=>{
+  useEffect(() => {
+    const getAddress = async () => {
       try {
-        if(isFocused){
+        if (isFocused) {
           const response = await AxiosInstance().get(`/address/api/get-address-by-id-user?idUser=${idUser}`);
           //setAddresses(response.data);
           console.log(">>>>>>>>>> get list update");
@@ -86,7 +90,7 @@ const UpdateAddress = ({ route }) => {
       }
     };
     getAddress();
-    }, [isFocused, idUser])
+  }, [isFocused, idUser])
 
   const deleteAddress = async () => {
     try {
@@ -94,7 +98,8 @@ const UpdateAddress = ({ route }) => {
         const response = await axios.delete(`http://103.57.129.166:3000/address/api/delete-address-by-id?id=${addressInfo.id}`);
         if (response.status === 200) {
           console.log(">>>>>>>>>>>>> Xóa rồi");
-          navigation.goBack();
+          setSuccessModalVisible(true);
+          //navigation.goBack();
         } else {
           console.log("Lỗi xóa địa chỉ");
         }
@@ -158,10 +163,8 @@ const UpdateAddress = ({ route }) => {
 
   return (
     <SafeAreaView style={[appStyle.container]}>
-      <Header
-        icon={ICON.Back}
-        text="Chi tiết địa chỉ"
-        onPress={() => navigation.navigate('MyAddress')}
+      <AppHeader
+        title='Chi tiết địa chỉ'
       />
       <KeyboardAwareScrollView behavior='padding'>
         <View style={{ width: '100%', padding: 15 }}>
@@ -280,9 +283,9 @@ const UpdateAddress = ({ route }) => {
             {/* <Switch switchOn={onSwitch} onPress={handleSwitchToggle}/> */}
           </View>
 
-          <TouchableOpacity 
-          onPress={()=> deleteAddress()}
-          style={{ flexDirection: 'row', justifyContent: 'space-between', width: windowWidth * 0.28, marginTop: 10 }}>
+          <TouchableOpacity
+            onPress={() => deleteAddress()}
+            style={{ flexDirection: 'row', justifyContent: 'space-between', width: windowWidth * 0.28, marginTop: 10 }}>
             <FastImage source={ICON.Delete} tintColor={COLOR.red} style={[appStyle.iconBig]} />
             <Text style={[appStyle.text165, { color: COLOR.red }]}>Xóa địa chỉ</Text>
           </TouchableOpacity>
@@ -295,6 +298,15 @@ const UpdateAddress = ({ route }) => {
 
         </View>
       </KeyboardAwareScrollView>
+      <SuccessModal
+        title='Thông báo!'
+        text='Xóa địa chỉ thành công'
+        isVisible={isSuccessModalVisible}
+        onNavigate={() => {
+          setSuccessModalVisible(false);
+          navigation.goBack();
+        }}
+      />
     </SafeAreaView>
   )
 }

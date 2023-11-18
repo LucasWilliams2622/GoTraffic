@@ -68,7 +68,7 @@ const Surcharge = props => {
   };
   return (
     <SafeAreaView style={appStyle.container}>
-      <AppHeader title="PHỤ PHÍ" />
+      <AppHeader title="Phụ phí" />
       <View
         style={{backgroundColor: COLOR.borderColor2, height: 1, width: '100%'}}
       />

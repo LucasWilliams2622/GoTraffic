@@ -229,6 +229,8 @@ const BottomBar: React.FC<{
       <SuccessModal
         isVisible={isSuccessModalVisible}
         onNavigate={closeModals}
+        title='Thành công!'
+        text='Bạn đã thuê được xe'
       />
       <Pressable
         style={{
