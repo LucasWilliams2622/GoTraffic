@@ -147,15 +147,14 @@ const DetailsInfor = props => {
   //call api add car here
   const addNewCar = async () => {
     try {
-      //console.log('bien so : ', cardInfo.carInfo.carNumber.toString());
+      console.log('bien so : ', cardInfo.carInfo.carNumber.toString());
       const response = await axios.post(
         'http://103.57.129.166:3000/car/api/add',
         {
           idUser: 1,
-          carBrand: 'BWM',
-          // numberPlate: cardInfo.carInfo.carNumber.toString(),
-          numberPlate: '51222-LD99999',
-
+          carBrand: cardInfo.carInfo.selectedBrand,
+          numberPlate: cardInfo.carInfo.carNumber,
+          //numberPlate: '5122-LD99999',
           name: cardInfo.carInfo.selectedModel,
           yearOfManufacture: cardInfo.carInfo.selectedYear,
           seats: cardInfo.carInfo.selectedSeats,
@@ -173,7 +172,7 @@ const DetailsInfor = props => {
           image: carImages.toString(),
         },
       );
-      console.log(response);
+      console.log(response.data);
       if (response.data.result) {
         showToastMessage('', 'Đăng xe thành công');
         // const updatedCarInfo = [...cars];
@@ -312,9 +311,10 @@ const DetailsInfor = props => {
         },
       );
       console.log(response.data.links);
+      setCarImages(response.data.links);
+
       if (response.data.result) {
-        setCarImages(response.data.links);
-        console.log('image car:',carImages);
+        console.log('image car:', carImages);
         showToastMessage('', 'Upload images success');
       } else {
         showToastMessage('', 'Upload images fail', ICON.cancelWhite);
