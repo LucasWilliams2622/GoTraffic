@@ -57,8 +57,8 @@ const Login = props => {
       .required('Số điện thoại không được để trống'),
     password: Yup.string()
       .required('Mật khẩu không được để trống')
-      .min(8, 'Mật khẩu quá ngắn ít nhất phải 8 kí tự')
-      .matches(/[a-zA-Z]/, 'Mật khẩu chỉ chứa các chữ các latinh'),
+      // .min(8, 'Mật khẩu quá ngắn ít nhất phải 8 kí tự')
+      // .matches(/[a-zA-Z]/, 'Mật khẩu chỉ chứa các chữ các latinh'),
   });
 
   //API login
