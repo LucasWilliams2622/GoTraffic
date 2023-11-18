@@ -22,7 +22,7 @@ import {showToastMessage} from '../../../../utils/utils';
 
 const DetailInListCar = props => {
   const navigation = useNavigation();
-  const {id} = props.route.params;
+  const {id, price} = props.route.params;
   const [data, setData] = useState('');
   const goBack = () => {
     navigation.goBack('Profile');
@@ -36,7 +36,7 @@ const DetailInListCar = props => {
       <AppProfile
         icon={ICON.Trip}
         text="Giá cho thuê"
-        onPress={() => navigation.navigate('RentCost')}
+        onPress={() => navigation.navigate('RentCost', {price: price})}
       />
       <AppProfile
         icon={ICON.Calendar}

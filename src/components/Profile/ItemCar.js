@@ -15,9 +15,9 @@ const ItemCar = props => {
 
   const goDetail = () => {
     //console.log('ID', data.id);
-    navigation.navigate('DetailInListCar', {id: data.id});
+    navigation.navigate('DetailInListCar', {id: data.id, price: data.price});
   };
-   const isImageUrlValid = /^https?:\/\/.*\.(png|jpg)$/i.test(
+  const isImageUrlValid = /^https?:\/\/.*\.(png|jpg)$/i.test(
     data.imageThumbnail,
   );
 
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   carImage: {
-    width: windowWidth * 0.30,
+    width: windowWidth * 0.3,
     height: '98%',
     alignSelf: 'center',
   },
