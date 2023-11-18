@@ -5,7 +5,6 @@ import {COLOR} from '../../constants/Theme';
 import {Code} from 'native-base';
 import {appStyle} from '../../constants/AppStyle';
 import AxiosInstance from '../../constants/AxiosInstance';
-import {ToastAndroid} from 'react-native';
 
 const ItemConfirmTrip = props => {
   const {data, handleDelete, handleConfirm} = props;

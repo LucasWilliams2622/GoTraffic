@@ -5,7 +5,6 @@ import {
   View,
   SafeAreaView,
   useWindowDimensions,
-  ToastAndroid,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 
@@ -19,6 +18,7 @@ import Modal from 'react-native-modal';
 import {useNavigation} from '@react-navigation/native';
 import AxiosInstance from '../../../../constants/AxiosInstance';
 import AppHeader from '../../../../components/AppHeader';
+import {showToastMessage} from '../../../../utils/utils';
 
 const DetailInListCar = props => {
   const navigation = useNavigation();
@@ -46,12 +46,12 @@ const DetailInListCar = props => {
       <AppProfile
         icon={ICON.Heart}
         text="Giao xe tận nơi"
-        onPress={() => navigation.navigate('CarDelivery')}
+        onPress={() => navigation.navigate('CarDelivery', {id: id})}
       />
       <AppProfile
         icon={ICON.Card}
         text="Phụ phí"
-        onPress={() => navigation.navigate('Surcharge')}
+        onPress={() => navigation.navigate('Surcharge', {id: id})}
       />
     </View>
   );
@@ -78,10 +78,10 @@ const DetailInListCar = props => {
         '/car/api/delete?idCar=' + id,
       );
       if (response.result) {
-        ToastAndroid.show('Xóa xe thành công', ToastAndroid.SHORT);
+        showToastMessage('', 'Xóa xe thành công');
         goBack();
       } else {
-        ToastAndroid.show('Xóa xe thất bại', ToastAndroid.SHORT);
+        showToastMessage('', 'Xóa xe thất bại', ICON.cancelWhite);
       }
     } catch (error) {
       console.log(error);
@@ -191,7 +191,11 @@ const DetailInListCar = props => {
         style={styles.image}
         source={require('../../../../assets/image/bg2.jpg')}
       />
-      <AppHeader title={data.name} icon={ICON.Delete} onPressRight={() => setModalVisible(true)}/>
+      <AppHeader
+        title={data.name}
+        icon={ICON.Delete}
+        onPressRight={() => setModalVisible(true)}
+      />
       <View style={{padding: 14}}>
         <View style={styles.line1}>
           <FastImage

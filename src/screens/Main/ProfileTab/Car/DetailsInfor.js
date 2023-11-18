@@ -7,9 +7,8 @@ import {
   TouchableOpacity,
   Modal,
   PermissionsAndroid,
-  ToastAndroid,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   appStyle,
   windowHeight,
@@ -27,11 +26,15 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import AppDropdown from '../../../../components/AppDropdown';
 import {features} from '../../../../components/Profile/data/DataCar';
 import AxiosInstance from '../../../../constants/AxiosInstance';
-
+import {showToastMessage} from '../../../../utils/utils';
+import {Button} from 'native-base';
+import ImagePicker from 'react-native-image-crop-picker';
+import ActionSheet from 'react-native-actionsheet';
+import {Platform} from 'react-native';
+import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 const DetailsInfor = props => {
   const {navigation, route} = props;
   const cardInfo = route.params;
-  console.log('DAY LAF DATA', cardInfo);
 
   const [cars, setCars] = useState([]);
   const [description, setDescription] = useState(null);
@@ -54,12 +57,9 @@ const DetailsInfor = props => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [isCameraModalVisible, setIsCameraModalVisible] = useState(false);
   const [selectedImageType, setSelectedImageType] = useState(null);
-  const [carImages, setCarImages] = useState({
-    front: null,
-    back: null,
-    left: null,
-    right: null,
-  });
+  const [selectedImages, setSelectedImages] = useState(Array(9).fill(null));
+  const [carImages, setCarImages] = useState('');
+  const actionSheetRef = useRef();
 
   // api địa chỉ
   useEffect(() => {
@@ -121,11 +121,6 @@ const DetailsInfor = props => {
     setModalVisible(!isModalVisible);
   };
 
-  const cameraModal = imageType => {
-    setSelectedImageType(imageType);
-    setIsCameraModalVisible(true);
-  };
-
   const handleSwitchToggle = () => {
     if (!onSwitch) {
       setModalVisible(true);
@@ -149,173 +144,184 @@ const DetailsInfor = props => {
     toggleModal();
   };
 
-  //Chụp ảnh
-  const requestCameraPermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.CAMERA,
-        {
-          title: 'App Camera Permission',
-          message: 'App needs access to your camera ',
-          buttonNeutral: 'Ask Me Later',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        },
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('Camera permission given');
-        const result = await launchCamera();
-
-        switch (selectedImageType) {
-          case 'front':
-            setCarImages(prevImages => ({
-              ...prevImages,
-              front: result.assets[0].uri,
-            }));
-            console.log(result.assets[0].uri);
-            break;
-          case 'left':
-            setCarImages(prevImages => ({
-              ...prevImages,
-              left: result.assets[0].uri,
-            }));
-            console.log(result.assets[0].uri);
-            break;
-          case 'right':
-            setCarImages(prevImages => ({
-              ...prevImages,
-              right: result.assets[0].uri,
-            }));
-            console.log(result.assets[0].uri);
-            break;
-          case 'back':
-            setCarImages(prevImages => ({
-              ...prevImages,
-              back: result.assets[0].uri,
-            }));
-            console.log(result.assets[0].uri);
-            break;
-          default:
-            break;
-        }
-        setIsCameraModalVisible(false);
-      } else {
-        console.log('Camera permission denied');
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  };
-
-  // Chọn ảnh từ thư viện
-  const chooseImage = () => {
-    const options = {
-      mediaType: 'photo',
-    };
-
-    launchImageLibrary(options, response => {
-      if (response.didCancel) {
-        console.log('Hủy chọn ảnh');
-      } else if (response.error) {
-        console.log('Lỗi:', response.error);
-      } else {
-        console.log(response.assets[0].uri);
-        switch (selectedImageType) {
-          case 'front':
-            setCarImages(prevImages => ({
-              ...prevImages,
-              front: response.assets[0].uri,
-            }));
-            setIsCameraModalVisible(false);
-            break;
-          case 'left':
-            setCarImages(prevImages => ({
-              ...prevImages,
-              left: response.assets[0].uri,
-            }));
-            setIsCameraModalVisible(false);
-            break;
-          case 'right':
-            setCarImages(prevImages => ({
-              ...prevImages,
-              right: response.assets[0].uri,
-            }));
-            setIsCameraModalVisible(false);
-            break;
-          case 'back':
-            setCarImages(prevImages => ({
-              ...prevImages,
-              back: response.assets[0].uri,
-            }));
-            setIsCameraModalVisible(false);
-            break;
-          default:
-            break;
-        }
-      }
-    });
-  };
-
   //call api add car here
   const addNewCar = async () => {
     try {
-      const response = await AxiosInstance().post('/car/api/add', {
-        idUser: 1,
-        idCarBrand: 1,
-        numberPlate: cardInfo.carInfo.carNumber+"",
-        name: cardInfo.carInfo.selectedModel,
-        yearOfManufacture: cardInfo.carInfo.selectedYear,
-        seats: cardInfo.carInfo.selectedSeats,
-        gear: cardInfo.carInfo.selectedTransmission,
-        fuel: cardInfo.carInfo.selectedFuel,
-        locationCar: location,
-        latitude: 0,
-        longitude: 0,
-        description: description,
-        fuelConsumption: parseInt(fuelConsumption),
-        isDelivery: true,
-        limitKm: 0,
-        price: price,
-        utilities: selectedFeatures.toString(),
-        image: '',
-      });
-      console.log(response);
-      if (response.result) {
-        ToastAndroid.show('Đăng xe thành công', ToastAndroid.SHORT);
+      console.log('bien so : ', cardInfo.carInfo.carNumber.toString());
+      const response = await axios.post(
+        'http://103.57.129.166:3000/car/api/add',
+        {
+          idUser: 1,
+          carBrand: cardInfo.carInfo.selectedBrand,
+          numberPlate: cardInfo.carInfo.carNumber,
+          //numberPlate: '5122-LD99999',
+          name: cardInfo.carInfo.selectedModel,
+          yearOfManufacture: cardInfo.carInfo.selectedYear,
+          seats: cardInfo.carInfo.selectedSeats,
+          gear: cardInfo.carInfo.selectedTransmission,
+          fuel: cardInfo.carInfo.selectedFuel,
+          locationCar: location,
+          latitude: 0,
+          longitude: 0,
+          description: description,
+          fuelConsumption: parseInt(fuelConsumption),
+          isDelivery: true,
+          limitKm: 0,
+          price: price,
+          utilities: selectedFeatures.toString(),
+          image: carImages.toString(),
+        },
+      );
+      console.log(response.data);
+      if (response.data.result) {
+        showToastMessage('', 'Đăng xe thành công');
         // const updatedCarInfo = [...cars];
         // updatedCarInfo.push(combinedInfo);
         // setCars(updatedCarInfo);
         navigation.navigate('ListCar');
       } else {
-        ToastAndroid.show('Đăng xe thất bại', ToastAndroid.SHORT);
+        showToastMessage('', 'Đăng xe thất bại', ICON.cancelWhite);
       }
     } catch (error) {
       console.log(error);
     }
-    //   const formData = new FormData();
-    //   formData.append('image', {
-    //     uri:
-    //       carImages.back +
-    //       ',' +
-    //       carImages.front +
-    //       ',' +
-    //       carImages.left +
-    //       ',' +
-    //       carImages.right,
-    //     type: 'icon/icon_jpeg',
-    //     name: 'image.jpg',
-    //   });
-    //   console.log(formData._parts);
-    //   const response = await AxiosInstance('multipart/form-data').post(
-    //     '/car/api/upload-car-images',
-    //     formData,
-    //   );
-    //   console.log(response);
-    //   if (response.result == true) {
-    //     ToastAndroid.show('Upload Image Success', ToastAndroid.SHORT);
-    //   } else {
-    //     ToastAndroid.show('Upload Image Failed', ToastAndroid.SHORT);
-    //   }
+  };
+  // Kiểm tra và yêu cầu quyền truy cập
+  const checkAndRequestPermission = async () => {
+    if (Platform.OS === 'android') {
+      const result = await check(PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE);
+      if (result !== RESULTS.GRANTED) {
+        const requestResult = await request(
+          PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+        );
+        if (requestResult !== RESULTS.GRANTED) {
+          // Xử lý khi người dùng từ chối cấp quyền
+        }
+      }
+    } else if (Platform.OS === 'ios') {
+      const result = await check(PERMISSIONS.IOS.PHOTO_LIBRARY);
+      if (result !== RESULTS.GRANTED) {
+        const requestResult = await request(PERMISSIONS.IOS.PHOTO_LIBRARY);
+        if (requestResult !== RESULTS.GRANTED) {
+          // Xử lý khi người dùng từ chối cấp quyền
+        }
+      }
+    }
+  };
+
+  // Chọn hình từ thư viện hoặc chụp hình
+  const showImagePickerOptions = () => {
+    actionSheetRef.current.show({useNativeDriver: true});
+  };
+  const removeImage = index => {
+    const updatedImages = [...selectedImages];
+    updatedImages[index] = null;
+    setSelectedImages(updatedImages);
+  };
+
+  // Hiển thị action sheet
+  const handleActionSheetPress = index => {
+    if (index === 0) {
+      pickImage();
+    } else if (index === 1) {
+      takePhoto();
+    }
+  };
+
+  // Chọn hình từ thư viện
+  const pickImage = async () => {
+    try {
+      const image = await ImagePicker.openPicker({
+        mediaType: 'photo',
+      });
+      const updatedImages = [...selectedImages];
+      const emptySlotIndex = updatedImages.indexOf(null);
+      if (emptySlotIndex !== -1) {
+        updatedImages[emptySlotIndex] = image.path;
+        setSelectedImages(updatedImages);
+      }
+      setSelectedImages(updatedImages);
+    } catch (error) {
+      console.log('ImagePicker Error: ', error);
+    }
+  };
+
+  // Chụp hình
+  const takePhoto = async () => {
+    try {
+      await checkAndRequestPermission();
+      const image = await ImagePicker.openCamera({
+        width: 300,
+        height: 400,
+        cropping: true,
+      });
+
+      // Find the first empty slot in selectedImages and update the state
+      const updatedImages = [...selectedImages];
+      const emptySlotIndex = updatedImages.indexOf(null);
+      if (emptySlotIndex !== -1) {
+        updatedImages[emptySlotIndex] = image.path;
+        setSelectedImages(updatedImages);
+      }
+    } catch (error) {
+      console.log('ImagePicker Error: ', error);
+    }
+  };
+
+  // Render selected images
+  const renderSelectedImages = () => {
+    return selectedImages.map((image, index) => (
+      <TouchableOpacity key={index} onPress={() => showImagePickerOptions()}>
+        <View style={styles.imageContainer}>
+          {image && (
+            <View>
+              <FastImage source={{uri: image}} style={styles.image} />
+              <TouchableOpacity onPress={() => removeImage(index)}>
+                <Text style={styles.removeText}>Remove</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+          {!image && <Text>Select Image</Text>}
+        </View>
+      </TouchableOpacity>
+    ));
+  };
+
+  const uploadImages = async () => {
+    try {
+      const formData = new FormData();
+      console.log(selectedImages);
+      selectedImages.forEach((uri, index) => {
+        if (uri) {
+          const fileName = `image_${index}.jpg`;
+          formData.append('images', {
+            uri,
+            type: 'image/jpeg',
+            name: fileName,
+          });
+        }
+      });
+      const response = await axios.post(
+        'http://103.57.129.166:3000/car/api/upload-car-images',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
+      console.log(response.data.links);
+      setCarImages(response.data.links);
+
+      if (response.data.result) {
+        console.log('image car:', carImages);
+        showToastMessage('', 'Upload images success');
+      } else {
+        showToastMessage('', 'Upload images fail', ICON.cancelWhite);
+      }
+    } catch (error) {
+      console.error('Error uploading images:', error);
+    }
   };
   return (
     <SafeAreaView style={appStyle.container}>
@@ -542,72 +548,26 @@ const DetailsInfor = props => {
           {/* Ảnh  */}
           <View style={appStyle.cardInfo}>
             <Text style={appStyle.text165}>Ảnh xe</Text>
-            <Text>
+            <Text style={{marginBottom: 10}}>
               Bạn vui lòng đăng 4 ảnh (Trước - sau - trái - phải) để tăng hiệu
               quả cho thuê và đủ điều kiện để đăng ký.
             </Text>
-            <View style={[styles.featuresContainer, {paddingHorizontal: 10}]}>
-              <TouchableOpacity onPress={() => cameraModal('front')}>
-                <View style={appStyle.viewUpload}>
-                  {carImages.front ? (
-                    <FastImage
-                      source={{uri: carImages.front}}
-                      style={{width: 170, height: 100}}
-                    />
-                  ) : (
-                    <FastImage
-                      source={ICON.Picture}
-                      style={{width: 160, height: 100}}
-                    />
-                  )}
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => cameraModal('back')}>
-                <View style={appStyle.viewUpload}>
-                  {carImages.back ? (
-                    <FastImage
-                      source={{uri: carImages.back}}
-                      style={{width: 170, height: 100}}
-                    />
-                  ) : (
-                    <FastImage
-                      source={ICON.Picture}
-                      style={{width: 160, height: 100}}
-                    />
-                  )}
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => cameraModal('left')}>
-                <View style={appStyle.viewUpload}>
-                  {carImages.left ? (
-                    <FastImage
-                      source={{uri: carImages.left}}
-                      style={{width: 170, height: 100}}
-                    />
-                  ) : (
-                    <FastImage
-                      source={ICON.Picture}
-                      style={{width: 160, height: 100}}
-                    />
-                  )}
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => cameraModal('right')}>
-                <View style={appStyle.viewUpload}>
-                  {carImages.right ? (
-                    <FastImage
-                      source={{uri: carImages.right}}
-                      style={{width: 170, height: 100}}
-                    />
-                  ) : (
-                    <FastImage
-                      source={ICON.Picture}
-                      style={{width: 160, height: 100}}
-                    />
-                  )}
-                </View>
-              </TouchableOpacity>
-            </View>
+            <AppButton
+              title="Upload Image"
+              onPress={() => uploadImages()}
+              backgroundColor={COLOR.redOrange}
+            />
+
+            {/* Action Sheet */}
+            <View style={styles.imageGrid}>{renderSelectedImages()}</View>
+            <ActionSheet
+              ref={actionSheetRef}
+              title={'Select Image'}
+              options={['Choose from Library', 'Take Photo', 'Cancel']}
+              cancelButtonIndex={2}
+              destructiveButtonIndex={2}
+              onPress={handleActionSheetPress}
+            />
           </View>
         </ScrollView>
 
@@ -655,36 +615,6 @@ const DetailsInfor = props => {
           </TouchableOpacity>
         </View>
       </Modal>
-
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={isCameraModalVisible}>
-        <TouchableOpacity
-          style={appStyle.modalBackdrop}
-          onPress={() => setIsCameraModalVisible(false)}
-        />
-        <View style={appStyle.modalContainerCam}>
-          <AppButton
-            title="Chụp ảnh"
-            marginTop={5}
-            onPress={() => {
-              requestCameraPermission(selectedImageType);
-              setSelectedImageType(null);
-            }}
-          />
-          <AppButton
-            title="Chọn ảnh"
-            marginTop={15}
-            backgroundColor={COLOR.background}
-            textColor={COLOR.primary}
-            onPress={() => {
-              chooseImage(selectedImageType);
-              setSelectedImageType(null);
-            }}
-          />
-        </View>
-      </Modal>
     </SafeAreaView>
   );
 };
@@ -713,5 +643,25 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
+  },
+  imageGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 20,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: COLOR.red,
+    justifyContent: 'space-evenly',
+  },
+  imageContainer: {
+    margin: 10,
+  },
+  image: {
+    width: 100,
+    height: 100,
+  },
+  removeText: {
+    color: 'red',
+    marginTop: 5,
   },
 });

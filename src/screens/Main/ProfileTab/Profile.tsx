@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   ScrollView,
   Modal,
-  ToastAndroid,
 } from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
 import {appStyle, windowHeight, windowWidth} from '../../../constants/AppStyle';
@@ -38,9 +37,9 @@ const Profile = props => {
         setModalVisible(!isModalVisible);
         await AsyncStorage.removeItem('userInfo');
         setIsLogin(false);
-        ToastAndroid.show('Xóa tài khoản thành công', ToastAndroid.SHORT);
+        showToastMessage('','Xóa tài khoản thành công');
       } else {
-        ToastAndroid.show('Đăng nhập thất bại', ToastAndroid.SHORT);
+        showToastMessage('','Xóa tài khoản thất bại',ICON.cancelWhite);
       }
     } catch (e) {
       console.log(e);
@@ -61,9 +60,9 @@ const Profile = props => {
       console.log(response);
       if (response.result) {
         setIsLogin(false);
-        ToastAndroid.show('Xóa tài khoản thành công', ToastAndroid.SHORT);
+        showToastMessage('','Xóa tài khoản thành công');
       } else {
-        ToastAndroid.show('Xóa thất bại', ToastAndroid.SHORT);
+        showToastMessage('','Xóa tài khoản thất bại',ICON.cancelWhite);
       }
     } catch (error) {
       console.log(error);
