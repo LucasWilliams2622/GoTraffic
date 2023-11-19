@@ -109,10 +109,10 @@ export const showToastMessage = (type?: string, title?: string, icon?: any) => {
         backgroundColor: COLOR.primary,
         borderRadius: 8,
       }}>
-      <FastImage
+      {/* <FastImage
         source={type === 'error' ? ICON.cancelWhite : icon || ICON.checkWhite}
         style={{height: 32, width: 32, marginTop: 20}}
-      />
+      /> */}
       <Text
         style={[
           appStyle.text14,

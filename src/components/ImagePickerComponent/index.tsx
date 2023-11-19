@@ -13,6 +13,7 @@ import Icon, {IconType} from 'react-native-dynamic-vector-icons';
 import {ImagePickerComponentProps} from './type';
 import {appStyle, windowHeight} from '../../constants/AppStyle';
 import {COLOR} from '../../constants/Theme';
+import AppButton from '../AppButton';
 const ImagePickerComponent = ({
   containerStyle,
   titleStyle,
@@ -27,7 +28,7 @@ const ImagePickerComponent = ({
   borderRadius = 12,
   disabled,
   onPress,
-  onImageSelected
+  onImageSelected,
 }: ImagePickerComponentProps) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
@@ -40,7 +41,7 @@ const ImagePickerComponent = ({
       setSelectedImage({uri: image.path});
       console.log(image.path);
 
-       // Call the callback function with the image path
+      // Call the callback function with the image path
       onImageSelected && onImageSelected(image.path);
       setBottomSheetVisible(false);
     } catch (error) {
@@ -56,8 +57,8 @@ const ImagePickerComponent = ({
       setSelectedImage({uri: image.path});
       console.log(image.path);
 
-       // Call the callback function with the image path
-       onImageSelected && onImageSelected(image.path);
+      // Call the callback function with the image path
+      onImageSelected && onImageSelected(image.path);
       setBottomSheetVisible(false);
     } catch (error) {
       console.log(error);
@@ -100,7 +101,7 @@ const ImagePickerComponent = ({
             </Text>
           </View>
         ) : (
-          <View style={{justifyContent:'center',alignItems:'center'}}>
+          <View style={{justifyContent: 'center', alignItems: 'center'}}>
             <Image
               source={{uri: selectedImage.uri}}
               style={[
@@ -132,16 +133,14 @@ const ImagePickerComponent = ({
           <Text style={[appStyle.text20, {width: '100%', textAlign: 'center'}]}>
             Chọn hình ảnh
           </Text>
-          <TouchableOpacity onPress={pickImageFromGallery}>
-            <Text style={[appStyle.text16, {color: '#1872dc'}]}>
-              Chọn từ thư viện
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={captureImage}>
-            <Text style={[appStyle.text16, {color: '#1872dc'}]}>
-              Chụp ảnh mới
-            </Text>
-          </TouchableOpacity>
+
+          <AppButton title="Chụp ảnh" onPress={() => captureImage()} />
+          <AppButton
+            title="Chọn ảnh"
+            backgroundColor={COLOR.background}
+            textColor={COLOR.primary}
+            onPress={() => pickImageFromGallery()}
+          />
           <TouchableOpacity onPress={closeBottomSheet}>
             <Text style={[appStyle.text16, {color: 'red'}]}>Huỷ</Text>
           </TouchableOpacity>

@@ -10,6 +10,7 @@ import AxiosInstance from '../../../constants/AxiosInstance';
 import { AppContext } from '../../../utils/AppContext';
 import ItemCarCard from '../../../components/Profile/ItemCarCard';
 import AppHeader from '../../../components/AppHeader'
+import { showToastMessage } from '../../../utils/utils'
 
 
 const FavouriteCar = (props) => {
@@ -29,7 +30,9 @@ const FavouriteCar = (props) => {
 
   const removeFromFavorites = async (id) => {
     try {
+
         await AxiosInstance().delete(`/favorite-car/api/delete?idUser=${idUser}&idCar=${id}`);
+        showToastMessage('','')
         fetchFavoriteCars();
     } catch (error) {
         console.log(error);
