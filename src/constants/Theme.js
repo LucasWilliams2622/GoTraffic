@@ -4,7 +4,6 @@ import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import IconIonicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-
 export const COLOR = {
   primary: '#41cff2',
   secondary: '#8ECAE6',
@@ -60,7 +59,7 @@ export const COLOR = {
   lightYellow: '#FFEEDB',
   lightGreen: '#D8F2E1',
   exit: '#F25F57',
-  warn: '#fce7e6'
+  warn: '#fce7e6',
 };
 
 export const ICON = {
@@ -115,6 +114,11 @@ export const ICON = {
   Promotion: require('../assets/icon/ic_promotion.png'),
   cancelWhite: require('../assets/icon/ic_cancel_white.png'),
   checkWhite: require('../assets/icon/ic_check_white.png'),
-  Download: MaterialIcons.getImageSourceSync('file-download', 20, 'black'),
-  
+  Download: MaterialIcons.getImageSource('file-download', 20, 'black')
+    .then(source => {
+      ICON.Download = source;
+    })
+    .catch(error => {
+      console.error('Error loading icon:', error);
+    }),
 };

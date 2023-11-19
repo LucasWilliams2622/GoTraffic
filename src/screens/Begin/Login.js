@@ -31,9 +31,11 @@ import axios from 'axios';
 import {showToastMessage} from '../../utils/utils';
 
 const Login = props => {
+  console.log('TestLogin');
   const {isLogin, setIsLogin, setInfoUser, setIdUser, idUser} =
     useContext(AppContext);
   const {navigation} = props;
+
   const goRegister = () => {
     navigation.navigate('Register');
   };
@@ -55,10 +57,9 @@ const Login = props => {
       .positive('Số điện thoại không được có dấu trừ')
       .integer('Số điện thoại không có dấu thập phân')
       .required('Số điện thoại không được để trống'),
-    password: Yup.string()
-      .required('Mật khẩu không được để trống')
-      // .min(8, 'Mật khẩu quá ngắn ít nhất phải 8 kí tự')
-      // .matches(/[a-zA-Z]/, 'Mật khẩu chỉ chứa các chữ các latinh'),
+    password: Yup.string().required('Mật khẩu không được để trống'),
+    // .min(5, 'Mật khẩu quá ngắn ít nhất phải 8 kí tự')
+    // .matches(/[a-zA-Z]/, 'Mật khẩu chỉ chứa các chữ các latinh'),
   });
 
   //API login
@@ -140,11 +141,15 @@ const Login = props => {
   const checkLoginInfo = async () => {
     try {
       const userInfo = await AsyncStorage.getItem('userInfo');
+      console.log('Start checkLoginInfo');
+
       if (userInfo !== null) {
         const parsedUserInfo = JSON.parse(userInfo);
         setIdUser(parsedUserInfo.id);
         setInfoUser(parsedUserInfo);
-        setIsLogin(true);
+        if (!isLogin) {
+          setIsLogin(true);
+        }
         console.log('Thông tin đăng nhập đã tồn tại:', parsedUserInfo);
       } else {
         console.log('Không tìm thấy thông tin đăng nhập.');
@@ -155,6 +160,7 @@ const Login = props => {
   };
 
   useEffect(() => {
+    console.log('checkLoginInfo');
     checkLoginInfo();
   }, [idUser]);
 
