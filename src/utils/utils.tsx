@@ -2,7 +2,7 @@ import {Text, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {appStyle, windowHeight, windowWidth} from '../constants/AppStyle';
 import Toast from 'react-native-toast-message';
-import { COLOR, ICON } from '../constants/Theme';
+import {COLOR, ICON} from '../constants/Theme';
 import ImagePicker from 'react-native-image-crop-picker';
 
 export const formatPrice = (price: number) => {
@@ -96,9 +96,10 @@ export const calculateAvgRating = (ratings: {rating: number}[]) => {
 export const showToastMessage = (type?: string, title?: string, icon?: any) => {
   const topOffset = windowHeight * 0.05;
   const containerStyle = {
-    width: windowWidth * 0.7,
-    backgroundColor: '#000000',
-    // opacity: 0.8,
+    width: windowWidth * 0.8,
+    height: windowHeight * 0.07,
+    backgroundColor:type === 'error' ? COLOR.exit: COLOR.primary,
+
   };
 
   const child = (
@@ -106,26 +107,29 @@ export const showToastMessage = (type?: string, title?: string, icon?: any) => {
       style={{
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: COLOR.primary,
-        borderRadius: 8,
+        backgroundColor:type === 'error' ? COLOR.exit: COLOR.primary,
+
+        borderRadius: 12,
+        flexDirection: 'row',
+        paddingHorizontal: 16,
       }}>
-      {/* <FastImage
+      <FastImage
         source={type === 'error' ? ICON.cancelWhite : icon || ICON.checkWhite}
-        style={{height: 32, width: 32, marginTop: 20}}
-      /> */}
+        style={{height: 30, width: 30}}
+      />
       <Text
         style={[
           appStyle.text14,
           {
             fontWeight: '700',
             color: '#ffff',
-            marginVertical: 16,
             width: '85%',
             textAlign: 'center',
           },
         ]}>
         {title}
       </Text>
+      <Text> </Text>
     </View>
   );
 

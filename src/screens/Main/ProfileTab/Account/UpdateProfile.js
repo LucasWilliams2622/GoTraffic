@@ -32,6 +32,7 @@ import axios from 'axios';
 import AppHeader from '../../../../components/AppHeader';
 import moment from 'moment';
 import ImagePickerComponent from '../../../../components/ImagePickerComponent';
+import {showToastMessage} from '../../../../utils/utils';
 
 const UpdateProfile = props => {
   const navigation = useNavigation();
@@ -59,15 +60,12 @@ const UpdateProfile = props => {
   // IMAGE PICKER FOR AVATAR
   const [selectedImagePath, setSelectedImagePath] = useState(null);
   const handleImageSelected = path => {
-    // Handle the image path in the parent component
     setSelectedImagePath(path);
   };
 
-  const uploadAvatar = async
   const handleUpdate = async () => {
     try {
-     
-
+      
       const response = await axios.put(
         'http://103.57.129.166:3000/user/api/update?idUser=' + idUser,
         {
@@ -76,30 +74,16 @@ const UpdateProfile = props => {
           lastName: '',
           email: infoUser.email,
           gender: true,
-          dob: currentDay,
+          dob: selectedDate,
           avatar: image,
         },
       );
       if (response.result) {
-        Toast.show({
-          type: 'success',
-          text1: 'Cập nhật thành công',
-          visibilityTime: 2000,
-          autoHide: true,
-          topOffset: 30,
-          bottomOffset: 40,
-        });
+        showToastMessage('', 'Cập nhật thành công');
         setAppState(appState + 1);
         navigation.goBack();
       } else {
-        Toast.show({
-          type: 'error',
-          text1: 'Cập nhật thất bại',
-          visibilityTime: 2000,
-          autoHide: true,
-          topOffset: 30,
-          bottomOffset: 40,
-        });
+        showToastMessage('error', 'Cập nhật thất bại');
       }
     } catch (e) {
       console.log('error', e);
