@@ -42,9 +42,9 @@ const CarDelivery = props => {
           id,
         {
           isDelivery: isEnabled,
-          deliveryWithin: Math.floor(first * 100) + ' km',
+          deliveryWithin: Math.floor(first * 100),
           deliveryFee: Math.floor(second * 10 * 5),
-          freeDeliveryWithin: Math.floor(third * 10) + ' km',
+          freeDeliveryWithin: Math.floor(third * 10),
         },
       );
       if (response.data.result) {

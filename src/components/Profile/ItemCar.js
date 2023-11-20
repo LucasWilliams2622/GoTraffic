@@ -4,6 +4,7 @@ import FastImage from 'react-native-fast-image';
 import {COLOR, ICON} from '../../constants/Theme';
 import {appStyle, windowHeight, windowWidth} from '../../constants/AppStyle';
 import {useNavigation} from '@react-navigation/native';
+import {formatPrice} from '../../utils/utils';
 
 const ItemCar = props => {
   const navigation = useNavigation();
@@ -15,7 +16,11 @@ const ItemCar = props => {
 
   const goDetail = () => {
     //console.log('ID', data.id);
-    navigation.navigate('DetailInListCar', {id: data.id, price: data.price});
+    navigation.navigate('DetailInListCar', {
+      id: data.id,
+      price: data.price,
+      status: data.status,
+    });
   };
   const isImageUrlValid = /^https?:\/\/.*\.(png|jpg)$/i.test(
     data.imageThumbnail,
@@ -37,9 +42,24 @@ const ItemCar = props => {
             source={{uri: data.imageThumbnail}}
           />
         )}
-        <View style={styles.statusContainer}>
-          <Text style={styles.statusText}>Chờ duyệt</Text>
-        </View>
+        {data.status == 1 ? (
+          <View style={styles.statusContainer}>
+            <Text style={styles.statusText}>Chưa cho thuê</Text>
+          </View>
+        ) : data.status == 2 ? (
+          <View
+            style={[styles.statusContainer, {backgroundColor: COLOR.green}]}>
+            <Text style={styles.statusText}>Đang cho thuê</Text>
+          </View>
+        ) : data.status == 3 ? (
+          <View style={[styles.statusContainer, {backgroundColor: COLOR.red}]}>
+            <Text style={styles.statusText}>Từ chối duyệt</Text>
+          </View>
+        ) : (
+          <View style={styles.statusContainer}>
+            <Text style={styles.statusText}>Đang chờ duyệt</Text>
+          </View>
+        )}
         <View style={styles.detailsContainer}>
           <Text style={appStyle.text16Bold}>{data.name}</Text>
           <View style={styles.tripContainer}>
@@ -52,7 +72,7 @@ const ItemCar = props => {
           </View>
           <View style={styles.priceContainer}>
             <Text style={styles.priceLabel}>Giá tự lái: </Text>
-            <Text style={styles.priceText}> {data.price}K</Text>
+            <Text style={styles.priceText}>{formatPrice(data.price)}</Text>
           </View>
           <View style={styles.locationContainer}>
             <FastImage source={ICON.Location} style={appStyle.iconMedium} />
