@@ -1,24 +1,29 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React, {useEffect, useState,useContext} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {COLOR} from '../../../constants/Theme';
 import {FlatList, ScrollView} from 'native-base';
 import ItemNotification from '../../../components/Support/ItemNotification';
 import {appStyle} from '../../../constants/AppStyle';
 import AxiosInstance from '../../../constants/AxiosInstance';
-import { AppContext } from '../../../utils/AppContext';
+import {AppContext} from '../../../utils/AppContext';
 import {useIsFocused} from '@react-navigation/native';
-
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import AppHeader from '../../../components/AppHeader';
 const Notification = () => {
   const [data, setData] = useState('');
-  const [dataTrip, setdataTrip] = useState('')
-  const { setNotificationCount } = useContext(AppContext);
-  
+  const [dataTrip, setdataTrip] = useState('');
+  const {setNotificationCount} = useContext(AppContext);
+  const [loading, setLoading] = useState(true);
+
   const getListNotifications = async () => {
     try {
       const response = await AxiosInstance().get('/notification/api');
       if (response.result) {
         setData(response.notification);
+        setTimeout(() => {
+          setLoading(false);
+        }, 3000);
       } else {
         console.log('NETWORK ERROR');
       }
@@ -33,7 +38,7 @@ const Notification = () => {
       );
       if (response.result) {
         console.log('Trip:>>>' + response.notifications);
-        setNotificationCount(response.notifications.length)
+        setNotificationCount(response.notifications.length);
         setdataTrip(response.notifications);
       } else {
         console.log('NETWORK ERROR');
@@ -48,30 +53,137 @@ const Notification = () => {
   }, [useIsFocused]);
   return (
     <SafeAreaView style={appStyle.container}>
-      <View style={styles.viewTitle}>
-        <Text style={styles.title}>Thông báo</Text>
-      </View>
+      <AppHeader title='Thông báo' notLeft/>
       <ScrollView>
         <View style={styles.line1}>
           <Text style={styles.text1}>Thông báo chuyến</Text>
         </View>
-        <FlatList
-          style={{width: '100%'}}
-          data={dataTrip}
-          renderItem={({item}) => <ItemNotification data={item} />}
-          keyExtractor={item => item._id}
-          showsVerticalScrollIndicator={false}
-        />
+        {loading == true ? (
+          <SkeletonPlaceholder>
+            <View style={{flexDirection: 'column', alignItems: 'flex-start'}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: 20,
+                  paddingHorizontal: 14,
+                }}>
+                <View style={{width: 50, height: 50, borderRadius: 50}} />
+                <View style={{marginLeft: 20}}>
+                  <View style={{width: 180, height: 20, borderRadius: 4}} />
+                  <View
+                    style={{
+                      marginTop: 6,
+                      width: 300,
+                      height: 20,
+                      borderRadius: 4,
+                    }}
+                  />
+                </View>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: 20,
+                  paddingHorizontal: 14,
+                }}>
+                <View style={{width: 50, height: 50, borderRadius: 50}} />
+                <View style={{marginLeft: 20}}>
+                  <View style={{width: 180, height: 20, borderRadius: 4}} />
+                  <View
+                    style={{
+                      marginTop: 6,
+                      width: 300,
+                      height: 20,
+                      borderRadius: 4,
+                    }}
+                  />
+                </View>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: 20,
+                  paddingHorizontal: 14,
+                }}>
+                <View style={{width: 50, height: 50, borderRadius: 50}} />
+                <View style={{marginLeft: 20}}>
+                  <View style={{width: 180, height: 20, borderRadius: 4}} />
+                  <View
+                    style={{
+                      marginTop: 6,
+                      width: 300,
+                      height: 20,
+                      borderRadius: 4,
+                    }}
+                  />
+                </View>
+              </View>
+            </View>
+          </SkeletonPlaceholder>
+        ) : (
+          <FlatList
+            style={{width: '100%'}}
+            data={dataTrip}
+            renderItem={({item}) => <ItemNotification data={item} />}
+            keyExtractor={item => item._id}
+            showsVerticalScrollIndicator={false}
+          />
+        )}
         <View style={styles.line1}>
           <Text style={styles.text1}>Thông báo ứng dụng</Text>
         </View>
-        <FlatList
-          style={{width: '100%', marginBottom: 65}}
-          data={data}
-          renderItem={({item}) => <ItemNotification data={item} />}
-          keyExtractor={item => item._id}
-          showsVerticalScrollIndicator={false}
-        />
+        {loading == true ? (
+          <SkeletonPlaceholder>
+            <View style={{flexDirection: 'column', alignItems: 'flex-start'}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: 20,
+                  paddingHorizontal: 14,
+                }}>
+                <View style={{width: 50, height: 50, borderRadius: 50}} />
+                <View style={{marginLeft: 20}}>
+                  <View style={{width: 180, height: 20, borderRadius: 4}} />
+                  <View
+                    style={{
+                      marginTop: 6,
+                      width: 300,
+                      height: 20,
+                      borderRadius: 4,
+                    }}
+                  />
+                </View>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: 20,
+                  paddingHorizontal: 14,
+                }}>
+                <View style={{width: 50, height: 50, borderRadius: 50}} />
+                <View style={{marginLeft: 20}}>
+                  <View style={{width: 180, height: 20, borderRadius: 4}} />
+                  <View
+                    style={{
+                      marginTop: 6,
+                      width: 300,
+                      height: 20,
+                      borderRadius: 4,
+                    }}
+                  />
+                </View>
+              </View>
+            </View>
+          </SkeletonPlaceholder>
+        ) : (
+          <FlatList
+            style={{width: '100%', marginBottom: 65}}
+            data={data}
+            renderItem={({item}) => <ItemNotification data={item} />}
+            keyExtractor={item => item._id}
+            showsVerticalScrollIndicator={false}
+          />
+        )}
       </ScrollView>
     </SafeAreaView>
   );

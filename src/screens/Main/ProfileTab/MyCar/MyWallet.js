@@ -19,9 +19,6 @@ const MyWallet = props => {
   return (
     <SafeAreaView style={appStyle.container}>
       <AppHeader title="Ví của tôi" />
-      <View
-        style={{backgroundColor: COLOR.borderColor2, height: 1, width: '100%'}}
-      />
       <View style={[appStyle.main, {marginTop: 20}]}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <Text style={appStyle.text14}>Chủ ví:</Text>

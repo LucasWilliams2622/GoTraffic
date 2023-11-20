@@ -11,6 +11,7 @@ import AppDropdown from '../../../../components/AppDropdown'
 import axios from 'axios';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { AppContext } from '../../../../utils/AppContext'
+import AppHeader from '../../../../components/AppHeader'
 
 const NewAddress = (props) => {
     const { navigation } = props;
@@ -117,10 +118,13 @@ const NewAddress = (props) => {
     };
     return (
         <SafeAreaView style={[appStyle.container]}>
-            <Header
+            {/* <Header
                 icon={ICON.Back}
                 text="Chi tiết địa chỉ"
                 onPress={() => navigation.navigate('MyAddress')}
+            /> */}
+            <AppHeader
+                title='Chi tiết địa chỉ'
             />
             <KeyboardAwareScrollView behavior='padding'>
                 <View style={{ width: '100%', padding: 15 }}>

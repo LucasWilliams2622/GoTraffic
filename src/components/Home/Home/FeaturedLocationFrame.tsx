@@ -5,13 +5,19 @@ import Svg, {Defs, Image, Pattern, Path} from 'react-native-svg';
 const FeaturedLocationFrame = ({img, ...props}) => {
   const [imgWidth, setImgWidth] = useState(0);
   const [imgHeight, setImgHeight] = useState(285); // Set the height to 285
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     RNImage.getSize(img, (width, height) => {
       const aspectRatio = width / height;
       setImgWidth(imgHeight * aspectRatio); // Calculate the width based on the aspect ratio
+      setIsLoading(false);
     });
   }, [img]);
+
+  if (isLoading) {
+    return null; // Or a loading spinner
+  }
 
   return (
     <Svg

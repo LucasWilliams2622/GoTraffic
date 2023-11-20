@@ -4,15 +4,14 @@ import { appStyle } from '../../../../../constants/AppStyle'
 import { ICON } from '../../../../../constants/Theme'
 import Header from '../../../../../components/Header'
 import AppProfile from '../../../../../components/AppProfile'
+import AppHeader from '../../../../../components/AppHeader'
 
 const SampleContract = (props) => {
     const { navigation } = props;
     return (
         <SafeAreaView style={appStyle.container}>
-            <Header
-                text="Hợp đồng mẫu"
-                icon={ICON.Back}
-                onPress={() => navigation.navigate('HomeCar')}
+            <AppHeader
+                title='Hợp đồng mẫu'
             />
             <View style={{ width: '100%', padding: 15 }}>
                 <AppProfile

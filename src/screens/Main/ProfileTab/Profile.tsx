@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   ScrollView,
   Modal,
-  ToastAndroid,
 } from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
 import {appStyle, windowHeight, windowWidth} from '../../../constants/AppStyle';
@@ -30,21 +29,22 @@ const Profile = props => {
   console.log(infoUser.avatar);
 
   const toggleModal = async () => {
-    try {
-      const response = await AxiosInstance().delete(
-        '/user/api/delete?id=' + idUser,
-      );
-      if (response.result) {
-        setModalVisible(!isModalVisible);
-        await AsyncStorage.removeItem('userInfo');
-        setIsLogin(false);
-        ToastAndroid.show('Xóa tài khoản thành công', ToastAndroid.SHORT);
-      } else {
-        ToastAndroid.show('Đăng nhập thất bại', ToastAndroid.SHORT);
-      }
-    } catch (e) {
-      console.log(e);
-    }
+    setModalVisible(!isModalVisible);
+    // try {
+    //   const response = await AxiosInstance().delete(
+    //     '/user/api/delete?id=' + idUser,
+    //   );
+    //   if (response.result) {
+    //     setModalVisible(!isModalVisible);
+    //     await AsyncStorage.removeItem('userInfo');
+    //     setIsLogin(false);
+    //     showToastMessage('','Xóa tài khoản thành công');
+    //   } else {
+    //     showToastMessage('','Xóa tài khoản thất bại',ICON.cancelWhite);
+    //   }
+    // } catch (e) {
+    //   console.log(e);
+    // }
   };
   const LogOut = async () => {
     try {
@@ -61,9 +61,9 @@ const Profile = props => {
       console.log(response);
       if (response.result) {
         setIsLogin(false);
-        ToastAndroid.show('Xóa tài khoản thành công', ToastAndroid.SHORT);
+        showToastMessage('', 'Xóa tài khoản thành công');
       } else {
-        ToastAndroid.show('Xóa thất bại', ToastAndroid.SHORT);
+        showToastMessage('', 'Xóa tài khoản thất bại', ICON.cancelWhite);
       }
     } catch (error) {
       console.log(error);
@@ -196,13 +196,13 @@ const Profile = props => {
             thống: {'\n'}- Thông tin cá nhân {'\n'}- Thông tin lịch sử chuyến và
             danh sách xe {'\n\n'}
             Tiền ví và điểm thưởng sẽ được thanh toán theo quy định của chính
-            sách hiện hành của Mioto {'\n\n'} Việc đồng ý xóa tài khoản là bạn
-            đã chấp nhận điều khoản chính sách xóa tài khoản của Mioto. {'\n\n'}{' '}
-            Yêu cầu xóa tài khoản sẽ được xử lý trong 15 ngày làm việc. Mioto sẽ
-            liên hệ trực tiếp với bạn qua Email hoặc số điện thoại bạn đã cung
-            cấp. {'\n\n'} Mọi thắc mắc xin liên hệ Fanpage của Mioto hoặc
-            hotline <Text style={{fontWeight: 'bold'}}>1900 9217</Text> để được
-            hỗ trợ
+            sách hiện hành của GoTraffic {'\n\n'} Việc đồng ý xóa tài khoản là
+            bạn đã chấp nhận điều khoản chính sách xóa tài khoản của GoTraffic.{' '}
+            {'\n\n'} Yêu cầu xóa tài khoản sẽ được xử lý trong 15 ngày làm việc.
+            GoTraffic sẽ liên hệ trực tiếp với bạn qua Email hoặc số điện thoại
+            bạn đã cung cấp. {'\n\n'} Mọi thắc mắc xin liên hệ Fanpage của
+            GoTraffic hoặc hotline{' '}
+            <Text style={{fontWeight: 'bold'}}>1900 9217</Text> để được hỗ trợ
           </Text>
 
           <AppButton title="Hủy" marginTop={50} onPress={() => toggleModal()} />
@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
       {translateY: -windowHeight * 0.36},
     ],
     width: windowWidth * 0.9,
-    height: windowHeight * 0.72,
+    height: windowHeight * 0.65,
     borderRadius: 12,
     paddingHorizontal: 25,
     paddingBottom: 10,

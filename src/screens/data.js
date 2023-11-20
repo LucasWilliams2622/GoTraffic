@@ -22,23 +22,23 @@ const data = {
             keyExtractor: "prepare",
             image: require('../assets/image/guide/img_prepare.jpg')
         },
+        // {
+        //     id: 2,
+        //     keyExtractor: "askAndAnswer",
+        //     image: require('../assets/image/guide/img_ask_ans.jpg')
+        // },
+        // {
+        //     id: 3,
+        //     keyExtractor: "general",
+        //     image: require('../assets/image/guide/img_general.jpg')
+        // },
         {
             id: 2,
-            keyExtractor: "askAndAnswer",
-            image: require('../assets/image/guide/img_ask_ans.jpg')
-        },
-        {
-            id: 3,
-            keyExtractor: "general",
-            image: require('../assets/image/guide/img_general.jpg')
-        },
-        {
-            id: 4,
             keyExtractor: "book",
             image: require('../assets/image/guide/img_book.jpg')
         },
         {
-            id: 5,
+            id: 3,
             keyExtractor: "pay",
             image: require('../assets/image/guide/img_pay.jpg')
         },

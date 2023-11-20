@@ -8,6 +8,7 @@ import AppHomeCar from '../../../../components/AppHomeCar';
 import { AppContext } from '../../../../utils/AppContext';
 import numeral from 'numeral';
 import { useNavigation } from '@react-navigation/native';
+import AppHeader from '../../../../components/AppHeader';
 
 const HomeCar = props => {
   const navigation = useNavigation();
@@ -25,21 +26,10 @@ const HomeCar = props => {
         style={styles.image}
         source={require('../../../../assets/image/bg_homecar.jpg')}
       />
-      <TouchableOpacity onPress={goBack}>
-        <FastImage
-          source={require('../../../../assets/icon/ic_left.png')}
-          style={{
-            position: 'absolute',
-            left: 10,
-            top: 20,
-            width: 20,
-            height: 20,
-          }}
-        />
-      </TouchableOpacity>
-      <View style={styles.viewTitle}>
-        <Text style={styles.title}>Xe của tôi</Text>
-      </View>
+      <AppHeader
+        title='Xe của tôi' 
+        backgroundColor='#92D1FA' 
+      />
       <View style={{ padding: 14, marginTop: 100 }}>
         <View style={styles.line1}>
           <Text style={[appStyle.text16Bold, { textAlign: 'center' }]}>

@@ -2,7 +2,7 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
 import {appStyle} from '../../../../constants/AppStyle';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {COLOR} from '../../../../constants/Theme';
+import {COLOR, ICON} from '../../../../constants/Theme';
 import FastImage from 'react-native-fast-image';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
 import {CalendarList} from 'react-native-calendars';
@@ -10,9 +10,13 @@ import ToggleSwitch from 'toggle-switch-react-native';
 import {ScrollView, Switch} from 'native-base';
 import Slider from '@react-native-community/slider';
 import AppHeader from '../../../../components/AppHeader';
+import {showToastMessage} from '../../../../utils/utils';
+import axios from 'axios';
 
 const Surcharge = props => {
   const {navigation} = props;
+  const {id} = props.route.params;
+  console.log(id);
   const goBack = () => {
     navigation.goBack('DetailInListCar');
   };
@@ -35,10 +39,36 @@ const Surcharge = props => {
     console.log('Phí vs: ', Math.floor(fifth * 100 * 3));
     console.log('Khử mùi xe: ', Math.floor(sixth * 1000));
   };
-
+  const handleUpdateSurcharge = async () => {
+    try {
+      const response = await axios.put(
+        'http://103.57.129.166:3000/car/api/update-surcharge-car?idCar=' + id,
+        {
+          limitKmStatus: isEnabledLimitKm,
+          maxKm: Math.floor(first * 100 * 8),
+          exceededFee: Math.floor(second * 10),
+          overtimeStatus: isEnabledOffTime,
+          overtimeCharge: Math.floor(third * 1000),
+          overtimeDay: Math.floor(fourth * 10),
+          carCleanStatus: isEnabledHygiene,
+          carCleanFee: Math.floor(fifth * 100 * 3),
+          carDeodorizerStatus: isEnabledDeodorize,
+          carDeodorizerFee: Math.floor(sixth * 1000),
+        },
+      );
+      if (response.data.result) {
+        goBack();
+        showToastMessage('', 'Cập nhật thành công');
+      } else {
+        showToastMessage('', 'Cập nhật thất bại', ICON.cancelWhite);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <SafeAreaView style={appStyle.container}>
-      <AppHeader title="PHỤ PHÍ" />
+      <AppHeader title="Phụ phí" />
       <View
         style={{backgroundColor: COLOR.borderColor2, height: 1, width: '100%'}}
       />
@@ -206,7 +236,9 @@ const Surcharge = props => {
             />
           </View>
         ) : null}
-        <TouchableOpacity style={styles.btn} onPress={logCat}>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => handleUpdateSurcharge()}>
           <Text
             style={[
               appStyle.text16Bold,

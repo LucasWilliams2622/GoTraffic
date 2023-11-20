@@ -5,7 +5,9 @@ import { appStyle, windowHeight, windowWidth } from '../../constants/AppStyle';
 import { COLOR, ICON } from '../../constants/Theme';
 import AppHeader from '../AppHeader';
 import { useNavigation } from '@react-navigation/native';
+import { BottomSheet } from 'react-native-btr';
 import Modal from 'react-native-modal';
+import GuideComponent, { GuideType1, GuideType2, GuideType3 } from '../Support/GuideComponent';
 
 const ItemGuide = (props) => {
     const navigation = useNavigation();
@@ -17,6 +19,19 @@ const ItemGuide = (props) => {
         setIsVisible(!isVisible);
     }
 
+    const renderContent = () => {
+        switch (id) {
+            case 1:
+                return <GuideType1 />;
+            case 2:
+                return <GuideType2 />;
+            case 3:
+                return <GuideType3 />;
+            default:
+                return null;
+        }
+    }
+
     return (
         <View>
             <TouchableOpacity style={{ marginRight: id != 5 ? 8 : 32 }} onPress={() => { { toggleModal() } }}>
@@ -26,22 +41,19 @@ const ItemGuide = (props) => {
                 animationType="slide"
                 transparent={false}
                 visible={isVisible}
-
+                onRequestClose={toggleModal}
+                style={{ margin: 0, paddingTop: 8 }}
             >
-                <View style={{ paddingHorizontal: 15, flex: 1 }}>
-                    <AppHeader
-                        title='Chuẩn bị trước chuyến đi'
-                        iconLeft={ICON.Close}
-                        onPress={() => navigation.goBack()}
-                    />
-                   
-
+                <AppHeader
+                    title=''
+                    iconLeft={'close'}
+                    onPressLeft={toggleModal}
+                />
+                <View style={{ flex: 1, padding: 16 }}>
+                    {renderContent()}
                 </View>
-
             </Modal>
         </View>
-
-
     )
 }
 

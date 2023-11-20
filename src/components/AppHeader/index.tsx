@@ -21,6 +21,7 @@ const AppHeader = ({
   const iconMap = {
     add: ICON.Add,
     dustBin: ICON.Ban,
+    close: ICON.Close,
     calendar: ICON.Calendar,
     download: ICON.Download,
   };
@@ -59,7 +60,7 @@ const AppHeader = ({
           <TouchableOpacity
             style={{}}
             onPress={() => {
-              onPressLeft == null ? navigation.goBack() : onPressLeft;
+              onPressLeft == null ? navigation.goBack() : onPressLeft();
             }}>
             {iconLeft == null ? (
               <FastImage
@@ -68,7 +69,7 @@ const AppHeader = ({
                 tintColor={tintColor}
               />
             ) : iconLeft == 'close' ? (
-              <Icon name="close" size={22} color={tintColor} />
+              <Icon name="close" size={28} color={tintColor} />
             ) : (
               <FastImage
                 source={ICON.Back}
@@ -78,7 +79,7 @@ const AppHeader = ({
             )}
           </TouchableOpacity>
         ) : (
-          <Text> </Text>
+          <Text>      </Text>
         )}
 
         <Text

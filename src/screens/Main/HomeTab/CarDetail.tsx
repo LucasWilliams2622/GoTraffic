@@ -180,6 +180,7 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
   });
 
   const [images, setImages] = useState<string[]>([]);
+  const [amenities, setAmenities] = useState<string[]>([]);
 
   const toggleModal = () => {
     setRatingModalVisible(!isRatingModalVisible);
@@ -200,7 +201,9 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
     if (car.image) {
       setImages(JSON.parse(car.image));
     }
-    console.log(car);
+    if (car.utilities) {
+      setAmenities(JSON.parse(car.utilities));
+    }
   };
 
   useEffect(() => {
@@ -421,7 +424,7 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
               title="Các tiện nghi trên xe"
               style={{marginTop: 10}}
             />
-            {car.amenities && <Amenities amenities={car.amenities} />}
+            {amenities && <Amenities amenities={amenities} />}
             <View style={[CarCardItemStyles.separator, {marginTop: 20}]} />
             {carCoordinates && (
               <View>

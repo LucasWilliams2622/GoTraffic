@@ -8,6 +8,8 @@ import {useIsFocused} from '@react-navigation/native';
 import Swipelist from 'react-native-swipeable-list-view';
 import {showToastMessage} from '../../../../../utils/utils';
 import {ICON} from '../../../../../constants/Theme';
+import FastImage from 'react-native-fast-image';
+
 const ConfirmTrip = () => {
   const isFocused = useIsFocused();
 
@@ -28,7 +30,7 @@ const ConfirmTrip = () => {
       console.log('=========>', error);
     }
   };
-  const cancelBooking = async (id) => {
+  const cancelBooking = async id => {
     try {
       const response = await AxiosInstance().post(
         '/booking/api/cancel-by-owner?id=' + id,
@@ -43,7 +45,7 @@ const ConfirmTrip = () => {
       console.log('=========>', error);
     }
   };
-  const confirmBooking = async (id) => {
+  const confirmBooking = async id => {
     try {
       const response = await AxiosInstance().post(
         '/booking/api/accept?id=' + id,
@@ -80,11 +82,34 @@ const ConfirmTrip = () => {
           />
         )}
         keyExtractor={item => item._id}
-        showsVerticalScrollIndicator={false}></FlatList>
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={
+          <View>
+            <FastImage
+              style={styles.imageInvisible}
+              resizeMode={'stretch'}
+              source={require('../../../../../assets/image/NoTrip.png')}
+            />
+            <Text
+              style={[
+                appStyle.text16,
+                {textAlign: 'center', marginBottom: 10, fontStyle: 'italic'},
+              ]}>
+              Bạn chưa có lịch sử chuyến
+            </Text>
+          </View>
+        }></FlatList>
     </View>
   );
 };
 
 export default ConfirmTrip;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  imageInvisible: {
+    width: 192,
+    height: 138,
+    alignSelf: 'center',
+    marginBottom: 20,
+  },
+});

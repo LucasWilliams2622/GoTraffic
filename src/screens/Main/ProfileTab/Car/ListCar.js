@@ -18,6 +18,7 @@ import {Car} from '../../../../components/Profile/data/DataCar';
 import ItemCar from '../../../../components/Profile/ItemCar';
 import AxiosInstance from '../../../../constants/AxiosInstance';
 import {AppContext} from '../../../../utils/AppContext';
+import AppHeader from '../../../../components/AppHeader';
 
 const ListCar = props => {
   const {navigation, route} = props;
@@ -46,13 +47,19 @@ const ListCar = props => {
 
   return (
     <SafeAreaView style={appStyle.container}>
-      <TopNav
+      {/* <TopNav
         iconLeft={ICON.Back}
         screenLeft="HomeCar"
         text="Xe của tôi"
         iconRight={ICON.Add}
         screenRight="BasicInfor"
         //onPressRight={() => addCar()}
+      /> */}
+      <AppHeader
+        title='Xe của tôi'
+        icon={ICON.Add}
+        onPressRight={()=> navigation.navigate('BasicInfor')}
+
       />
       <FlatList
         style={{marginBottom: 50}}
