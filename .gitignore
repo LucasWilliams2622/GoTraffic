@@ -64,4 +64,6 @@ yarn-error.log
 
 # testing
 /coverage
-yarn.lock
+
+# vscode environment setting
+.vscode/settings.json

@@ -23,6 +23,7 @@ import {
   featuredLocationData,
   AirportData,
   benefitData,
+  carDataTest,
 } from './data/data';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {
@@ -41,6 +42,7 @@ const RenderList: React.FC<RenderListProps<any>> = ({
   data,
   renderItem,
   snapToInterval,
+  reverse,
 }) => (
   <FlatList
     showsHorizontalScrollIndicator={false}
@@ -50,6 +52,7 @@ const RenderList: React.FC<RenderListProps<any>> = ({
     renderItem={renderItem}
     snapToAlignment="start"
     decelerationRate={'fast'}
+    inverted={reverse}
     snapToInterval={snapToInterval}
     contentContainerStyle={styles.contentContainer}
   />
@@ -60,6 +63,7 @@ const Section: React.FC<SectionProps> = ({
   data,
   renderItem,
   snapToInterval,
+  reverse,
 }) => (
   <View style={styles.mt20}>
     <View style={[styles.contentContainer]}>
@@ -69,6 +73,7 @@ const Section: React.FC<SectionProps> = ({
       data={data}
       renderItem={renderItem}
       snapToInterval={snapToInterval}
+      reverse={reverse}
     />
   </View>
 );
@@ -89,12 +94,12 @@ const Home: React.FC = () => {
   // =================| Get List |====================
   const {infoUser, idUser} = useContext(AppContext);
   const [listCar, setListCar] = useState([]);
+
   const getAllCar = async () => {
     try {
       const response = await AxiosInstance().get('/car/api/list');
       if (response.result) {
         setListCar(response.listCar);
-        // console.log(response.listCar);
       } else {
         console.log('Error');
       }
@@ -105,6 +110,7 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     getAllCar();
+    // setListCar(carDataTest);
   }, []);
 
   return (
@@ -171,6 +177,7 @@ const Home: React.FC = () => {
       <Section
         title="Xe đã xem"
         data={listCar}
+        reverse={true}
         renderItem={({item}) => (
           <CarCardItem {...item} onPress={() => handleCarPress(item.id)} />
         )}

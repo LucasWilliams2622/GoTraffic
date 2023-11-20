@@ -1,13 +1,23 @@
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, PermissionsAndroid } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  TouchableOpacity,
+  PermissionsAndroid,
+} from 'react-native';
 import React from 'react';
-import { appStyle, windowHeight, windowWidth } from '../../../../../constants/AppStyle';
-import { COLOR, ICON } from '../../../../../constants/Theme';
+import {
+  appStyle,
+  windowHeight,
+  windowWidth,
+} from '../../../../../constants/AppStyle';
+import {COLOR, ICON} from '../../../../../constants/Theme';
 import Header from '../../../../../components/Header';
 import Pdf from 'react-native-pdf';
-// import RNFetchBlob from 'rn-fetch-blob';
 import AppHeader from '../../../../../components/AppHeader';
 
-const LeaseCar = (props) => {
+const LeaseCar = props => {
   const pdfUrl = 'http://samples.leanpub.com/thereactnativebook-sample.pdf';
 
   const requestStoragePermission = async () => {
@@ -42,7 +52,7 @@ const LeaseCar = (props) => {
         return;
       }
 
-      const { config, fs } = RNFetchBlob;
+      const {config, fs} = RNFetchBlob;
       const downloadDest = `${fs.dirs.DocumentDir}/sample.pdf`;
 
       console.log('File path before download:', downloadDest);
@@ -51,8 +61,7 @@ const LeaseCar = (props) => {
         fileCache: true,
         appendExt: 'pdf',
         path: downloadDest,
-      })
-        .fetch('GET', pdfUrl);
+      }).fetch('GET', pdfUrl);
 
       console.log('File downloaded to:', res.path());
     } catch (error) {
@@ -62,15 +71,20 @@ const LeaseCar = (props) => {
 
   return (
     <SafeAreaView style={appStyle.container}>
-      <AppHeader title='Hợp đồng mẫu' icon={'download'} onPressRight={handleDownloadPdf} />
+      <AppHeader
+        title="Hợp đồng mẫu"
+        icon={'download'}
+        onPressRight={handleDownloadPdf}
+      />
 
-      <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
+      <View
+        style={{flex: 1, justifyContent: 'flex-start', alignItems: 'center'}}>
         <Pdf
-          source={{ uri: pdfUrl, cache: true }}
+          source={{uri: pdfUrl, cache: true}}
           trustAllCerts={false}
           spacing={30}
           onPageChanged={(page, totalPages) => console.log(`${totalPages}`)}
-          style={{ flex: 1, width: windowWidth, backgroundColor: COLOR.gray }}
+          style={{flex: 1, width: windowWidth, backgroundColor: COLOR.gray}}
         />
       </View>
     </SafeAreaView>

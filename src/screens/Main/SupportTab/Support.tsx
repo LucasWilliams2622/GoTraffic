@@ -16,7 +16,7 @@ const Support = () => {
   const openMessengerWithFanpage = () => {
     const fanpageId = '153193171201089';
     const url = `https://m.me/${fanpageId}`;
-  
+
     Linking.openURL(url)
       .then(() => {
         console.log('Đã mở Messenger');

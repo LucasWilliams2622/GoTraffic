@@ -79,7 +79,7 @@ const AppHeader = ({
             )}
           </TouchableOpacity>
         ) : (
-          <Text> </Text>
+          <Text>      </Text>
         )}
 
         <Text

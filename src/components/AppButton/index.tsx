@@ -2,7 +2,7 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {AppButtonProps} from './type';
 import FastImage from 'react-native-fast-image';
-import { COLOR } from '../../constants/Theme';
+import {COLOR} from '../../constants/Theme';
 const AppButton = ({
   containerStyle,
   titleStyle,
@@ -40,8 +40,8 @@ const AppButton = ({
       ) : (
         <FastImage
           style={{
-            width: iconSize,
-            height: iconSize,
+            width: 16,
+            height: 16,
             marginRight: 8,
           }}
           source={icon}
@@ -66,7 +66,7 @@ const AppButton = ({
 export default AppButton;
 
 const styles = StyleSheet.create({
-  utton: {
+  button: {
     backgroundColor: COLOR.bgButton,
     borderRadius: 8,
     paddingVertical: 14,
@@ -86,5 +86,4 @@ const styles = StyleSheet.create({
     color: COLOR.titleButton,
     alignSelf: 'center',
   },
-
 });

@@ -50,7 +50,6 @@ import RatingTrip from '../screens/Main/TripTab/RatingTrip';
 import Recharge from '../screens/Main/ProfileTab/MyCar/Recharge';
 import FindingCar from '../screens/Main/HomeTab/FindingCar';
 import ChangeBooking from '../screens/Main/HomeTab/ChangeBooking';
-import FastImage from 'react-native-fast-image';
 import {appStyle} from '../constants/AppStyle';
 import {Badge} from 'react-native-elements';
 
@@ -58,6 +57,7 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 const StackBegin = () => {
+  console.log('StackBegin');
   return (
     <Stack.Navigator
       initialRouteName="Login"
@@ -213,6 +213,7 @@ const Main = () => {
     setNotificationCount,
     notificationCount,
   } = useContext(AppContext);
+  console.log('Main');
   return (
     <Tab.Navigator
       initialRouteName="StackHome"
@@ -225,7 +226,7 @@ const Main = () => {
           } else if (route.name === 'StackNotification') {
             // ... Các thiết lập khác
             return (
-              <View style={[appStyle.boxCenter, {position: 'relative'}]}>
+              <View style={[{flex: 1, alignItems: 'center', marginTop: 10}]}>
                 <Image
                   source={
                     (iconName = focused
@@ -233,8 +234,8 @@ const Main = () => {
                       : ICON.Notification)
                   }
                   style={{
-                    width: focused ? 26 : 24,
-                    height: focused ? 26 : 24,
+                    width: 26,
+                    height: 26,
                     resizeMode: 'stretch',
                     tintColor: focused ? COLOR.focus : COLOR.notFocus,
                   }}
@@ -253,7 +254,7 @@ const Main = () => {
                     {
                       marginTop: 4,
                       textAlign: 'center',
-                      fontSize: focused ? 10 : 0,
+                      fontSize: 10,
                       fontWeight: '600',
                       color: focused ? COLOR.focus : COLOR.notFocus,
                     },
@@ -278,8 +279,7 @@ const Main = () => {
               style={{
                 flex: 1,
                 alignItems: 'center',
-                justifyContent: 'center',
-                width: 60,
+                marginTop: 10,
               }}>
               <Animatable.View animation="zoomIn" duration={2000}>
                 {}
@@ -287,8 +287,8 @@ const Main = () => {
                 <Image
                   source={iconName}
                   style={{
-                    width: focused ? 26 : 24,
-                    height: focused ? 26 : 24,
+                    width: 26,
+                    height: 26,
 
                     resizeMode: 'stretch',
                     tintColor: focused ? COLOR.focus : COLOR.notFocus,
@@ -297,8 +297,8 @@ const Main = () => {
               </Animatable.View>
               <Text
                 style={{
-                  fontSize: focused ? 10 : 0,
-                  fontWeight: focused ? '600' : '100',
+                  fontSize: 10,
+                  fontWeight: 600,
                   marginTop: 4,
                   color: focused ? COLOR.focus : COLOR.notFocus,
                 }}>
@@ -312,7 +312,7 @@ const Main = () => {
         headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: {
-          height: 65,
+          height: 80,
           position: 'absolute',
           backgroundColor: COLOR.background,
         },
@@ -328,6 +328,7 @@ const Main = () => {
 
 const BottomTabNav = () => {
   const {isLogin, infoUser} = useContext(AppContext);
+  console.log('BottomTabNav');
   return <>{isLogin ? <Main /> : <StackBegin />}</>;
 };
 
