@@ -63,8 +63,9 @@ const VerifyLicense = ({isVisible, onClose}) => {
       console.log('userResponse: ' + JSON.stringify(userResponse));
       if (userResponse.data.result === true) {
         // update the infoUser from context
-        const updatedInfoUser = userResponse.data.data;
+        const updatedInfoUser = userResponse.data.user;
         setInfoUser(updatedInfoUser);
+        onClose();
       }
     }
   };
