@@ -161,6 +161,8 @@ const BottomBar: React.FC<{
         totalMoney: deposit,
       });
 
+      console.log(data);
+
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
@@ -187,6 +189,7 @@ const BottomBar: React.FC<{
           console.log('Error: ' + error);
         });
     } else {
+      console.log('Test');
       setIsLicenseModalVisible(true);
     }
   };
@@ -229,8 +232,8 @@ const BottomBar: React.FC<{
       <SuccessModal
         isVisible={isSuccessModalVisible}
         onNavigate={closeModals}
-        title='Thành công!'
-        text='Bạn đã thuê được xe'
+        title="Thành công!"
+        text="Bạn đã thuê được xe"
       />
       <Pressable
         style={{
