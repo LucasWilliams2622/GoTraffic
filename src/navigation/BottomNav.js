@@ -226,11 +226,7 @@ const Main = () => {
           } else if (route.name === 'StackNotification') {
             // ... Các thiết lập khác
             return (
-              <View
-                style={[
-                  appStyle.boxCenter,
-                  {position: 'relative', marginTop: 10},
-                ]}>
+              <View style={[{flex: 1, alignItems: 'center', marginTop: 10}]}>
                 <Image
                   source={
                     (iconName = focused
@@ -238,8 +234,8 @@ const Main = () => {
                       : ICON.Notification)
                   }
                   style={{
-                    width: focused ? 26 : 24,
-                    height: focused ? 26 : 24,
+                    width: 26,
+                    height: 26,
                     resizeMode: 'stretch',
                     tintColor: focused ? COLOR.focus : COLOR.notFocus,
                   }}
@@ -258,7 +254,7 @@ const Main = () => {
                     {
                       marginTop: 4,
                       textAlign: 'center',
-                      fontSize: focused ? 10 : 0,
+                      fontSize: 10,
                       fontWeight: '600',
                       color: focused ? COLOR.focus : COLOR.notFocus,
                     },
@@ -291,8 +287,8 @@ const Main = () => {
                 <Image
                   source={iconName}
                   style={{
-                    width: focused ? 26 : 24,
-                    height: focused ? 26 : 24,
+                    width: 26,
+                    height: 26,
 
                     resizeMode: 'stretch',
                     tintColor: focused ? COLOR.focus : COLOR.notFocus,
@@ -301,8 +297,8 @@ const Main = () => {
               </Animatable.View>
               <Text
                 style={{
-                  fontSize: focused ? 10 : 0,
-                  fontWeight: focused ? '600' : '100',
+                  fontSize: 10,
+                  fontWeight: 600,
                   marginTop: 4,
                   color: focused ? COLOR.focus : COLOR.notFocus,
                 }}>
