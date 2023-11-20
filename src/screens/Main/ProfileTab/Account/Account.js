@@ -16,6 +16,7 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import {AppContext} from '../../../../utils/AppContext';
 import AppHeader from '../../../../components/AppHeader';
+import VerifyLicense from './VerifyLicense';
 
 const Account = props => {
   const navigation = useNavigation();
@@ -30,6 +31,7 @@ const Account = props => {
   const [name, setName] = useState(route.params?.newName || defaultName);
   const [dob, setDob] = useState(route.params?.newDOB || defaultDob);
   const [sex, setSex] = useState(route.params?.newSex || defaultSex);
+  const [isLicenseModalVisible, setIsLicenseModalVisible] = useState(false);
 
   useEffect(() => {
     if (route.params?.newName) {
@@ -99,7 +101,7 @@ const Account = props => {
 
         {/* Giấy phép lái xe */}
         <TouchableOpacity
-          onPress={() => navigation.navigate('VerifyLicense')}
+          onPress={() => setIsLicenseModalVisible(true)}
           style={[
             styles.viewItem,
             {borderTopWidth: 2, borderTopColor: '#efefef', marginTop: 12},
@@ -132,6 +134,10 @@ const Account = props => {
             />
           </View>
         </TouchableOpacity>
+        <VerifyLicense
+          isVisible={isLicenseModalVisible}
+          onClose={() => setIsLicenseModalVisible(false)}
+        />
 
         {/* Số điện thoại */}
         <View style={styles.viewItem}>
