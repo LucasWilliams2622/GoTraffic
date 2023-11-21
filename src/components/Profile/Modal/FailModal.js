@@ -4,7 +4,7 @@ import FastImage from 'react-native-fast-image';
 import { COLOR, ICON } from '../../../constants/Theme';
 import { appStyle } from '../../../constants/AppStyle';
 
-const FailModal = ({ isVisible, onCancel, onCheckBalance }) => {
+const FailModal = ({ isVisible, onCancel, onCheckBalance, title, text, nextStep }) => {
     return (
         <Modal
             animationType="fade"
@@ -15,8 +15,8 @@ const FailModal = ({ isVisible, onCancel, onCheckBalance }) => {
                 <View style={styles.modalSuccessBox}>
                     <FastImage style={{ width: 60, height: 60 }} source={ICON.Ban} />
                     <View >
-                        <Text style={{ textAlign: 'center', fontSize: 24, marginTop: 5, fontWeight: '500', color: '#E73030' }}>Thất bại!</Text>
-                        <Text style={{ textAlign: 'center', fontSize: 16, marginTop: 5 }}>Số dư ví của bạn không đủ</Text>
+                        <Text style={{ textAlign: 'center', fontSize: 24, marginTop: 5, fontWeight: '500', color: '#E73030' }}>{title}</Text>
+                        <Text style={{ textAlign: 'center', fontSize: 16, marginTop: 5 }}>{text}</Text>
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent:'space-between', width:'100%' }}>
                         <TouchableOpacity style={{ width: '45%', height: 40, backgroundColor: COLOR.warn, borderRadius: 8, justifyContent: 'center', alignItems: 'center', marginTop: 20 }}
@@ -25,7 +25,7 @@ const FailModal = ({ isVisible, onCancel, onCheckBalance }) => {
                         </TouchableOpacity>
                         <TouchableOpacity style={{ width: '45%', height: 40, backgroundColor: COLOR.blueHeader2, borderRadius: 8, justifyContent: 'center', alignItems: 'center', marginTop: 20 }}
                              onPress={onCheckBalance}>
-                            <Text style={[appStyle.text16Bold, {color: COLOR.blue}]}>Kiểm tra ví</Text>
+                            <Text style={[appStyle.text16Bold, {color: COLOR.blue}]}>{nextStep}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

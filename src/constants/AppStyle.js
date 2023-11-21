@@ -217,7 +217,10 @@ export const appStyle = StyleSheet.create({
     letterSpacing: 0.5,
     color: COLOR.text,
   },
-
+errorText:{
+  fontSize: 14,
+  color: COLOR.red,
+},
   // ===================| ROW - COLUMN |========================
   row: {
     flexDirection: 'row',

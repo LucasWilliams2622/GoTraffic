@@ -12,6 +12,18 @@ import axios from 'axios';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { AppContext } from '../../../../utils/AppContext'
 import AppHeader from '../../../../components/AppHeader'
+import * as yup from 'yup';
+import { useFormik } from 'formik';
+import { showToastMessage } from '../../../../utils/utils'
+
+
+const validationSchema = yup.object().shape({
+    selectedProvince: yup.object().required('Vui lòng chọn tỉnh/thành phố'),
+    selectedDistrict: yup.object().required('Vui lòng chọn quận/huyện'),
+    selectedWard: yup.object().required('Vui lòng chọn phường/xã'),
+    nickName: yup.string().max(20, 'Tên gợi nhớ tối đa 20 kí tự').required('Vui lòng nhập tên gợi nhớ'),
+    address: yup.string().required('Vui lòng nhập địa chỉ cụ thể').max(30, 'Địa chỉ tối đa 30 kí tự').matches(/^[a-zA-Z0-9\s]+$/, 'Địa chỉ không được chứa kí tự đặc biệt'),
+});
 
 const NewAddress = (props) => {
     const { navigation } = props;
@@ -29,10 +41,25 @@ const NewAddress = (props) => {
     const [selectedWard, setSelectedWard] = useState(null);
     const [address, setAddress] = useState(null);
 
+    const formik = useFormik({
+        initialValues: {
+            selectedProvince: selectedProvince,
+            selectedDistrict: selectedDistrict,
+            selectedWard: selectedWard,
+            nickName: '',
+            address: '',
+        },
+        validationSchema: validationSchema,
+        onSubmit: values => {
+            // Xử lý submit
+            console.log(values);
+            // Nếu không có lỗi, thực hiện các xử lý tiếp theo
+            handleSave();
+        },
+    });
 
     const newAddress = async () => {
         try {
-            //console.log("abc", idUser, isSelected, nickName, selectedProvince?.name, selectedDistrict?.name, selectedWard?.name, address, onSwitch);
             const response = await axios.post(`http://103.57.129.166:3000/address/api/add-new-address`, {
                 idUser: idUser,
                 city: selectedProvince?.name,
@@ -45,7 +72,7 @@ const NewAddress = (props) => {
                 isDefault: onSwitch
 
             });
-            console.log("======>",response.data);
+            // console.log("======>",response.data);
             console.log('Địa chỉ mới:', response.data);
             const newAddressData = {
                 idUser: idUser,
@@ -58,9 +85,10 @@ const NewAddress = (props) => {
                 address: address,
                 isDefault: onSwitch
             };
-            navigation.navigate('MyAddress', { newAddressData});
+            navigation.navigate('MyAddress', { newAddressData });
         } catch (error) {
             console.log(error);
+            showToastMessage('error','Chưa đủ thông tin!')
             console.log(error.response?.data);
         }
     }
@@ -118,11 +146,6 @@ const NewAddress = (props) => {
     };
     return (
         <SafeAreaView style={[appStyle.container]}>
-            {/* <Header
-                icon={ICON.Back}
-                text="Chi tiết địa chỉ"
-                onPress={() => navigation.navigate('MyAddress')}
-            /> */}
             <AppHeader
                 title='Chi tiết địa chỉ'
             />
@@ -157,8 +180,14 @@ const NewAddress = (props) => {
                             placeholder="Nhập tên cho địa chỉ"
                             placeholderStyle={{ fontSize: 14 }}
                             value={nickName}
-                            onChangeText={(text) => setNickName(text)}
+                            onChangeText={(text) => {
+                                formik.setFieldValue('nickName', text);
+                                setNickName(text);
+                            }}
                         />
+                        {formik.errors.nickName && formik.touched.nickName ? (
+                            <Text style={appStyle.errorText}>{formik.errors.nickName}</Text>
+                        ) : null}
                     </View>
 
                     <View>
@@ -170,13 +199,15 @@ const NewAddress = (props) => {
                             valueField="name"
                             placeholder="Tỉnh/Thành phố"
                             data={provinces}
-                            value={selectedProvince?.name}
-                            onChange={(val) => {
+                            value={selectedProvince}
+                            onChange={val => {
+                                formik.setFieldValue('selectedProvince', val);
                                 setSelectedProvince(val);
-                                setSelectedDistrict(null);
-                                setSelectedWard(null);
                             }}
                         />
+                        {formik.errors.selectedProvince && formik.touched.selectedProvince ? (
+                            <Text style={appStyle.errorText}>{formik.errors.selectedProvince}</Text>
+                        ) : null}
                     </View>
 
                     <View>
@@ -190,10 +221,14 @@ const NewAddress = (props) => {
                             data={districts}
                             value={selectedDistrict?.name}
                             onChange={(val) => {
+                                formik.setFieldValue('selectedDistrict', val);
                                 setSelectedDistrict(val);
                                 setSelectedWard(null);
                             }}
                         />
+                        {formik.errors.selectedDistrict && formik.touched.selectedDistrict ? (
+                            <Text style={appStyle.errorText}>{formik.errors.selectedDistrict}</Text>
+                        ) : null}
                     </View>
 
                     <View>
@@ -205,9 +240,13 @@ const NewAddress = (props) => {
                             data={wards}
                             value={selectedWard?.name}
                             onChange={(val) => {
+                                formik.setFieldValue('selectedWard', val);
                                 setSelectedWard(val);
                             }}
                         />
+                        {formik.errors.selectedWard && formik.touched.selectedWard ? (
+                            <Text style={appStyle.errorText}>{formik.errors.selectedWard}</Text>
+                        ) : null}
                     </View>
 
                     <View>
@@ -216,8 +255,14 @@ const NewAddress = (props) => {
                             placeholder="Nhập tên cho địa chỉ"
                             placeholderStyle={{ fontSize: 14 }}
                             value={address}
-                            onChangeText={(text) => setAddress(text)}
+                            onChangeText={(text) => {
+                                formik.setFieldValue('address', text);
+                                setAddress(text);
+                            }}
                         />
+                        {formik.errors.address && formik.touched.address ? (
+                            <Text style={appStyle.errorText}>{formik.errors.address}</Text>
+                        ) : null}
                     </View>
 
                     <View style={{ flexDirection: 'row', marginTop: 20, justifyContent: 'space-between' }}>
@@ -247,7 +292,14 @@ const NewAddress = (props) => {
                     <AppButton
                         title="Lưu"
                         marginTop={60}
-                        onPress={() => newAddress()}
+                        onPress={() => {
+                            if (!formik.isValidating && formik.isValid) {
+                                newAddress();
+                            } else {
+                                console.log("Form không hợp lệ");
+                                formik.submitForm();
+                            }
+                        }}
                     />
 
                 </View>

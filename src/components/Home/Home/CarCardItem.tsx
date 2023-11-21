@@ -20,8 +20,8 @@ import {
 } from '../../../utils/utils';
 import {CarCardItemProps} from '../../../types';
 import AxiosInstance from '../../../constants/AxiosInstance';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AppContext} from '../../../utils/AppContext';
+import { showToastMessage } from '../../../utils/utils';
 import axios from 'axios';
 
 const CarCardItem = ({
@@ -49,11 +49,13 @@ const CarCardItem = ({
         const response = await AxiosInstance().delete(
           `/favorite-car/api/delete?idUser=${idUser}&idCar=${id}`,
         );
+        showToastMessage('','Đã gỡ yêu thích');
         console.log(response, 'Xe đã bị xóa khỏi danh sách yêu thích');
       } else {
         const response = await AxiosInstance().post(
           `/favorite-car/api/add?idUser=${idUser}&idCar=${id}`,
         );
+        showToastMessage('','Xe được thêm vào yêu thích');
         console.log(response, 'Xe được thêm vào danh sách yêu thích');
       }
       setIsFavorite(!isFavorite);
