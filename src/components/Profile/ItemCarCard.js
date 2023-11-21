@@ -32,14 +32,15 @@ const ItemCarCard = (props) => {
 
     return (
         <View style={{
-            width: windowWidth * 0.8,
-            height: windowHeight * 0.4,
+            width: windowWidth * 0.9,
+            height: windowHeight * 0.3,
             borderRadius: 20,
             borderWidth: 2,
             borderColor: '#ddd',
             marginTop: 10,
             alignSelf: 'center',
             padding: 10,
+            
         }}>
             <FastImage resizeMode='stretch' source={{ uri: image }} style={styles.image} />
             <TouchableOpacity style={styles.pressable}
@@ -72,11 +73,18 @@ const ItemCarCard = (props) => {
             </View>
             <View style={{ flexDirection: 'row' }}>
                 <Icon name="location-dot" color={COLOR.borderColor} size={15} />
-                <Text style={styles.locationText}>{locationCar}</Text>
+                <Text numberOfLines={1} ellipsizeMode="tail" style={styles.locationText}>{locationCar}</Text>
             </View>
             <View style={styles.separator} />
+
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: windowWidth * 0.4 }}>
+                <View style={{ 
+                    flexDirection: 'row', 
+                    justifyContent: 'space-between', 
+                    alignItems: 'center', 
+                    width: windowWidth * 0.4, 
+                    height: windowHeight*0.04,
+                    marginTop: 3 }}>
                     <Icon name="star" color={COLOR.third} size={12} solid />
                     <Text style={[styles.ratingText, { marginLeft: 5 }]}>
                         0.0
@@ -91,12 +99,12 @@ const ItemCarCard = (props) => {
                     </Text>
                 </View>
 
-                <View>
+                <View style={{   height: windowHeight*0.05}}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={{ color: COLOR.fifth, fontSize: 18 }}>{formatPrice(price)}</Text>
                         <Text style={{ color: COLOR.borderColor, fontSize: 12 }}>/ngày</Text>
                     </View>
-                    <Text style={{ color: COLOR.borderColor, fontSize: 12, marginTop: 5 }}>
+                    <Text style={{ color: COLOR.borderColor, fontSize: 12 }}>
                         Giá tổng{' '}
                         <Text style={{ fontWeight: 'bold' }}>872K</Text>
                     </Text>
@@ -110,7 +118,7 @@ export default ItemCarCard
 
 const styles = StyleSheet.create({
     image: {
-        height: '50%',
+        height: '45%',
         borderRadius: 15,
     },
     pressable: {
@@ -124,6 +132,7 @@ const styles = StyleSheet.create({
     row: {
         alignItems: 'center',
         marginTop: 10,
+       
     },
     typeView: {
         backgroundColor: COLOR.sixth,
@@ -141,12 +150,11 @@ const styles = StyleSheet.create({
         marginLeft: 10,
     },
     separator: {
-        height: 0.5,
-        backgroundColor: COLOR.borderColor,
+        height: 0.8,
+        backgroundColor: 'black',
         opacity: 0.3,
         width: '100%',
         alignSelf: 'center',
         marginTop: 10,
-        marginBottom: 10,
     },
 })

@@ -32,7 +32,7 @@ const FavouriteCar = (props) => {
     try {
 
         await AxiosInstance().delete(`/favorite-car/api/delete?idUser=${idUser}&idCar=${id}`);
-        showToastMessage('','')
+        showToastMessage('','Đã gỡ yêu thích');
         fetchFavoriteCars();
     } catch (error) {
         console.log(error);
@@ -49,7 +49,7 @@ const FavouriteCar = (props) => {
       <AppHeader title='Xe yêu thích'/>
       <View style={{ padding: 15, width: '100%', height: '90%' }}>
         <FlatList
-          style={{ marginBottom: 20 }}
+          style={{ marginBottom: 44 }}
           //extraData={listUpdate}
           data={listCar}
           renderItem={({ item }) => (

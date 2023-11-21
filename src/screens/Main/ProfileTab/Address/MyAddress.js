@@ -49,24 +49,6 @@ const MyAddress = (props) => {
     getAddress();
   }, [idUser]);
 
-  // useEffect(() => {
-  //   const getAddress = async () => {
-  //     try {
-  //       const response = await AxiosInstance().get(`/address/api/get-address-by-id-user?idUser=${idUser}`);
-  //       setAddresses(response.data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-
-  //   if (route.params && route.params.newAddressData) {
-  //     const newAddressData = route.params.newAddressData;
-  //     setAddresses([...addresses, newAddressData]);
-  //   } else {
-  //     getAddress();
-  //   }
-  // }, [route.params, idUser, addresses]);
-
 
   return (
     <SafeAreaView style={[appStyle.container]}>

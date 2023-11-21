@@ -6,31 +6,32 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState, useEffect, useContext, useRoute} from 'react';
-import {appStyle, windowWidth} from '../../../../constants/AppStyle';
+import React, { useState, useEffect, useContext, useRoute } from 'react';
+import { appStyle, windowWidth } from '../../../../constants/AppStyle';
 import Header from '../../../../components/Header';
-import {COLOR, ICON} from '../../../../constants/Theme';
+import { COLOR, ICON } from '../../../../constants/Theme';
 import ButtonSelected from '../../../../components/ButtonSelected';
 import AppInput from '../../../../components/AppInput';
 import SwitchToggle from 'react-native-switch-toggle';
 import AppButton from '../../../../components/AppButton';
 import AppDropdown from '../../../../components/AppDropdown';
 import axios from 'axios';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import AxiosInstance from '../../../../constants/AxiosInstance';
-import {AppContext} from '../../../../utils/AppContext';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import { AppContext } from '../../../../utils/AppContext';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import AppHeader from '../../../../components/AppHeader';
 import SuccessModal from '../../../../components/Profile/Modal/SuccessModal';
-import {showToastMessage} from '../../../../utils/utils';
+import { showToastMessage } from '../../../../utils/utils';
+import FailModal from '../../../../components/Profile/Modal/FailModal';
 
-const UpdateAddress = ({route}) => {
+const UpdateAddress = ({ route }) => {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
-  const {addressInfo} = route.params;
-  console.log(addressInfo);
-  const {infoUser, idUser} = useContext(AppContext);
+  const { addressInfo } = route.params;
+  //console.log(addressInfo);
+  const { infoUser, idUser } = useContext(AppContext);
   const [isSuccessModalVisible, setSuccessModalVisible] = useState(false);
 
   const [isSelected, setIsSelected] = useState(null);
@@ -47,15 +48,23 @@ const UpdateAddress = ({route}) => {
 
   useEffect(() => {
     if (addressInfo) {
-      // setIsSelected(addressInfo.street);
-      // setNickName(addressInfo.note);
-      // setSelectedProvince(addressInfo.province);
-      // setSelectedDistrict(addressInfo.district);
-      // setSelectedWard(addressInfo.ward);
-      // setAddress(addressInfo.address);
-      // setOnSwitch(addressInfo.isDefault);
+      setIsSelected(addressInfo.street);
+      setNickName(addressInfo.note);
+      setSelectedProvince(addressInfo.city);
+      setSelectedDistrict(addressInfo.district);
+      setSelectedWard(addressInfo.ward);
+      setAddress(addressInfo.address);
+      setOnSwitch(addressInfo.isDefault);
     }
   }, [addressInfo]);
+
+  useEffect(() => {
+    setSelectedDistrict(addressInfo?.district);
+  }, [addressInfo?.district]);
+  
+  useEffect(() => {
+    setSelectedWard(addressInfo?.ward);
+  }, [addressInfo?.ward]);
 
   const updateAddress = async () => {
     try {
@@ -78,7 +87,7 @@ const UpdateAddress = ({route}) => {
         'http://103.57.129.166:3000/address/api/update-address-by-id',
         updatedAddress,
       );
-      console.log("responseaaa",response.data);
+      console.log("responseaaa", response.data);
       if (response.status === 200) {
         navigation.goBack();
         showToastMessage('', 'Cập nhật địa chỉ thành công');
@@ -95,7 +104,7 @@ const UpdateAddress = ({route}) => {
     const getAddress = async () => {
       try {
         if (isFocused) {
-          const response = await AxiosInstance().get(
+          const response = await axios.get(
             `/address/api/get-address-by-id-user?idUser=${idUser}`,
           );
           //setAddresses(response.data);
@@ -117,7 +126,7 @@ const UpdateAddress = ({route}) => {
         if (response.status === 200) {
           console.log('>>>>>>>>>>>>> Xóa rồi');
           setSuccessModalVisible(true);
-          //navigation.goBack();
+          navigation.goBack();
         } else {
           console.log('Lỗi xóa địa chỉ');
         }
@@ -133,9 +142,6 @@ const UpdateAddress = ({route}) => {
       .then(response => response.json())
       .then(data => {
         setProvinces(data);
-        //console.log(data);
-        // Chọn tỉnh/thành phố mặc định (nếu muốn)
-        // setSelectedProvince(data[0]); // Chọn tỉnh/thành phố đầu tiên trong danh sách
       })
       .catch(error => {
         console.error('Lỗi khi lấy dữ liệu từ API: ', error);
@@ -149,10 +155,7 @@ const UpdateAddress = ({route}) => {
           `https://provinces.open-api.vn/api/p/${selectedProvince.code}?depth=2`,
         )
         .then(response => {
-          //alert(JSON.stringify(response.data));
-          // console.log(response.data);
           setDistricts(response.data.districts);
-          //setSelectedDistrict(response.data.districts[0]);
         })
         .catch(error => {
           console.error(error);
@@ -167,9 +170,7 @@ const UpdateAddress = ({route}) => {
           `https://provinces.open-api.vn/api/d/${selectedDistrict.code}?depth=2`,
         )
         .then(response => {
-          //console.log(response.data);
           setWards(response.data.wards);
-          //setSelectedWard(response.data[0]);
         })
         .catch(error => {
           console.error(error);
@@ -189,11 +190,11 @@ const UpdateAddress = ({route}) => {
     <SafeAreaView style={[appStyle.container]}>
       <AppHeader title="Chi tiết địa chỉ" />
       <KeyboardAwareScrollView behavior="padding">
-        <View style={{width: '100%', padding: 15}}>
-          <Text style={[appStyle.text18, {fontWeight: '600'}]}>
+        <View style={{ width: '100%', padding: 15 }}>
+          <Text style={[appStyle.text18, { fontWeight: '600' }]}>
             Loại địa chỉ
           </Text>
-          <View style={{flexDirection: 'row', marginTop: 5}}>
+          <View style={{ flexDirection: 'row', marginTop: 5 }}>
             <ButtonSelected
               text="Nhà riêng"
               icon={ICON.Home}
@@ -215,49 +216,49 @@ const UpdateAddress = ({route}) => {
           </View>
 
           <View>
-            <Text style={[appStyle.text18, {fontWeight: '500', marginTop: 10}]}>
+            <Text style={[appStyle.text18, { fontWeight: '500', marginTop: 10 }]}>
               Tên gợi nhớ
             </Text>
             <AppInput
               placeholder="Nhập tên cho địa chỉ"
-              placeholderStyle={{fontSize: 14}}
+              placeholderStyle={{ fontSize: 14 }}
               value={nickName}
               onChangeText={text => setNickName(text)}
             />
           </View>
 
           <View>
-            <Text style={[appStyle.text18, {fontWeight: '500', marginTop: 10}]}>
+            <Text style={[appStyle.text18, { fontWeight: '500', marginTop: 10 }]}>
               Tỉnh/Thành phố
             </Text>
             <AppDropdown
-              placeholderStyle={{fontSize: 14}}
+              placeholderStyle={{ fontSize: 14 }}
               fontSize={16}
               labelField="name"
               valueField="name"
               placeholder="Tỉnh/Thành phố"
               data={provinces}
-              value={selectedProvince?.name}
+              value={selectedProvince}
               onChange={val => {
                 setSelectedProvince(val);
-                setSelectedDistrict(null);
-                setSelectedWard(null);
+                // setSelectedDistrict(null);
+                // setSelectedWard(null);
               }}
             />
           </View>
 
           <View>
-            <Text style={[appStyle.text18, {fontWeight: '500', marginTop: 10}]}>
+            <Text style={[appStyle.text18, { fontWeight: '500', marginTop: 10 }]}>
               Quận Huyện
             </Text>
             <AppDropdown
-              placeholderStyle={{fontSize: 14}}
+              placeholderStyle={{ fontSize: 14 }}
               fontSize={16}
               labelField="name"
               valueField="name"
               placeholder="Quận Huyện"
               data={districts}
-              value={selectedDistrict?.name}
+              value={selectedDistrict} // Đặt giá trị mặc định từ state
               onChange={val => {
                 setSelectedDistrict(val);
                 setSelectedWard(null);
@@ -266,7 +267,7 @@ const UpdateAddress = ({route}) => {
           </View>
 
           <View>
-            <Text style={[appStyle.text18, {fontWeight: '500', marginTop: 10}]}>
+            <Text style={[appStyle.text18, { fontWeight: '500', marginTop: 10 }]}>
               Phường Xã
             </Text>
             <AppDropdown
@@ -274,7 +275,7 @@ const UpdateAddress = ({route}) => {
               valueField="name"
               placeholder="Phường Xã"
               data={wards}
-              value={selectedWard?.name}
+              value={selectedWard}
               onChange={val => {
                 setSelectedWard(val);
               }}
@@ -282,12 +283,12 @@ const UpdateAddress = ({route}) => {
           </View>
 
           <View>
-            <Text style={[appStyle.text18, {fontWeight: '500', marginTop: 10}]}>
+            <Text style={[appStyle.text18, { fontWeight: '500', marginTop: 10 }]}>
               Địa chỉ
             </Text>
             <AppInput
               placeholder="Nhập tên cho địa chỉ"
-              placeholderStyle={{fontSize: 14}}
+              placeholderStyle={{ fontSize: 14 }}
               value={address}
               onChangeText={text => setAddress(text)}
             />
@@ -299,7 +300,7 @@ const UpdateAddress = ({route}) => {
               marginTop: 20,
               justifyContent: 'space-between',
             }}>
-            <Text style={[appStyle.text14, {fontWeight: '500'}]}>
+            <Text style={[appStyle.text14, { fontWeight: '500' }]}>
               Đặt làm địa chỉ mặc định
             </Text>
             <SwitchToggle
@@ -325,7 +326,7 @@ const UpdateAddress = ({route}) => {
           </View>
 
           <TouchableOpacity
-            onPress={() => deleteAddress()}
+            onPress={() => setSuccessModalVisible(true)}
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
@@ -337,7 +338,7 @@ const UpdateAddress = ({route}) => {
               tintColor={COLOR.red}
               style={[appStyle.iconBig]}
             />
-            <Text style={[appStyle.text165, {color: COLOR.red}]}>
+            <Text style={[appStyle.text165, { color: COLOR.red }]}>
               Xóa địa chỉ
             </Text>
           </TouchableOpacity>
@@ -349,15 +350,16 @@ const UpdateAddress = ({route}) => {
           />
         </View>
       </KeyboardAwareScrollView>
-      <SuccessModal
-        title="Thông báo!"
-        text="Xóa địa chỉ thành công"
+
+      <FailModal
+        title="Xóa địa chỉ"
+        text="Bạn chắc chắn xóa địa chỉ này?"
+        nextStep="Xóa"
         isVisible={isSuccessModalVisible}
-        onNavigate={() => {
-          setSuccessModalVisible(false);
-          navigation.goBack();
-        }}
+        onCheckBalance={() => deleteAddress()}
+        onCancel={() => setSuccessModalVisible(false)}
       />
+
     </SafeAreaView>
   );
 };

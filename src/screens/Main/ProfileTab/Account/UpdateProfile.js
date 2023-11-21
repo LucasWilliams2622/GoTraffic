@@ -4,35 +4,27 @@ import {
   Text,
   View,
   TouchableOpacity,
-  PermissionsAndroid,
-  Modal,
 } from 'react-native';
-import React, {useState, useContext} from 'react';
+import React, { useState, useContext } from 'react';
 import {
   appStyle,
   windowHeight,
-  windowWidth,
 } from '../../../../constants/AppStyle';
-import {COLOR, ICON} from '../../../../constants/Theme';
-import FastImage from 'react-native-fast-image';
+import { COLOR, ICON } from '../../../../constants/Theme';
 import AppInput from '../../../../components/AppInput';
 import AppButton from '../../../../components/AppButton';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import Header from '../../../../components/Header';
 import AppDropdown from '../../../../components/AppDropdown';
-import {Formik} from 'formik';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {AppContext} from '../../../../utils/AppContext';
-import AxiosInstance from '../../../../constants/AxiosInstance';
-import {useNavigation} from '@react-navigation/native';
-import Toast from 'react-native-toast-message';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { AppContext } from '../../../../utils/AppContext';
+import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import AppHeader from '../../../../components/AppHeader';
 import moment from 'moment';
 import ImagePickerComponent from '../../../../components/ImagePickerComponent';
-import {showToastMessage} from '../../../../utils/utils';
+import { showToastMessage } from '../../../../utils/utils';
 
 const UpdateProfile = props => {
   const navigation = useNavigation();
@@ -41,20 +33,21 @@ const UpdateProfile = props => {
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
-  const {setIsLogin, infoUser, idUser, currentDay, appState, setAppState} =
+  const { setIsLogin, infoUser, idUser, currentDay, appState, setAppState } =
     useContext(AppContext);
   const dobUser = moment(infoUser.dob).format('DD/MM/YYYY');
   const [image, setImage] = useState(dobUser);
   const [name, setName] = useState(infoUser.name);
   const [dob, setdob] = useState(infoUser.dob.slice(0, 10));
+
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(dob);
   const [selectedSex, setSelectedSex] = useState(
     infoUser.gender ? 'Nam' : 'Nữ',
   );
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(dob);
   const sex = [
-    {label: 'Nam', value: 'Nam'},
-    {label: 'Nữ', value: 'Nữ'},
+    { label: 'Nam', value: 'Nam' },
+    { label: 'Nữ', value: 'Nữ' },
   ];
 
   // IMAGE PICKER FOR AVATAR
@@ -65,7 +58,6 @@ const UpdateProfile = props => {
 
   const handleUpdate = async () => {
     try {
-      
       const response = await axios.put(
         'http://103.57.129.166:3000/user/api/update?idUser=' + idUser,
         {
@@ -73,17 +65,20 @@ const UpdateProfile = props => {
           firstName: '',
           lastName: '',
           email: infoUser.email,
-          gender: true,
+          gender: selectedSex === 'Nam',
           dob: selectedDate,
           avatar: image,
         },
       );
       if (response.result) {
         showToastMessage('', 'Cập nhật thành công');
+        console.log(response.data);
         setAppState(appState + 1);
         navigation.goBack();
       } else {
         showToastMessage('error', 'Cập nhật thất bại');
+        console.log(selectedSex);
+        console.log(">>>>>>>>>>>>>>>>LÔI CẬP NHẬT");
       }
     } catch (e) {
       console.log('error', e);
@@ -113,10 +108,11 @@ const UpdateProfile = props => {
       .required('Bắt buộc'),
   });
   const isImageUrlValid = /^https?:\/\/.*\.(png|jpg)$/i.test(image);
+
   return (
     <SafeAreaView style={[appStyle.container]}>
       <AppHeader title="Chỉnh sửa" />
-      <View style={{width: '100%', padding: 15}}>
+      <View style={{ width: '100%', padding: 15 }}>
         {/* Avatar */}
         <ImagePickerComponent onImageSelected={handleImageSelected} />
 
@@ -129,10 +125,10 @@ const UpdateProfile = props => {
               sex: infoUser.gender ? 'Nam' : 'Nữ',
             }}
             validationSchema={AccountSchema}
-            onSubmit={(values, {setSubmitting}) => {
+            onSubmit={(values, { setSubmitting }) => {
               setSubmitting(true); // Đánh dấu rằng việc xác thực đang diễn ra
               AccountSchema.validate(values)
-                .then(valid => {
+                .then((valid) => {
                   if (valid) {
                     setName(values.name);
                     // setdob(values.dob);
@@ -154,8 +150,8 @@ const UpdateProfile = props => {
               handleSubmit,
             }) => (
               <>
-                <View style={{width: '100%', height: 'auto'}}>
-                  <Text style={[appStyle.text14, {color: COLOR.text2}]}>
+                <View style={{ width: '100%', height: 'auto' }}>
+                  <Text style={[appStyle.text14, { color: COLOR.text2 }]}>
                     Tên người dùng
                   </Text>
                   <AppInput
@@ -165,12 +161,12 @@ const UpdateProfile = props => {
                     onBlur={() => setFieldTouched('name')}
                   />
                   {touched.name && errors.name && (
-                    <Text style={{color: 'red'}}>{errors.name}</Text>
+                    <Text style={{ color: 'red' }}>{errors.name}</Text>
                   )}
                 </View>
 
-                <View style={{width: '100%', height: 'auto', marginTop: 15}}>
-                  <Text style={[appStyle.text14, {color: COLOR.text2}]}>
+                <View style={{ width: '100%', height: 'auto', marginTop: 15 }}>
+                  <Text style={[appStyle.text14, { color: COLOR.text2 }]}>
                     Ngày sinh
                   </Text>
                   <TouchableOpacity
@@ -183,18 +179,17 @@ const UpdateProfile = props => {
                       borderRadius: 6,
                       borderColor: COLOR.primary,
                     }}>
-                    <Text style={[appStyle.text16, {marginLeft: 8}]}>
+                    <Text style={[appStyle.text16, { marginLeft: 8 }]}>
                       {selectedDate}
                     </Text>
                   </TouchableOpacity>
                 </View>
 
-                <View style={{width: '100%', height: 'auto', marginTop: 15}}>
-                  <Text style={[appStyle.text14, {color: COLOR.text2}]}>
+                <View style={{ width: '100%', height: 'auto', marginTop: 15 }}>
+                  <Text style={[appStyle.text14, { color: COLOR.text2 }]}>
                     Giới tính
                   </Text>
                   <AppDropdown
-                    borderWidth={1}
                     labelField="label"
                     valueField="value"
                     data={sex}

@@ -23,7 +23,7 @@ const Profile = props => {
   const isFocused = useIsFocused();
   const navigation = useNavigation();
   const {route} = props;
-  const {setIsLogin, infoUser, idUser} = useContext(AppContext);
+  const {setIsLogin, infoUser, idUser} = useContext(AppContext);  
   const [name, setName] = useState(infoUser.name);
   const [isModalVisible, setModalVisible] = useState(false);
   console.log(infoUser.avatar);
