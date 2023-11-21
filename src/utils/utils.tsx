@@ -60,7 +60,7 @@ const tomorrowString = `${tomorrow.getHours() + 1}:00, ${tomorrow.getDate()}/${
 
 export const timeString = `${currentDayString} - ${tomorrowString}`;
 
-const formatTime = (date: Date) => {
+export const formatTime = (date: Date) => {
   const hours = date.getHours();
   const day = date.getDate();
   const month = date.getMonth() + 1;
@@ -70,6 +70,14 @@ const formatTime = (date: Date) => {
   const dayOfWeek = daysOfWeek[date.getDay()];
 
   return `${hours + 1}h00 ${dayOfWeek}, ${day}/${month}/${year}`;
+};
+
+export const timeDateFormat = (date: Date) => {
+  const hours = date.getHours();
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+
+  return `${hours + 1}h00, ${day}/${month}`;
 };
 
 export const currentDateString = formatTime(currentDay);
@@ -98,8 +106,7 @@ export const showToastMessage = (type?: string, title?: string, icon?: any) => {
   const containerStyle = {
     width: windowWidth * 0.8,
     height: windowHeight * 0.07,
-    backgroundColor:type === 'error' ? COLOR.exit: COLOR.primary,
-
+    backgroundColor: type === 'error' ? COLOR.exit : COLOR.primary,
   };
 
   const child = (
@@ -107,7 +114,7 @@ export const showToastMessage = (type?: string, title?: string, icon?: any) => {
       style={{
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor:type === 'error' ? COLOR.exit: COLOR.primary,
+        backgroundColor: type === 'error' ? COLOR.exit : COLOR.primary,
 
         borderRadius: 12,
         flexDirection: 'row',

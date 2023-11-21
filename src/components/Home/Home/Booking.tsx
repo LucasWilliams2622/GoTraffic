@@ -16,7 +16,10 @@ import {appStyle} from '../../../constants/AppStyle';
 import {
   currentDay,
   currentTimeString,
+  formatDate,
+  formatTime,
   returnTimeString,
+  timeDateFormat,
   timeString,
 } from '../../../utils/utils';
 import {
@@ -105,7 +108,12 @@ const Booking = ({navigation, selectedTime, setSelectedTime}: any) => {
               setSelectedTime={setSelectedTime}
             />
           ) : (
-            <DriverView timeString={timeString} navigation={navigation} />
+            <DriverView
+              timeString={timeString}
+              navigation={navigation}
+              selectedTime={selectedTime}
+              setSelectedTime={setSelectedTime}
+            />
           )}
 
           <AppButton title="Tìm xe" backgroundColor={COLOR.fifth} />
@@ -138,18 +146,25 @@ export const InputField = ({
           {placeholderText}
         </Text>
       </Row>
-      <Text
-        placeholder={`Nhập ${placeholderText.toLowerCase()}`}
-        value={value ? value : address}
-        style={styles.heroInput}
-        onPressIn={() => {
+      <TouchableOpacity
+        onPress={() => {
           if (value) {
             setTimeModalVisible(true);
           } else {
             setLocationModalVisible(true);
           }
-        }}
-      />
+        }}>
+        <Text style={styles.heroInput}>
+          {value
+            ? `${timeDateFormat(selectedTime.startDate)}  - ${timeDateFormat(
+                selectedTime.endDate,
+              )} `
+            : address
+            ? address
+            : 'Nhập ' + placeholderText.toLowerCase()}
+        </Text>
+      </TouchableOpacity>
+
       <ReactNativeModal
         isVisible={isLocationModalVisible}
         style={{margin: 0, display: 'flex'}}>
@@ -212,7 +227,12 @@ const RadioButton = ({value, tripType, text}: RadioButtonProps) => (
   </Radio>
 );
 
-const DriverView = ({timeString, navigation}: ViewProps) => {
+const DriverView = ({
+  timeString,
+  navigation,
+  selectedTime,
+  setSelectedTime,
+}: ViewProps) => {
   const [tripType, setTripType] = useState<string>('lien-tinh');
   const [tripDescription, setTripDescription] = useState<string>(
     'Di chuyển ngoài thành phố, hành trình 2 chiều',
@@ -297,6 +317,8 @@ const DriverView = ({timeString, navigation}: ViewProps) => {
         value={timeString}
         navigation={navigation}
         navigateTo="TimePicking"
+        selectedTime={selectedTime}
+        setSelectedTime={setSelectedTime}
       />
     </View>
   );

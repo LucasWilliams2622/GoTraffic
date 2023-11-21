@@ -228,7 +228,13 @@ const Home: React.FC = () => {
       <Section
         title="Đón xe sân bay"
         data={AirportData}
-        renderItem={({item}) => <AirportPicking {...item} />}
+        renderItem={({item}) => (
+          <AirportPicking
+            {...item}
+            selectedTime={selectedTime}
+            setSelectedTime={setSelectedTime}
+          />
+        )}
         snapToInterval={140}
       />
 

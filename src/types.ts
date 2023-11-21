@@ -223,6 +223,8 @@ export interface AirportPickingProps {
   title: string;
   image: string;
   totalCar: number;
+  selectedTime: any;
+  setSelectedTime: any;
 }
 
 export interface RenderListProps<T> {
