@@ -24,6 +24,7 @@ import OptionDropdown from '../../../../components/Profile/OptionDropdown';
 import {useNavigation} from '@react-navigation/native';
 import AppHeader from '../../../../components/AppHeader';
 
+
 const seatNumbers = [];
 for (let i = 4; i <= 16; i++) {
   seatNumbers.push({label: i.toString(), value: i.toString()});
@@ -51,38 +52,42 @@ const BasicInfor = props => {
   const [selectedTransmission, setSelectedTransmission] = useState('manual');
   const [selectedFuel, setSelectedFuel] = useState('Xăng');
 
-  const handleNext = () => {
-    const carInfo = {
-      carNumber,
-      selectedBrand,
-      selectedModel,
-      selectedSeats,
-      selectedYear,
-      selectedTransmission,
-      selectedFuel,
-    };
-    navigation.navigate('DetailsInfor', {carInfo: carInfo});
-  };
+    const handleNext = () => {
+        const carInfo = {
+            carNumber,
+            selectedBrand,
+            selectedModel,
+            selectedSeats,
+            selectedYear,
+            selectedTransmission,
+            selectedFuel
+        }
+        navigation.navigate('DetailsInfor', { carInfo: carInfo });
+    }
 
-  return (
-    <SafeAreaView style={appStyle.container}>
-      <AppHeader title="Thông tin cơ bản" />
-      <View style={{flex: 1, paddingHorizontal: 10}}>
-        <ScrollView
-          style={{flex: 1, width: '100%', marginBottom: 20}}
-          showsVerticalScrollIndicator={false}>
-          <View style={{paddingHorizontal: 15}}>
-            <View
-              style={[
-                appStyle.cardInfo,
-                {paddingVertical: 30, borderTopWidth: 0},
-              ]}>
-              <Text style={{color: COLOR.textWarn, fontWeight: '300'}}>
-                Lưu ý: Bạn sẽ không thể thay đổi các thông tin về xe sau khi tạo
-                xe thành công. Vì vậy, bạn cần phải điền chính xác các thông tin
-                này dựa trên giấy tờ xe.
-              </Text>
-            </View>
+    return (
+        <SafeAreaView style={appStyle.container}>
+            {/* <Header
+                backgroundColor={COLOR.bgHeader}
+                text="Thông tin cơ bản"
+                icon={ICON.Back}
+                onPress={() => navigation.navigate('ListCar')}
+            /> */}
+            <AppHeader
+                title='Thông tin cơ bản'
+            />
+            <View style={{ flex: 1, paddingHorizontal: 10 }} >
+                <ScrollView style={{ flex: 1, width: '100%', marginBottom: 20 }}
+                    showsVerticalScrollIndicator={false}>
+                    <View style={{ paddingHorizontal: 15 }}>
+
+                        <View style={[appStyle.cardInfo, { paddingVertical: 30, borderTopWidth: 0 }]}>
+                            <Text style={{ color: COLOR.textWarn, fontWeight: '300' }}>
+                                Lưu ý: Bạn sẽ không thể thay đổi các thông tin
+                                về xe sau khi tạo xe thành công. Vì vậy, bạn cần phải
+                                điền chính xác các thông tin này dựa trên giấy tờ xe.
+                            </Text>
+                        </View>
 
             <View style={[appStyle.cardInfo, {marginTop: 10}]}>
               <View style={appStyle.rowContent}>
