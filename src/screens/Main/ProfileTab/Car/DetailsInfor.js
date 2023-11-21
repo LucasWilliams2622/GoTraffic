@@ -33,6 +33,8 @@ import ActionSheet from 'react-native-actionsheet';
 import {Platform} from 'react-native';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import AppHeader from '../../../../components/AppHeader';
+import ImagePickerComponent from '../../../../components/ImagePickerComponent';
+import {BottomSheet} from 'react-native-btr';
 
 const DetailsInfor = props => {
   const {navigation, route} = props;
@@ -62,7 +64,10 @@ const DetailsInfor = props => {
   const [selectedImages, setSelectedImages] = useState(Array(9).fill(null));
   const [carImages, setCarImages] = useState('');
   const actionSheetRef = useRef();
-
+  const [visible, setVisible] = useState(false);
+  const toggleBottomNavigationView = () => {
+    setVisible(!visible);
+  };
   // api địa chỉ
   useEffect(() => {
     fetch('https://provinces.open-api.vn/api/p/')
@@ -327,9 +332,7 @@ const DetailsInfor = props => {
   };
   return (
     <SafeAreaView style={appStyle.container}>
-      <AppHeader
-        title='Thông tin chi tiết'
-      />
+      <AppHeader title="Thông tin chi tiết" />
       <View style={{flex: 1, paddingHorizontal: 10}}>
         <ScrollView
           style={{flex: 1, width: '100%', marginBottom: 20}}
@@ -547,27 +550,75 @@ const DetailsInfor = props => {
 
           {/* Ảnh  */}
           <View style={appStyle.cardInfo}>
-            <Text style={appStyle.text165}>Ảnh xe</Text>
-            <Text style={{marginBottom: 10}}>
-              Bạn vui lòng đăng 4 ảnh (Trước - sau - trái - phải) để tăng hiệu
-              quả cho thuê và đủ điều kiện để đăng ký.
-            </Text>
-            <AppButton
-              title="Upload Image"
-              onPress={() => uploadImages()}
-              backgroundColor={COLOR.redOrange}
-            />
-
-            {/* Action Sheet */}
-            <View style={styles.imageGrid}>{renderSelectedImages()}</View>
-            <ActionSheet
-              ref={actionSheetRef}
-              title={'Select Image'}
-              options={['Choose from Library', 'Take Photo', 'Cancel']}
-              cancelButtonIndex={2}
-              destructiveButtonIndex={2}
-              onPress={handleActionSheetPress}
-            />
+            <TouchableOpacity
+              style={{marginBottom: 10, marginTop: 10, flexDirection: 'row'}}
+              onPress={() => toggleBottomNavigationView()}>
+              <FastImage
+                source={ICON.Add}
+                tintColor={COLOR.primary}
+                style={appStyle.icon}
+              />
+              <Text
+                style={[
+                  appStyle.text14Bold,
+                  {marginLeft: 10, color: COLOR.primary},
+                ]}>
+                Thêm hình ảnh
+              </Text>
+            </TouchableOpacity>
+            <BottomSheet
+              visible={visible}
+              onBackButtonPress={toggleBottomNavigationView}
+              onBackdropPress={toggleBottomNavigationView}>
+              <View style={styles.bottomNavigationView}>
+                <View style={{flex: 1, justifyContent: 'space-evenly'}}>
+                  <Text style={appStyle.text165}>Ảnh xe</Text>
+                  <Text style={{marginBottom: 10}}>
+                    Bạn vui lòng đăng 1 tấm ảnh đại diện của xe
+                  </Text>
+                  <ImagePickerComponent />
+                  <Text style={{marginBottom: 10}}>
+                    Bạn vui lòng đăng 4 ảnh (Trước - sau - trái - phải) để tăng
+                    hiệu quả cho thuê và đủ điều kiện để đăng ký.
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-evenly',
+                  }}>
+                  <ImagePickerComponent />
+                  <ImagePickerComponent />
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-evenly',
+                  }}>
+                  <ImagePickerComponent />
+                  <ImagePickerComponent />
+                </View>
+                {/* Action Sheet */}
+                {/* <View style={styles.imageGrid}>{renderSelectedImages()}</View>
+                  <ActionSheet
+                    ref={actionSheetRef}
+                    title={'Select Image'}
+                    options={['Choose from Library', 'Take Photo', 'Cancel']}
+                    cancelButtonIndex={2}
+                    destructiveButtonIndex={2}
+                    onPress={handleActionSheetPress}
+                  /> */}
+                <AppButton
+                  title="Upload images"
+                  color={COLOR.secondary}
+                  fontSize={18}
+                  onPress={() => {
+                    setVisible(false);
+                    uploadImages();
+                  }}
+                />
+              </View>
+            </BottomSheet>
           </View>
         </ScrollView>
 
@@ -663,5 +714,13 @@ const styles = StyleSheet.create({
   removeText: {
     color: 'red',
     marginTop: 5,
+  },
+  bottomNavigationView: {
+    backgroundColor: '#fff',
+    width: '100%',
+    height: windowHeight * 0.7,
+    padding: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
 });

@@ -62,7 +62,7 @@ const ListCar = props => {
 
       />
       <FlatList
-        style={{marginBottom: 50}}
+        style={{marginBottom: 100}}
         data={carData}
         renderItem={({item}) => <ItemCar data={item} />}
         keyExtractor={(item, index) => index.toString()}

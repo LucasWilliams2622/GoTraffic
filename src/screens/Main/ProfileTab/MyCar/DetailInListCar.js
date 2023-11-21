@@ -22,7 +22,7 @@ import {showToastMessage} from '../../../../utils/utils';
 
 const DetailInListCar = props => {
   const navigation = useNavigation();
-  const {id, price} = props.route.params;
+  const {id, price, status} = props.route.params;
   const [data, setData] = useState('');
   const goBack = () => {
     navigation.goBack('Profile');
@@ -33,26 +33,54 @@ const DetailInListCar = props => {
   const layout = useWindowDimensions();
   const FirstRoute = () => (
     <View style={{flex: 1, padding: 10}}>
-      <AppProfile
-        icon={ICON.Trip}
-        text="Giá cho thuê"
-        onPress={() => navigation.navigate('RentCost', {price: price})}
-      />
-      <AppProfile
-        icon={ICON.Calendar}
-        text="Lịch xe"
-        onPress={() => navigation.navigate('CalendarOfCar')}
-      />
-      <AppProfile
-        icon={ICON.Heart}
-        text="Giao xe tận nơi"
-        onPress={() => navigation.navigate('CarDelivery', {id: id})}
-      />
-      <AppProfile
-        icon={ICON.Card}
-        text="Phụ phí"
-        onPress={() => navigation.navigate('Surcharge', {id: id})}
-      />
+      <View style={{flex:1}}>
+        <AppProfile
+          icon={ICON.Trip}
+          text="Giá cho thuê"
+          onPress={() => navigation.navigate('RentCost', {price: price})}
+        />
+        <AppProfile
+          icon={ICON.Calendar}
+          text="Lịch xe"
+          onPress={() => navigation.navigate('CalendarOfCar')}
+        />
+        <AppProfile
+          icon={ICON.Heart}
+          text="Giao xe tận nơi"
+          onPress={() => navigation.navigate('CarDelivery', {id: id})}
+        />
+        <AppProfile
+          icon={ICON.Card}
+          text="Phụ phí"
+          onPress={() => navigation.navigate('Surcharge', {id: id})}
+        />
+      </View>
+      <View
+        style={{
+          justifyContent: 'space-between',
+          flexDirection: 'row',
+          height: 100,
+        }}>
+        <Text style={appStyle.text165}>Trạng thái</Text>
+        {status == 1 ? (
+          <View style={styles.statusContainer}>
+            <Text style={styles.statusText}>Chưa cho thuê</Text>
+          </View>
+        ) : status == 2 ? (
+          <View
+            style={[styles.statusContainer, {backgroundColor: COLOR.green}]}>
+            <Text style={styles.statusText}>Đang cho thuê</Text>
+          </View>
+        ) : status == 3 ? (
+          <View style={[styles.statusContainer, {backgroundColor: COLOR.red}]}>
+            <Text style={styles.statusText}>Từ chối duyệt</Text>
+          </View>
+        ) : (
+          <View style={styles.statusContainer}>
+            <Text style={styles.statusText}>Đang chờ duyệt</Text>
+          </View>
+        )}
+      </View>
     </View>
   );
   //api getDetail
@@ -303,5 +331,16 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+  },
+  statusContainer: {
+    backgroundColor: 'rgba(65, 207, 242, 0.8)',
+    borderRadius: 8,
+    padding: 5,
+    justifyContent: 'center',
+    height:30
+  },
+  statusText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });

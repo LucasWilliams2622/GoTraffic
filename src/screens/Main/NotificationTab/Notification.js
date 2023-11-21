@@ -9,6 +9,7 @@ import AxiosInstance from '../../../constants/AxiosInstance';
 import {AppContext} from '../../../utils/AppContext';
 import {useIsFocused} from '@react-navigation/native';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import AppHeader from '../../../components/AppHeader';
 const Notification = () => {
   const [data, setData] = useState('');
   const [dataTrip, setdataTrip] = useState('');
@@ -52,9 +53,7 @@ const Notification = () => {
   }, [useIsFocused]);
   return (
     <SafeAreaView style={appStyle.container}>
-      <View style={styles.viewTitle}>
-        <Text style={styles.title}>Thông báo</Text>
-      </View>
+      <AppHeader title='Thông báo' notLeft/>
       <ScrollView>
         <View style={styles.line1}>
           <Text style={styles.text1}>Thông báo chuyến</Text>

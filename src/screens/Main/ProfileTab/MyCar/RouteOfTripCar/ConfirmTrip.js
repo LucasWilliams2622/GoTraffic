@@ -12,7 +12,6 @@ import FastImage from 'react-native-fast-image';
 
 const ConfirmTrip = () => {
   const isFocused = useIsFocused();
-
   const [data, setData] = useState('');
   const getCarByIdUser = async () => {
     try {

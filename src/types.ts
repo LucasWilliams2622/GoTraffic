@@ -174,7 +174,6 @@ export interface RadioButtonProps {
   text: string;
 }
 
-
 export interface CarCardItemProps {
   id: string;
   name: string;
@@ -226,6 +225,7 @@ export interface RenderListProps<T> {
   data: T[];
   renderItem: ({item}: {item: T}) => JSX.Element;
   snapToInterval: number;
+  reverse?: boolean;
 }
 
 export interface SectionProps {
@@ -233,6 +233,7 @@ export interface SectionProps {
   data: any[];
   renderItem: ({item}: {item: any}) => JSX.Element;
   snapToInterval: number;
+  reverse?: boolean;
 }
 
 export type StackScreenParamList = {

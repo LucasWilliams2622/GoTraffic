@@ -4,7 +4,7 @@ import {
   Dimensions,
   PixelRatio,
 } from 'react-native';
-import { COLOR } from './Theme';
+import {COLOR} from './Theme';
 
 export const windowWidth = Dimensions.get('window').width;
 export const windowHeight = Dimensions.get('window').height;
@@ -292,11 +292,11 @@ export const appStyle = StyleSheet.create({
     borderBottomColor: COLOR.borderColor,
     height: 50,
     alignItems: 'center',
-    paddingLeft: 10
+    paddingLeft: 10,
   },
   viewContainer: {
     flex: 1,
-    padding: 15
+    padding: 15,
   },
   dropdown: {
     margin: 15,
@@ -326,7 +326,7 @@ export const appStyle = StyleSheet.create({
   rowContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   modalContainerCam: {
     backgroundColor: 'white',
@@ -350,7 +350,6 @@ export const appStyle = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-
   },
 
   modalBackdrop: {
@@ -366,13 +365,13 @@ export const appStyle = StyleSheet.create({
     backgroundColor: '#D9D9D9',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 10
+    marginTop: 10,
   },
 
   inputRight: {
     flexDirection: 'row',
     alignItems: 'center',
     width: windowWidth * 0.4,
-    justifyContent: 'flex-end'
-  }
+    justifyContent: 'flex-end',
+  },
 });

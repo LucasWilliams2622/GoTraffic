@@ -5,11 +5,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useMemo, useState, useContext } from 'react';
+import React, {useMemo, useState, useContext, useEffect} from 'react';
 import FastImage from 'react-native-fast-image';
-import { COLOR } from '../../../constants/Theme';
-import { appStyle } from '../../../constants/AppStyle';
-import { Column, Row } from 'native-base';
+import {COLOR} from '../../../constants/Theme';
+import {appStyle} from '../../../constants/AppStyle';
+import {Column, Row} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import ShieldIcon from '../../../assets/icon/ic_shield_verified';
 import SuitcaseIcon from '../../../assets/icon/ic_suitcase';
@@ -18,12 +18,11 @@ import {
   getTotalPrice,
   calculateDiscount,
 } from '../../../utils/utils';
-import { CarCardItemProps } from '../../../types';
+import {CarCardItemProps} from '../../../types';
 import AxiosInstance from '../../../constants/AxiosInstance';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AppContext } from '../../../utils/AppContext';
+import {AppContext} from '../../../utils/AppContext';
 import axios from 'axios';
-
 
 const CarCardItem = ({
   id,
@@ -36,27 +35,32 @@ const CarCardItem = ({
   originalPrice,
   price,
   rating,
- // isFavorite, 
+  // isFavorite,
   numberOfBooked,
   width = 330,
   onPress,
 }: CarCardItemProps) => {
-  const { idUser } = useContext(AppContext);
+  const {idUser} = useContext(AppContext);
   const [isFavorite, setIsFavorite] = useState(false);
- const addOrRemoveFavorite = async () => {
-    try {      
+  const [thumbnail, setThumbnail] = useState('');
+  const addOrRemoveFavorite = async () => {
+    try {
       if (isFavorite) {
-        const response = await AxiosInstance().delete(`/favorite-car/api/delete?idUser=${idUser}&idCar=${id}`);
-          console.log(response,"Xe đã bị xóa khỏi danh sách yêu thích");
+        const response = await AxiosInstance().delete(
+          `/favorite-car/api/delete?idUser=${idUser}&idCar=${id}`,
+        );
+        console.log(response, 'Xe đã bị xóa khỏi danh sách yêu thích');
       } else {
-        const response = await AxiosInstance().post(`/favorite-car/api/add?idUser=${idUser}&idCar=${id}`);
-          console.log(response,"Xe được thêm vào danh sách yêu thích");
+        const response = await AxiosInstance().post(
+          `/favorite-car/api/add?idUser=${idUser}&idCar=${id}`,
+        );
+        console.log(response, 'Xe được thêm vào danh sách yêu thích');
       }
       setIsFavorite(!isFavorite);
     } catch (error) {
       console.log(error);
     }
-  };  
+  };
 
   const formattedPrice = useMemo(() => formatPrice(price), [price]);
   const formattedOriginalPrice = useMemo(
@@ -68,14 +72,33 @@ const CarCardItem = ({
     () => calculateDiscount(originalPrice ?? 0, price),
     [originalPrice, price],
   );
+  useEffect(() => {
+    try {
+      let images = JSON.parse(image);
+      if (images.length > 0) {
+        setThumbnail(images[0]);
+      } else {
+        setThumbnail(
+          'https://2.bp.blogspot.com/-muVbmju-gkA/Vir94NirTeI/AAAAAAAAT9c/VoHzHZzQmR4/s1600/placeholder-image.jpg',
+        );
+      }
+    } catch (error) {
+      console.log(error);
+      setThumbnail(
+        'https://2.bp.blogspot.com/-muVbmju-gkA/Vir94NirTeI/AAAAAAAAT9c/VoHzHZzQmR4/s1600/placeholder-image.jpg',
+      );
+    }
+  });
   return (
-    <Pressable style={[CarCardItemStyles.container, { width: width }]} onPress={onPress}>
+    <Pressable
+      style={[CarCardItemStyles.container, {width: width}]}
+      onPress={onPress}>
       {/* <FastImage source={{uri: image}} style={CarCardItemStyles.image} /> */}
-      <FastImage source={{ uri: imageThumbnail }} style={CarCardItemStyles.image} />
+      <FastImage source={{uri: thumbnail}} style={CarCardItemStyles.image} />
 
       {originalPrice && (
         <View style={CarCardItemStyles.discount}>
-          <Text style={[appStyle.text10, { color: COLOR.white, padding: 10 }]}>
+          <Text style={[appStyle.text10, {color: COLOR.white, padding: 10}]}>
             Giảm {discountPercent}%
           </Text>
         </View>
@@ -85,9 +108,9 @@ const CarCardItem = ({
         style={CarCardItemStyles.pressable}>
         <Icon
           name="heart"
-          color={isFavorite  ? COLOR.fifth : COLOR.white}
+          color={isFavorite ? COLOR.fifth : COLOR.white}
           size={20}
-          solid={isFavorite }
+          solid={isFavorite}
         />
       </Pressable>
 
@@ -118,39 +141,39 @@ const CarCardItem = ({
       <View style={CarCardItemStyles.separator} />
 
       <Row style={CarCardItemStyles.priceRow}>
-        <Row style={{ alignItems: 'center' }}>
+        <Row style={{alignItems: 'center'}}>
           <Icon name="star" color={COLOR.third} size={12} solid />
-          <Text style={[CarCardItemStyles.ratingText, { marginLeft: 5 }]}>
+          <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
             {rating?.toFixed(1)}
           </Text>
           <Text
-            style={[CarCardItemStyles.dot, { marginLeft: 5, marginRight: 5 }]}>
+            style={[CarCardItemStyles.dot, {marginLeft: 5, marginRight: 5}]}>
             ·
           </Text>
           <SuitcaseIcon color={COLOR.fifth} />
-          <Text style={[CarCardItemStyles.ratingText, { marginLeft: 5 }]}>
+          <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
             {numberOfBooked} chuyến
           </Text>
         </Row>
 
-        <Column style={{ alignItems: 'flex-end' }}>
-          <Row style={{ alignItems: 'baseline' }}>
+        <Column style={{alignItems: 'flex-end'}}>
+          <Row style={{alignItems: 'baseline'}}>
             {originalPrice && (
               <Text style={CarCardItemStyles.originalPrice}>
                 {formattedOriginalPrice}
               </Text>
             )}
 
-            <Text style={{ color: COLOR.fifth, fontSize: 18 }}>
+            <Text style={{color: COLOR.fifth, fontSize: 18}}>
               {formattedPrice}
             </Text>
 
-            <Text style={{ color: COLOR.borderColor, fontSize: 12 }}>/ngày</Text>
+            <Text style={{color: COLOR.borderColor, fontSize: 12}}>/ngày</Text>
           </Row>
 
-          <Text style={{ color: COLOR.borderColor, fontSize: 12, marginTop: 5 }}>
+          <Text style={{color: COLOR.borderColor, fontSize: 12, marginTop: 5}}>
             Giá tổng{' '}
-            <Text style={{ fontWeight: 'bold' }}>{formatPrice(totalPrice)}</Text>
+            <Text style={{fontWeight: 'bold'}}>{formatPrice(totalPrice)}</Text>
           </Text>
         </Column>
       </Row>
@@ -162,7 +185,7 @@ export default CarCardItem;
 
 export const CarCardItemStyles = StyleSheet.create({
   container: {
-    marginRight: 10,
+    marginRight: 20,
     marginTop: 10,
     borderRadius: 20,
     borderWidth: 0.5,
