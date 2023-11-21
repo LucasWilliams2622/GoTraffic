@@ -35,6 +35,8 @@ import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import AppHeader from '../../../../components/AppHeader';
 import ImagePickerComponent from '../../../../components/ImagePickerComponent';
 import {BottomSheet} from 'react-native-btr';
+import {Switch} from 'native-base';
+import Slider from '@react-native-community/slider';
 
 const DetailsInfor = props => {
   const {navigation, route} = props;
@@ -56,24 +58,16 @@ const DetailsInfor = props => {
   const [selectedWard, setSelectedWard] = useState(null);
   const [address, setAddress] = useState(null);
   const [location, setLocation] = useState(null);
-
   const [onSwitch, setonSwitch] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [isCameraModalVisible, setIsCameraModalVisible] = useState(false);
-  const [selectedImageType, setSelectedImageType] = useState(null);
-  const [selectedImages, setSelectedImages] = useState(Array(9).fill(null));
-  const [carImages, setCarImages] = useState('');
-  const actionSheetRef = useRef();
   const [visible, setVisible] = useState(false);
-  const [checkImage, setCheckImage] = useState(false);
-  const [selectedImagePath, setSelectedImagePath] = useState(Array);
-  const handleImageSelected = path => {
-    // Handle the image path in the parent component
-    setSelectedImagePath(prevArray => [...prevArray, path]);
-  };
-  const toggleBottomNavigationView = () => {
-    setVisible(!visible);
-  };
+  const [isEnabled, setEnabled] = useState(false);
+  const [isEnabledLimitKm, setEnabledLimitKm] = useState(false);
+  const [first, setfirst] = useState(0);
+  const [second, setsecond] = useState(0);
+  const [third, setthird] = useState(0);
+  const [fourth, setfourth] = useState(0);
+  const [fifth, setfifth] = useState(0);
   // api địa chỉ
   useEffect(() => {
     fetch('https://provinces.open-api.vn/api/p/')
@@ -156,86 +150,32 @@ const DetailsInfor = props => {
     setonSwitch(true);
     toggleModal();
   };
+  const handleNext = () => {
+    const carInfo2 = {
+      location,
+      description,
+      fuelConsumption,
+      price,
+      selectedFeatures,
 
-  //call api add car here
-  const addNewCar = async () => {
-    try {
-      console.log('bien so : ', cardInfo.carInfo.carNumber.toString());
-      const response = await axios.post(
-        'http://103.57.129.166:3000/car/api/add',
-        {
-          idUser: 1,
-          carBrand: cardInfo.carInfo.selectedBrand,
-          numberPlate: cardInfo.carInfo.carNumber,
-          //numberPlate: '5122-LD99999',
-          name: cardInfo.carInfo.selectedModel,
-          yearOfManufacture: cardInfo.carInfo.selectedYear,
-          seats: cardInfo.carInfo.selectedSeats,
-          gear: cardInfo.carInfo.selectedTransmission,
-          fuel: cardInfo.carInfo.selectedFuel,
-          locationCar: location,
-          latitude: 0,
-          longitude: 0,
-          description: description,
-          fuelConsumption: parseInt(fuelConsumption),
-          isDelivery: true,
-          limitKm: 0,
-          price: price,
-          utilities: selectedFeatures.toString(),
-          image: carImages.toString(),
-          imageThumbnail: carImages[0].toString()
-        },
-      );
-      console.log(response.data);
-      if (response.data.result) {
-        showToastMessage('', 'Đăng xe thành công');
-        // const updatedCarInfo = [...cars];
-        // updatedCarInfo.push(combinedInfo);
-        // setCars(updatedCarInfo);
-        navigation.navigate('ListCar');
-      } else {
-        showToastMessage('', 'Đăng xe thất bại', ICON.cancelWhite);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+      isDelivery: isEnabled,
+      deliveryWithin: Math.floor(first * 100),
+      deliveryFee: Math.floor(second * 10 * 5),
+      freeDeliveryWithin: Math.floor(third * 10),
+
+      limitKmStatus: isEnabledLimitKm,
+      maxKm: Math.floor(fourth * 100 * 8),
+      exceededFee: Math.floor(fifth * 10),
+    };
+
+    navigation.navigate('FinalStep', {
+      carInfo: cardInfo,
+      carInfo2: carInfo2,
+    });
+
+    //navigation.navigate('DetailsInfor', { carInfo: carInfo });
   };
 
-  const uploadImages = async () => {
-    try {
-      const formData = new FormData();
-      selectedImagePath.forEach((uri, index) => {
-        if (uri) {
-          const fileName = `image_${index}.jpg`;
-          formData.append('images', {
-            uri,
-            type: 'image/jpeg',
-            name: fileName,
-          });
-        }
-      });
-      const response = await axios.post(
-        'http://103.57.129.166:3000/car/api/upload-car-images',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        },
-      );
-      console.log(response.data.links);
-      setCarImages(response.data.links);
-      if (response.data.result) {
-        showToastMessage('', 'Upload images success');
-        setVisible(false);
-        setCheckImage(true);
-      } else {
-        showToastMessage('', 'Upload images fail', ICON.cancelWhite);
-      }
-    } catch (error) {
-      console.error('Error uploading images:', error);
-    }
-  };
   return (
     <SafeAreaView style={appStyle.container}>
       <AppHeader title="Thông tin chi tiết" />
@@ -418,6 +358,134 @@ const DetailsInfor = props => {
             </View>
           </View>
 
+          {/* Giao xe tan noi */}
+          <View style={appStyle.cardInfo}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                height: 50,
+              }}>
+              <Text style={appStyle.text16Bold}>GIAO NHẬN XE TẬN NƠI</Text>
+              <Switch
+                style={{alignSelf: 'center', marginTop: -20}}
+                value={isEnabled}
+                onValueChange={value => setEnabled(value)}
+              />
+            </View>
+            {isEnabled ? (
+              <View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                  <Text>Trong vòng</Text>
+                  <Text>{Math.floor(first * 100)} km</Text>
+                </View>
+                <Slider
+                  style={{width: '100%', height: 40}}
+                  minimumValue={0}
+                  maximumValue={1}
+                  minimumTrackTintColor="#41cff2"
+                  maximumTrackTintColor="#000000"
+                  onValueChange={value => setfirst(value)}
+                />
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                  <Text>Phí</Text>
+                  <Text>{Math.floor(second * 10 * 5)} K/km</Text>
+                </View>
+                <Slider
+                  style={{width: '100%', height: 40}}
+                  minimumValue={0}
+                  maximumValue={1}
+                  minimumTrackTintColor="#41cff2"
+                  maximumTrackTintColor="#000000"
+                  onValueChange={value => setsecond(value)}
+                />
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                  <Text>Miễn phí trong vòng</Text>
+                  <Text>{Math.floor(third * 10)} km</Text>
+                </View>
+                <Slider
+                  style={{width: '100%', height: 40}}
+                  minimumValue={0}
+                  maximumValue={1}
+                  minimumTrackTintColor="#41cff2"
+                  maximumTrackTintColor="#000000"
+                  onValueChange={value => setthird(value)}
+                />
+              </View>
+            ) : null}
+          </View>
+          {/* Gioi han so km */}
+          <View style={appStyle.cardInfo}>
+            {/*Visible of LimitKilometer*/}
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                height: 50,
+              }}>
+              <Text style={[appStyle.text16Bold, {marginRight: 10}]}>
+                GIỚI HẠN SỐ KM THUÊ XE
+              </Text>
+              <Switch
+                style={{alignSelf: 'center', marginTop: -20}}
+                value={isEnabledLimitKm}
+                onValueChange={value => setEnabledLimitKm(value)}
+              />
+            </View>
+            {isEnabledLimitKm ? (
+              <View style={styles.containerSlider}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                  <Text style={appStyle.text14}>Số km tối đa</Text>
+                  <Text style={appStyle.text14}>
+                    {Math.floor(fourth * 100 * 8)} km/ngày
+                  </Text>
+                </View>
+                <Slider
+                  style={{width: '100%', height: 40}}
+                  minimumValue={0}
+                  maximumValue={1}
+                  minimumTrackTintColor="#41cff2"
+                  maximumTrackTintColor="#000000"
+                  onValueChange={value => setfourth(value)}
+                />
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                  <Text style={appStyle.text14}>Phí vượt qua giới hạn</Text>
+                  <Text style={appStyle.text14}>
+                    {Math.floor(fifth * 10)} K/km
+                  </Text>
+                </View>
+                <Slider
+                  style={{width: '100%', height: 40}}
+                  minimumValue={0}
+                  maximumValue={1}
+                  minimumTrackTintColor="#41cff2"
+                  maximumTrackTintColor="#000000"
+                  onValueChange={value => setfifth(value)}
+                />
+              </View>
+            ) : null}
+          </View>
+
           {/* Tính năng */}
           <View style={appStyle.cardInfo}>
             <Text style={appStyle.text165}>Tính năng xe</Text>
@@ -453,94 +521,12 @@ const DetailsInfor = props => {
             </View>
             <Text>Giá đề xuất: 960 nghìn đồng</Text>
           </View>
-
-          {/* Ảnh  */}
-          <View style={appStyle.cardInfo}>
-            {checkImage == false ? (
-              <TouchableOpacity
-                style={{marginBottom: 10, marginTop: 10, flexDirection: 'row'}}
-                onPress={() => toggleBottomNavigationView()}>
-                <FastImage
-                  source={ICON.Add}
-                  tintColor={COLOR.primary}
-                  style={appStyle.icon}
-                />
-                <Text
-                  style={[
-                    appStyle.text14Bold,
-                    {marginLeft: 10, color: COLOR.primary},
-                  ]}>
-                  Thêm hình ảnh
-                </Text>
-              </TouchableOpacity>
-            ) : (
-              <View
-                style={{marginBottom: 10, marginTop: 10, flexDirection: 'row'}}>
-                <FastImage
-                  source={ICON.Done}
-                  tintColor={COLOR.green}
-                  style={appStyle.icon}
-                />
-                <Text
-                  style={[
-                    appStyle.text14Bold,
-                    {marginLeft: 10, color: COLOR.green},
-                  ]}>
-                  Đã cập nhật hình ảnh
-                </Text>
-              </View>
-            )}
-
-            <BottomSheet
-              visible={visible}
-              onBackButtonPress={toggleBottomNavigationView}
-              onBackdropPress={toggleBottomNavigationView}>
-              <View style={styles.bottomNavigationView}>
-                <View style={{flex: 1, justifyContent: 'space-evenly'}}>
-                  <Text style={appStyle.text165}>Ảnh xe</Text>
-                  <Text style={{marginBottom: 10}}>
-                    Bạn vui lòng đăng 1 tấm ảnh đại diện của xe
-                  </Text>
-                  <ImagePickerComponent onImageSelected={handleImageSelected} />
-                  <Text style={{marginBottom: 10}}>
-                    Bạn vui lòng đăng 4 ảnh (Trước - sau - trái - phải) để tăng
-                    hiệu quả cho thuê và đủ điều kiện để đăng ký.
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-evenly',
-                  }}>
-                  <ImagePickerComponent onImageSelected={handleImageSelected} />
-                  <ImagePickerComponent onImageSelected={handleImageSelected} />
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-evenly',
-                  }}>
-                  <ImagePickerComponent onImageSelected={handleImageSelected} />
-                  <ImagePickerComponent onImageSelected={handleImageSelected} />
-                </View>
-                <AppButton
-                  title="Upload images"
-                  color={COLOR.secondary}
-                  fontSize={18}
-                  onPress={() => {
-                    uploadImages();
-                    //console.log(selectedImagePath);
-                  }}
-                />
-              </View>
-            </BottomSheet>
-          </View>
         </ScrollView>
 
         <AppButton
-          title="Hoàn tất"
+          title="Tiếp theo"
           marginBottom={70}
-          onPress={() => addNewCar()}
+          onPress={() => handleNext()}
         />
       </View>
 
@@ -629,13 +615,5 @@ const styles = StyleSheet.create({
   removeText: {
     color: 'red',
     marginTop: 5,
-  },
-  bottomNavigationView: {
-    backgroundColor: '#fff',
-    width: '100%',
-    height: windowHeight * 0.7,
-    padding: 20,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
   },
 });
