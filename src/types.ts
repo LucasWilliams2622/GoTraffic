@@ -160,12 +160,16 @@ export interface InputFieldProps {
   value?: string;
   navigation: any;
   navigateTo: string;
+  selectedTime?: any;
+  setSelectedTime?: any;
 }
 
 export interface ViewProps {
   timeString: string;
   navigation?: any;
   route?: any;
+  selectedTime?: any;
+  setSelectedTime?: any;
 }
 
 export interface RadioButtonProps {

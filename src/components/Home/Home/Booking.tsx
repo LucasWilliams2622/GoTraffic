@@ -13,7 +13,12 @@ import {Row, Radio, HStack} from 'native-base';
 import AppButton from '../../AppButton';
 import SteeringWheel from '../../../assets/icon/ic_steering_wheel';
 import {appStyle} from '../../../constants/AppStyle';
-import {timeString} from '../../../utils/utils';
+import {
+  currentDay,
+  currentTimeString,
+  returnTimeString,
+  timeString,
+} from '../../../utils/utils';
 import {
   ButtonConfig,
   ButtonProps,
@@ -25,6 +30,7 @@ import {
 import {useRoute} from '@react-navigation/native';
 import ReactNativeModal from 'react-native-modal';
 import LocationPicking from '../../../screens/Main/HomeTab/LocationPicking';
+import TimePickingModal from '../../../screens/Main/HomeTab/TimePickingModal';
 
 const Button = ({isSelfDriving, setIsSelfDriving, config}: ButtonProps) => {
   const {value, side, icon, text} = config;
@@ -72,7 +78,7 @@ const BUTTONS_CONFIG: ButtonConfig[] = [
 const tomorrow = new Date();
 tomorrow.setDate(tomorrow.getDate() + 1);
 
-const Booking = ({navigation}: any) => {
+const Booking = ({navigation, selectedTime, setSelectedTime}: any) => {
   const [isSelfDriving, setIsSelfDriving] = useState<boolean>(true);
 
   return (
@@ -92,7 +98,12 @@ const Booking = ({navigation}: any) => {
       <View style={styles.contentWrapper}>
         <View style={styles.contentContainer}>
           {isSelfDriving === true ? (
-            <SelfDrivingView timeString={timeString} navigation={navigation} />
+            <SelfDrivingView
+              timeString={timeString}
+              navigation={navigation}
+              selectedTime={selectedTime}
+              setSelectedTime={setSelectedTime}
+            />
           ) : (
             <DriverView timeString={timeString} navigation={navigation} />
           )}
@@ -111,9 +122,13 @@ export const InputField = ({
   iconName,
   placeholderText,
   value,
+  selectedTime,
+  setSelectedTime,
 }: InputFieldProps) => {
   const [address, setInputAddress] = useState<string>('');
-  const [isModalVisible, setModalVisible] = useState<boolean>(false);
+  const [isLocationModalVisible, setLocationModalVisible] =
+    useState<boolean>(false);
+  const [isTimeModalVisible, setTimeModalVisible] = useState<boolean>(false);
 
   return (
     <View style={{marginBottom: 20}}>
@@ -123,25 +138,45 @@ export const InputField = ({
           {placeholderText}
         </Text>
       </Row>
-      <TextInput
+      <Text
         placeholder={`Nhập ${placeholderText.toLowerCase()}`}
         value={value ? value : address}
         style={styles.heroInput}
-        onPressIn={() => setModalVisible(true)}
+        onPressIn={() => {
+          if (value) {
+            setTimeModalVisible(true);
+          } else {
+            setLocationModalVisible(true);
+          }
+        }}
       />
       <ReactNativeModal
-        isVisible={isModalVisible}
+        isVisible={isLocationModalVisible}
         style={{margin: 0, display: 'flex'}}>
         <LocationPicking
-          close={() => setModalVisible(false)}
+          close={() => setLocationModalVisible(false)}
           setInputAddress={setInputAddress}
+        />
+      </ReactNativeModal>
+      <ReactNativeModal
+        isVisible={isTimeModalVisible}
+        style={{margin: 0}}
+        onBackdropPress={() => setTimeModalVisible(false)}>
+        <TimePickingModal
+          toggle={() => setTimeModalVisible(false)}
+          setSelectedTime={setSelectedTime}
         />
       </ReactNativeModal>
     </View>
   );
 };
 
-const SelfDrivingView = ({timeString, navigation}: ViewProps) => {
+const SelfDrivingView = ({
+  timeString,
+  navigation,
+  selectedTime,
+  setSelectedTime,
+}: ViewProps) => {
   return (
     <View>
       <InputField
@@ -156,6 +191,8 @@ const SelfDrivingView = ({timeString, navigation}: ViewProps) => {
         value={timeString}
         navigation={navigation}
         navigateTo="TimePicking"
+        selectedTime={selectedTime}
+        setSelectedTime={setSelectedTime}
       />
     </View>
   );
