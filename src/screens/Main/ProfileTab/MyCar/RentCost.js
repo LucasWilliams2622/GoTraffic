@@ -5,6 +5,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {COLOR} from '../../../../constants/Theme';
 import FastImage from 'react-native-fast-image';
 import AppHeader from '../../../../components/AppHeader';
+import { formatPrice } from '../../../../utils/utils';
 
 const RentCost = props => {
   const {navigation} = props;
@@ -22,14 +23,15 @@ const RentCost = props => {
           thiết lập bởi chủ xe.
         </Text>
         <Text style={[appStyle.text30Bold, {color: COLOR.primary}]}>
-          {price}K
+          {formatPrice(price)}
         </Text>
         <View
           style={{width: '30%', height: 1, backgroundColor: COLOR.primary}}
         />
         <Text
           style={[appStyle.text16, {color: COLOR.white, textAlign: 'center'}]}>
-          Giá cơ bản đề xuất {'\n'} cho mẫu xe FORD ESCAPE 2023 LÀ {price}K/ngày
+          Giá cơ bản đề xuất {'\n'} cho mẫu xe FORD ESCAPE 2023 LÀ{' '}
+          {formatPrice(price)}/ngày
         </Text>
       </View>
       <View
@@ -40,31 +42,31 @@ const RentCost = props => {
         }}>
         <View>
           <Text style={[appStyle.text16Bold]}>T2</Text>
-          <Text>{price}K</Text>
+          <Text>{formatPrice(price)}</Text>
         </View>
         <View>
           <Text style={[appStyle.text16Bold]}>T3</Text>
-          <Text>{price}K</Text>
+          <Text>{formatPrice(price)}</Text>
         </View>
         <View>
           <Text style={[appStyle.text16Bold]}>T4</Text>
-          <Text>{price}K</Text>
+          <Text>{formatPrice(price)}</Text>
         </View>
         <View>
           <Text style={[appStyle.text16Bold]}>T5</Text>
-          <Text>{price}K</Text>
+          <Text>{formatPrice(price)}</Text>
         </View>
         <View>
           <Text style={[appStyle.text16Bold]}>T6</Text>
-          <Text>{price}K</Text>
+          <Text>{formatPrice(price)}</Text>
         </View>
         <View>
           <Text style={[appStyle.text16Bold, {color: COLOR.orange}]}>T7</Text>
-          <Text style={{color: COLOR.orange}}>{price * 1.1}K</Text>
+          <Text style={{color: COLOR.orange}}>{formatPrice(price * 1.1)}</Text>
         </View>
         <View>
           <Text style={[appStyle.text16Bold, {color: COLOR.orange}]}>CN</Text>
-          <Text style={{color: COLOR.orange}}>{price * 1.1}K</Text>
+          <Text style={{color: COLOR.orange}}>{formatPrice(price * 1.1)}</Text>
         </View>
       </View>
     </SafeAreaView>

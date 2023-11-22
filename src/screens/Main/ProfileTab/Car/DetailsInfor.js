@@ -65,6 +65,12 @@ const DetailsInfor = props => {
   const [carImages, setCarImages] = useState('');
   const actionSheetRef = useRef();
   const [visible, setVisible] = useState(false);
+  const [checkImage, setCheckImage] = useState(false);
+  const [selectedImagePath, setSelectedImagePath] = useState(Array);
+  const handleImageSelected = path => {
+    // Handle the image path in the parent component
+    setSelectedImagePath(prevArray => [...prevArray, path]);
+  };
   const toggleBottomNavigationView = () => {
     setVisible(!visible);
   };
@@ -177,6 +183,7 @@ const DetailsInfor = props => {
           price: price,
           utilities: selectedFeatures.toString(),
           image: carImages.toString(),
+          imageThumbnail: carImages[0].toString()
         },
       );
       console.log(response.data);
@@ -193,112 +200,11 @@ const DetailsInfor = props => {
       console.log(error);
     }
   };
-  // Kiểm tra và yêu cầu quyền truy cập
-  const checkAndRequestPermission = async () => {
-    if (Platform.OS === 'android') {
-      const result = await check(PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE);
-      if (result !== RESULTS.GRANTED) {
-        const requestResult = await request(
-          PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
-        );
-        if (requestResult !== RESULTS.GRANTED) {
-          // Xử lý khi người dùng từ chối cấp quyền
-        }
-      }
-    } else if (Platform.OS === 'ios') {
-      const result = await check(PERMISSIONS.IOS.PHOTO_LIBRARY);
-      if (result !== RESULTS.GRANTED) {
-        const requestResult = await request(PERMISSIONS.IOS.PHOTO_LIBRARY);
-        if (requestResult !== RESULTS.GRANTED) {
-          // Xử lý khi người dùng từ chối cấp quyền
-        }
-      }
-    }
-  };
-
-  // Chọn hình từ thư viện hoặc chụp hình
-  const showImagePickerOptions = () => {
-    actionSheetRef.current.show({useNativeDriver: true});
-  };
-  const removeImage = index => {
-    const updatedImages = [...selectedImages];
-    updatedImages[index] = null;
-    setSelectedImages(updatedImages);
-  };
-
-  // Hiển thị action sheet
-  const handleActionSheetPress = index => {
-    if (index === 0) {
-      pickImage();
-    } else if (index === 1) {
-      takePhoto();
-    }
-  };
-
-  // Chọn hình từ thư viện
-  const pickImage = async () => {
-    try {
-      const image = await ImagePicker.openPicker({
-        mediaType: 'photo',
-      });
-      const updatedImages = [...selectedImages];
-      const emptySlotIndex = updatedImages.indexOf(null);
-      if (emptySlotIndex !== -1) {
-        updatedImages[emptySlotIndex] = image.path;
-        setSelectedImages(updatedImages);
-      }
-      setSelectedImages(updatedImages);
-    } catch (error) {
-      console.log('ImagePicker Error: ', error);
-    }
-  };
-
-  // Chụp hình
-  const takePhoto = async () => {
-    try {
-      await checkAndRequestPermission();
-      const image = await ImagePicker.openCamera({
-        width: 300,
-        height: 400,
-        cropping: true,
-      });
-
-      // Find the first empty slot in selectedImages and update the state
-      const updatedImages = [...selectedImages];
-      const emptySlotIndex = updatedImages.indexOf(null);
-      if (emptySlotIndex !== -1) {
-        updatedImages[emptySlotIndex] = image.path;
-        setSelectedImages(updatedImages);
-      }
-    } catch (error) {
-      console.log('ImagePicker Error: ', error);
-    }
-  };
-
-  // Render selected images
-  const renderSelectedImages = () => {
-    return selectedImages.map((image, index) => (
-      <TouchableOpacity key={index} onPress={() => showImagePickerOptions()}>
-        <View style={styles.imageContainer}>
-          {image && (
-            <View>
-              <FastImage source={{uri: image}} style={styles.image} />
-              <TouchableOpacity onPress={() => removeImage(index)}>
-                <Text style={styles.removeText}>Remove</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-          {!image && <Text>Select Image</Text>}
-        </View>
-      </TouchableOpacity>
-    ));
-  };
 
   const uploadImages = async () => {
     try {
       const formData = new FormData();
-      console.log(selectedImages);
-      selectedImages.forEach((uri, index) => {
+      selectedImagePath.forEach((uri, index) => {
         if (uri) {
           const fileName = `image_${index}.jpg`;
           formData.append('images', {
@@ -319,10 +225,10 @@ const DetailsInfor = props => {
       );
       console.log(response.data.links);
       setCarImages(response.data.links);
-
       if (response.data.result) {
-        console.log('image car:', carImages);
         showToastMessage('', 'Upload images success');
+        setVisible(false);
+        setCheckImage(true);
       } else {
         showToastMessage('', 'Upload images fail', ICON.cancelWhite);
       }
@@ -541,7 +447,7 @@ const DetailsInfor = props => {
                   onChangeText={text => setPrice(text)}
                 />
                 <Text style={[appStyle.text18Bold, {color: COLOR.primary}]}>
-                  K
+                  VNĐ
                 </Text>
               </View>
             </View>
@@ -550,22 +456,41 @@ const DetailsInfor = props => {
 
           {/* Ảnh  */}
           <View style={appStyle.cardInfo}>
-            <TouchableOpacity
-              style={{marginBottom: 10, marginTop: 10, flexDirection: 'row'}}
-              onPress={() => toggleBottomNavigationView()}>
-              <FastImage
-                source={ICON.Add}
-                tintColor={COLOR.primary}
-                style={appStyle.icon}
-              />
-              <Text
-                style={[
-                  appStyle.text14Bold,
-                  {marginLeft: 10, color: COLOR.primary},
-                ]}>
-                Thêm hình ảnh
-              </Text>
-            </TouchableOpacity>
+            {checkImage == false ? (
+              <TouchableOpacity
+                style={{marginBottom: 10, marginTop: 10, flexDirection: 'row'}}
+                onPress={() => toggleBottomNavigationView()}>
+                <FastImage
+                  source={ICON.Add}
+                  tintColor={COLOR.primary}
+                  style={appStyle.icon}
+                />
+                <Text
+                  style={[
+                    appStyle.text14Bold,
+                    {marginLeft: 10, color: COLOR.primary},
+                  ]}>
+                  Thêm hình ảnh
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              <View
+                style={{marginBottom: 10, marginTop: 10, flexDirection: 'row'}}>
+                <FastImage
+                  source={ICON.Done}
+                  tintColor={COLOR.green}
+                  style={appStyle.icon}
+                />
+                <Text
+                  style={[
+                    appStyle.text14Bold,
+                    {marginLeft: 10, color: COLOR.green},
+                  ]}>
+                  Đã cập nhật hình ảnh
+                </Text>
+              </View>
+            )}
+
             <BottomSheet
               visible={visible}
               onBackButtonPress={toggleBottomNavigationView}
@@ -576,7 +501,7 @@ const DetailsInfor = props => {
                   <Text style={{marginBottom: 10}}>
                     Bạn vui lòng đăng 1 tấm ảnh đại diện của xe
                   </Text>
-                  <ImagePickerComponent />
+                  <ImagePickerComponent onImageSelected={handleImageSelected} />
                   <Text style={{marginBottom: 10}}>
                     Bạn vui lòng đăng 4 ảnh (Trước - sau - trái - phải) để tăng
                     hiệu quả cho thuê và đủ điều kiện để đăng ký.
@@ -587,34 +512,24 @@ const DetailsInfor = props => {
                     flexDirection: 'row',
                     justifyContent: 'space-evenly',
                   }}>
-                  <ImagePickerComponent />
-                  <ImagePickerComponent />
+                  <ImagePickerComponent onImageSelected={handleImageSelected} />
+                  <ImagePickerComponent onImageSelected={handleImageSelected} />
                 </View>
                 <View
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'space-evenly',
                   }}>
-                  <ImagePickerComponent />
-                  <ImagePickerComponent />
+                  <ImagePickerComponent onImageSelected={handleImageSelected} />
+                  <ImagePickerComponent onImageSelected={handleImageSelected} />
                 </View>
-                {/* Action Sheet */}
-                {/* <View style={styles.imageGrid}>{renderSelectedImages()}</View>
-                  <ActionSheet
-                    ref={actionSheetRef}
-                    title={'Select Image'}
-                    options={['Choose from Library', 'Take Photo', 'Cancel']}
-                    cancelButtonIndex={2}
-                    destructiveButtonIndex={2}
-                    onPress={handleActionSheetPress}
-                  /> */}
                 <AppButton
                   title="Upload images"
                   color={COLOR.secondary}
                   fontSize={18}
                   onPress={() => {
-                    setVisible(false);
                     uploadImages();
+                    //console.log(selectedImagePath);
                   }}
                 />
               </View>
