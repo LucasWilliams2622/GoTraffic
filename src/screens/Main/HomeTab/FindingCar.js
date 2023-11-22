@@ -141,7 +141,6 @@ const FindingCar = ({
         />
       </View>
     </SafeAreaView>
-    // <Text>Test</Text>
   );
 };
 

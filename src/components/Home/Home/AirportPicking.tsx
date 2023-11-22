@@ -42,7 +42,7 @@ const AirportPicking = ({
         isVisible={isModalVisible}
         style={{margin: 0, display: 'flex'}}>
         <FindingCar
-          title={title}
+          location={title}
           close={() => setModalVisible(false)}
           selectedTime={selectedTime}
           setSelectedTime={setSelectedTime}
