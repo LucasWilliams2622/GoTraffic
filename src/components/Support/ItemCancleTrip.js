@@ -7,9 +7,9 @@ import {
 } from 'react-native';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
-import {COLOR} from '../../constants/Theme';
+import {COLOR, ICON} from '../../constants/Theme';
 import {Code} from 'native-base';
-import {appStyle} from '../../constants/AppStyle';
+import {appStyle, windowHeight, windowWidth} from '../../constants/AppStyle';
 
 const ItemCancleTrip = props => {
   const {data} = props;
@@ -26,16 +26,17 @@ const ItemCancleTrip = props => {
         }}>
         <View style={{flexDirection: 'row'}}>
           <FastImage
-            style={{width: 20, height: 20}}
+            style={appStyle.icon}
             resizeMode={'stretch'}
-            source={require('../../assets/icon/ic_warning.png')}
+            source={ICON.cancelWhite}
+            tintColor={COLOR.red}
           />
           <Text style={[appStyle.text14, {marginLeft: 5}]}>Đã hủy</Text>
         </View>
         <Text style={[appStyle.text14Bold]}>{data.createdAt.slice(0, 10)}</Text>
       </View>
       <TouchableOpacity style={styles.container}>
-        <View style={[{alignSelf: 'flex-start'}]}>
+        <View style={[{ width: windowWidth*0.37}]}>
           {!isImageUrlValid ? (
             <FastImage
               style={styles.image}
@@ -52,7 +53,8 @@ const ItemCancleTrip = props => {
         </View>
         <View
           style={{
-            justifyContent: 'space-between',
+            //justifyContent: 'space-between',
+            //backgroundColor:'blue'
           }}>
           <View style={{flexDirection: 'row'}}>
             <FastImage
@@ -64,20 +66,20 @@ const ItemCancleTrip = props => {
               {data.Car.isDelivery ? 'Tự lái' : ''}
             </Text>
           </View>
-          <Text style={[appStyle.text16Bold]}>{data.Car.name}</Text>
+          <Text style={[appStyle.text165]}>{data.Car.name}</Text>
           <Text
-            style={[appStyle.text16Bold, {width: 160, color: COLOR.orange}]}>
-            <Text style={{color: COLOR.black}}>Tên người thuê: </Text>
+            style={{width: 160, color: 'black', fontSize:16, fontWeight: '500'}}>
+            <Text style={{fontWeight:'400'}}>Người thuê: </Text>
             {data.User.name}
           </Text>
           <Text
             style={{
-              color: '#219EBC',
-              fontWeight: '700',
-              fontSize: 16,
+              // color: COLOR.borderColor,
+              fontSize:16, fontWeight: '500',
+              color:'black',
               marginTop: 10,
             }}>
-            <Text style={{color: COLOR.black}}>SĐT: </Text>
+            <Text style={{fontWeight:'400'}}>SĐT: </Text>
             {data.User.phone}
           </Text>
         </View>
@@ -109,11 +111,12 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   image: {
-    width: 130,
+    width: '100%',
     height: 120,
-    alignSelf: 'flex-start',
-    marginLeft: -20,
-    borderRadius: 10,
+    //alignSelf: 'flex-start',
+    //marginLeft: -20,
+    borderRadius: 5,
+    // backgroundColor:'blue'
   },
   logoMap: {
     width: 14,

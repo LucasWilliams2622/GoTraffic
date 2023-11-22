@@ -47,14 +47,6 @@ const ListCar = props => {
 
   return (
     <SafeAreaView style={appStyle.container}>
-      {/* <TopNav
-        iconLeft={ICON.Back}
-        screenLeft="HomeCar"
-        text="Xe của tôi"
-        iconRight={ICON.Add}
-        screenRight="BasicInfor"
-        //onPressRight={() => addCar()}
-      /> */}
       <AppHeader
         title='Xe của tôi'
         icon={ICON.Add}

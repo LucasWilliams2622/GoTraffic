@@ -48,16 +48,16 @@ const ItemCar = props => {
           </View>
         ) : data.status == 2 ? (
           <View
-            style={[styles.statusContainer, {backgroundColor: COLOR.green}]}>
+            style={[styles.statusContainer, {backgroundColor: COLOR.lightGreen}]}>
             <Text style={styles.statusText}>Đang cho thuê</Text>
           </View>
         ) : data.status == 3 ? (
           <View style={[styles.statusContainer, {backgroundColor: COLOR.red}]}>
-            <Text style={styles.statusText}>Từ chối duyệt</Text>
+            <Text style={styles.statusText}>Bị từ chối</Text>
           </View>
         ) : (
           <View style={styles.statusContainer}>
-            <Text style={styles.statusText}>Đang chờ duyệt</Text>
+            <Text style={styles.statusText}>Chờ duyệt</Text>
           </View>
         )}
         <View style={styles.detailsContainer}>

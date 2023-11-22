@@ -35,7 +35,7 @@ const HistoryTrip = () => {
   return (
     <SafeAreaView style={appStyle.container}>
       <AppHeader title='Lịch sử chuyến'/>
-      <View style={{backgroundColor:COLOR.borderColor2,height:1,width:'100%'}}/>
+      {/* <View style={{backgroundColor:COLOR.borderColor2,height:1,width:'100%'}}/> */}
       <ScrollView style={appStyle.main}>
         <Text style={styles.text1}>Đã thuê</Text>
         <FlatList

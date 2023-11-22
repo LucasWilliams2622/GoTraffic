@@ -121,6 +121,13 @@ export const appStyle = StyleSheet.create({
     letterSpacing: 0.5,
     color: COLOR.text,
   },
+  text145: {
+    fontSize: 14,
+    fontWeight: '500',
+    fontStyle: 'normal',
+    letterSpacing: 0.3,
+    color: COLOR.text,
+  },
   text14Bold: {
     fontSize: 14,
     fontWeight: 'bold',

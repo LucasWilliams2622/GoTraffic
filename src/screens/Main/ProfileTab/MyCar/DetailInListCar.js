@@ -19,6 +19,7 @@ import {useNavigation} from '@react-navigation/native';
 import AxiosInstance from '../../../../constants/AxiosInstance';
 import AppHeader from '../../../../components/AppHeader';
 import {showToastMessage} from '../../../../utils/utils';
+import FailModal from '../../../../components/Profile/Modal/FailModal';
 
 const DetailInListCar = props => {
   const navigation = useNavigation();
@@ -186,7 +187,7 @@ const DetailInListCar = props => {
 
   return (
     <SafeAreaView style={appStyle.container}>
-      <Modal animationType="slide" transparent={true} visible={modalVisible}>
+      {/* <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={appStyle.text16Bold}>Xác nhận xóa xe</Text>
@@ -214,7 +215,16 @@ const DetailInListCar = props => {
             </View>
           </View>
         </View>
-      </Modal>
+      </Modal> */}
+      <FailModal
+        title="Xóa xe"
+        text="Bạn chắc chắn xóa xe này?"
+        nextStep="Xóa"
+        isVisible={modalVisible}
+        onCheckBalance={() =>  deleteCarById()}
+        onCancel={() => setModalVisible(false)}
+      />
+
       <FastImage
         style={styles.image}
         source={require('../../../../assets/image/bg2.jpg')}

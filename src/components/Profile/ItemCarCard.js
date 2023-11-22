@@ -12,18 +12,22 @@ import { AppContext } from '../../utils/AppContext';
 import { formatPrice } from '../../utils/utils';
 
 const ItemCarCard = (props) => {
-    const { id, name, image, locationCar, gear, isDelivery,
-        price,
-        rating,
-        numberOfBooked,
-        removeFromFavorites } = props;
+    // const { id, name, imageThumbnail, locationCar, gear, isDelivery,
+    //     price,
+    //     rating,
+    //     numberOfBooked,
+    //      } = props;
+        const {data, removeFromFavorites} = props;
+        const isImageUrlValid = /^https?:\/\/.*\.(png|jpg)$/i.test(
+            data.Car.imageThumbnail,
+          );
 
     const [isFavorite, setIsFavorite] = useState(true);
-    const { setIsLogin, infoUser, idUser } = useContext(AppContext);
+    // const { setIsLogin, infoUser, idUser } = useContext(AppContext);
 
     const removeFavorite = async () => {
         try {
-            await removeFromFavorites(id);
+            await removeFromFavorites(data.id);
             setIsFavorite(false);
         } catch (error) {
             console.log(error);
@@ -42,7 +46,7 @@ const ItemCarCard = (props) => {
             padding: 10,
             
         }}>
-            <FastImage resizeMode='stretch' source={{ uri: image }} style={styles.image} />
+            <FastImage resizeMode='stretch' source={{ uri: imageThumbnail }} style={styles.image} />
             <TouchableOpacity style={styles.pressable}
                 onPress={() => removeFavorite()}
             >

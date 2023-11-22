@@ -1,9 +1,9 @@
 import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
-import {COLOR} from '../../constants/Theme';
+import {COLOR, ICON} from '../../constants/Theme';
 import {Code} from 'native-base';
-import {appStyle} from '../../constants/AppStyle';
+import {appStyle, windowWidth} from '../../constants/AppStyle';
 import numeral from 'numeral';
 import {useNavigation} from '@react-navigation/native';
 
@@ -29,9 +29,10 @@ const ItemComplete = props => {
         }}>
         <View style={{flexDirection: 'row'}}>
           <FastImage
-            style={{width: 20, height: 20}}
+            style={appStyle.icon}
             resizeMode={'stretch'}
-            source={require('../../assets/icon/ic_warning.png')}
+            source={ICON.Done}
+            //source={require('../../assets/icon/ic_warning.png')}
           />
           <Text style={[appStyle.text14, {marginLeft: 5}]}>
             {data.status == 1
@@ -132,10 +133,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   image: {
-    width: 130,
+    width: windowWidth*0.37,
     height: 120,
-    alignSelf: 'flex-start',
-    marginLeft: -20,
     borderRadius: 10,
   },
   logoMap: {
