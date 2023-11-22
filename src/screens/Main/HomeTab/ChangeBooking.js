@@ -17,7 +17,13 @@ import LocationPicking from './LocationPicking';
 import {InputField} from '../../../components/Home/Home/Booking';
 import {timeString} from '../../../utils/utils';
 
-const ChangeBooking = ({selectedTime, setSelectedTime, close}) => {
+const ChangeBooking = ({
+  location,
+  setLocation,
+  selectedTime,
+  setSelectedTime,
+  close,
+}) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [inputAddress, setInputAddress] = useState('');
 
@@ -46,6 +52,8 @@ const ChangeBooking = ({selectedTime, setSelectedTime, close}) => {
           placeholderText="Địa điểm"
           navigation={navigation}
           navigateTo="LocationPicking"
+          location={location}
+          setLocation={setLocation}
         />
         <ReactNativeModal
           isVisible={isModalVisible}
@@ -82,11 +90,7 @@ const ChangeBooking = ({selectedTime, setSelectedTime, close}) => {
       </View>
       <View style={styles.bottom}>
         <Text>Số ngày cho thuê: 1 ngày</Text>
-        <AppButton
-          title="Tìm xe"
-          width={100}
-          onPress={() => navigation.goBack()}
-        />
+        <AppButton title="Tìm xe" width={100} onPress={() => close()} />
       </View>
     </SafeAreaView>
   );

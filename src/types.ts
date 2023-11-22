@@ -162,6 +162,8 @@ export interface InputFieldProps {
   navigateTo: string;
   selectedTime?: any;
   setSelectedTime?: any;
+  location?: string;
+  setLocation?: any;
 }
 
 export interface ViewProps {
@@ -170,6 +172,8 @@ export interface ViewProps {
   route?: any;
   selectedTime?: any;
   setSelectedTime?: any;
+  location?: any;
+  setLocation?: any;
 }
 
 export interface RadioButtonProps {

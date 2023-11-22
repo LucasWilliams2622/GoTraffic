@@ -34,6 +34,7 @@ import {useRoute} from '@react-navigation/native';
 import ReactNativeModal from 'react-native-modal';
 import LocationPicking from '../../../screens/Main/HomeTab/LocationPicking';
 import TimePickingModal from '../../../screens/Main/HomeTab/TimePickingModal';
+import FindingCar from '../../../screens/Main/HomeTab/FindingCar';
 
 const Button = ({isSelfDriving, setIsSelfDriving, config}: ButtonProps) => {
   const {value, side, icon, text} = config;
@@ -83,6 +84,8 @@ tomorrow.setDate(tomorrow.getDate() + 1);
 
 const Booking = ({navigation, selectedTime, setSelectedTime}: any) => {
   const [isSelfDriving, setIsSelfDriving] = useState<boolean>(true);
+  const [isModalVisible, setModalVisible] = useState<boolean>(false);
+  const [location, setLocation] = useState<string>('');
 
   return (
     <View style={styles.outerContainer}>
@@ -106,6 +109,8 @@ const Booking = ({navigation, selectedTime, setSelectedTime}: any) => {
               navigation={navigation}
               selectedTime={selectedTime}
               setSelectedTime={setSelectedTime}
+              setLocation={setLocation}
+              location={location}
             />
           ) : (
             <DriverView
@@ -113,10 +118,27 @@ const Booking = ({navigation, selectedTime, setSelectedTime}: any) => {
               navigation={navigation}
               selectedTime={selectedTime}
               setSelectedTime={setSelectedTime}
+              location={location}
+              setLocation={setLocation}
             />
           )}
 
-          <AppButton title="Tìm xe" backgroundColor={COLOR.fifth} />
+          <AppButton
+            title="Tìm xe"
+            backgroundColor={COLOR.fifth}
+            onPress={() => setModalVisible(true)}
+          />
+          <ReactNativeModal
+            isVisible={isModalVisible}
+            style={{margin: 0, display: 'flex'}}>
+            <FindingCar
+              location={location}
+              setLocation={setLocation}
+              close={() => setModalVisible(false)}
+              selectedTime={selectedTime}
+              setSelectedTime={setSelectedTime}
+            />
+          </ReactNativeModal>
         </View>
       </View>
     </View>
@@ -132,6 +154,8 @@ export const InputField = ({
   value,
   selectedTime,
   setSelectedTime,
+  setLocation,
+  location,
 }: InputFieldProps) => {
   const [address, setInputAddress] = useState<string>('');
   const [isLocationModalVisible, setLocationModalVisible] =
@@ -159,8 +183,8 @@ export const InputField = ({
             ? `${timeDateFormat(selectedTime.startDate)}  - ${timeDateFormat(
                 selectedTime.endDate,
               )} `
-            : address
-            ? address
+            : location
+            ? location
             : 'Nhập ' + placeholderText.toLowerCase()}
         </Text>
       </TouchableOpacity>
@@ -170,7 +194,7 @@ export const InputField = ({
         style={{margin: 0, display: 'flex'}}>
         <LocationPicking
           close={() => setLocationModalVisible(false)}
-          setInputAddress={setInputAddress}
+          setInputAddress={setLocation}
         />
       </ReactNativeModal>
       <ReactNativeModal
@@ -191,6 +215,8 @@ const SelfDrivingView = ({
   navigation,
   selectedTime,
   setSelectedTime,
+  setLocation,
+  location,
 }: ViewProps) => {
   return (
     <View>
@@ -199,6 +225,8 @@ const SelfDrivingView = ({
         placeholderText="Địa điểm"
         navigation={navigation}
         navigateTo="LocationPicking"
+        setLocation={setLocation}
+        location={location}
       />
       <InputField
         iconName="calendar"
@@ -232,6 +260,8 @@ const DriverView = ({
   navigation,
   selectedTime,
   setSelectedTime,
+  location,
+  setLocation,
 }: ViewProps) => {
   const [tripType, setTripType] = useState<string>('lien-tinh');
   const [tripDescription, setTripDescription] = useState<string>(
@@ -300,6 +330,8 @@ const DriverView = ({
         placeholderText="Điểm đón"
         navigation={navigation}
         navigateTo="LocationPicking"
+        location={location}
+        setLocation={setLocation}
       />
 
       {showLocation && (

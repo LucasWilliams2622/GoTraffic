@@ -17,10 +17,16 @@ import {useNavigation} from '@react-navigation/native';
 import AxiosInstance from '../../../constants/AxiosInstance';
 import ReactNativeModal from 'react-native-modal';
 import ChangeBooking from './ChangeBooking';
+import {timeDateFormat} from '../../../utils/utils';
 
-const FindingCar = props => {
+const FindingCar = ({
+  location,
+  setLocation,
+  close,
+  selectedTime,
+  setSelectedTime,
+}) => {
   const navigation = useNavigation();
-  const {title} = props.title;
   const [isSelected, setIsSelected] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
 
@@ -59,7 +65,7 @@ const FindingCar = props => {
   return (
     <SafeAreaView style={appStyle.container}>
       <View style={styles.viewTop}>
-        <TouchableOpacity onPress={() => props.close()}>
+        <TouchableOpacity onPress={close}>
           <FastImage
             source={ICON.Back}
             resizeMode="stretch"
@@ -70,8 +76,10 @@ const FindingCar = props => {
           onPress={() => setModalVisible(true)}
           style={styles.viewSearch}>
           <View style={{alignItems: 'center', width: '90%'}}>
-            <Text style={appStyle.text18Bold}>{title}</Text>
-            <Text>21h00, 10/11 · 21h00, 11/11</Text>
+            <Text style={appStyle.text18Bold}>{location}</Text>
+            <Text>{`${timeDateFormat(
+              selectedTime.startDate,
+            )}  - ${timeDateFormat(selectedTime.endDate)} `}</Text>
           </View>
           <FastImage
             source={ICON.Search}
@@ -81,9 +89,11 @@ const FindingCar = props => {
         </TouchableOpacity>
         <ReactNativeModal visible={isModalVisible} style={{margin: 0, flex: 1}}>
           <ChangeBooking
-            selectedTime={props.selectedTime}
-            setSelectedTime={props.setSelectedTime}
+            selectedTime={selectedTime}
+            setSelectedTime={setSelectedTime}
             close={() => setModalVisible(false)}
+            location={location}
+            setLocation={setLocation}
           />
         </ReactNativeModal>
       </View>
