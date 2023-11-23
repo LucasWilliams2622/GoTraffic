@@ -1,37 +1,62 @@
-import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
-import React, { useState, useContext, useEffect } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { appStyle, windowWidth } from '../../../constants/AppStyle';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  FlatList,
+  Alert,
+} from 'react-native';
+import React, {useState, useContext, useEffect} from 'react';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {appStyle, windowWidth} from '../../../constants/AppStyle';
 import Header from '../../../components/Header';
-import { useNavigation } from '@react-navigation/native';
-import { COLOR, ICON } from '../../../constants/Theme';
+import {useNavigation} from '@react-navigation/native';
+import {COLOR, ICON} from '../../../constants/Theme';
 import AppInput from '../../../components/AppInput';
 import FastImage from 'react-native-fast-image';
 import ItemOption from '../../../components/Profile/ItemOption';
 import ItemAddress from '../../../components/Profile/ItemAddress';
 import Suggestion from '../../../components/Home/Home/Suggestion';
 import axios from 'axios';
-import { AppContext } from '../../../utils/AppContext';
+import {AppContext} from '../../../utils/AppContext';
+import GetLocation from 'react-native-get-location';
 
 const LocationPicking = props => {
   //console.log(">>>>>>>>>> location");
   const navigation = useNavigation();
-  const { idUser } = useContext(AppContext);
+  const {idUser} = useContext(AppContext);
   const [locationPicking, setLocationPicking] = useState('');
   const [searchText, setSearchText] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [defaultAddress, setDefaultAddress] = useState('');
-
+  const [location, setLocation] = useState({
+    name: '',
+    ward: {
+      name: '',
+      id: '',
+    },
+    district: {
+      name: '',
+      id: '',
+    },
+    city: {
+      name: '',
+      id: '',
+    },
+    lat: '',
+    lng: '',
+  });
 
   const apikey = 'c3d0f188ff669f89042771a20656579073cffec5a8a69747';
 
   const autoComplete = async text => {
     try {
+      console.log(location.city.id);
       const response = await axios.get(
-        `https://maps.vietmap.vn/api/autocomplete/v3?apikey=${apikey}&text=${text}`,
+        `https://maps.vietmap.vn/api/autocomplete/v3?apikey=${apikey}&text=${text}&cityId=${location.city.id}&distId=${location.district.id}&wardId=${location.ward.id}`,
       );
       if (response.status === 200) {
-        console.log(response.data);
+        // console.log(response.data);
         setSuggestions(response.data);
       } else {
         console.log('error');
@@ -43,7 +68,9 @@ const LocationPicking = props => {
 
   const getDefault = async () => {
     try {
-      const response = await axios.get(`http://103.57.129.166:3000/address/api/get-default-address?idUser=${idUser}`);
+      const response = await axios.get(
+        `http://103.57.129.166:3000/address/api/get-default-address?idUser=${idUser}`,
+      );
       console.log(response.data);
       setDefaultAddress(response.data);
     } catch (error) {
@@ -52,12 +79,89 @@ const LocationPicking = props => {
   };
 
   useEffect(() => {
+    getCurrentLocation();
     getDefault();
   }, []);
 
   const handleInputChange = text => {
     setSearchText(text);
     autoComplete(text);
+  };
+
+  const getCurrentLocation = async () => {
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: false,
+      timeout: 60000,
+    })
+      .then(location => {
+        console.log('Current location: ' + JSON.stringify(location));
+        getDetailLocation(location);
+      })
+      .catch(error => {
+        const {code, message} = error;
+        console.warn(code, message);
+      });
+  };
+
+  const getDetailLocation = async location => {
+    const {latitude, longitude} = location;
+    console.log('latitude: ' + latitude + ' longitude: ' + longitude);
+    axios
+      .get(
+        `https://maps.vietmap.vn/api/reverse/v3?apikey=${apikey}&lat=${latitude}&lng=${longitude}`,
+      )
+      .then(response => {
+        console.log('Detail location: ' + JSON.stringify(response.data));
+        const data = response.data;
+        console.log(data[0]);
+        const boundaries = data[0].boundaries;
+        const name = data[0].name;
+        const lat = data[0].lat;
+        const lng = data[0].lng;
+        let wardData = {name: '', id: ''};
+        let districtData = {name: '', id: ''};
+        let cityData = {name: '', id: ''};
+        if (boundaries.length > 0) {
+          boundaries.forEach(item => {
+            if (item.type === 2) {
+              wardData.name = item.name;
+              wardData.id = item.id;
+            } else if (item.type === 1) {
+              districtData.name = item.name;
+              districtData.id = item.id;
+            } else if (item.type === 0) {
+              cityData.name = item.name;
+              cityData.id = item.id;
+            }
+          });
+          console.log(
+            'ward: ' +
+              JSON.stringify(ward) +
+              ' district: ' +
+              JSON.stringify(district) +
+              ' city: ' +
+              JSON.stringify(city),
+          );
+
+          setLocation({
+            name: name,
+            ward: wardData,
+            district: districtData,
+            city: cityData,
+            lat: lat,
+            lng: lng,
+          });
+
+          props.setInputAddress(
+            'Phường ' + ward.name + ', ' + district.name + ', ' + city.name,
+          );
+        } else {
+          Alert.alert('Chỉ hỗ trợ địa điểm trong lãnh thổ Việt Nam');
+        }
+      })
+      .catch(error => {
+        console.warn(error);
+      });
   };
 
   return (
@@ -77,7 +181,7 @@ const LocationPicking = props => {
             data={suggestions.slice(0, 5)}
             keyExtractor={(item, index) => index.toString()}
             showsVerticalScrollIndicator={false}
-            renderItem={({ item }) => (
+            renderItem={({item}) => (
               <Suggestion
                 data={item}
                 setInputAddress={props.setInputAddress}
@@ -89,15 +193,18 @@ const LocationPicking = props => {
 
         <TouchableOpacity
           style={appStyle.card}
-          onPress={() => navigation.goBack()}>
+          onPress={() => {
+            getCurrentLocation();
+            props.close();
+          }}>
           <FastImage source={ICON.Location} style={appStyle.iconBig} />
-          <Text style={[appStyle.text165, { marginLeft: 5 }]}>
+          <Text style={[appStyle.text165, {marginLeft: 5}]}>
             Vị trí hiện tại
           </Text>
         </TouchableOpacity>
 
         {/* Navigate qua sổ địa chỉ của user  */}
-        <TouchableOpacity style={[appStyle.rowBetween, { marginTop: 10 }]}>
+        <TouchableOpacity style={[appStyle.rowBetween, {marginTop: 10}]}>
           <Text style={appStyle.text14}>Địa chỉ của tôi </Text>
           <FastImage
             source={ICON.Next}
@@ -108,15 +215,9 @@ const LocationPicking = props => {
 
         {/* Địa chỉ mặc định của user */}
         {defaultAddress && defaultAddress.data && (
-
           <TouchableOpacity
             onPress={() => {
-              const {
-                address,
-                ward,
-                district,
-                city,
-              } = defaultAddress.data;
+              const {address, ward, district, city} = defaultAddress.data;
               const fullAddress = `${address}, ${ward}, ${district}, ${city}`;
               props.setInputAddress(fullAddress);
               props.close();
@@ -124,10 +225,10 @@ const LocationPicking = props => {
             <View style={styles.container}>
               <View style={styles.content}>
                 <FastImage
-                  style={[appStyle.iconBig, { alignSelf: 'center' }]}
+                  style={[appStyle.iconBig, {alignSelf: 'center'}]}
                   source={ICON.Home}
                 />
-                <View style={{ marginLeft: 16 }}>
+                <View style={{marginLeft: 16}}>
                   <View
                     style={{
                       width: windowWidth * 0.35,
@@ -135,7 +236,7 @@ const LocationPicking = props => {
                       alignItems: 'center',
                       flexDirection: 'row',
                     }}>
-                    <Text style={[appStyle.text16, { fontWeight: '600' }]}>
+                    <Text style={[appStyle.text16, {fontWeight: '600'}]}>
                       {defaultAddress.data.note}
                     </Text>
                     <View>
@@ -154,7 +255,8 @@ const LocationPicking = props => {
                     </View>
                   </View>
                   <Text style={[appStyle.text14]}>
-                    {defaultAddress.data.address}, {defaultAddress.data.ward}, {defaultAddress.data.district}, {defaultAddress.data.city}
+                    {defaultAddress.data.address}, {defaultAddress.data.ward},{' '}
+                    {defaultAddress.data.district}, {defaultAddress.data.city}
                   </Text>
                 </View>
               </View>
@@ -171,26 +273,27 @@ const LocationPicking = props => {
           }}>
           <Text style={appStyle.text14}>Đưa đón sân bay </Text>
           <FlatList
-            style={{ width: '100%', marginVertical: 10 }}
+            style={{width: '100%', marginVertical: 10}}
             data={plane}
-            renderItem={({ item }) => (
+            renderItem={({item}) => (
               <ItemOption
                 data={item}
                 setInputAddress={props.setInputAddress}
                 close={props.close}
-              />)}
+              />
+            )}
             keyExtractor={item => item.id}
             horizontal
             showsHorizontalScrollIndicator={false}
           />
         </View>
 
-        <View style={{ marginTop: 10 }}>
+        <View style={{marginTop: 10}}>
           <Text style={appStyle.text14}>Tìm kiếm gần đây</Text>
           <FlatList
-            style={{ width: '100%', marginVertical: 10 }}
+            style={{width: '100%', marginVertical: 10}}
             data={locationViewed}
-            renderItem={({ item }) => (
+            renderItem={({item}) => (
               <ItemAddress
                 data={item}
                 setInputAddress={props.setInputAddress}

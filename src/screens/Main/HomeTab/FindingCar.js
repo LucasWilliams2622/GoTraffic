@@ -18,6 +18,8 @@ import AxiosInstance from '../../../constants/AxiosInstance';
 import ReactNativeModal from 'react-native-modal';
 import ChangeBooking from './ChangeBooking';
 import {timeDateFormat} from '../../../utils/utils';
+import {REACT_APP_VIETMAP_API_KEY} from '@env';
+import axios from 'axios';
 
 const FindingCar = ({
   location,
@@ -29,6 +31,7 @@ const FindingCar = ({
   const navigation = useNavigation();
   const [isSelected, setIsSelected] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [detailLocation, setDetailLocation] = useState(null);
 
   const [listCar, setListCar] = useState([]);
   const getAllCar = async () => {
@@ -44,8 +47,23 @@ const FindingCar = ({
     }
   };
 
+  const getDetailLocation = async location => {
+    axios
+      .get(
+        `https://maps.vietmap.vn/api/search/v3?apikey=${REACT_APP_VIETMAP_API_KEY}&text=${location}`,
+      )
+      .then(response => {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(error => {
+        console.warn(error);
+      });
+  };
+
   useEffect(() => {
-    getAllCar();
+    console.log('location: ' + location);
+    getDetailLocation(location);
+    // getAllCar();
   }, []);
 
   const sortByBrand = () => {
@@ -76,7 +94,9 @@ const FindingCar = ({
           onPress={() => setModalVisible(true)}
           style={styles.viewSearch}>
           <View style={{alignItems: 'center', width: '90%'}}>
-            <Text style={appStyle.text18Bold}>{location}</Text>
+            <Text style={appStyle.text16Bold}>
+              {location.length > 30 ? location.slice(0, 30) + '...' : location}
+            </Text>
             <Text>{`${timeDateFormat(
               selectedTime.startDate,
             )}  - ${timeDateFormat(selectedTime.endDate)} `}</Text>

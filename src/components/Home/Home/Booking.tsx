@@ -157,7 +157,6 @@ export const InputField = ({
   setLocation,
   location,
 }: InputFieldProps) => {
-  const [address, setInputAddress] = useState<string>('');
   const [isLocationModalVisible, setLocationModalVisible] =
     useState<boolean>(false);
   const [isTimeModalVisible, setTimeModalVisible] = useState<boolean>(false);
@@ -184,7 +183,9 @@ export const InputField = ({
                 selectedTime.endDate,
               )} `
             : location
-            ? location
+            ? location.length > 30
+              ? location.slice(0, 30) + '...'
+              : location
             : 'Nhập ' + placeholderText.toLowerCase()}
         </Text>
       </TouchableOpacity>
