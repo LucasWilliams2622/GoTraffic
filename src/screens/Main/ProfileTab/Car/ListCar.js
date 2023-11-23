@@ -19,12 +19,14 @@ import ItemCar from '../../../../components/Profile/ItemCar';
 import AxiosInstance from '../../../../constants/AxiosInstance';
 import {AppContext} from '../../../../utils/AppContext';
 import AppHeader from '../../../../components/AppHeader';
+import {useIsFocused} from '@react-navigation/native';
 
 const ListCar = props => {
   const {navigation, route} = props;
   const updatedCarInfo = route.params?.updatedCarInfo;
   const [carData, setCarData] = useState([]);
   const {setIsLogin, infoUser, idUser} = useContext(AppContext);
+  const isFocused = useIsFocused();
 
   const getCarByIdUser = async () => {
     try {
@@ -43,7 +45,7 @@ const ListCar = props => {
   
   useEffect(() => {
     getCarByIdUser();
-  }, []);
+  }, [isFocused]);
 
   return (
     <SafeAreaView style={appStyle.container}>

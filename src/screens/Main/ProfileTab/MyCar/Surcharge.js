@@ -12,6 +12,8 @@ import Slider from '@react-native-community/slider';
 import AppHeader from '../../../../components/AppHeader';
 import {showToastMessage} from '../../../../utils/utils';
 import axios from 'axios';
+import Modal from 'react-native-modal';
+import AppButton from '../../../../components/AppButton';
 
 const Surcharge = props => {
   const {navigation} = props;
@@ -30,7 +32,11 @@ const Surcharge = props => {
   const [fourth, setfourth] = useState(0);
   const [fifth, setfifth] = useState(0);
   const [sixth, setsixth] = useState(0);
-
+  const [modalLimitKm, setModalLimitKm] = useState(false);
+  const [modalOverTime, setModalOverTime] = useState(false);
+  //const [, setfirst] = useState(second)
+  const [modalHygine, setModalHygine] = useState(false);
+  const [modalDeodorize, setModalDeodorize] = useState(false);
   const logCat = () => {
     console.log('Số km tối đa', Math.floor(first * 100 * 8));
     console.log('Phí vượt giới hạn: ', Math.floor(second * 10));
@@ -80,7 +86,23 @@ const Surcharge = props => {
             justifyContent: 'space-between',
             height: 50,
           }}>
-          <Text style={appStyle.text16Bold}>GIỚI HẠN SỐ KM THUÊ XE</Text>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={[appStyle.text16Bold, {marginRight: 10}]}>
+              GIỚI HẠN SỐ KM THUÊ XE
+            </Text>
+            <TouchableOpacity
+              style={{
+                borderRadius: 50,
+                height: 20,
+                width: 20,
+                borderColor: COLOR.borderColor,
+                alignContent: 'center',
+                borderWidth: 1,
+              }}
+              onPress={() => setModalLimitKm(true)}>
+              <Text style={{textAlign: 'center'}}>?</Text>
+            </TouchableOpacity>
+          </View>
           <Switch
             style={{alignSelf: 'center', marginTop: -20}}
             value={isEnabledLimitKm}
@@ -129,7 +151,23 @@ const Surcharge = props => {
             justifyContent: 'space-between',
             height: 50,
           }}>
-          <Text style={appStyle.text16Bold}>QUÁ GIỜ</Text>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={[appStyle.text16Bold, {marginRight: 10}]}>
+              QUÁ GIỜ
+            </Text>
+            <TouchableOpacity
+              style={{
+                borderRadius: 50,
+                height: 20,
+                width: 20,
+                borderColor: COLOR.borderColor,
+                alignContent: 'center',
+                borderWidth: 1,
+              }}
+              onPress={() => setModalLimitKm(true)}>
+              <Text style={{textAlign: 'center'}}>?</Text>
+            </TouchableOpacity>
+          </View>
           <Switch
             style={{alignSelf: 'center', marginTop: -20}}
             value={isEnabledOffTime}
@@ -176,7 +214,23 @@ const Surcharge = props => {
             justifyContent: 'space-between',
             height: 50,
           }}>
-          <Text style={appStyle.text16Bold}>VỆ SINH XE</Text>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={[appStyle.text16Bold, {marginRight: 10}]}>
+              VỆ SINH XE
+            </Text>
+            <TouchableOpacity
+              style={{
+                borderRadius: 50,
+                height: 20,
+                width: 20,
+                borderColor: COLOR.borderColor,
+                alignContent: 'center',
+                borderWidth: 1,
+              }}
+              onPress={() => setModalLimitKm(true)}>
+              <Text style={{textAlign: 'center'}}>?</Text>
+            </TouchableOpacity>
+          </View>
           <Switch
             style={{alignSelf: 'center', marginTop: -20}}
             value={isEnabledHygiene}
@@ -210,7 +264,23 @@ const Surcharge = props => {
             justifyContent: 'space-between',
             height: 50,
           }}>
-          <Text style={appStyle.text16Bold}>PHỤ PHÍ</Text>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={[appStyle.text16Bold, {marginRight: 10}]}>
+              PHỤ PHÍ
+            </Text>
+            <TouchableOpacity
+              style={{
+                borderRadius: 50,
+                height: 20,
+                width: 20,
+                borderColor: COLOR.borderColor,
+                alignContent: 'center',
+                borderWidth: 1,
+              }}
+              onPress={() => setModalLimitKm(true)}>
+              <Text style={{textAlign: 'center'}}>?</Text>
+            </TouchableOpacity>
+          </View>
           <Switch
             style={{alignSelf: 'center', marginTop: -20}}
             value={isEnabledDeodorize}
@@ -248,6 +318,94 @@ const Surcharge = props => {
           </Text>
         </TouchableOpacity>
       </ScrollView>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalLimitKm}
+        onBackdropPress={() => setModalLimitKm(false)}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text
+              style={[
+                [appStyle.text18Bold, {lineHeight: 30, paddingHorizontal: 20}],
+              ]}>
+              Phụ thu quá km
+            </Text>
+            <Text
+              style={[
+                [
+                  appStyle.text14,
+                  {
+                    textAlign: 'center',
+                  },
+                ],
+              ]}>
+              Áp dụng trong trường hợp khách hàng đi quá só KM quy định.
+            </Text>
+            <Text
+              style={[
+                [
+                  appStyle.text14,
+                  {
+                    textAlign: 'center',
+                  },
+                ],
+              ]}>
+              {'(*'} Nếu khách hàng thuê từ 2 ngày: Giới hạn số KM của chuyến đi
+              = Giới hạn số KM/ngày x Số ngày thuê {')'}.
+            </Text>
+            <AppButton
+              title="Đóng"
+              backgroundColor={COLOR.primary}
+              onPress={() => setModalLimitKm(false)}
+            />
+          </View>
+        </View>
+      </Modal>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalOverTime}
+        onBackdropPress={() => setModalOverTime(false)}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text
+              style={[
+                [appStyle.text18Bold, {lineHeight: 30, paddingHorizontal: 20}],
+              ]}>
+              Phụ thu quá km
+            </Text>
+            <Text
+              style={[
+                [
+                  appStyle.text14,
+                  {
+                    textAlign: 'center',
+                  },
+                ],
+              ]}>
+              Áp dụng trong trường hợp khách hàng đi quá só KM quy định.
+            </Text>
+            <Text
+              style={[
+                [
+                  appStyle.text14,
+                  {
+                    textAlign: 'center',
+                  },
+                ],
+              ]}>
+              {'(*'} Nếu khách hàng thuê từ 2 ngày: Giới hạn số KM của chuyến đi
+              = Giới hạn số KM/ngày x Số ngày thuê {')'}.
+            </Text>
+            <AppButton
+              title="Đóng"
+              backgroundColor={COLOR.primary}
+              onPress={() => setModalOverTime(false)}
+            />
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -303,5 +461,27 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     padding: 10,
     borderRadius: 10,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalView: {
+    width: '100%',
+    height: '30%',
+    margin: 20,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 0,
+    elevation: 5,
+    padding: 20,
+    justifyContent:'space-evenly'
   },
 });
