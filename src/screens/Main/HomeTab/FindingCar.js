@@ -1,25 +1,42 @@
-import { SafeAreaView, StyleSheet, Text, View, ScrollView, TouchableOpacity, FlatList } from 'react-native'
-import React, { useState, useEffect } from 'react'
-import { appStyle, windowHeight } from '../../../constants/AppStyle'
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  FlatList,
+} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {appStyle, windowHeight} from '../../../constants/AppStyle';
 import ButtonSelected from '../../../components/ButtonSelected';
-import FastImage from 'react-native-fast-image'
+import FastImage from 'react-native-fast-image';
 import CarCardItem from '../../../components/Home/Home/CarCardItem';
-import { COLOR, ICON } from '../../../constants/Theme'
-import { useNavigation } from '@react-navigation/native';
+import {COLOR, ICON} from '../../../constants/Theme';
+import {useNavigation} from '@react-navigation/native';
 import AxiosInstance from '../../../constants/AxiosInstance';
+import ReactNativeModal from 'react-native-modal';
+import ChangeBooking from './ChangeBooking';
+import {timeDateFormat} from '../../../utils/utils';
+import {REACT_APP_VIETMAP_API_KEY} from '@env';
+import axios from 'axios';
 
-const FindingCar = (props) => {
+const FindingCar = ({
+  location,
+  setLocation,
+  close,
+  selectedTime,
+  setSelectedTime,
+}) => {
   const navigation = useNavigation();
-  const {title} = props.route.params;
-  console.log(props.route.params.title);
   const [isSelected, setIsSelected] = useState(null);
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [detailLocation, setDetailLocation] = useState(null);
 
   const [listCar, setListCar] = useState([]);
   const getAllCar = async () => {
     try {
-      const response = await AxiosInstance().get(
-        '/car/api/list'
-      );
+      const response = await AxiosInstance().get('/car/api/list');
       if (response.result) {
         setListCar(response.listCar);
       } else {
@@ -30,8 +47,23 @@ const FindingCar = (props) => {
     }
   };
 
+  const getDetailLocation = async location => {
+    axios
+      .get(
+        `https://maps.vietmap.vn/api/search/v3?apikey=${REACT_APP_VIETMAP_API_KEY}&text=${location}`,
+      )
+      .then(response => {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(error => {
+        console.warn(error);
+      });
+  };
+
   useEffect(() => {
-    getAllCar();
+    console.log('location: ' + location);
+    getDetailLocation(location);
+    // getAllCar();
   }, []);
 
   const sortByBrand = () => {
@@ -51,18 +83,41 @@ const FindingCar = (props) => {
   return (
     <SafeAreaView style={appStyle.container}>
       <View style={styles.viewTop}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <FastImage source={ICON.Back} resizeMode='stretch' style={appStyle.iconBig} />
+        <TouchableOpacity onPress={close}>
+          <FastImage
+            source={ICON.Back}
+            resizeMode="stretch"
+            style={appStyle.iconBig}
+          />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('ChangeBooking')} style={styles.viewSearch}>
-          <View style={{ alignItems: 'center', width: '90%' }}>
-            <Text style={appStyle.text18Bold}>{title}</Text>
-            <Text>21h00, 10/11 · 21h00, 11/11</Text>
+        <TouchableOpacity
+          onPress={() => setModalVisible(true)}
+          style={styles.viewSearch}>
+          <View style={{alignItems: 'center', width: '90%'}}>
+            <Text style={appStyle.text16Bold}>
+              {location.length > 30 ? location.slice(0, 30) + '...' : location}
+            </Text>
+            <Text>{`${timeDateFormat(
+              selectedTime.startDate,
+            )}  - ${timeDateFormat(selectedTime.endDate)} `}</Text>
           </View>
-          <FastImage source={ICON.Search} style={appStyle.iconBig} resizeMode='stretch' />
+          <FastImage
+            source={ICON.Search}
+            style={appStyle.iconBig}
+            resizeMode="stretch"
+          />
         </TouchableOpacity>
+        <ReactNativeModal visible={isModalVisible} style={{margin: 0, flex: 1}}>
+          <ChangeBooking
+            selectedTime={selectedTime}
+            setSelectedTime={setSelectedTime}
+            close={() => setModalVisible(false)}
+            location={location}
+            setLocation={setLocation}
+          />
+        </ReactNativeModal>
       </View>
-      <View style={{ paddingHorizontal: 15 }}>
+      <View style={{paddingHorizontal: 15}}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <ButtonSelected
             text="Xóa"
@@ -90,7 +145,6 @@ const FindingCar = (props) => {
           />
         </ScrollView>
 
-        {/* list xe */}
         <FlatList
           data={listCar}
           shouldRasterizeIOS
@@ -107,18 +161,17 @@ const FindingCar = (props) => {
         />
       </View>
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default FindingCar
+export default FindingCar;
 
 const styles = StyleSheet.create({
-  viewTop:
-  {
+  viewTop: {
     height: windowHeight * 0.1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-evenly'
+    justifyContent: 'space-evenly',
   },
   viewSearch: {
     backgroundColor: COLOR.gray,
@@ -128,7 +181,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    paddingEnd: 10
-  }
-})
-
+    paddingEnd: 10,
+  },
+});

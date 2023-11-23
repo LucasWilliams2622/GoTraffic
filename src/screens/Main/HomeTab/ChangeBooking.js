@@ -17,14 +17,20 @@ import LocationPicking from './LocationPicking';
 import {InputField} from '../../../components/Home/Home/Booking';
 import {timeString} from '../../../utils/utils';
 
-const ChangeBooking = () => {
+const ChangeBooking = ({
+  location,
+  setLocation,
+  selectedTime,
+  setSelectedTime,
+  close,
+}) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [inputAddress, setInputAddress] = useState('');
 
   const navigation = useNavigation();
   return (
     <SafeAreaView style={appStyle.container}>
-      <Header text="" icon={ICON.Close} onPress={() => navigation.goBack()} />
+      <Header text="" icon={ICON.Close} onPress={() => close()} />
       <View style={{flex: 1, padding: 15}}>
         {/* <TouchableOpacity
           onPress={() => setModalVisible(true)}
@@ -46,6 +52,8 @@ const ChangeBooking = () => {
           placeholderText="Địa điểm"
           navigation={navigation}
           navigateTo="LocationPicking"
+          location={location}
+          setLocation={setLocation}
         />
         <ReactNativeModal
           isVisible={isModalVisible}
@@ -76,15 +84,13 @@ const ChangeBooking = () => {
           value={timeString}
           navigation={navigation}
           navigateTo="TimePicking"
+          selectedTime={selectedTime}
+          setSelectedTime={setSelectedTime}
         />
       </View>
       <View style={styles.bottom}>
         <Text>Số ngày cho thuê: 1 ngày</Text>
-        <AppButton
-          title="Tìm xe"
-          width={100}
-          onPress={() => navigation.goBack()}
-        />
+        <AppButton title="Tìm xe" width={100} onPress={() => close()} />
       </View>
     </SafeAreaView>
   );

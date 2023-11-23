@@ -73,7 +73,7 @@ const BottomBar: React.FC<{
 };
 
 const TimePickingModal: React.FC<{
-  price: number;
+  price?: number;
   toggle: any;
   setSelectedTime: any;
 }> = ({price, toggle, setSelectedTime}) => {
@@ -165,8 +165,8 @@ const TimePickingModal: React.FC<{
   };
 
   const renderDay = ({date, state}: DayProps & {date?: DateData}) => {
-    let dayPrice = price;
-    if (date) {
+    let dayPrice = price !== undefined ? price : 0;
+    if (dayPrice !== undefined && date) {
       const day = new Date(date.timestamp).getDay();
       if (day === 0 || day === 6) {
         dayPrice *= 1.1;
@@ -212,15 +212,17 @@ const TimePickingModal: React.FC<{
             }}>
             {date?.day}
           </Text>
-          <Text
-            style={{
-              textAlign: 'center',
-              color: state === 'disabled' ? 'gray' : textColor,
-              fontSize: 10,
-              marginTop: 3,
-            }}>
-            {priceText}
-          </Text>
+          {price && (
+            <Text
+              style={{
+                textAlign: 'center',
+                color: state === 'disabled' ? 'gray' : textColor,
+                fontSize: 10,
+                marginTop: 3,
+              }}>
+              {priceText}
+            </Text>
+          )}
         </View>
       </TouchableWithoutFeedback>
     );

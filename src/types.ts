@@ -160,12 +160,20 @@ export interface InputFieldProps {
   value?: string;
   navigation: any;
   navigateTo: string;
+  selectedTime?: any;
+  setSelectedTime?: any;
+  location?: string;
+  setLocation?: any;
 }
 
 export interface ViewProps {
   timeString: string;
   navigation?: any;
   route?: any;
+  selectedTime?: any;
+  setSelectedTime?: any;
+  location?: any;
+  setLocation?: any;
 }
 
 export interface RadioButtonProps {
@@ -219,6 +227,8 @@ export interface AirportPickingProps {
   title: string;
   image: string;
   totalCar: number;
+  selectedTime: any;
+  setSelectedTime: any;
 }
 
 export interface RenderListProps<T> {
