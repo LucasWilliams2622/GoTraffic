@@ -266,3 +266,8 @@ export type MarkedDate = {
 export interface ExtendedDayProps extends DayProps {
   price: number;
 }
+
+export interface Location {
+  latitude: number;
+  longitude: number;
+}

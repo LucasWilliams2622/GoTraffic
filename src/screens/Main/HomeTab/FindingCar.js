@@ -94,8 +94,8 @@ const FindingCar = ({
           onPress={() => setModalVisible(true)}
           style={styles.viewSearch}>
           <View style={{alignItems: 'center', width: '90%'}}>
-            <Text style={appStyle.text16Bold}>
-              {location.length > 30 ? location.slice(0, 30) + '...' : location}
+            <Text style={appStyle.text14Bold}>
+              {location.length > 35 ? location.slice(0, 35) + '...' : location}
             </Text>
             <Text>{`${timeDateFormat(
               selectedTime.startDate,

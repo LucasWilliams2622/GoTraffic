@@ -20,9 +20,9 @@ import Suggestion from '../../../components/Home/Home/Suggestion';
 import axios from 'axios';
 import {AppContext} from '../../../utils/AppContext';
 import GetLocation from 'react-native-get-location';
+import {getCurrentLocation} from '../../../utils/utils';
 
 const LocationPicking = props => {
-  //console.log(">>>>>>>>>> location");
   const navigation = useNavigation();
   const {idUser} = useContext(AppContext);
   const [locationPicking, setLocationPicking] = useState('');
@@ -51,12 +51,10 @@ const LocationPicking = props => {
 
   const autoComplete = async text => {
     try {
-      console.log(location.city.id);
       const response = await axios.get(
         `https://maps.vietmap.vn/api/autocomplete/v3?apikey=${apikey}&text=${text}&cityId=${location.city.id}&distId=${location.district.id}&wardId=${location.ward.id}`,
       );
       if (response.status === 200) {
-        // console.log(response.data);
         setSuggestions(response.data);
       } else {
         console.log('error');
@@ -71,7 +69,6 @@ const LocationPicking = props => {
       const response = await axios.get(
         `http://103.57.129.166:3000/address/api/get-default-address?idUser=${idUser}`,
       );
-      console.log(response.data);
       setDefaultAddress(response.data);
     } catch (error) {
       console.log(error);
@@ -88,81 +85,61 @@ const LocationPicking = props => {
     autoComplete(text);
   };
 
-  const getCurrentLocation = async () => {
-    GetLocation.getCurrentPosition({
-      enableHighAccuracy: false,
-      timeout: 60000,
-    })
-      .then(location => {
-        console.log('Current location: ' + JSON.stringify(location));
-        getDetailLocation(location);
-      })
-      .catch(error => {
-        const {code, message} = error;
-        console.warn(code, message);
-      });
-  };
-
-  const getDetailLocation = async location => {
-    const {latitude, longitude} = location;
-    console.log('latitude: ' + latitude + ' longitude: ' + longitude);
-    axios
-      .get(
-        `https://maps.vietmap.vn/api/reverse/v3?apikey=${apikey}&lat=${latitude}&lng=${longitude}`,
-      )
-      .then(response => {
-        console.log('Detail location: ' + JSON.stringify(response.data));
-        const data = response.data;
-        console.log(data[0]);
-        const boundaries = data[0].boundaries;
-        const name = data[0].name;
-        const lat = data[0].lat;
-        const lng = data[0].lng;
-        let wardData = {name: '', id: ''};
-        let districtData = {name: '', id: ''};
-        let cityData = {name: '', id: ''};
-        if (boundaries.length > 0) {
-          boundaries.forEach(item => {
-            if (item.type === 2) {
-              wardData.name = item.name;
-              wardData.id = item.id;
-            } else if (item.type === 1) {
-              districtData.name = item.name;
-              districtData.id = item.id;
-            } else if (item.type === 0) {
-              cityData.name = item.name;
-              cityData.id = item.id;
-            }
-          });
-          console.log(
-            'ward: ' +
-              JSON.stringify(ward) +
-              ' district: ' +
-              JSON.stringify(district) +
-              ' city: ' +
-              JSON.stringify(city),
-          );
-
-          setLocation({
-            name: name,
-            ward: wardData,
-            district: districtData,
-            city: cityData,
-            lat: lat,
-            lng: lng,
-          });
-
-          props.setInputAddress(
-            'Phường ' + ward.name + ', ' + district.name + ', ' + city.name,
-          );
-        } else {
-          Alert.alert('Chỉ hỗ trợ địa điểm trong lãnh thổ Việt Nam');
+  const setDetailLocation = async location => {
+    const boundaries = location.boundaries;
+    const name = location.name;
+    const lat = location.lat;
+    const lng = location.lng;
+    let wardData = {name: '', id: ''};
+    let districtData = {name: '', id: ''};
+    let cityData = {name: '', id: ''};
+    if (boundaries.length > 0) {
+      boundaries.forEach(item => {
+        if (item.type === 2) {
+          wardData.name = item.name;
+          wardData.id = item.id;
+        } else if (item.type === 1) {
+          districtData.name = item.name;
+          districtData.id = item.id;
+        } else if (item.type === 0) {
+          cityData.name = item.name;
+          cityData.id = item.id;
         }
-      })
-      .catch(error => {
-        console.warn(error);
       });
+      console.log(
+        'ward: ' +
+          JSON.stringify(wardData.name) +
+          ' district: ' +
+          JSON.stringify(districtData.name) +
+          ' city: ' +
+          JSON.stringify(cityData),
+      );
+
+      setLocation({
+        name: name,
+        ward: wardData,
+        district: districtData,
+        city: cityData,
+        lat: lat,
+        lng: lng,
+      });
+
+      props.setInputAddress(
+        'Phường ' +
+          wardData.name +
+          ', ' +
+          districtData.name +
+          ', ' +
+          cityData.name,
+      );
+    } else {
+      Alert.alert('Chỉ hỗ trợ địa điểm trong lãnh thổ Việt Nam');
+    }
   };
+
+  useEffect(() => {
+    getCurrentLocation().then(location => setDetailLocation(location));
+  }, []);
 
   return (
     <SafeAreaView style={appStyle.container}>
@@ -194,7 +171,7 @@ const LocationPicking = props => {
         <TouchableOpacity
           style={appStyle.card}
           onPress={() => {
-            getCurrentLocation();
+            getCurrentLocation().then(location => setDetailLocation(location));
             props.close();
           }}>
           <FastImage source={ICON.Location} style={appStyle.iconBig} />
