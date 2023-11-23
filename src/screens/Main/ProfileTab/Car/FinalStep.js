@@ -23,8 +23,10 @@ import ImagePickerComponent from '../../../../components/ImagePickerComponent';
 const FinalStep = props => {
   const {navigation, route} = props;
   const cardInfo = route.params;
-  console.log(cardInfo.carInfo.carInfo.selectedBrand);
+  console.log(cardInfo);
   const [carImages, setCarImages] = useState('');
+
+  
   const [selectedImagePath, setSelectedImagePath] = useState(Array);
   const [imageThumbnail, setImageThumbnail] = useState('');
   const handleImageSelected = path => {
@@ -53,6 +55,7 @@ const FinalStep = props => {
         },
       );
       console.log(response.data.link);
+     
       setImageThumbnail(response.data.link);
       if (response.data.result) {
         showToastMessage('', 'Upload images thumbnail success');
@@ -87,7 +90,9 @@ const FinalStep = props => {
         },
       );
       console.log(response.data.links);
-      setCarImages(response.data.links);
+      const encodedImageUrls = response.data.link.map(url => encodeURIComponent(url));
+      console.log("hinhãnhe",encodedImageUrls);
+      setCarImages(encodedImageUrls);
       if (response.data.result) {
         showToastMessage('', 'Upload images success');
         setCheckImage(true);
@@ -135,6 +140,7 @@ const FinalStep = props => {
           utilities: cardInfo.carInfo2.selectedFeatures.toString(),
           image: carImages.toString(),
           imageThumbnail: imageThumbnail,
+          locationCar: "",
         },
       );
       console.log(response.data);

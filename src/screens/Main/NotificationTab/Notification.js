@@ -15,6 +15,7 @@ const Notification = () => {
   const [dataTrip, setdataTrip] = useState('');
   const {setNotificationCount} = useContext(AppContext);
   const [loading, setLoading] = useState(true);
+  const {idUser} = useContext(AppContext);
 
   const getListNotifications = async () => {
     try {
@@ -34,7 +35,7 @@ const Notification = () => {
   const getListNotificationsByIDUser = async () => {
     try {
       const response = await AxiosInstance().get(
-        '/notification-booking/api/get-by-user?idUser=' + 9,
+        '/notification-booking/api/get-by-user?idUser=' + idUser,
       );
       if (response.result) {
         console.log('Trip:>>>' + response.notifications);
@@ -53,7 +54,7 @@ const Notification = () => {
   }, [useIsFocused]);
   return (
     <SafeAreaView style={appStyle.container}>
-      <AppHeader title='Thông báo' notLeft/>
+      <AppHeader title="Thông báo" notLeft />
       <ScrollView>
         <View style={styles.line1}>
           <Text style={styles.text1}>Thông báo chuyến</Text>
