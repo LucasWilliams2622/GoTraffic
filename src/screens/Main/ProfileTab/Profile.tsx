@@ -136,13 +136,13 @@ const Profile = props => {
         <AppProfile
             icon={ICON.Wallet}
             text="Ví của tôi"
-            borderBottomWidth={0}
             onPress={() => navigation.navigate('MyWallet')}
           />
 
           <AppProfile
             icon={ICON.Share}
             text="Giới thiệu bạn bè"
+            borderBottomWidth={0}
             onPress={() => navigation.navigate('ShareWithFriend')}
           />
         </View>

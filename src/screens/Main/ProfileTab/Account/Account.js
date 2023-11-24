@@ -95,7 +95,7 @@ const Account = props => {
           <View style={styles.viewChild}>
             <Text style={appStyle.text14}>Giấy phép lái xe</Text>
             {infoUser.isVerifiedDriverLicense ? (
-              <View style={[styles.alert, {backgroundColor: COLOR.lightGreen}]}>
+              <View style={[styles.alert, {backgroundColor: COLOR.lightGreen2}]}>
                 <FastImage style={[appStyle.iconSmall]} source={ICON.Check} />
                 <Text style={[appStyle.text105, {marginStart: 5}]}>
                   Đã xác thực
@@ -129,7 +129,7 @@ const Account = props => {
         <View style={styles.viewItem}>
           <View style={styles.viewChild}>
             <Text style={appStyle.text14}>Số điện thoại</Text>
-            <View style={[styles.alert, {backgroundColor: COLOR.lightGreen}]}>
+            <View style={[styles.alert, {backgroundColor: COLOR.lightGreen2}]}>
               <FastImage style={[appStyle.iconSmall]} source={ICON.Check} />
               <Text style={[appStyle.text105, {marginStart: 5}]}>
                 Đã xác thực
@@ -147,7 +147,7 @@ const Account = props => {
             <Text style={appStyle.text14}>Email</Text>
 
             {infoUser.isVerifiedEmail ? (
-              <View style={[styles.alert, {backgroundColor: COLOR.lightGreen}]}>
+              <View style={[styles.alert, {backgroundColor: COLOR.lightGreen2}]}>
                 <FastImage style={[appStyle.iconSmall]} source={ICON.Check} />
                 <Text style={[appStyle.text105, {marginStart: 5}]}>
                   Đã xác thực

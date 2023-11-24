@@ -17,7 +17,7 @@ const FavouriteCar = (props) => {
   const navigation = useNavigation();
   const { infoUser, idUser } = useContext(AppContext);
   const [listCar, setListCar] = useState([]);
-  const [data, setData] = useState('');
+  //const [data, setData] = useState('');
 
   const fetchFavoriteCars = async () => {
     try {
@@ -52,7 +52,7 @@ const FavouriteCar = (props) => {
         <FlatList
           style={{ marginBottom: 44 }}
           //extraData={listUpdate}
-          data={data}
+          data={listCar}
           renderItem={({ item }) => (
             <ItemCarCard
               {...item.Car}
