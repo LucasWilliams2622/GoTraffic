@@ -101,7 +101,7 @@ const FindingCar = ({
             <Text style={appStyle.text14Bold}>
               {location.length > 35 ? location.slice(0, 35) + '...' : location}
             </Text>
-            <Text>{`${timeDateFormat(
+            <Text style={{marginTop: 5}}>{`${timeDateFormat(
               selectedTime.startDate,
             )}  - ${timeDateFormat(selectedTime.endDate)} `}</Text>
           </View>
