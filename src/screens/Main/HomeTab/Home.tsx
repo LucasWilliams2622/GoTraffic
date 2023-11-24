@@ -37,6 +37,12 @@ import {AppContext} from '../../../utils/AppContext';
 import FastImage from 'react-native-fast-image';
 import BenefitHome from '../../../components/Home/Home/Benefit';
 import AxiosInstance from '../../../constants/AxiosInstance';
+import {
+  currentDay,
+  currentTimeString,
+  returnTimeString,
+  tomorrow,
+} from '../../../utils/utils';
 
 const RenderList: React.FC<RenderListProps<any>> = ({
   data,
@@ -85,6 +91,17 @@ const Home: React.FC = () => {
 
   const [isSwipeEnabled, setSwipeEnabled] = useState<boolean>(true);
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
+  const [selectedTime, setSelectedTime] = useState<{
+    startTime: string | null;
+    endTime: string | null;
+    startDate: Date | null;
+    endDate: Date | null;
+  }>({
+    startTime: currentTimeString,
+    endTime: returnTimeString,
+    startDate: currentDay,
+    endDate: tomorrow,
+  });
 
   const handleCarPress = (id: number) => {
     setSelectedCarId(id);
@@ -140,7 +157,11 @@ const Home: React.FC = () => {
           </Column>
         </Row>
       </View>
-      <Booking navigation={navigation} />
+      <Booking
+        navigation={navigation}
+        selectedTime={selectedTime}
+        setSelectedTime={setSelectedTime}
+      />
 
       <Section
         title="Chương trình khuyến mãi"
@@ -207,7 +228,13 @@ const Home: React.FC = () => {
       <Section
         title="Đón xe sân bay"
         data={AirportData}
-        renderItem={({item}) => <AirportPicking {...item} />}
+        renderItem={({item}) => (
+          <AirportPicking
+            {...item}
+            selectedTime={selectedTime}
+            setSelectedTime={setSelectedTime}
+          />
+        )}
         snapToInterval={140}
       />
 

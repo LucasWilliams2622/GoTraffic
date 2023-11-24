@@ -35,13 +35,15 @@ export const TimeAndPlacePickup = ({
         <Text style={[appStyle.text16Bold, {marginBottom: 10}]}>
           Thời gian thuê xe
         </Text>
-        <View style={styles.timeAndPlacePickupPressable}>
+        <Pressable
+          style={styles.timeAndPlacePickupPressable}
+          onPress={() => setModalVisible(true)}>
           <Row style={{justifyContent: 'space-evenly'}}>
             <View>
               <Text style={{color: COLOR.borderColor, marginBottom: 5}}>
                 Nhận xe
               </Text>
-              <Pressable onPress={() => setModalVisible(true)}>
+              <View>
                 <Text style={{fontSize: 13.5, fontWeight: 'bold'}}>
                   {selectedTime.startTime === null &&
                   selectedTime.endTime === null
@@ -50,7 +52,7 @@ export const TimeAndPlacePickup = ({
                         selectedTime.startDate,
                       )}`}
                 </Text>
-              </Pressable>
+              </View>
             </View>
             <View>
               <Text style={{color: COLOR.borderColor, marginBottom: 5}}>
@@ -68,7 +70,7 @@ export const TimeAndPlacePickup = ({
               </Pressable>
             </View>
           </Row>
-        </View>
+        </Pressable>
         <ReactNativeModal
           isVisible={isModalVisible}
           style={{margin: 0}}

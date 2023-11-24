@@ -42,6 +42,7 @@ import SampleContract from '../screens/Main/ProfileTab/MyCar/Contract/SampleCont
 import LeaseCar from '../screens/Main/ProfileTab/MyCar/Contract/LeaseCar';
 import BasicInfor from '../screens/Main/ProfileTab/Car/BasicInfor';
 import DetailsInfor from '../screens/Main/ProfileTab/Car/DetailsInfor';
+import FinalStep from '../screens/Main/ProfileTab/Car/FinalStep';
 import ListCar from '../screens/Main/ProfileTab/Car/ListCar';
 import VerifyLicense from '../screens/Main/ProfileTab/Account/VerifyLicense';
 import ListCarCity from '../components/Home/Home/ListCarCity';
@@ -194,6 +195,7 @@ const StackProfile = () => {
       <Stack.Screen name="NewCard" component={NewCard} />
       <Stack.Screen name="BasicInfor" component={BasicInfor} />
       <Stack.Screen name="DetailsInfor" component={DetailsInfor} />
+      <Stack.Screen name="FinalStep" component={FinalStep} />
       <Stack.Screen name="LeaseCar" component={LeaseCar} />
       <Stack.Screen name="SampleContract" component={SampleContract} />
       <Stack.Screen name="HandOverReport" component={HandOverReport} />

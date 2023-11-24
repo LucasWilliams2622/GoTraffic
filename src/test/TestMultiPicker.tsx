@@ -14,6 +14,8 @@ import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import AxiosInstance from '../constants/AxiosInstance';
 import {showToastMessage} from '../utils/utils';
 import axios from 'axios';
+import Icon, {IconType} from 'react-native-dynamic-vector-icons';
+import {COLOR} from '../constants/Theme';
 
 const TestMultiPicker = () => {
   const [selectedImages, setSelectedImages] = useState(Array(9).fill(null));
@@ -106,15 +108,23 @@ const TestMultiPicker = () => {
     return selectedImages.map((image, index) => (
       <TouchableOpacity key={index} onPress={() => showImagePickerOptions()}>
         <View style={styles.imageContainer}>
-          {image && (
+          {image ? (
             <View>
               <Image source={{uri: image}} style={styles.image} />
               <TouchableOpacity onPress={() => removeImage(index)}>
-                <Text style={styles.removeText}>Remove</Text>
+                <Text style={styles.removeText}>Xóa</Text>
               </TouchableOpacity>
             </View>
+          ) : (
+            <Icon
+              name="camera"
+              type={IconType.Entypo}
+              size={30}
+              color={COLOR.primary}
+              onPress={() => {}}
+            />
           )}
-          {!image && <Text>Select Image</Text>}
+          {!image && <Text>Chọn ảnh</Text>}
         </View>
       </TouchableOpacity>
     ));
@@ -146,11 +156,11 @@ const TestMultiPicker = () => {
         },
       );
       console.log(response.data.links);
-
     } catch (error) {
       console.error('Error uploading images:', error);
     }
   };
+
   return (
     <View style={styles.container}>
       <Button title="Print Array Images" onPress={() => uploadImages()} />
@@ -182,6 +192,13 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     margin: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+
+    borderWidth: 2,
+    borderRadius: 8,
+    padding: 12,
+    borderColor: '#f1f1f1',
   },
   image: {
     width: 100,

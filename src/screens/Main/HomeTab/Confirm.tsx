@@ -161,7 +161,7 @@ const BottomBar: React.FC<{
         totalMoney: deposit,
       });
 
-      console.log(data);
+      console.log('data: ' + data);
 
       let config = {
         method: 'post',
