@@ -20,6 +20,7 @@ import AxiosInstance from '../../../../constants/AxiosInstance';
 import AppHeader from '../../../../components/AppHeader';
 import {showToastMessage} from '../../../../utils/utils';
 import FailModal from '../../../../components/Profile/Modal/FailModal';
+import CheckBox from '@react-native-community/checkbox';
 
 const DetailInListCar = props => {
   const navigation = useNavigation();
@@ -28,62 +29,8 @@ const DetailInListCar = props => {
   const goBack = () => {
     navigation.goBack('Profile');
   };
-  const goInfor = () => {
-    navigation.navigate('GeneralInformation');
-  };
   const layout = useWindowDimensions();
-  const FirstRoute = () => (
-    <View style={{flex: 1, padding: 10}}>
-      <View style={{flex:1}}>
-        <AppProfile
-          icon={ICON.Trip}
-          text="Giá cho thuê"
-          onPress={() => navigation.navigate('RentCost', {price: price})}
-        />
-        <AppProfile
-          icon={ICON.Calendar}
-          text="Lịch xe"
-          onPress={() => navigation.navigate('CalendarOfCar')}
-        />
-        <AppProfile
-          icon={ICON.Heart}
-          text="Giao xe tận nơi"
-          onPress={() => navigation.navigate('CarDelivery', {id: id})}
-        />
-        <AppProfile
-          icon={ICON.Card}
-          text="Phụ phí"
-          onPress={() => navigation.navigate('Surcharge', {id: id})}
-        />
-      </View>
-      <View
-        style={{
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          height: 100,
-        }}>
-        <Text style={appStyle.text165}>Trạng thái</Text>
-        {status == 1 ? (
-          <View style={styles.statusContainer}>
-            <Text style={styles.statusText}>Chưa cho thuê</Text>
-          </View>
-        ) : status == 2 ? (
-          <View
-            style={[styles.statusContainer, {backgroundColor: COLOR.green}]}>
-            <Text style={styles.statusText}>Đang cho thuê</Text>
-          </View>
-        ) : status == 3 ? (
-          <View style={[styles.statusContainer, {backgroundColor: COLOR.red}]}>
-            <Text style={styles.statusText}>Từ chối duyệt</Text>
-          </View>
-        ) : (
-          <View style={styles.statusContainer}>
-            <Text style={styles.statusText}>Đang chờ duyệt</Text>
-          </View>
-        )}
-      </View>
-    </View>
-  );
+  const [isSelected, setSelection] = useState(false);
   //api getDetail
   const getDetailCarByIdUser = async () => {
     try {
@@ -92,6 +39,12 @@ const DetailInListCar = props => {
       );
       if (response.result) {
         console.log(response.car);
+        console.log(response.car.Booking[0] == null);
+        if (response.car.Booking[0] == null) {
+          setSelection(false);
+        } else {
+          setSelection(true);
+        }
         setData(response.car);
       } else {
         console.log('Failed to get car');
@@ -122,6 +75,54 @@ const DetailInListCar = props => {
     getDetailCarByIdUser();
   }, []);
 
+  const FirstRoute = () => (
+    <View style={{flex: 1, padding: 10}}>
+      <View style={{flex: 1}}>
+        <AppProfile
+          icon={ICON.Trip}
+          text="Giá cho thuê"
+          onPress={() => navigation.navigate('RentCost', {price: price})}
+        />
+        <AppProfile
+          icon={ICON.Calendar}
+          text="Lịch xe"
+          onPress={() => navigation.navigate('CalendarOfCar')}
+        />
+        <AppProfile
+          icon={ICON.Heart}
+          text="Giao xe tận nơi"
+          onPress={() => navigation.navigate('CarDelivery', {id: id})}
+        />
+        <AppProfile
+          icon={ICON.Card}
+          text="Phụ phí"
+          onPress={() => navigation.navigate('Surcharge', {id: id})}
+        />
+      </View>
+      <View
+        style={{
+          justifyContent: 'space-between',
+          flexDirection: 'row',
+          height: 120,
+        }}>
+        <Text style={appStyle.text165}>Trạng thái</Text>
+        {status == 1 ? (
+          <View style={styles.statusContainer}>
+            <Text style={styles.statusText}>Chờ duyệt</Text>
+          </View>
+        ) : status == 2 ? (
+          <View
+            style={[styles.statusContainer, {backgroundColor: COLOR.green}]}>
+            <Text style={styles.statusText}>Đã duyệt</Text>
+          </View>
+        ) : status == 3 ? (
+          <View style={[styles.statusContainer, {backgroundColor: COLOR.red}]}>
+            <Text style={styles.statusText}>Từ chối duyệt</Text>
+          </View>
+        ) : null}
+      </View>
+    </View>
+  );
   const SecondRoute = () => (
     <View
       style={[appStyle.main, {marginTop: 20, justifyContent: 'space-evenly'}]}>
@@ -187,44 +188,14 @@ const DetailInListCar = props => {
 
   return (
     <SafeAreaView style={appStyle.container}>
-      {/* <Modal animationType="slide" transparent={true} visible={modalVisible}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={appStyle.text16Bold}>Xác nhận xóa xe</Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginTop: 20,
-              }}>
-              <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
-                <Text style={[appStyle.text14, {color: COLOR.red}]}>Hủy</Text>
-              </TouchableOpacity>
-              <View
-                style={{
-                  width: 1,
-                  height: 20,
-                  backgroundColor: COLOR.borderColor2,
-                }}
-              />
-              <TouchableOpacity onPress={() => deleteCarById()}>
-                <Text style={[appStyle.text14, {color: COLOR.green}]}>
-                  Đồng ý
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal> */}
       <FailModal
         title="Xóa xe"
         text="Bạn chắc chắn xóa xe này?"
         nextStep="Xóa"
         isVisible={modalVisible}
-        onCheckBalance={() =>  deleteCarById()}
+        onCheckBalance={() => deleteCarById()}
         onCancel={() => setModalVisible(false)}
       />
-
       <FastImage
         style={styles.image}
         source={require('../../../../assets/image/bg2.jpg')}
@@ -239,11 +210,10 @@ const DetailInListCar = props => {
           <FastImage
             style={styles.imageCar}
             source={{uri: data.imageThumbnail}}></FastImage>
-          <View style={{marginLeft: 10}}>
+          <View style={{marginLeft: 20,justifyContent:'space-evenly'}}>
             <Text style={[appStyle.text16Bold]}>{data.name}</Text>
             <TouchableOpacity
               onPress={() =>
-                //  onPress={goInfor}
                 navigation.navigate('GeneralInformation', {data: data})
               }>
               <Text
@@ -254,6 +224,15 @@ const DetailInListCar = props => {
                 Thông tin chung {'>'}{' '}
               </Text>
             </TouchableOpacity>
+            <View style={styles.checkboxContainer}>
+              <CheckBox
+                value={isSelected}
+                onValueChange={newValue => setSelection(newValue)}
+                style={styles.checkbox}
+                onCheckColor={COLOR.green}
+              />
+              <Text style={styles.label}>Đã cho thuê</Text>
+            </View>
           </View>
         </View>
       </View>
@@ -347,10 +326,26 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 5,
     justifyContent: 'center',
-    height:30
+    height: 30,
+    width: 100,
   },
   statusText: {
     color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    marginLeft:-4
+  },
+  checkbox: {
+    alignSelf: 'center',
+  },
+  label: {
+    margin: 8,
+    color: COLOR.green,
+    fontStyle: 'italic',
+    fontSize: 14,
     fontWeight: 'bold',
   },
 });
