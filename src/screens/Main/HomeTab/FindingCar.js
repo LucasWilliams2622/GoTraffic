@@ -28,7 +28,6 @@ const FindingCar = ({
   selectedTime,
   setSelectedTime,
 }) => {
-  const navigation = useNavigation();
   const [isSelected, setIsSelected] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
   const [detailLocation, setDetailLocation] = useState(null);
@@ -36,7 +35,12 @@ const FindingCar = ({
   const [listCar, setListCar] = useState([]);
   const getAllCar = async () => {
     try {
-      const response = await AxiosInstance().get('/car/api/list');
+      if (location === 'Sài Gòn') {
+        location = 'Ho Chi Minh';
+      }
+      const response = await AxiosInstance().get(
+        `/car/api/get-car-by-city?city=${location}`,
+      );
       if (response.result) {
         setListCar(response.listCar);
       } else {
@@ -63,7 +67,7 @@ const FindingCar = ({
   useEffect(() => {
     console.log('location: ' + location);
     getDetailLocation(location);
-    // getAllCar();
+    getAllCar();
   }, []);
 
   const sortByBrand = () => {

@@ -222,7 +222,13 @@ const Home: React.FC = () => {
       <Section
         title="Địa điểm nổi bật"
         data={featuredLocationData}
-        renderItem={({item}) => <FeaturedLocation {...item} />}
+        renderItem={({item}) => (
+          <FeaturedLocation
+            {...item}
+            selectedTime={selectedTime}
+            setSelectedTime={setSelectedTime}
+          />
+        )}
         snapToInterval={224}
       />
       <Section

@@ -204,6 +204,8 @@ export interface FeaturedLocationProps {
   title: string;
   image: string;
   totalCar: number;
+  selectedTime: any;
+  setSelectedTime: any;
 }
 
 export interface FeaturedLocationFrameProps extends SvgProps {
