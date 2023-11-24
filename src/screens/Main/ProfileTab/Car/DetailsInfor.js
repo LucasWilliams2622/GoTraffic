@@ -41,7 +41,6 @@ import Slider from '@react-native-community/slider';
 const DetailsInfor = props => {
   const {navigation, route} = props;
   const cardInfo = route.params;
-
   const [cars, setCars] = useState([]);
   const [description, setDescription] = useState(null);
   const [fuelConsumption, setFuelConsumption] = useState(null);
@@ -60,7 +59,6 @@ const DetailsInfor = props => {
   const [location, setLocation] = useState(null);
   const [onSwitch, setonSwitch] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [visible, setVisible] = useState(false);
   const [isEnabled, setEnabled] = useState(false);
   const [isEnabledLimitKm, setEnabledLimitKm] = useState(false);
   const [first, setfirst] = useState(0);
@@ -168,12 +166,48 @@ const DetailsInfor = props => {
       exceededFee: Math.floor(fifth * 10),
     };
 
-    navigation.navigate('FinalStep', {
-      carInfo: cardInfo,
-      carInfo2: carInfo2,
-    });
-
-    //navigation.navigate('DetailsInfor', { carInfo: carInfo });
+    // navigation.navigate('FinalStep', {
+    //   carInfo: cardInfo,
+    //   carInfo2: carInfo2,
+    // });
+    if (
+      location == null ||
+      description == null ||
+      fuelConsumption == null ||
+      price == null ||
+      selectedFeatures == null
+    ) {
+      showToastMessage(
+        '',
+        'Vui lòng nhập đầy đủ thông tin xe',
+        ICON.cancelWhite,
+      );
+    } else {
+      if (fuelConsumption < 10) {
+        showToastMessage(
+          '',
+          'Mức tiêu thụ nhiên liệu phải lớn hơn 10L',
+          ICON.cancelWhite,
+        );
+      } else {
+        if (price < 100000) {
+          showToastMessage('', 'Giá tiền phải lớn hơn 100K', ICON.cancelWhite);
+        } else {
+          if (selectedFeatures.length < 4) {
+            showToastMessage(
+              '',
+              'Vui lòng chọn nhiều hơn 4 chức năng',
+              ICON.cancelWhite,
+            );
+          } else {
+            navigation.navigate('FinalStep', {
+              carInfo: cardInfo,
+              carInfo2: carInfo2,
+            });
+          }
+        }
+      }
+    }
   };
 
   return (

@@ -62,24 +62,24 @@ const BasicInfor = props => {
       selectedTransmission,
       selectedFuel,
     };
-    //  if (
-    //    carNumber == null ||
-    //    selectedBrand == null ||
-    //    selectedModel == null ||
-    //    selectedSeats == null ||
-    //    selectedYear == null ||
-    //    selectedTransmission == null ||
-    //    selectedFuel == null
-    //  ) {
-    //    showToastMessage(
-    //      '',
-    //      'Vui lòng nhập đầy đủ thông tin xe',
-    //      ICON.cancelWhite,
-    //    );
-    //  } else {
-    //    navigation.navigate('DetailsInfor', {carInfo: carInfo});
-    //  }
-    navigation.navigate('DetailsInfor', {carInfo: carInfo});
+     if (
+       carNumber == null ||
+       selectedBrand == null ||
+       selectedModel == null ||
+       selectedSeats == null ||
+       selectedYear == null ||
+       selectedTransmission == null ||
+       selectedFuel == null
+     ) {
+       showToastMessage(
+         '',
+         'Vui lòng nhập đầy đủ thông tin xe',
+         ICON.cancelWhite,
+       );
+     } else {
+       navigation.navigate('DetailsInfor', {carInfo: carInfo});
+     }
+    //navigation.navigate('DetailsInfor', {carInfo: carInfo});
   };
 
   return (
