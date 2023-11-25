@@ -58,6 +58,7 @@ export const COLOR = {
   lightBlue: '#8ce0f5',
   lightYellow: '#FFEEDB',
   lightGreen: '#57b36a',
+  lightGreen2: '#D8F2E1',
   exit: '#F25F57',
   warn: '#fce7e6',
 };

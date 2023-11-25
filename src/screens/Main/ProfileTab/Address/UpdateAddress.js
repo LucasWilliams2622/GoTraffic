@@ -71,11 +71,12 @@ const UpdateAddress = ({ route }) => {
       const updatedAddress = {
         idUser: idUser,
         id: addressInfo.id, // ID của địa chỉ cần cập nhật
+        
         city: selectedProvince?.name,
-
         district: selectedDistrict?.name,
         ward: selectedWard?.name,
         street: isSelected, // Lựa chọn của loại địa chỉ
+        
         number: null,
 
         note: nickName,
