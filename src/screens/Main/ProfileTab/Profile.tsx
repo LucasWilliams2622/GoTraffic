@@ -27,7 +27,6 @@ const Profile = props => {
   const [name, setName] = useState(infoUser.name);
   const [avatar, setAvatar] = useState(infoUser.avatar);
   const [isModalVisible, setModalVisible] = useState(false);
-  console.log('infoUserinfoUser', infoUser);
 
   const toggleModal = async () => {
     setModalVisible(!isModalVisible);
@@ -60,7 +59,6 @@ const Profile = props => {
   const onDelete = async () => {
     try {
       const response = await AxiosInstance().delete('user/api/delete', {});
-      console.log(response);
       if (response.result) {
         setIsLogin(false);
         showToastMessage('', 'Xóa tài khoản thành công');

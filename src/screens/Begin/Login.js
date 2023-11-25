@@ -73,7 +73,7 @@ const Login = props => {
       console.log('LOGIN INFO', response['data']);
       if (response.data.result) {
         setIdUser(response['data'].user.id);
-        // setInfoUser(response['data'].user);
+        setInfoUser(response['data'].user);
         saveLoginInfo(response['data'].user);
       } else {
         showToastMessage(

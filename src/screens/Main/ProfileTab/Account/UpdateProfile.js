@@ -34,7 +34,6 @@ const UpdateProfile = props => {
   const dobUser = moment(infoUser.dob).format('DD/MM/YYYY');
   const [name, setName] = useState(infoUser.name);
   const [dob, setdob] = useState(infoUser.dob.slice(0, 10));
-  const [avatar, setAvatar] = useState(infoUser.avatar);
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedDate, setSelectedDate] = useState(dob);
@@ -47,13 +46,35 @@ const UpdateProfile = props => {
   ];
 
   // IMAGE PICKER FOR AVATAR
-  const [selectedImagePath, setSelectedImagePath] = useState(null);
+  const [selectedImagePath, setSelectedImagePath] = useState(infoUser.avatar);
   const handleImageSelected = path => {
+    console.log(path);
     setSelectedImagePath(path);
   };
 
+  const generateRandomNumber = () => {
+    const timestamp = Date.now();
+    const randomNum = Math.floor(Math.random() * timestamp);
+    return randomNum;
+  };
   const handleUpdate = async name => {
     try {
+      const formData = new FormData();
+      formData.append('image', {
+        uri: selectedImagePath,
+        type: 'icon/icon_jpeg',
+        name: 'image.jpg',
+      });
+      const responseAvatar = await axios.post(
+        'http://103.57.129.166:3000/car/api/upload-single-image',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
+      console.log(responseAvatar.data.link);
       const response = await axios.put(
         'http://103.57.129.166:3000/user/api/update?idUser=' + idUser,
         {
@@ -63,12 +84,12 @@ const UpdateProfile = props => {
           email: infoUser.email,
           gender: selectedSex === 'Nam',
           dob: selectedDate,
-          avatar: avatar,
+          avatar: responseAvatar.data.link,
         },
       );
       if (response.data.result) {
         await updateUserInfo({newInfo: response.data.user});
-        // await setAppState(2);
+        await setAppState(generateRandomNumber());
         showToastMessage('', 'Cập nhật thành công');
         navigation.goBack();
       } else {
@@ -101,8 +122,7 @@ const UpdateProfile = props => {
       .max(50, 'Quá dài')
       .required('Bắt buộc'),
   });
-  const isImageUrlValid = /^https?:\/\/.*\.(png|jpg)$/i.test(avatar);
-  console.log(avatar);
+
   return (
     <SafeAreaView style={[appStyle.container]}>
       <AppHeader title="Chỉnh sửa" />
@@ -110,7 +130,7 @@ const UpdateProfile = props => {
         {/* Avatar */}
         <ImagePickerComponent
           onImageSelected={handleImageSelected}
-          url={avatar}
+          imageUrl={selectedImagePath}
         />
 
         {/* Validate */}

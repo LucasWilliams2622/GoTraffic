@@ -14,16 +14,20 @@ export const AppContextProvider = props => {
   const [appState, setAppState] = useState(0);
   const [notificationCount, setNotificationCount] = useState(0);
 
+  const generateRandomNumber = () => {
+    const timestamp = Date.now();
+    const randomNum = Math.floor(Math.random() * timestamp);
+    return randomNum;
+  };
   useEffect(() => {
     getInfoUser();
     getListNotificationsByIDUser();
     return () => {};
-  }, [infoUser, isLogin, appState]);
+  }, [isLogin, appState]);
 
   const getInfoUser = async () => {
     try {
       const userInfoString = await AsyncStorage.getItem('userInfo');
-      console.log('3333333', userInfoString);
       if (userInfoString !== null) {
         // const userInfo = JSON.parse(userInfoString);
         // setIdUser(userInfo.id);
@@ -31,7 +35,6 @@ export const AppContextProvider = props => {
         const response = await AxiosInstance().get(
           '/user/api/get-by-id?id=' + idUser,
         );
-        console.log('responseresponse', response);
         if (response.result) {
           setInfoUser(response.user);
           await AsyncStorage.setItem('userInfo', JSON.stringify(response.user));
@@ -77,6 +80,7 @@ export const AppContextProvider = props => {
       notificationCount,
       setNotificationCount,
       updateUserInfo,
+      generateRandomNumber,
     };
   }, [
     isLogin,
@@ -91,6 +95,7 @@ export const AppContextProvider = props => {
     notificationCount,
     setNotificationCount,
     updateUserInfo,
+    generateRandomNumber,
   ]);
   return (
     <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>

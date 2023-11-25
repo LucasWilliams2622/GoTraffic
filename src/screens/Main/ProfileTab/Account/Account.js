@@ -20,35 +20,13 @@ import VerifyLicense from './VerifyLicense';
 
 const Account = props => {
   const navigation = useNavigation();
-  const {route} = props;
-
-  const {setIsLogin, infoUser, idUser} = useContext(AppContext);
-
+  const {infoUser, idUser} = useContext(AppContext);
   const [isLicenseModalVisible, setIsLicenseModalVisible] = useState(false);
 
   const handleUpdateProfile = () => {
-    navigation.navigate('UpdateProfile', );
+    navigation.navigate('UpdateProfile');
   };
-
-  // const defaultName = infoUser.name;
-  // const defaultDob = infoUser.dob;
-  // const defaultSex = infoUser.gender ? 'Nam' : 'Nữ';
-
-  // const [name, setName] = useState(route.params?.newName || defaultName);
-  // const [dob, setDob] = useState(route.params?.newDOB || defaultDob);
-  // const [sex, setSex] = useState(route.params?.newSex || defaultSex);
-
-  // useEffect(() => {
-  //   if (route.params?.newName) {
-  //     setName(route.params.newName);
-  //   }
-  //   if (route.params?.newDOB) {
-  //     setDob(route.params.newDOB);
-  //   }
-  //   if (route.params?.newSex) {
-  //     setSex(route.params.newSex);
-  //   }
-  // }, [route.params?.newName, route.params?.newDOB, route.params?.newSex]);
+  const isImageUrlValid = /^https?:\/\/.*\.(png|jpg)$/i.test(infoUser.avatar);
 
   return (
     <SafeAreaView style={[appStyle.container]}>
@@ -59,9 +37,18 @@ const Account = props => {
       />
 
       <View style={{width: '100%', alignItems: 'center', padding: 15}}>
-        <FastImage
-          source={require('../../../../assets/image/guide/img_friends.png')}
-          style={[appStyle.avatar, {marginTop: 20}]}></FastImage>
+        {isImageUrlValid ? (
+          <FastImage
+            source={{uri: infoUser.avatar}}
+            style={[appStyle.avatar, {marginTop: 20}]}
+          />
+        ) : (
+          <FastImage
+            source={require('../../../../assets/image/guide/img_friends.png')}
+            style={[appStyle.avatar, {marginTop: 20}]}
+          />
+        )}
+
         <Text style={[appStyle.text24Bold, {marginTop: 12}]}>
           {infoUser.name}
         </Text>
@@ -78,7 +65,9 @@ const Account = props => {
           </View>
           <View style={[styles.viewText, {marginTop: 8}]}>
             <Text style={appStyle.text14}>Giới tính</Text>
-            <Text style={appStyle.text14}>{infoUser.gender}</Text>
+            <Text style={appStyle.text14}>
+              {infoUser.gender ? 'Nam' : 'Nữ'}
+            </Text>
           </View>
         </View>
 

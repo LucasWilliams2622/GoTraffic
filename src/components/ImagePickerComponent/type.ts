@@ -14,5 +14,5 @@ export type ImagePickerComponentProps = {
     | 'stretch'
     | 'auto';
   onImageSelected?: any;
-  url?: any;
+  imageUrl?: any;
 };

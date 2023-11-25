@@ -22,9 +22,9 @@ const ImagePickerComponent = ({
   alignSelf = 'center',
   borderRadius = 12,
   onImageSelected,
-  url,
+  imageUrl,
 }: ImagePickerComponentProps) => {
-  const [selectedImage, setSelectedImage] = useState(url);
+  const [selectedImage, setSelectedImage] = useState(imageUrl);
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
 
   const pickImageFromGallery = async () => {
@@ -49,7 +49,7 @@ const ImagePickerComponent = ({
         cropping: true,
       });
       setSelectedImage({uri: image.path});
-      console.log(image.path);
+      // console.log(image.path);
 
       // Call the callback function with the image path
       onImageSelected && onImageSelected(image.path);
@@ -97,16 +97,16 @@ const ImagePickerComponent = ({
         ) : (
           <View style={{justifyContent: 'center', alignItems: 'center'}}>
             <Image
-              source={{uri: selectedImage}}
-              style={[
-                {
-                  width: width,
-                  height: height,
-                  marginVertical: 24,
-                  borderRadius: borderRadius,
-                },
-              ]}
-            />
+            source={{uri: imageUrl ? imageUrl : selectedImage.uri}}
+            style={[
+              {
+                width: width,
+                height: height,
+                marginVertical: 24,
+                borderRadius: borderRadius,
+              },
+            ]}
+          />
           </View>
         )}
       </TouchableOpacity>
