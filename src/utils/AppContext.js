@@ -15,24 +15,28 @@ export const AppContextProvider = props => {
 
   useEffect(() => {
     getInfoUser();
-    getListNotificationsByIDUser()
+    getListNotificationsByIDUser();
     return () => {};
   }, [isLogin, appState]);
 
   const getInfoUser = async () => {
     try {
       const userInfoString = await AsyncStorage.getItem('userInfo');
+      console.log('3333333', userInfoString);
       if (userInfoString !== null) {
         // const userInfo = JSON.parse(userInfoString);
         // setIdUser(userInfo.id);
         // setInfoUser(userInfo)
-      }
-      const response = await AxiosInstance().get(
-        '/user/api/get-by-id?id=' + idUser,
-      );
-      if (response.result) {
-        setInfoUser(response.user);
-        await AsyncStorage.setItem('userInfo', JSON.stringify(response.user));
+        const response = await AxiosInstance().get(
+          '/user/api/get-by-id?id=' + idUser,
+        );
+        if (response.result) {
+          setInfoUser(response.user);
+          await AsyncStorage.setItem('userInfo', JSON.stringify(response.user));
+        }
+      } else {
+        setIsLogin(false);
+        await AsyncStorage.removeItem('userInfo');
       }
     } catch (error) {
       console.log(error);
@@ -44,7 +48,7 @@ export const AppContextProvider = props => {
         '/notification-booking/api/get-by-user?idUser=' + idUser,
       );
       if (response.result) {
-        setNotificationCount(response.notifications.length)
+        setNotificationCount(response.notifications.length);
       } else {
         console.log('NETWORK ERROR');
       }

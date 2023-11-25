@@ -20,7 +20,7 @@ const ItemTrip = props => {
     if (data.status == 5) {
       navigation.navigate('RatingTrip', {id: data.id});
     } else {
-      console.log('id Car:' + data.idCar);
+      // console.log('id Car:' + data.idCar);
       setModalVisible(!isModalVisible);
     }
   };
