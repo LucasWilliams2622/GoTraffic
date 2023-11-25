@@ -10,7 +10,7 @@ import AxiosInstance from '../../../constants/AxiosInstance';
 const ListCarCity = props => {
   const navigation = useNavigation();
   const {title} = props.route.params;
-  console.log(props.route.params.title);
+  // console.log(props.route.params.title);
   // =================| Get List |====================
   const [listCar, setListCar] = useState([]);
   const getAllCar = async () => {

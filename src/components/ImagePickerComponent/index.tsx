@@ -17,20 +17,14 @@ import AppButton from '../AppButton';
 const ImagePickerComponent = ({
   containerStyle,
   titleStyle,
-  title,
-  backgroundColor,
-  textColor,
-  borderColor,
   width = 100,
   height = 100,
-  fontSize,
   alignSelf = 'center',
   borderRadius = 12,
-  disabled,
-  onPress,
   onImageSelected,
+  imageUrl,
 }: ImagePickerComponentProps) => {
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(imageUrl);
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
 
   const pickImageFromGallery = async () => {
@@ -55,7 +49,7 @@ const ImagePickerComponent = ({
         cropping: true,
       });
       setSelectedImage({uri: image.path});
-      console.log(image.path);
+      // console.log(image.path);
 
       // Call the callback function with the image path
       onImageSelected && onImageSelected(image.path);
@@ -103,16 +97,16 @@ const ImagePickerComponent = ({
         ) : (
           <View style={{justifyContent: 'center', alignItems: 'center'}}>
             <Image
-              source={{uri: selectedImage.uri}}
-              style={[
-                {
-                  width: width,
-                  height: height,
-                  marginVertical: 24,
-                  borderRadius: borderRadius,
-                },
-              ]}
-            />
+            source={{uri: imageUrl ? imageUrl : selectedImage.uri}}
+            style={[
+              {
+                width: width,
+                height: height,
+                marginVertical: 24,
+                borderRadius: borderRadius,
+              },
+            ]}
+          />
           </View>
         )}
       </TouchableOpacity>
