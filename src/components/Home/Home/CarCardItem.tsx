@@ -76,7 +76,7 @@ const CarCardItem = ({
   );
   useEffect(() => {
     try {
-      console.log(image);
+      // console.log(image);
       let images = JSON.parse(image);
       if (images.length > 0) {
         setThumbnail(images[0]);
@@ -86,7 +86,7 @@ const CarCardItem = ({
         );
       }
     } catch (error) {
-      console.log('Image error:  ' + error);
+      // console.log('Image error:  ' + error);
       setThumbnail(
         'https://2.bp.blogspot.com/-muVbmju-gkA/Vir94NirTeI/AAAAAAAAT9c/VoHzHZzQmR4/s1600/placeholder-image.jpg',
       );

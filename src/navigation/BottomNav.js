@@ -58,7 +58,6 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 const StackBegin = () => {
-  console.log('StackBegin');
   return (
     <Stack.Navigator
       initialRouteName="Login"
@@ -215,7 +214,6 @@ const Main = () => {
     setNotificationCount,
     notificationCount,
   } = useContext(AppContext);
-  console.log('Main');
   return (
     <Tab.Navigator
       initialRouteName="StackHome"
@@ -330,7 +328,6 @@ const Main = () => {
 
 const BottomTabNav = () => {
   const {isLogin, infoUser} = useContext(AppContext);
-  console.log('BottomTabNav');
   return <>{isLogin ? <Main /> : <StackBegin />}</>;
 };
 
