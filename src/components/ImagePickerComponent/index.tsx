@@ -17,20 +17,14 @@ import AppButton from '../AppButton';
 const ImagePickerComponent = ({
   containerStyle,
   titleStyle,
-  title,
-  backgroundColor,
-  textColor,
-  borderColor,
   width = 100,
   height = 100,
-  fontSize,
   alignSelf = 'center',
   borderRadius = 12,
-  disabled,
-  onPress,
   onImageSelected,
+  url,
 }: ImagePickerComponentProps) => {
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(url);
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
 
   const pickImageFromGallery = async () => {
@@ -103,7 +97,7 @@ const ImagePickerComponent = ({
         ) : (
           <View style={{justifyContent: 'center', alignItems: 'center'}}>
             <Image
-              source={{uri: selectedImage.uri}}
+              source={{uri: selectedImage}}
               style={[
                 {
                   width: width,

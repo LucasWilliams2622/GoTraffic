@@ -26,14 +26,9 @@ const Account = props => {
 
   const [isLicenseModalVisible, setIsLicenseModalVisible] = useState(false);
 
-
-  const handleUpdateProfile = () =>{
-    navigation.navigate('UpdateProfile', {
-      name: infoUser.name,
-      dob: infoUser.dob,
-      gender: infoUser.gender
-    });
-  }
+  const handleUpdateProfile = () => {
+    navigation.navigate('UpdateProfile', );
+  };
 
   // const defaultName = infoUser.name;
   // const defaultDob = infoUser.dob;
@@ -67,7 +62,9 @@ const Account = props => {
         <FastImage
           source={require('../../../../assets/image/guide/img_friends.png')}
           style={[appStyle.avatar, {marginTop: 20}]}></FastImage>
-        <Text style={[appStyle.text24Bold, {marginTop: 12}]}>{infoUser.name}</Text>
+        <Text style={[appStyle.text24Bold, {marginTop: 12}]}>
+          {infoUser.name}
+        </Text>
         <View style={{flexDirection: 'row'}}>
           <Text style={[appStyle.text12]}>
             Tham gia: {infoUser.createdAt.slice(0, 10)}

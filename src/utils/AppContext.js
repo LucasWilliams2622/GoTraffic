@@ -6,9 +6,10 @@ import AxiosInstance from '../constants/AxiosInstance';
 export const AppContext = createContext();
 
 export const AppContextProvider = props => {
+  const currentDay = moment().format('DD-MM-YYYY');
   const {children} = props;
   const [isLogin, setIsLogin] = useState(false);
-  const [infoUser, setInfoUser] = useState({});
+  const [infoUser, setInfoUser] = useState(null);
   const [idUser, setIdUser] = useState('');
   const [appState, setAppState] = useState(0);
   const [notificationCount, setNotificationCount] = useState(0);
@@ -17,7 +18,7 @@ export const AppContextProvider = props => {
     getInfoUser();
     getListNotificationsByIDUser();
     return () => {};
-  }, [isLogin, appState]);
+  }, [infoUser, isLogin, appState]);
 
   const getInfoUser = async () => {
     try {
@@ -30,6 +31,7 @@ export const AppContextProvider = props => {
         const response = await AxiosInstance().get(
           '/user/api/get-by-id?id=' + idUser,
         );
+        console.log('responseresponse', response);
         if (response.result) {
           setInfoUser(response.user);
           await AsyncStorage.setItem('userInfo', JSON.stringify(response.user));
@@ -42,6 +44,7 @@ export const AppContextProvider = props => {
       console.log(error);
     }
   };
+
   const getListNotificationsByIDUser = async () => {
     try {
       const response = await AxiosInstance().get(
@@ -56,8 +59,10 @@ export const AppContextProvider = props => {
       console.log(e);
     }
   };
-  const currentDay = moment().format('DD-MM-YYYY');
-
+  const updateUserInfo = newInfo => {
+    // Logic cập nhật thông tin user
+    setInfoUser(prevUser => ({...prevUser, ...newInfo}));
+  };
   const contextValue = useMemo(() => {
     return {
       isLogin,
@@ -71,6 +76,7 @@ export const AppContextProvider = props => {
       setAppState,
       notificationCount,
       setNotificationCount,
+      updateUserInfo,
     };
   }, [
     isLogin,
@@ -84,6 +90,7 @@ export const AppContextProvider = props => {
     setAppState,
     notificationCount,
     setNotificationCount,
+    updateUserInfo,
   ]);
   return (
     <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>

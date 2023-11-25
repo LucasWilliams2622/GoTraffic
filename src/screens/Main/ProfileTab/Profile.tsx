@@ -25,8 +25,9 @@ const Profile = props => {
   const {route} = props;
   const {setIsLogin, infoUser, idUser} = useContext(AppContext);
   const [name, setName] = useState(infoUser.name);
+  const [avatar, setAvatar] = useState(infoUser.avatar);
   const [isModalVisible, setModalVisible] = useState(false);
-  console.log(infoUser.avatar);
+  console.log('infoUserinfoUser', infoUser);
 
   const toggleModal = async () => {
     setModalVisible(!isModalVisible);
@@ -49,14 +50,13 @@ const Profile = props => {
   const LogOut = async () => {
     try {
       await AsyncStorage.removeItem('userInfo');
-      console.log('đã xóa');
-
       setIsLogin(false);
       console.log('Thông tin người dùng đã được xóa thành công!');
     } catch (error) {
       console.log('Đã xảy ra lỗi khi xóa thông tin người dùng:', error);
     }
   };
+
   const onDelete = async () => {
     try {
       const response = await AxiosInstance().delete('user/api/delete', {});

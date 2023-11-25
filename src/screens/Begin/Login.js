@@ -134,7 +134,7 @@ const Login = props => {
       if (userInfo !== null) {
         const parsedUserInfo = JSON.parse(userInfo);
         setIdUser(parsedUserInfo.id);
-        // setInfoUser(parsedUserInfo);
+        setInfoUser(parsedUserInfo);
         if (!isLogin) {
           setIsLogin(true);
         }
