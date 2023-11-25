@@ -5,6 +5,7 @@ import {COLOR} from '../../constants/Theme';
 import {Code} from 'native-base';
 import {appStyle} from '../../constants/AppStyle';
 import AxiosInstance from '../../constants/AxiosInstance';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const ItemConfirmTrip = props => {
   const {data, handleDelete, handleConfirm} = props;
@@ -12,7 +13,7 @@ const ItemConfirmTrip = props => {
     data.Car.imageThumbnail,
   );
   return (
-    <View>
+    <SafeAreaView>
       <View
         style={{
           flexDirection: 'row',
@@ -82,7 +83,7 @@ const ItemConfirmTrip = props => {
               justifyContent: 'space-between',
               marginTop: 20,
             }}>
-            <TouchableOpacity onPress={handleDelete(data.id)}>
+            <TouchableOpacity onPress={() => handleDelete(data.id)}>
               <Text style={[appStyle.text14, {color: COLOR.red}]}>Hủy</Text>
             </TouchableOpacity>
             <View
@@ -92,7 +93,7 @@ const ItemConfirmTrip = props => {
                 backgroundColor: COLOR.borderColor2,
               }}
             />
-            <TouchableOpacity onPress={handleConfirm(data.id)}>
+            <TouchableOpacity onPress={() => handleConfirm(data.id)}>
               <Text style={[appStyle.text14, {color: COLOR.green}]}>
                 Đồng ý
               </Text>
@@ -100,7 +101,7 @@ const ItemConfirmTrip = props => {
           </View>
         </View>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 
