@@ -25,9 +25,7 @@ const TestMultiPicker = () => {
     console.log(path);
     setImages(path);
   };
-  const logImage = () => {
-    console.log('images', images);
-  };
+  
   const uploadImages = async () => {
     try {
       const formData = new FormData();

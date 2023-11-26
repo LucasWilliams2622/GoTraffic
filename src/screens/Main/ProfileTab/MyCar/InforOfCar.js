@@ -135,10 +135,13 @@ const InforOfCar = props => {
         },
       );
       if (response.result) {
-        showToastMessage('Cập nhật thông tin xe thành công');
+        showToastMessage('', 'Cập nhật thông tin xe thành công');
         navigation.navigate('ListCar', {data: data});
       } else {
-        showToastMessage('Cập nhật thông tin xe thất bại',ICON.cancelWhite);
+        showToastMessage(
+          'error',
+          'Cập nhật thông tin xe thất bại',
+        );
       }
     } catch (e) {
       console.log(e);
@@ -148,8 +151,10 @@ const InforOfCar = props => {
   return (
     <SafeAreaView style={appStyle.container}>
       <AppHeader
-        title='Thông tin xe'
-        onPressLeft={() => navigation.goBack('GeneralInformation', {data: data})}
+        title="Thông tin xe"
+        onPressLeft={() =>
+          navigation.goBack('GeneralInformation', {data: data})
+        }
       />
       <ScrollView style={appStyle.main}>
         <View style={[appStyle.cardInfo, {marginTop: 10}]}>

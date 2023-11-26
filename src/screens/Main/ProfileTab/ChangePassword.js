@@ -43,7 +43,7 @@ const ChangePassword = props => {
 
         showToastMessage('', 'Đổi mật khẩu thành công');
       } else {
-        showToastMessage('', 'Đổi mật khẩu thất bại',ICON.cancelWhite);
+        showToastMessage('error', 'Đổi mật khẩu thất bại');
       }
     } catch (e) {
       console.log(e);

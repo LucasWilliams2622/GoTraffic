@@ -52,23 +52,62 @@ const FinalStep = props => {
           },
         },
       );
-      console.log(response.data.link);
+      // console.log('thumbnail', response.data.link);
 
-      setImageThumbnail(response.data.link);
       if (response.data.result) {
-        showToastMessage('', 'Upload images thumbnail success');
+        showToastMessage('', 'Upload ảnh bìa thành công');
+        setImageThumbnail(response.data.link);
       } else {
-        showToastMessage('', 'Upload images thumbnail fail', ICON.cancelWhite);
+        showToastMessage('error', 'Upload images thumbnail fail');
       }
     } catch (error) {
       console.error('Error uploading images:', error);
     }
   };
 
+  const uploadImages = async () => {
+    try {
+      const formData = new FormData();
+      images.forEach((uri, index) => {
+        if (uri) {
+          const fileName = `image_${index}.jpg`;
+          formData.append('images', {
+            uri,
+            type: 'image/jpeg',
+            name: fileName,
+          });
+        }
+      });
+      console.log(images, 'imagesimages');
+      const response = await axios.post(
+        'http://103.57.129.166:3000/car/api/upload-car-images',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
+
+      if (response.data.result) {
+        const jsonString = JSON.stringify(response.data.links);
+        const jsonStringWithQuotes = `\"${jsonString}\"`;
+        console.log('jsonStringWithQuotes', jsonStringWithQuotes);
+        await setImages(jsonStringWithQuotes);
+        showToastMessage('', 'Upload ảnh xe thành công');
+      } else {
+        showToastMessage('error', 'Upload ảnh xe thất bại');
+      }
+    } catch (error) {
+      console.error('Error uploading images:', error);
+    }
+  };
   //call api add car here
   const addNewCar = async () => {
     try {
-      uploadImage;
+      await uploadImage();
+      await uploadImages();
+      console.log("AAAA",images);
       const response = await axios.post(
         'http://103.57.129.166:3000/car/api/add',
         {
@@ -105,12 +144,13 @@ const FinalStep = props => {
           locationCar: '',
         },
       );
-      console.log(response.data);
       if (response.data.result) {
+        console.log(response.data);
+
         showToastMessage('', 'Đăng xe thành công');
         navigation.navigate('ListCar');
       } else {
-        showToastMessage('', 'Đăng xe thất bại', ICON.cancelWhite);
+        showToastMessage('error', 'Đăng xe thất bại');
       }
     } catch (error) {
       console.log(error);

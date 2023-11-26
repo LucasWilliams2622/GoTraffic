@@ -1,23 +1,18 @@
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import React, { useState } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { appStyle, windowWidth } from '../../constants/AppStyle';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useState} from 'react';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {appStyle, windowWidth} from '../../constants/AppStyle';
 import AppInput from '../../components/AppInput';
 import AppButton from '../../components/AppButton';
-import { COLOR, ICON } from '../../constants/Theme';
+import {COLOR, ICON} from '../../constants/Theme';
 import FastImage from 'react-native-fast-image';
 import * as Yup from 'yup';
-import { Formik } from 'formik';
-import { KeyboardAvoidingView } from 'native-base';
+import {Formik} from 'formik';
+import {KeyboardAvoidingView} from 'native-base';
 import AxiosInstance from '../../constants/AxiosInstance';
-import { showToastMessage } from '../../utils/utils';
+import {showToastMessage} from '../../utils/utils';
 import axios from 'axios';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const Register = props => {
   const navigation = useNavigation();
@@ -62,7 +57,7 @@ const Register = props => {
       if (response.data.result) {
         showToastMessage('', 'Đăng kí thành công');
       } else {
-        showToastMessage('', 'Đăng kí thất bại', ICON.cancelWhite);
+        showToastMessage('error', 'Đăng kí thất bại');
       }
     } catch (e) {
       console.log(e);
@@ -88,7 +83,7 @@ const Register = props => {
           if (values.password === values.rePassword) {
             onRegister();
           } else {
-            showToastMessage('', 'Mật khẩu không khớp', ICON.cancelWhite);
+            showToastMessage('error', 'Mật khẩu không khớp');
           }
         }}>
         {({
@@ -99,22 +94,21 @@ const Register = props => {
           errors,
           touched,
         }) => (
-          <View style={[appStyle.main, {  }]}>
+          <View style={[appStyle.main, {}]}>
             <KeyboardAvoidingView behavior="padding">
-              <View style={{ flexDirection: 'row', width: windowWidth*0.85 }}>
+              <View style={{flexDirection: 'row', width: windowWidth * 0.85}}>
                 <TouchableOpacity
-                  style={{ marginTop: 10, marginRight: 14 }}
+                  style={{marginTop: 10, marginRight: 14}}
                   onPress={() => navigation.goBack()}>
                   <FastImage source={ICON.Back} style={appStyle.icon} />
                 </TouchableOpacity>
-                <View style={{flex:1, alignItems:'center'}}>
+                <View style={{flex: 1, alignItems: 'center'}}>
                   <FastImage
                     source={require('../../assets/image/logo_go_traffic.png')}
                     style={styles.image}
                   />
                   <Text style={styles.text1}>Đăng kí</Text>
                 </View>
-
               </View>
 
               <View style={styles.viewItem}>
@@ -220,7 +214,7 @@ const styles = StyleSheet.create({
     width: 114.17,
     height: 130,
     alignSelf: 'center',
-    marginTop: 10
+    marginTop: 10,
   },
   text2: {
     fontSize: 16,
@@ -238,7 +232,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   viewItem: {
-   marginBottom: 16,
+    marginBottom: 16,
   },
   textError: {
     color: COLOR.red,

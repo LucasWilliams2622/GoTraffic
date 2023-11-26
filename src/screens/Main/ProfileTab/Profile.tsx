@@ -40,7 +40,7 @@ const Profile = props => {
     //     setIsLogin(false);
     //     showToastMessage('','Xóa tài khoản thành công');
     //   } else {
-    //     showToastMessage('','Xóa tài khoản thất bại',ICON.cancelWhite);
+    //     showToastMessage('','Xóa tài khoản thất bại');
     //   }
     // } catch (e) {
     //   console.log(e);
@@ -63,7 +63,7 @@ const Profile = props => {
         setIsLogin(false);
         showToastMessage('', 'Xóa tài khoản thành công');
       } else {
-        showToastMessage('', 'Xóa tài khoản thất bại', ICON.cancelWhite);
+        showToastMessage('error', 'Xóa tài khoản thất bại');
       }
     } catch (error) {
       console.log(error);

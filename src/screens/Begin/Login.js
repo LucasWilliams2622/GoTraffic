@@ -77,16 +77,14 @@ const Login = props => {
         saveLoginInfo(response['data'].user);
       } else {
         showToastMessage(
-          '',
+          'error',
           'Tên đăng nhập hoặc mật khẩu không đúng',
-          ICON.cancelWhite,
         );
       }
     } catch (e) {
       showToastMessage(
-        '',
+        'error',
         'Tên đăng nhập hoặc mật khẩu không đúng',
-        ICON.cancelWhite,
       );
       console.log(e);
     }
@@ -106,7 +104,7 @@ const Login = props => {
       if (response.data.result) {
         showToastMessage('', 'Gửi mật khẩu mới thành công');
       } else {
-        showToastMessage('', 'Gửi mật khẩu mới thất bại', ICON.cancelWhite);
+        showToastMessage('error', 'Gửi mật khẩu mới thất bại');
       }
     } catch (e) {
       console.log(e);
