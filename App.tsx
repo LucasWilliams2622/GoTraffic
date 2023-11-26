@@ -13,7 +13,7 @@ import thunk from 'redux-thunk';
 import Toast from 'react-native-toast-message';
 import {toastConfig} from './src/configs/ToastConfig';
 import Test2 from './src/test/TestMultiPicker';
-import TestComponent from './src/test/TestComponent';
+import TestComponent from './src/test/TextSignature';
 
 import {WebView} from 'react-native-webview';
 import ImagePickerComponent from './src/components/ImagePickerComponent';
@@ -26,7 +26,7 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   // return (
-  //   <TestComponent/>
+
   // )
   return (
     <Provider store={store}>
@@ -43,6 +43,7 @@ const App = () => {
               config={toastConfig}
               position="top"
             />
+            {/* <TestComponent /> */}
           </NativeBaseProvider>
         </NavigationContainer>
       </AppContextProvider>

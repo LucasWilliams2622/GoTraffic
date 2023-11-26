@@ -12,58 +12,40 @@ import {
   windowHeight,
   windowWidth,
 } from '../../../../../constants/AppStyle';
-import {COLOR, ICON} from '../../../../../constants/Theme';
-import Header from '../../../../../components/Header';
-import Pdf from 'react-native-pdf';
 import AppHeader from '../../../../../components/AppHeader';
-
+import {WebView} from 'react-native-webview';
+import {showToastMessage} from '../../../../../utils/utils';
+import RNFetchBlob from 'rn-fetch-blob';
+import {useNavigation} from '@react-navigation/native';
 const LeaseCar = props => {
-  const pdfUrl = 'http://samples.leanpub.com/thereactnativebook-sample.pdf';
-
-  const requestStoragePermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-        {
-          title: 'Quyền Ghi Tệp',
-          message: 'Ứng dụng cần quyền ghi tệp để tải tệp PDF.',
-          buttonNeutral: 'Để sau',
-          buttonNegative: 'Hủy bỏ',
-          buttonPositive: 'Đồng ý',
-        },
-      );
-
-      if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('Quyền ghi tệp bị từ chối.');
-        return false;
-      }
-
-      console.log('Đã cấp quyền ghi tệp.');
-      return true;
-    } catch (error) {
-      console.error('Lỗi khi yêu cầu quyền ghi tệp:', error);
-      return false;
-    }
-  };
+  const navigation = useNavigation();
+  const fileUrl =
+    'https://docs.google.com/document/d/1omMjX-nd3M9GyglMSuccaDt_tQm_OOYL/edit?usp=sharing&ouid=114108272420378053946&rtpof=true&sd=true';
 
   const handleDownloadPdf = async () => {
     try {
-      if (!(await requestStoragePermission())) {
-        return;
-      }
-
       const {config, fs} = RNFetchBlob;
-      const downloadDest = `${fs.dirs.DocumentDir}/sample.pdf`;
+      const DownloadDir = fs.dirs.DownloadDir;
 
-      console.log('File path before download:', downloadDest);
-
-      const res = await config({
+      const options = {
         fileCache: true,
-        appendExt: 'pdf',
-        path: downloadDest,
-      }).fetch('GET', pdfUrl);
+        addAndroidDownloads: {
+          useDownloadManager: true,
+          notification: true,
+          path: `${DownloadDir}/hop_dong_mau.docx`,
+        },
+      };
 
-      console.log('File downloaded to:', res.path());
+      config(options)
+        .fetch('GET', fileUrl)
+        .then(res => {
+          showToastMessage('', 'Tải thành công');
+          navigation.goBack();
+        })
+        .catch(error => {
+          // Xử lý lỗi khi tải về file
+          showToastMessage('error', 'Tải thất bại');
+        });
     } catch (error) {
       console.error('Download failed:', error);
     }
@@ -76,17 +58,7 @@ const LeaseCar = props => {
         icon={'download'}
         onPressRight={handleDownloadPdf}
       />
-
-      <View
-        style={{flex: 1, justifyContent: 'flex-start', alignItems: 'center'}}>
-        <Pdf
-          source={{uri: pdfUrl, cache: true}}
-          trustAllCerts={false}
-          spacing={30}
-          onPageChanged={(page, totalPages) => console.log(`${totalPages}`)}
-          style={{flex: 1, width: windowWidth, backgroundColor: COLOR.gray}}
-        />
-      </View>
+      <WebView source={{uri: fileUrl}} style={{flex: 1, borderWidth: 2}} />
     </SafeAreaView>
   );
 };
