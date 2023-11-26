@@ -151,6 +151,8 @@ const DetailsInfor = props => {
     toggleModal();
   };
   const handleNext = () => {
+
+    
     const carInfo2 = {
       location,
       description,
@@ -525,7 +527,7 @@ const DetailsInfor = props => {
 
         <AppButton
           title="Tiếp theo"
-          marginBottom={70}
+          marginBottom={90}
           onPress={() => handleNext()}
         />
       </View>
@@ -584,7 +586,6 @@ const styles = StyleSheet.create({
       {translateY: -windowHeight * 0.29},
     ],
     width: windowWidth * 0.9,
-    height: windowHeight * 0.58,
     borderRadius: 12,
     paddingHorizontal: 25,
     paddingBottom: 10,
