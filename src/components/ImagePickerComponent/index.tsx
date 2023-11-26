@@ -23,6 +23,8 @@ const ImagePickerComponent = ({
   borderRadius = 12,
   onImageSelected,
   imageUrl,
+  iconSize = 30,
+  title = 'Chọn ảnh',
 }: ImagePickerComponentProps) => {
   const [selectedImage, setSelectedImage] = useState(imageUrl);
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
@@ -73,40 +75,46 @@ const ImagePickerComponent = ({
         {!selectedImage ? (
           <View
             style={[
-              appStyle.column,
               styles.boxCamera,
               {
-                alignSelf: 'center',
+                alignSelf: alignSelf,
                 alignItems: 'center',
-                marginBottom: 20,
+                justifyContent: 'center',
                 borderWidth: 1,
                 borderRadius: 12,
+                width: width,
+                height: height,
               },
+              containerStyle,
             ]}>
             <Icon
               name="camera"
               type={IconType.Entypo}
-              size={30}
+              size={iconSize}
               color={COLOR.primary}
               onPress={() => {}}
             />
             <Text style={[appStyle.text12, {marginTop: 8}, titleStyle]}>
-              Chọn ảnh
+              {title}
             </Text>
           </View>
         ) : (
-          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              alignSelf: alignSelf,
+            }}>
             <Image
-            source={{uri: imageUrl ? imageUrl : selectedImage.uri}}
-            style={[
-              {
-                width: width,
-                height: height,
-                marginVertical: 24,
-                borderRadius: borderRadius,
-              },
-            ]}
-          />
+              source={{uri: imageUrl ? imageUrl : selectedImage.uri}}
+              style={[
+                {
+                  width: width,
+                  height: height,
+                  borderRadius: borderRadius,
+                },
+              ]}
+            />
           </View>
         )}
       </TouchableOpacity>
@@ -119,7 +127,7 @@ const ImagePickerComponent = ({
           style={[
             appStyle.modalContentBottom,
             {
-              height: windowHeight * 0.25,
+              height: windowHeight * 0.3,
               alignItems: 'center',
               justifyContent: 'space-around',
             },
@@ -128,7 +136,11 @@ const ImagePickerComponent = ({
             Chọn hình ảnh
           </Text>
 
-          <AppButton title="Chụp ảnh" onPress={() => captureImage()} />
+          <AppButton
+            title="Chụp ảnh"
+            onPress={() => captureImage()}
+            containerStyle={{}}
+          />
           <AppButton
             title="Chọn ảnh"
             backgroundColor={COLOR.background}
@@ -145,11 +157,9 @@ const ImagePickerComponent = ({
 };
 const styles = StyleSheet.create({
   boxCamera: {
-    borderRadius: 6,
     borderWidth: 1,
     borderColor: '#DFDFDF',
     paddingVertical: 14,
-    paddingHorizontal: 22,
     backgroundColor: COLOR.background,
   },
 });

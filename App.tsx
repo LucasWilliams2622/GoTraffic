@@ -14,9 +14,7 @@ import Toast from 'react-native-toast-message';
 import {toastConfig} from './src/configs/ToastConfig';
 import Test2 from './src/test/TestMultiPicker';
 import TestComponent from './src/test/TextSignature';
-
 import {WebView} from 'react-native-webview';
-import ImagePickerComponent from './src/components/ImagePickerComponent';
 // Tạo store Redux
 const store = legacy_createStore(rootReducer, applyMiddleware(thunk));
 
@@ -43,7 +41,6 @@ const App = () => {
               config={toastConfig}
               position="top"
             />
-            {/* <TestComponent /> */}
           </NativeBaseProvider>
         </NavigationContainer>
       </AppContextProvider>

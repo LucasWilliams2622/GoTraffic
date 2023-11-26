@@ -16,126 +16,24 @@ import {showToastMessage} from '../utils/utils';
 import axios from 'axios';
 import Icon, {IconType} from 'react-native-dynamic-vector-icons';
 import {COLOR} from '../constants/Theme';
+import MultipleImagePicker from '../components/MultiImagePicker';
+import AppButton from '../components/AppButton';
 
 const TestMultiPicker = () => {
-  const [selectedImages, setSelectedImages] = useState(Array(9).fill(null));
-  const actionSheetRef = useRef();
-
-  // Kiểm tra và yêu cầu quyền truy cập
-  const checkAndRequestPermission = async () => {
-    if (Platform.OS === 'android') {
-      const result = await check(PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE);
-      if (result !== RESULTS.GRANTED) {
-        const requestResult = await request(
-          PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
-        );
-        if (requestResult !== RESULTS.GRANTED) {
-          // Xử lý khi người dùng từ chối cấp quyền
-        }
-      }
-    } else if (Platform.OS === 'ios') {
-      const result = await check(PERMISSIONS.IOS.PHOTO_LIBRARY);
-      if (result !== RESULTS.GRANTED) {
-        const requestResult = await request(PERMISSIONS.IOS.PHOTO_LIBRARY);
-        if (requestResult !== RESULTS.GRANTED) {
-          // Xử lý khi người dùng từ chối cấp quyền
-        }
-      }
-    }
+  const [images, setImages] = useState([]);
+  const handleImageThumbnailSelected = path => {
+    console.log(path);
+    setImages(path);
   };
-
-  // Chọn hình từ thư viện hoặc chụp hình
-  const showImagePickerOptions = () => {
-    actionSheetRef.current.show({useNativeDriver: true});
+  const logImage = () => {
+    console.log('images', images);
   };
-  const removeImage = index => {
-    const updatedImages = [...selectedImages];
-    updatedImages[index] = null;
-    setSelectedImages(updatedImages);
-  };
-
-  // Hiển thị action sheet
-  const handleActionSheetPress = index => {
-    if (index === 0) {
-      pickImage();
-    } else if (index === 1) {
-      takePhoto();
-    }
-  };
-
-  // Chọn hình từ thư viện
-  const pickImage = async () => {
-    try {
-      const image = await ImagePicker.openPicker({
-        mediaType: 'photo',
-      });
-      const updatedImages = [...selectedImages];
-      const emptySlotIndex = updatedImages.indexOf(null);
-      if (emptySlotIndex !== -1) {
-        updatedImages[emptySlotIndex] = image.path;
-        setSelectedImages(updatedImages);
-      }
-      setSelectedImages(updatedImages);
-    } catch (error) {
-      console.log('ImagePicker Error: ', error);
-    }
-  };
-
-  // Chụp hình
-  const takePhoto = async () => {
-    try {
-      await checkAndRequestPermission();
-      const image = await ImagePicker.openCamera({
-        width: 300,
-        height: 400,
-        cropping: true,
-      });
-
-      // Find the first empty slot in selectedImages and update the state
-      const updatedImages = [...selectedImages];
-      const emptySlotIndex = updatedImages.indexOf(null);
-      if (emptySlotIndex !== -1) {
-        updatedImages[emptySlotIndex] = image.path;
-        setSelectedImages(updatedImages);
-      }
-    } catch (error) {
-      console.log('ImagePicker Error: ', error);
-    }
-  };
-
-  // Render selected images
-  const renderSelectedImages = () => {
-    return selectedImages.map((image, index) => (
-      <TouchableOpacity key={index} onPress={() => showImagePickerOptions()}>
-        <View style={styles.imageContainer}>
-          {image ? (
-            <View>
-              <Image source={{uri: image}} style={styles.image} />
-              <TouchableOpacity onPress={() => removeImage(index)}>
-                <Text style={styles.removeText}>Xóa</Text>
-              </TouchableOpacity>
-            </View>
-          ) : (
-            <Icon
-              name="camera"
-              type={IconType.Entypo}
-              size={30}
-              color={COLOR.primary}
-              onPress={() => {}}
-            />
-          )}
-          {!image && <Text>Chọn ảnh</Text>}
-        </View>
-      </TouchableOpacity>
-    ));
-  };
-
   const uploadImages = async () => {
     try {
       const formData = new FormData();
-      console.log(selectedImages);
+      console.log(images);
 
-      selectedImages.forEach((uri, index) => {
+      images.forEach((uri, index) => {
         if (uri) {
           const fileName = `image_${index}.jpg`;
           formData.append('images', {
@@ -160,21 +58,10 @@ const TestMultiPicker = () => {
       console.error('Error uploading images:', error);
     }
   };
-
   return (
     <View style={styles.container}>
-      <Button title="Print Array Images" onPress={() => uploadImages()} />
-      <View style={styles.imageGrid}>{renderSelectedImages()}</View>
-
-      {/* Action Sheet */}
-      <ActionSheet
-        ref={actionSheetRef}
-        title={'Select Image'}
-        options={['Choose from Library', 'Take Photo', 'Cancel']}
-        cancelButtonIndex={2}
-        destructiveButtonIndex={2}
-        onPress={handleActionSheetPress}
-      />
+      <AppButton onPress={() => uploadImages()} />
+      <MultipleImagePicker onImageSelected={handleImageThumbnailSelected} />
     </View>
   );
 };
