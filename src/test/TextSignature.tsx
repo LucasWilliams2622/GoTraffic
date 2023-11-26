@@ -42,7 +42,7 @@ const SignatureScreen = () => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center',marginBottom:60 }}>
       <View style={{ borderWidth: 2 }}>
         <SignatureCapture
           style={{ height: 500, width: 400 }}
@@ -50,7 +50,7 @@ const SignatureScreen = () => {
           onSaveEvent={(result) => console.log(result)}
           onDragEvent={() => console.log('drag')}
           saveImageFileInExtStorage={false}
-          showNativeButtons={true}
+          showNativeButtons={false}
           showTitleLabel={false}
           viewMode={'portrait'}
           minStrokeWidth={14}

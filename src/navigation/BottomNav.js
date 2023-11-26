@@ -53,10 +53,10 @@ import FindingCar from '../screens/Main/HomeTab/FindingCar';
 import ChangeBooking from '../screens/Main/HomeTab/ChangeBooking';
 import {appStyle} from '../constants/AppStyle';
 import {Badge} from 'react-native-elements';
+import {useIsFocused} from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-
 const StackBegin = () => {
   return (
     <Stack.Navigator
@@ -165,6 +165,8 @@ const StackSupport = () => {
 };
 
 const StackProfile = () => {
+  const isFocused = useIsFocused();
+
   return (
     <Stack.Navigator
       initialRouteName="Profile"
@@ -195,7 +197,11 @@ const StackProfile = () => {
       <Stack.Screen name="BasicInfor" component={BasicInfor} />
       <Stack.Screen name="DetailsInfor" component={DetailsInfor} />
       <Stack.Screen name="FinalStep" component={FinalStep} />
-      <Stack.Screen name="LeaseCar" component={LeaseCar} />
+      <Stack.Screen
+        name="LeaseCar"
+        component={LeaseCar}
+        options={{tabBarVisible: false}}
+      />
       <Stack.Screen name="SampleContract" component={SampleContract} />
       <Stack.Screen name="HandOverReport" component={HandOverReport} />
       <Stack.Screen name="VerifyLicense" component={VerifyLicense} />
