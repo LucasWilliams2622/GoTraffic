@@ -162,6 +162,8 @@ const Home: React.FC = () => {
         navigation={navigation}
         selectedTime={selectedTime}
         setSelectedTime={setSelectedTime}
+        viewedCars={viewedCars}
+        setViewedCars={setViewedCars}
       />
 
       <Section

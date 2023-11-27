@@ -52,7 +52,7 @@ const LocationPicking = props => {
   const autoComplete = async text => {
     try {
       const response = await axios.get(
-        `https://maps.vietmap.vn/api/autocomplete/v3?apikey=${apikey}&text=${text}&cityId=${location.city.id}&distId=${location.district.id}&wardId=${location.ward.id}`,
+        `https://maps.vietmap.vn/api/autocomplete/v3?apikey=${apikey}&text=${text}&cityId=${location.city.id}`,
       );
       if (response.status === 200) {
         setSuggestions(response.data);
@@ -69,6 +69,7 @@ const LocationPicking = props => {
       const response = await axios.get(
         `http://103.57.129.166:3000/address/api/get-default-address?idUser=${idUser}`,
       );
+      console.log('response.data: ' + JSON.stringify(response.data));
       setDefaultAddress(response.data);
     } catch (error) {
       console.log(error);

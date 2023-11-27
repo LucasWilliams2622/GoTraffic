@@ -129,7 +129,7 @@ const CarCardItem = ({
       </Row>
 
       <Row style={CarCardItemStyles.row}>
-        <Text style={[appStyle.text16Bold, CarCardItemStyles.title, {}]}>
+        <Text style={[appStyle.text16Bold, CarCardItemStyles.title]}>
           {name}
         </Text>
         <ShieldIcon color={COLOR.fifth} />
@@ -137,7 +137,11 @@ const CarCardItem = ({
 
       <Row style={CarCardItemStyles.locationRow}>
         <Icon name="location-dot" color={COLOR.borderColor} size={15} />
-        <Text style={CarCardItemStyles.locationText}>{locationCar}</Text>
+        <Text style={CarCardItemStyles.locationText}>
+          {locationCar.length > 40
+            ? locationCar.substring(0, 38) + '...'
+            : locationCar}
+        </Text>
       </Row>
 
       <View style={CarCardItemStyles.separator} />
@@ -187,6 +191,7 @@ export default CarCardItem;
 
 export const CarCardItemStyles = StyleSheet.create({
   container: {
+    backgroundColor: COLOR.white,
     marginRight: 20,
     marginTop: 10,
     borderRadius: 20,
@@ -220,14 +225,12 @@ export const CarCardItemStyles = StyleSheet.create({
   typeView: {
     backgroundColor: COLOR.sixth,
     padding: 8,
-    alignSelf: 'flex-start',
     borderRadius: 15,
     marginRight: 10,
   },
   benefitView: {
     backgroundColor: COLOR.seventh,
     padding: 8,
-    alignSelf: 'flex-start',
     borderRadius: 15,
   },
   title: {

@@ -66,7 +66,13 @@ const BUTTONS_CONFIG: ButtonConfig[] = [
 const tomorrow = new Date();
 tomorrow.setDate(tomorrow.getDate() + 1);
 
-const Booking = ({navigation, selectedTime, setSelectedTime}: any) => {
+const Booking = ({
+  navigation,
+  selectedTime,
+  setSelectedTime,
+  viewedCars,
+  setViewedCars,
+}: any) => {
   const [isSelfDriving, setIsSelfDriving] = useState<boolean>(true);
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
   const [location, setLocation] = useState<string>('');
@@ -121,6 +127,8 @@ const Booking = ({navigation, selectedTime, setSelectedTime}: any) => {
               close={() => setModalVisible(false)}
               selectedTime={selectedTime}
               setSelectedTime={setSelectedTime}
+              viewedCars={viewedCars}
+              setViewedCars={setViewedCars}
             />
           </ReactNativeModal>
         </View>
