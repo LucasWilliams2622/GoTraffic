@@ -15,7 +15,6 @@ import {COLOR, ICON} from '../../constants/Theme';
 import FastImage from 'react-native-fast-image';
 import {Center} from 'native-base';
 import {BottomSheet} from 'react-native-btr';
-import OTPInputView from '@twotalltotems/react-native-otp-input';
 import * as Yup from 'yup';
 import {Formik, useFormik} from 'formik';
 import {AppContext} from '../../utils/AppContext';
@@ -26,12 +25,10 @@ import {
 } from '@react-native-google-signin/google-signin';
 import AxiosInstance from '../../constants/AxiosInstance';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Toast from 'react-native-toast-message';
 import axios from 'axios';
 import {showToastMessage} from '../../utils/utils';
 
 const Login = props => {
-  console.log('TestLogin');
   const {isLogin, setIsLogin, setInfoUser, setIdUser, idUser} =
     useContext(AppContext);
   const {navigation} = props;
@@ -63,9 +60,9 @@ const Login = props => {
   });
 
   //API login
-  const onLogin = async () => {
+  const onLogin = async (phoneNumber,password) => {
     try {
-      console.log(phoneNumber, password);
+      console.log(phoneNumber,password);
       const response = await axios.post(
         'http://103.57.129.166:3000/user/api/login',
         {
@@ -73,34 +70,21 @@ const Login = props => {
           password: password,
         },
       );
-      console.log(response['data']);
+      console.log('LOGIN INFO', response['data']);
       if (response.data.result) {
         setIdUser(response['data'].user.id);
         setInfoUser(response['data'].user);
         saveLoginInfo(response['data'].user);
-        setIsLogin(true);
-        // Toast.show({
-        //   type: 'success',
-        //   text1: 'Ðăng nhập thành công !',
-        //   visibilityTime: 2000,
-        //   autoHide: true,
-        //   topOffset: 30,
-        //   bottomOffset: 40,
-        // });
-
-        showToastMessage('', 'Ðăng nhập thành công !');
       } else {
         showToastMessage(
-          '',
+          'error',
           'Tên đăng nhập hoặc mật khẩu không đúng',
-          ICON.cancelWhite,
         );
       }
     } catch (e) {
       showToastMessage(
-        '',
+        'error',
         'Tên đăng nhập hoặc mật khẩu không đúng',
-        ICON.cancelWhite,
       );
       console.log(e);
     }
@@ -120,17 +104,19 @@ const Login = props => {
       if (response.data.result) {
         showToastMessage('', 'Gửi mật khẩu mới thành công');
       } else {
-        showToastMessage('', 'Gửi mật khẩu mới thất bại', ICON.cancelWhite);
+        showToastMessage('error', 'Gửi mật khẩu mới thất bại');
       }
     } catch (e) {
       console.log(e);
     }
   };
+
   // Hàm lưu thông tin đăng nhập vào AsyncStorage
   const saveLoginInfo = async userInfo => {
     try {
-      console.log('userInfo', userInfo.avatar);
       await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
+      setIsLogin(true);
+      showToastMessage('', 'Ðăng nhập thành công !');
       console.log('Thông tin đăng nhập đã được lưu.');
     } catch (error) {
       console.log('Lỗi khi lưu thông tin đăng nhập:', error);
@@ -160,7 +146,6 @@ const Login = props => {
   };
 
   useEffect(() => {
-    console.log('checkLoginInfo');
     checkLoginInfo();
   }, [idUser]);
 
@@ -178,11 +163,7 @@ const Login = props => {
             initialValues={{phoneNumber: '', password: ''}}
             validationSchema={validationSchema}
             onSubmit={values => {
-              console.log(values.phoneNumber);
-              console.log(values.password);
-              setphoneNumber(values.phoneNumber);
-              setpassword(values.password);
-              onLogin();
+              onLogin(values.phoneNumber,values.password);
             }}>
             {({
               handleChange,

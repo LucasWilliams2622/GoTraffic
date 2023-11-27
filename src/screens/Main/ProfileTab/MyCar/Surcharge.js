@@ -66,7 +66,7 @@ const Surcharge = props => {
         goBack();
         showToastMessage('', 'Cập nhật thành công');
       } else {
-        showToastMessage('', 'Cập nhật thất bại', ICON.cancelWhite);
+        showToastMessage('error', 'Cập nhật thất bại');
       }
     } catch (e) {
       console.log(e);
@@ -482,6 +482,6 @@ const styles = StyleSheet.create({
     shadowRadius: 0,
     elevation: 5,
     padding: 20,
-    justifyContent:'space-evenly'
+    justifyContent: 'space-evenly',
   },
 });

@@ -6,7 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useContext} from 'react';
 import {
   appStyle,
   windowHeight,
@@ -19,24 +19,22 @@ import axios from 'axios';
 import {showToastMessage} from '../../../../utils/utils';
 import AppHeader from '../../../../components/AppHeader';
 import ImagePickerComponent from '../../../../components/ImagePickerComponent';
+import {AppContext} from '../../../../utils/AppContext';
+import MultipleImagePicker from '../../../../components/MultiImagePicker';
 
 const FinalStep = props => {
   const {navigation, route} = props;
   const cardInfo = route.params;
-  console.log(cardInfo);
-  const [carImages, setCarImages] = useState('');
 
-  
-  const [selectedImagePath, setSelectedImagePath] = useState(Array);
+  const {idUser} = useContext(AppContext);
   const [imageThumbnail, setImageThumbnail] = useState('');
-  const handleImageSelected = path => {
-    setSelectedImagePath(prevArray => [...prevArray, path]);
-  };
   const handleImageThumbnailSelected = path => {
     setImageThumbnail(path);
   };
-  const [checkImage, setCheckImage] = useState(false);
-  const [checkImageThumbnail, setCheckImageThumbnail] = useState(false);
+  const [images, setImages] = useState([]);
+  const handleImagesSelected = path => {
+    setImages(path);
+  };
   const uploadImage = async () => {
     try {
       const formData = new FormData();
@@ -54,23 +52,23 @@ const FinalStep = props => {
           },
         },
       );
-      console.log(response.data.link);
-     
-      setImageThumbnail(response.data.link);
+      // console.log('thumbnail', response.data.link);
+
       if (response.data.result) {
-        showToastMessage('', 'Upload images thumbnail success');
-        setCheckImageThumbnail(true);
+        showToastMessage('', 'Upload ảnh bìa thành công');
+        setImageThumbnail(response.data.link);
       } else {
-        showToastMessage('', 'Upload images thumbnail fail', ICON.cancelWhite);
+        showToastMessage('error', 'Upload images thumbnail fail');
       }
     } catch (error) {
       console.error('Error uploading images:', error);
     }
   };
+
   const uploadImages = async () => {
     try {
       const formData = new FormData();
-      selectedImagePath.forEach((uri, index) => {
+      images.forEach((uri, index) => {
         if (uri) {
           const fileName = `image_${index}.jpg`;
           formData.append('images', {
@@ -80,6 +78,7 @@ const FinalStep = props => {
           });
         }
       });
+      console.log(images, 'imagesimages');
       const response = await axios.post(
         'http://103.57.129.166:3000/car/api/upload-car-images',
         formData,
@@ -89,15 +88,15 @@ const FinalStep = props => {
           },
         },
       );
-      console.log(response.data.links);
-      const encodedImageUrls = response.data.link.map(url => encodeURIComponent(url));
-      console.log("hinhãnhe",encodedImageUrls);
-      setCarImages(encodedImageUrls);
+
       if (response.data.result) {
-        showToastMessage('', 'Upload images success');
-        setCheckImage(true);
+        const jsonString = JSON.stringify(response.data.links);
+        const jsonStringWithQuotes = `\"${jsonString}\"`;
+        console.log('jsonStringWithQuotes', jsonStringWithQuotes);
+        await setImages(jsonStringWithQuotes);
+        showToastMessage('', 'Upload ảnh xe thành công');
       } else {
-        showToastMessage('', 'Upload images fail', ICON.cancelWhite);
+        showToastMessage('error', 'Upload ảnh xe thất bại');
       }
     } catch (error) {
       console.error('Error uploading images:', error);
@@ -106,11 +105,13 @@ const FinalStep = props => {
   //call api add car here
   const addNewCar = async () => {
     try {
-      console.log('hinh anh : ', JSON.stringify(carImages));
+      await uploadImage();
+      await uploadImages();
+      console.log("AAAA",images);
       const response = await axios.post(
         'http://103.57.129.166:3000/car/api/add',
         {
-          idUser: 1,
+          idUser: idUser,
           //step1
           carBrand: cardInfo.carInfo.carInfo.selectedBrand,
           numberPlate: cardInfo.carInfo.carInfo.carNumber,
@@ -138,146 +139,53 @@ const FinalStep = props => {
 
           price: cardInfo.carInfo2.price,
           utilities: cardInfo.carInfo2.selectedFeatures.toString(),
-          image: carImages.toString(),
+          image: images,
           imageThumbnail: imageThumbnail,
-          locationCar: "",
+          locationCar: '',
         },
       );
-      console.log(response.data);
       if (response.data.result) {
+        console.log(response.data);
+
         showToastMessage('', 'Đăng xe thành công');
         navigation.navigate('ListCar');
       } else {
-        showToastMessage('', 'Đăng xe thất bại', ICON.cancelWhite);
+        showToastMessage('error', 'Đăng xe thất bại');
       }
     } catch (error) {
       console.log(error);
     }
   };
-  
+
   return (
     <SafeAreaView style={appStyle.container}>
       <AppHeader title="ẢNH XE" />
-      <ScrollView style={appStyle.main}>
-        <View style={{flex: 1, justifyContent: 'space-evenly'}}>
-          <Text style={appStyle.text165}>Ảnh xe</Text>
-          <Text style={{marginBottom: 10}}>
-            Bạn vui lòng đăng 1 tấm ảnh đại diện của xe
-          </Text>
-          <ImagePickerComponent
-            onImageSelected={handleImageThumbnailSelected}
-          />
-          {checkImageThumbnail == false ? (
-            <TouchableOpacity
-              style={{marginBottom: 20, marginTop: 10, flexDirection: 'row'}}
-              onPress={() => {
-                uploadImage();
-                //setCheckImage(true);
-              }}>
-              <FastImage
-                source={ICON.Add}
-                tintColor={COLOR.primary}
-                style={appStyle.icon}
-              />
-              <Text
-                style={[
-                  appStyle.text14Bold,
-                  {marginLeft: 10, color: COLOR.primary},
-                ]}>
-                Thêm ảnh bìa
-              </Text>
-            </TouchableOpacity>
-          ) : (
-            <View
-              style={{marginBottom: 20, marginTop: 10, flexDirection: 'row'}}>
-              <FastImage
-                source={ICON.Done}
-                tintColor={COLOR.green}
-                style={appStyle.icon}
-              />
-              <Text
-                style={[
-                  appStyle.text14Bold,
-                  {marginLeft: 10, color: COLOR.green},
-                ]}>
-                Đã cập nhật ảnh bìa
-              </Text>
-            </View>
-          )}
-          <Text style={{marginBottom: 10}}>
-            Bạn vui lòng đăng 4 ảnh (Trước - sau - trái - phải) để tăng hiệu quả
-            cho thuê và đủ điều kiện để đăng ký.
-          </Text>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-          }}>
-          <ImagePickerComponent onImageSelected={handleImageSelected} />
-          <ImagePickerComponent onImageSelected={handleImageSelected} />
-          <ImagePickerComponent onImageSelected={handleImageSelected} />
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-          }}>
-          <ImagePickerComponent onImageSelected={handleImageSelected} />
-          <ImagePickerComponent onImageSelected={handleImageSelected} />
-          <ImagePickerComponent onImageSelected={handleImageSelected} />
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-          }}>
-          <ImagePickerComponent onImageSelected={handleImageSelected} />
-          <ImagePickerComponent onImageSelected={handleImageSelected} />
-          <ImagePickerComponent onImageSelected={handleImageSelected} />
-        </View>
-        {checkImage == false ? (
-          <TouchableOpacity
-            style={{marginBottom: 20, marginTop: 10, flexDirection: 'row'}}
-            onPress={() => {
-              uploadImages();
-            }}>
-            <FastImage
-              source={ICON.Add}
-              tintColor={COLOR.primary}
-              style={appStyle.icon}
-            />
-            <Text
-              style={[
-                appStyle.text14Bold,
-                {marginLeft: 10, color: COLOR.primary},
-              ]}>
-              Thêm hình ảnh xe
-            </Text>
-          </TouchableOpacity>
-        ) : (
-          <View style={{marginBottom: 20, marginTop: 10, flexDirection: 'row'}}>
-            <FastImage
-              source={ICON.Done}
-              tintColor={COLOR.green}
-              style={appStyle.icon}
-            />
-            <Text
-              style={[
-                appStyle.text14Bold,
-                {marginLeft: 10, color: COLOR.green},
-              ]}>
-              Đã cập nhật hình ảnh xe
-            </Text>
-          </View>
-        )}
-
-        <AppButton
-          title="Hoàn tất"
-          marginBottom={70}
-          onPress={() => addNewCar()}
+      <ScrollView
+        style={appStyle.main}
+        shouldRasterizeIOS
+        showsVerticalScrollIndicator={false}>
+        <ImagePickerComponent
+          containerStyle={{marginTop: 24, marginBottom: 12}}
+          width={windowWidth * 0.8}
+          height={200}
+          iconSize={50}
+          title="Chọn ảnh bìa"
+          onImageSelected={handleImageThumbnailSelected}
+        />
+        <MultipleImagePicker
+          onImageSelected={handleImagesSelected}
+          numberImage={9}
+          space={14}
         />
       </ScrollView>
+      <View style={appStyle.boxCenter}>
+        <AppButton
+          title="Hoàn tất"
+          marginBottom={90}
+          width="96%"
+          onPress={() => addNewCar()}
+        />
+      </View>
     </SafeAreaView>
   );
 };

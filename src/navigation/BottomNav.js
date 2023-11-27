@@ -53,12 +53,11 @@ import FindingCar from '../screens/Main/HomeTab/FindingCar';
 import ChangeBooking from '../screens/Main/HomeTab/ChangeBooking';
 import {appStyle} from '../constants/AppStyle';
 import {Badge} from 'react-native-elements';
+import {useIsFocused} from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-
 const StackBegin = () => {
-  console.log('StackBegin');
   return (
     <Stack.Navigator
       initialRouteName="Login"
@@ -166,6 +165,8 @@ const StackSupport = () => {
 };
 
 const StackProfile = () => {
+  const isFocused = useIsFocused();
+
   return (
     <Stack.Navigator
       initialRouteName="Profile"
@@ -196,7 +197,11 @@ const StackProfile = () => {
       <Stack.Screen name="BasicInfor" component={BasicInfor} />
       <Stack.Screen name="DetailsInfor" component={DetailsInfor} />
       <Stack.Screen name="FinalStep" component={FinalStep} />
-      <Stack.Screen name="LeaseCar" component={LeaseCar} />
+      <Stack.Screen
+        name="LeaseCar"
+        component={LeaseCar}
+        options={{tabBarVisible: false}}
+      />
       <Stack.Screen name="SampleContract" component={SampleContract} />
       <Stack.Screen name="HandOverReport" component={HandOverReport} />
       <Stack.Screen name="VerifyLicense" component={VerifyLicense} />
@@ -215,7 +220,6 @@ const Main = () => {
     setNotificationCount,
     notificationCount,
   } = useContext(AppContext);
-  console.log('Main');
   return (
     <Tab.Navigator
       initialRouteName="StackHome"
@@ -330,7 +334,6 @@ const Main = () => {
 
 const BottomTabNav = () => {
   const {isLogin, infoUser} = useContext(AppContext);
-  console.log('BottomTabNav');
   return <>{isLogin ? <Main /> : <StackBegin />}</>;
 };
 
