@@ -13,11 +13,9 @@ import ButtonSelected from '../../../components/ButtonSelected';
 import FastImage from 'react-native-fast-image';
 import CarCardItem from '../../../components/Home/Home/CarCardItem';
 import {COLOR, ICON} from '../../../constants/Theme';
-import {useNavigation} from '@react-navigation/native';
-import AxiosInstance from '../../../constants/AxiosInstance';
 import ReactNativeModal from 'react-native-modal';
 import ChangeBooking from './ChangeBooking';
-import {timeDateFormat} from '../../../utils/utils';
+import {formatTimeApi, timeDateFormat} from '../../../utils/utils';
 import {REACT_APP_VIETMAP_API_KEY} from '@env';
 import axios from 'axios';
 
@@ -30,22 +28,71 @@ const FindingCar = ({
 }) => {
   const [isSelected, setIsSelected] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [detailLocation, setDetailLocation] = useState(null);
+  const [ward, setWard] = useState(null);
+  const [district, setDistrict] = useState(null);
+  const [city, setCity] = useState(null);
 
   const [listCar, setListCar] = useState([]);
   const getAllCar = async () => {
     try {
-      if (location === 'Sài Gòn') {
+      if (location === 'Sài Gòn' || location === 'Tân Sơn Nhất') {
         location = 'Ho Chi Minh';
+      } else if (location === 'Nội Bài') {
+        location = 'Hà Nội';
       }
-      const response = await AxiosInstance().get(
-        `/car/api/get-car-by-city?city=${location}`,
-      );
-      if (response.result) {
-        setListCar(response.listCar);
-      } else {
-        console.log('Error');
-      }
+
+      const data = {
+        location: `${ward}, ${district}, ${city}`,
+        startTime: formatTimeApi(selectedTime.startDate),
+        endTime: formatTimeApi(selectedTime.endDate),
+      };
+      console.log(data);
+
+      axios
+        .post(
+          'http://103.57.129.166:3000/car/api/sort-by-location-and-time',
+          data,
+        )
+        .then(response => {
+          if (response.data.listCar.availableCars) {
+            setListCar(response.data.listCar.availableCars);
+          } else {
+            data.location = `${district}, ${city}`;
+            axios
+              .post(
+                'http://103.57.129.166:3000/car/api/sort-by-location-and-time',
+                data,
+              )
+              .then(response => {
+                if (response.data.listcar.availableCars) {
+                  setListCar(response.data.listcar.availableCars);
+                } else {
+                  data.location = `${city}`;
+                  axios
+                    .post(
+                      'http://103.57.129.166:3000/car/api/sort-by-location-and-time',
+                      data,
+                    )
+                    .then(response => {
+                      if (response.data.listcar.availableCars) {
+                        setListCar(response.data.listcar.availableCars);
+                      } else {
+                        setListCar([]);
+                      }
+                    })
+                    .catch(error => {
+                      console.warn('Error 3: ' + JSON.stringify(error));
+                    });
+                }
+              })
+              .catch(error => {
+                console.warn('Error 2: ' + JSON.stringify(error));
+              });
+          }
+        })
+        .catch(error => {
+          console.warn('Error 1: ' + JSON.stringify(error));
+        });
     } catch (e) {
       console.log(e);
     }
@@ -57,7 +104,13 @@ const FindingCar = ({
         `https://maps.vietmap.vn/api/search/v3?apikey=${REACT_APP_VIETMAP_API_KEY}&text=${location}`,
       )
       .then(response => {
-        console.log(JSON.stringify(response.data));
+        console.log(JSON.stringify(response.data[0].boundaries));
+        setWard(response.data[0].boundaries[0]);
+        setDistrict(response.data[0].boundaries[1]);
+        setCity(response.data[0].boundaries[2]);
+        console.log(ward);
+        console.log(district);
+        console.log(city);
       })
       .catch(error => {
         console.warn(error);
@@ -65,7 +118,6 @@ const FindingCar = ({
   };
 
   useEffect(() => {
-    console.log('location: ' + location);
     getDetailLocation(location);
     getAllCar();
   }, []);
@@ -99,7 +151,7 @@ const FindingCar = ({
           style={styles.viewSearch}>
           <View style={{alignItems: 'center', width: '90%'}}>
             <Text style={appStyle.text14Bold}>
-              {location.length > 35 ? location.slice(0, 35) + '...' : location}
+              {location.length > 30 ? location.slice(0, 30) + '...' : location}
             </Text>
             <Text style={{marginTop: 5}}>{`${timeDateFormat(
               selectedTime.startDate,

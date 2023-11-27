@@ -2,15 +2,11 @@ import {DayProps} from 'react-native-calendars/src/calendar/day';
 import {SvgProps} from 'react-native-svg';
 
 export type CarDetailProps = {
-  // route: {
-  //   params: {
-  //     car_id?: number;
-  //     navigation: any;
-  //   };
-  // };
   car_id: number;
   close: () => void;
   setSwipeEnabled: (enabled: boolean) => void;
+  viewedCars?: Car[];
+  setViewedCars?: (viewedCars: Car[]) => void;
 };
 
 export type Feature = {
