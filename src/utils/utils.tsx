@@ -84,6 +84,22 @@ export const timeDateFormat = (date: Date) => {
   return `${hours + 1}h00, ${day}/${month}`;
 };
 
+export const formatTimeApi = (date: Date) => {
+  const seconds =
+    date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+  const minutes =
+    date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
+  const hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
+  const day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+  const month =
+    date.getMonth() + 1 < 10
+      ? '0' + (date.getMonth() + 1)
+      : date.getMonth() + 1;
+  const year = date.getFullYear();
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+};
+
 export const currentDateString = formatTime(currentDay);
 export const returnDateString = formatTime(tomorrow);
 export const currentTimeString = `${currentDay.getHours()}:00`;

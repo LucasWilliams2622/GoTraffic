@@ -157,7 +157,12 @@ const BottomBar: React.FC<{
     </View>
   );
 };
-const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
+const CarDetail: React.FC<CarDetailProps> = ({
+  car_id,
+  close,
+  viewedCars,
+  setViewedCars,
+}) => {
   const [carCoordinates, setCarCoordinates] = useState<Geocoder.LatLng | null>(
     null,
   );
@@ -243,6 +248,21 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
     }
   };
 
+  const handleClose = () => {
+    // add current car to viewedCars list
+    // if current car is already in viewedCars list, move it to the top
+    if (viewedCars && setViewedCars) {
+      const carIndex = viewedCars.findIndex(x => x.id === car_id);
+      if (carIndex !== -1) {
+        viewedCars.splice(carIndex, 1);
+      }
+      viewedCars.unshift(car as Car);
+      setViewedCars(viewedCars);
+    }
+
+    close();
+  };
+
   const StickyHeader: React.FC<{name: string}> = ({name}) => {
     return (
       <Animated.View
@@ -272,7 +292,7 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
               name="x"
               color={COLOR.black}
               size={20}
-              onPress={close}
+              onPress={handleClose}
             />
             <Text
               style={{
@@ -320,7 +340,7 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
             name="x"
             color={COLOR.white}
             size={20}
-            onPress={close}
+            onPress={handleClose}
           />
           <View style={styles.row}>
             <PressableIcon
@@ -349,7 +369,7 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
             {useNativeDriver: false},
           )}>
           {images.length > 0 && (
-            <SlideShow images={images} close={close} scrollY={scrollY} />
+            <SlideShow images={images} close={handleClose} scrollY={scrollY} />
           )}
 
           <View style={{paddingHorizontal: 10, paddingVertical: 20}}>
@@ -471,7 +491,7 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
           dateStart={dateStart}
           dateEnd={dateEnd}
           selectedTime={selectedTime}
-          closeCarDetail={close}
+          closeCarDetail={handleClose}
         />
       </View>
     );
