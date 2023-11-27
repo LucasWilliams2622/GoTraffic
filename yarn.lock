@@ -6592,6 +6592,18 @@ glob@^7.1.3, glob@^7.1.4, glob@^7.2.3:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
+glob@7.0.6:
+  version "7.0.6"
+  resolved "https://registry.npmjs.org/glob/-/glob-7.0.6.tgz"
+  integrity sha512-f8c0rE8JiCxpa52kWPAOa3ZaYEnzofDzCQLCn3Vdk0Z5OVLq3BsRFJI4S4ykpeVW6QMGBUkMeUpoEgWnMTnw5Q==
+  dependencies:
+    fs.realpath "^1.0.0"
+    inflight "^1.0.4"
+    inherits "2"
+    minimatch "^3.0.2"
+    once "^1.3.0"
+    path-is-absolute "^1.0.0"
+
 glob@7.1.6:
   version "7.1.6"
   resolved "https://registry.npmjs.org/glob/-/glob-7.1.6.tgz"
@@ -10716,6 +10728,11 @@ react-native-google-places-autocomplete@^2.5.2:
     prop-types "^15.7.2"
     qs "~6.9.1"
 
+react-native-html-to-pdf@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.npmjs.org/react-native-html-to-pdf/-/react-native-html-to-pdf-0.12.0.tgz"
+  integrity sha512-Yb5WO9SfF86s5Yv9PqXQ7fZDr9zZOJ+6jtweT9zFLraPNHWX7pSxe2dSkeg3cGiNrib65ZXGN6ksHymfYLFSSg==
+
 react-native-image-crop-picker@^0.40.2:
   version "0.40.2"
   resolved "https://registry.npmjs.org/react-native-image-crop-picker/-/react-native-image-crop-picker-0.40.2.tgz"
@@ -10959,6 +10976,18 @@ react-native-share@^9.4.1:
   resolved "https://registry.npmjs.org/react-native-share/-/react-native-share-9.4.1.tgz"
   integrity sha512-jm4qA5J5+ytWA8UFg6s8iEfdZYGPW+t5oreSuzrPt0assjvBUlFaoqYGGwGR5RJ8BIpjzOJYvx/c9MjXB4ApUg==
 
+react-native-signature-canvas@^4.7.1:
+  version "4.7.1"
+  resolved "https://registry.npmjs.org/react-native-signature-canvas/-/react-native-signature-canvas-4.7.1.tgz"
+  integrity sha512-80+FwydjaVMZGE/QXNVQyObnM/rAWikpnYnunDJ01H0zCJ5GY860E121ztmT8vAWr+Z6RsXCID2ff6hsSeM0yw==
+
+react-native-signature-capture@^0.4.12:
+  version "0.4.12"
+  resolved "https://registry.npmjs.org/react-native-signature-capture/-/react-native-signature-capture-0.4.12.tgz"
+  integrity sha512-DtRqYABtrXxcKhMYJaRFcptAgugDjsn/09KCbcNtZHVtEFyUvdSriOx2i6OgtTRHlQbN/+YBWnezeikcXu7UnQ==
+  dependencies:
+    prop-types "^15.5.10"
+
 react-native-size-matters@^0.3.1:
   version "0.3.1"
   resolved "https://registry.npmjs.org/react-native-size-matters/-/react-native-size-matters-0.3.1.tgz"
@@ -11105,7 +11134,7 @@ react-native-web@*, "react-native-web@>= 0.11", react-native-web@0.9.x:
     postcss-value-parser "^4.2.0"
     styleq "^0.1.3"
 
-react-native-webview@^13.6.2:
+react-native-webview@^13.6.2, react-native-webview@>=13:
   version "13.6.2"
   resolved "https://registry.npmjs.org/react-native-webview/-/react-native-webview-13.6.2.tgz"
   integrity sha512-QzhQ5JCU+Nf2W285DtvCZOVQy/MkJXMwNDYPZvOWQbAOgxJMSSO+BtqXTMA1UPugDsko6PxJ0TxSlUwIwJijDg==
@@ -11113,7 +11142,7 @@ react-native-webview@^13.6.2:
     escape-string-regexp "2.0.0"
     invariant "2.2.4"
 
-react-native@*, "react-native@^0.0.0-0 || 0.60 - 0.72 || 1000.0.0", react-native@^0.72.4, "react-native@>= 0.30.0", "react-native@>= 0.59", "react-native@>= 0.62", "react-native@>= 0.64.3", react-native@>=0.11, react-native@>=0.23.1, react-native@>=0.35, react-native@>=0.40.0, react-native@>=0.42.0, react-native@>=0.46, react-native@>=0.47.1, react-native@>=0.48.4, react-native@>=0.50.1, react-native@>=0.57, react-native@>=0.57.0, react-native@>=0.58, react-native@>=0.59, react-native@>=0.60, react-native@>=0.60.0, react-native@>=0.61.0, react-native@>=0.61.3, react-native@>=0.63.3, react-native@>=0.63.4, react-native@>=0.64.0, react-native@>=0.65.0, react-native@0.72.4:
+react-native@*, "react-native@^0.0.0-0 || 0.60 - 0.72 || 1000.0.0", react-native@^0.72.4, "react-native@>= 0.30.0", "react-native@>= 0.59", "react-native@>= 0.62", "react-native@>= 0.64.3", react-native@>=0.11, react-native@>=0.23.1, react-native@>=0.35, react-native@>=0.40.0, react-native@>=0.42.0, react-native@>=0.46, react-native@>=0.47, react-native@>=0.47.1, react-native@>=0.48.4, react-native@>=0.50.1, react-native@>=0.57, react-native@>=0.57.0, react-native@>=0.58, react-native@>=0.59, react-native@>=0.60, react-native@>=0.60.0, react-native@>=0.61.0, react-native@>=0.61.3, react-native@>=0.63.3, react-native@>=0.63.4, react-native@>=0.64.0, react-native@>=0.65.0, react-native@0.72.4:
   version "0.72.4"
   resolved "https://registry.npmjs.org/react-native/-/react-native-0.72.4.tgz"
   integrity sha512-+vrObi0wZR+NeqL09KihAAdVlQ9IdplwznJWtYrjnQ4UbCW6rkzZJebRsugwUneSOKNFaHFEo1uKU89HsgtYBg==
@@ -11540,6 +11569,14 @@ rimraf@~2.6.2:
   integrity sha512-mwqeW5XsA2qAejG46gYdENaxXjx9onRNCfn7L0duuP4hCuTIi/QO7PDK07KJfp1d+izWPrzEJDcSqBa0OZQriA==
   dependencies:
     glob "^7.1.3"
+
+rn-fetch-blob@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.npmjs.org/rn-fetch-blob/-/rn-fetch-blob-0.12.0.tgz"
+  integrity sha512-+QnR7AsJ14zqpVVUbzbtAjq0iI8c9tCg49tIoKO2ezjzRunN7YL6zFSFSWZm6d+mE/l9r+OeDM3jmb2tBb2WbA==
+  dependencies:
+    base-64 "0.1.0"
+    glob "7.0.6"
 
 run-parallel@^1.1.9:
   version "1.2.0"

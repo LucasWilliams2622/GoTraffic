@@ -72,9 +72,8 @@ const BasicInfor = props => {
       selectedFuel == null
     ) {
       showToastMessage(
-        '',
+        'error',
         'Vui lòng nhập đầy đủ thông tin xe',
-        ICON.cancelWhite,
       );
     } else {
       navigation.navigate('DetailsInfor', {carInfo: carInfo});
@@ -107,7 +106,7 @@ const BasicInfor = props => {
                 <AppInput
                   width={windowWidth * 0.4}
                   placeholder=""
-                  value={ carNumber}
+                  value={carNumber}
                   onChangeText={text => setCarNumber(text)}
                 />
               </View>

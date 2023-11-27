@@ -6,7 +6,6 @@ import {
   ScrollView,
   TouchableOpacity,
   Modal,
-  PermissionsAndroid,
 } from 'react-native';
 import React, {useState, useEffect, useRef} from 'react';
 import {
@@ -14,34 +13,23 @@ import {
   windowHeight,
   windowWidth,
 } from '../../../../constants/AppStyle';
-import Header from '../../../../components/Header';
 import {COLOR, ICON} from '../../../../constants/Theme';
 import AppButton from '../../../../components/AppButton';
 import SwitchToggle from 'react-native-switch-toggle';
 import AppInput from '../../../../components/AppInput';
-import FastImage from 'react-native-fast-image';
 import ItemFeature from '../../../../components/Profile/ItemFeature';
 import axios from 'axios';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import AppDropdown from '../../../../components/AppDropdown';
 import {features} from '../../../../components/Profile/data/DataCar';
-import AxiosInstance from '../../../../constants/AxiosInstance';
-import {showToastMessage} from '../../../../utils/utils';
-import {Button} from 'native-base';
-import ImagePicker from 'react-native-image-crop-picker';
-import ActionSheet from 'react-native-actionsheet';
-import {Platform} from 'react-native';
-import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import {formatPriceWithUnit, showToastMessage} from '../../../../utils/utils';
 import AppHeader from '../../../../components/AppHeader';
-import ImagePickerComponent from '../../../../components/ImagePickerComponent';
-import {BottomSheet} from 'react-native-btr';
 import {Switch} from 'native-base';
 import Slider from '@react-native-community/slider';
+import numeral from 'numeral';
 
 const DetailsInfor = props => {
   const {navigation, route} = props;
   const cardInfo = route.params;
-  const [cars, setCars] = useState([]);
   const [description, setDescription] = useState(null);
   const [fuelConsumption, setFuelConsumption] = useState(null);
   const [price, setPrice] = useState(null);
@@ -149,8 +137,6 @@ const DetailsInfor = props => {
     toggleModal();
   };
   const handleNext = () => {
-
-    
     const carInfo2 = {
       location,
       description,
@@ -179,28 +165,16 @@ const DetailsInfor = props => {
       price == null ||
       selectedFeatures == null
     ) {
-      showToastMessage(
-        '',
-        'Vui lòng nhập đầy đủ thông tin xe',
-        ICON.cancelWhite,
-      );
+      showToastMessage('error', 'Vui lòng nhập đầy đủ thông tin xe');
     } else {
       if (fuelConsumption < 10) {
-        showToastMessage(
-          '',
-          'Mức tiêu thụ nhiên liệu phải lớn hơn 10L',
-          ICON.cancelWhite,
-        );
+        showToastMessage('error', 'Mức tiêu thụ nhiên liệu phải lớn hơn 10L');
       } else {
-        if (price < 100000) {
-          showToastMessage('', 'Giá tiền phải lớn hơn 100K', ICON.cancelWhite);
+        if (price < 300000) {
+          showToastMessage('error', 'Giá tiền phải lớn hơn 300K');
         } else {
           if (selectedFeatures.length < 4) {
-            showToastMessage(
-              '',
-              'Vui lòng chọn nhiều hơn 4 chức năng',
-              ICON.cancelWhite,
-            );
+            showToastMessage('error', 'Vui lòng chọn nhiều hơn 4 chức năng');
           } else {
             navigation.navigate('FinalStep', {
               carInfo: cardInfo,
@@ -384,9 +358,11 @@ const DetailsInfor = props => {
               <View style={appStyle.inputRight}>
                 <AppInput
                   placeholder="0"
-                  width={windowWidth * 0.15}
+                  width={windowWidth * 0.3}
                   borderWidth={0}
                   value={fuelConsumption}
+                  textAlign={'right'}
+                  keyboardType={'numeric'}
                   onChangeText={text => setFuelConsumption(text)}
                 />
                 <Text>lít/100 km</Text>
@@ -544,10 +520,12 @@ const DetailsInfor = props => {
               <View style={appStyle.inputRight}>
                 <AppInput
                   placeholder="0"
-                  width={windowWidth * 0.2}
+                  width={windowWidth * 0.35}
                   fontSize={18}
                   borderWidth={0}
                   value={price}
+                  textAlign={'right'}
+                  keyboardType={'numeric'}
                   onChangeText={text => setPrice(text)}
                 />
                 <Text style={[appStyle.text18Bold, {color: COLOR.primary}]}>

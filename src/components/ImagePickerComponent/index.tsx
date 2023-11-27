@@ -113,6 +113,7 @@ const ImagePickerComponent = ({
                   height: height,
                   borderRadius: borderRadius,
                 },
+                containerStyle,
               ]}
             />
           </View>

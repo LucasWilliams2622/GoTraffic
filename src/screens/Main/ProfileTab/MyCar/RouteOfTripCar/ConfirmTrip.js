@@ -55,9 +55,8 @@ const ConfirmTrip = () => {
         getCarByIdUser();
       } else {
         showToastMessage(
-          '',
+          'error',
           'Xác nhận yêu càu đặt xe thất bại',
-          ICON.cancelWhite,
         );
       }
     } catch (error) {

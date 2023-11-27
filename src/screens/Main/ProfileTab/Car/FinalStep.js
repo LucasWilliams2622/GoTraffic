@@ -52,10 +52,9 @@ const FinalStep = props => {
           },
         },
       );
-      // console.log('thumbnail', response.data.link);
 
       if (response.data.result) {
-        showToastMessage('', 'Upload ảnh bìa thành công');
+        // showToastMessage('', 'Upload ảnh bìa thành công');
         setImageThumbnail(response.data.link);
       } else {
         showToastMessage('error', 'Upload images thumbnail fail');
@@ -78,7 +77,6 @@ const FinalStep = props => {
           });
         }
       });
-      console.log(images, 'imagesimages');
       const response = await axios.post(
         'http://103.57.129.166:3000/car/api/upload-car-images',
         formData,
@@ -93,8 +91,9 @@ const FinalStep = props => {
         const jsonString = JSON.stringify(response.data.links);
         const jsonStringWithQuotes = `\"${jsonString}\"`;
         console.log('jsonStringWithQuotes', jsonStringWithQuotes);
-        await setImages(jsonStringWithQuotes);
-        showToastMessage('', 'Upload ảnh xe thành công');
+        setImages(jsonStringWithQuotes);
+        // showToastMessage('', 'Upload ảnh xe thành công');
+        await addCarStep2(jsonStringWithQuotes);
       } else {
         showToastMessage('error', 'Upload ảnh xe thất bại');
       }
@@ -105,9 +104,27 @@ const FinalStep = props => {
   //call api add car here
   const addNewCar = async () => {
     try {
-      await uploadImage();
-      await uploadImages();
-      console.log("AAAA",images);
+      if (imageThumbnail.length == 0) {
+        showToastMessage('error', 'Vui lòng chọn ảnh bìa cho xe');
+        return;
+      } else if (images && images.filter(image => image !== null).length < 4) {
+        showToastMessage('error', 'Vui lòng chọn nhiều hơn 4 tấm ảnh');
+        return;
+      } else {
+        await uploadImage();
+        await uploadImages();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const addCarStep2 = async carImages => {
+    try {
+      console.log(
+        ' cardInfo.carInfo2.price',
+        parseInt(cardInfo.carInfo2.price),
+      );
       const response = await axios.post(
         'http://103.57.129.166:3000/car/api/add',
         {
@@ -139,7 +156,7 @@ const FinalStep = props => {
 
           price: cardInfo.carInfo2.price,
           utilities: cardInfo.carInfo2.selectedFeatures.toString(),
-          image: images,
+          image: carImages,
           imageThumbnail: imageThumbnail,
           locationCar: '',
         },
@@ -153,10 +170,9 @@ const FinalStep = props => {
         showToastMessage('error', 'Đăng xe thất bại');
       }
     } catch (error) {
-      console.log(error);
+      showToastMessage('error', 'Đăng xe thất bại'+error);
     }
   };
-
   return (
     <SafeAreaView style={appStyle.container}>
       <AppHeader title="ẢNH XE" />
@@ -165,7 +181,7 @@ const FinalStep = props => {
         shouldRasterizeIOS
         showsVerticalScrollIndicator={false}>
         <ImagePickerComponent
-          containerStyle={{marginTop: 24, marginBottom: 12}}
+          containerStyle={{marginTop: 24, marginBottom: 32}}
           width={windowWidth * 0.8}
           height={200}
           iconSize={50}
