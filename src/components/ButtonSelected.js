@@ -7,34 +7,26 @@ import FastImage from 'react-native-fast-image';
 const ButtonSelected = props => {
   const {onPress, icon, iconWidth, iconHeight, text, isSelected} = props;
   return (
-    <View>
-      <TouchableOpacity
+    <TouchableOpacity
+      style={[
+        styles.button,
+        {
+          borderColor: isSelected ? COLOR.secondary : COLOR.borderColor,
+          borderWidth: isSelected ? 2 : 0.7,
+        },
+      ]}
+      onPress={onPress}>
+      <Text
         style={[
-          styles.button,
+          appStyle.text14,
           {
-            borderColor: isSelected ? COLOR.secondary : COLOR.borderColor,
-            borderWidth: isSelected ? 2 : 0.7,
+            color: isSelected ? COLOR.secondary : 'black',
+            fontWeight: isSelected ? 'bold' : 'normal',
           },
-        ]}
-        onPress={onPress}>
-        {/* <FastImage
-          source={icon}
-          resizeMode="stretch"
-          tintColor={isSelected ? COLOR.secondary : 'black'}
-          style={[appStyle.iconMedium, {marginRight: 5}]}
-        /> */}
-        <Text
-          style={[
-            appStyle.text14,
-            {
-              color: isSelected ? COLOR.secondary : 'black',
-              fontWeight: isSelected ? 'bold' : 'normal',
-            },
-          ]}>
-          {text}
-        </Text>
-      </TouchableOpacity>
-    </View>
+        ]}>
+        {text}
+      </Text>
+    </TouchableOpacity>
   );
 };
 
@@ -47,14 +39,14 @@ export default ButtonSelected;
 
 const styles = StyleSheet.create({
   button: {
-    width: 'auto',
-    padding: 8,
-    marginHorizontal: 5,
-    borderColor: COLOR.borderColor,
-    borderWidth: 0.7,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    height: 30,
     borderRadius: 20,
-    flexDirection: 'row',
+    borderWidth: 0.7,
+    marginHorizontal: 5,
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: 10,
   },
 });
