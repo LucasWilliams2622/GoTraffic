@@ -13,13 +13,12 @@ import ButtonSelected from '../../../components/ButtonSelected';
 import FastImage from 'react-native-fast-image';
 import CarCardItem from '../../../components/Home/Home/CarCardItem';
 import {COLOR, ICON} from '../../../constants/Theme';
-import {useNavigation} from '@react-navigation/native';
-import AxiosInstance from '../../../constants/AxiosInstance';
 import ReactNativeModal from 'react-native-modal';
 import ChangeBooking from './ChangeBooking';
-import {timeDateFormat} from '../../../utils/utils';
+import {formatTimeApi, timeDateFormat} from '../../../utils/utils';
 import {REACT_APP_VIETMAP_API_KEY} from '@env';
 import axios from 'axios';
+import CarDetail from './CarDetail';
 
 const FindingCar = ({
   location,
@@ -27,43 +26,106 @@ const FindingCar = ({
   close,
   selectedTime,
   setSelectedTime,
+  viewedCars,
+  setViewedCars,
 }) => {
-  const navigation = useNavigation();
   const [isSelected, setIsSelected] = useState(null);
-  const [isModalVisible, setModalVisible] = useState(false);
-  const [detailLocation, setDetailLocation] = useState(null);
+  const [isChangeBookingModalVisible, setChangeBookingModalVisible] =
+    useState(false);
+  const [selectedCarId, setSelectedCarId] = useState(null);
+  const [isCarModalVisible, setCarModalVisible] = useState(false);
+  const [key, setKey] = useState(Math.random().toString());
 
   const [listCar, setListCar] = useState([]);
-  const getAllCar = async () => {
+
+  useEffect(() => {
+    setKey(Math.random().toString());
+  }, [listCar]);
+
+  const getAllCar = async (ward, district, city) => {
     try {
-      const response = await AxiosInstance().get('/car/api/list');
-      if (response.result) {
-        setListCar(response.listCar);
-      } else {
-        console.log('Error');
+      if (location === 'Sài Gòn' || location === 'Tân Sơn Nhất') {
+        location = 'Ho Chi Minh';
+      } else if (location === 'Nội Bài') {
+        location = 'Hà Nội';
       }
+
+      const data = {
+        location: `${ward.full_name}, ${district.full_name}, ${city.full_name}`,
+        startTime: formatTimeApi(selectedTime.startDate),
+        endTime: formatTimeApi(selectedTime.endDate),
+      };
+
+      const locations = [
+        `${ward.full_name}, ${district.full_name}, ${city.full_name}`,
+        `${district.full_name}, ${city.full_name}`,
+        `${city.full_name}`,
+      ];
+
+      let availableCars = [];
+
+      for (let i = 0; i < locations.length; i++) {
+        data.location = locations[i];
+        try {
+          const response = await axios.post(
+            'http://103.57.129.166:3000/car/api/sort-by-location-and-time',
+            data,
+          );
+          if (response.data.listCar.availableCarsLength > 0) {
+            availableCars = [
+              ...availableCars,
+              ...response.data.listCar.availableCars,
+            ];
+            if (availableCars.length >= 5) {
+              break;
+            }
+          }
+        } catch (error) {
+          console.warn(`Error ${i + 1}: ` + JSON.stringify(error));
+        }
+      }
+
+      // Remove duplicates
+      availableCars = availableCars.reduce((unique, item) => {
+        return unique.findIndex(uniqueItem => uniqueItem.id === item.id) < 0
+          ? [...unique, item]
+          : unique;
+      }, []);
+
+      setListCar(availableCars);
     } catch (e) {
       console.log(e);
     }
   };
 
   const getDetailLocation = async location => {
-    axios
-      .get(
-        `https://maps.vietmap.vn/api/search/v3?apikey=${REACT_APP_VIETMAP_API_KEY}&text=${location}`,
-      )
-      .then(response => {
-        console.log(JSON.stringify(response.data));
-      })
-      .catch(error => {
-        console.warn(error);
-      });
+    console.log(5);
+    try {
+      return axios
+        .get(
+          `https://maps.vietmap.vn/api/search/v3?apikey=${REACT_APP_VIETMAP_API_KEY}&text=${location}`,
+        )
+        .then(response => {
+          console.log(6);
+          console.log('response.data: ' + JSON.stringify(response.data[0]));
+          const ward = response.data[0].boundaries[0];
+          const district = response.data[0].boundaries[1];
+          const city = response.data[0].boundaries[2];
+          return {ward, district, city};
+        });
+    } catch (error) {
+      console.warn('Error in getDetailLocation:', error);
+    }
   };
 
   useEffect(() => {
-    console.log('location: ' + location);
-    getDetailLocation(location);
-    // getAllCar();
+    getDetailLocation(location)
+      .then(({ward, district, city}) => {
+        getAllCar(ward, district, city);
+      })
+      .catch(error => {
+        console.warn('Error in getDetailLocation:', error);
+      });
   }, []);
 
   const sortByBrand = () => {
@@ -80,6 +142,12 @@ const FindingCar = ({
     setIsSelected(null);
   };
 
+  const handleCarPress = id => {
+    console.log('id: ' + id);
+    setSelectedCarId(id);
+    setCarModalVisible(true);
+  };
+
   return (
     <SafeAreaView style={appStyle.container}>
       <View style={styles.viewTop}>
@@ -94,10 +162,10 @@ const FindingCar = ({
           onPress={() => setModalVisible(true)}
           style={styles.viewSearch}>
           <View style={{alignItems: 'center', width: '90%'}}>
-            <Text style={appStyle.text16Bold}>
+            <Text style={appStyle.text14Bold}>
               {location.length > 30 ? location.slice(0, 30) + '...' : location}
             </Text>
-            <Text>{`${timeDateFormat(
+            <Text style={{marginTop: 5}}>{`${timeDateFormat(
               selectedTime.startDate,
             )}  - ${timeDateFormat(selectedTime.endDate)} `}</Text>
           </View>
@@ -107,18 +175,25 @@ const FindingCar = ({
             resizeMode="stretch"
           />
         </TouchableOpacity>
-        <ReactNativeModal visible={isModalVisible} style={{margin: 0, flex: 1}}>
+        <ReactNativeModal
+          visible={isChangeBookingModalVisible}
+          style={{margin: 0, flex: 1}}>
           <ChangeBooking
             selectedTime={selectedTime}
             setSelectedTime={setSelectedTime}
-            close={() => setModalVisible(false)}
+            close={() => setChangeBookingModalVisible(false)}
             location={location}
             setLocation={setLocation}
           />
         </ReactNativeModal>
       </View>
-      <View style={{paddingHorizontal: 15}}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+      <View>
+        <ScrollView
+          horizontal
+          style={{
+            padding: 0,
+            margin: 0,
+          }}>
           <ButtonSelected
             text="Xóa"
             icon={ICON.Refresh}
@@ -144,22 +219,50 @@ const FindingCar = ({
             onPress={() => sortByRating()}
           />
         </ScrollView>
+      </View>
 
+      <ScrollView style={{paddingHorizontal: 15}}>
         <FlatList
+          key={key}
           data={listCar}
           shouldRasterizeIOS
           showsVerticalScrollIndicator={false}
           ListEmptyComponent={
-            <View style={[appStyle.boxCenter, {marginTop: windowHeight * 0.4}]}>
+            <View style={[appStyle.boxCenter]}>
               <Text style={appStyle.text16}>
                 Hiện không có xe nào tại địa điểm này
               </Text>
             </View>
           }
-          renderItem={({item}) => <CarCardItem width={'100%'} {...item} />}
+          renderItem={({item}) => (
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'column',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+                paddingLeft: 20,
+              }}>
+              <CarCardItem {...item} onPress={() => handleCarPress(item.id)} />
+            </View>
+          )}
           keyExtractor={item => item.id}
         />
-      </View>
+        <ReactNativeModal
+          isVisible={isCarModalVisible}
+          style={{margin: 0}}
+          onBackButtonPress={() => setCarModalVisible(null)}
+          swipeThreshold={50}>
+          {selectedCarId && (
+            <CarDetail
+              car_id={selectedCarId}
+              close={() => setCarModalVisible(false)}
+              viewedCars={viewedCars}
+              setViewedCars={setViewedCars}
+            />
+          )}
+        </ReactNativeModal>
+      </ScrollView>
     </SafeAreaView>
   );
 };

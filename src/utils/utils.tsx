@@ -4,6 +4,10 @@ import {appStyle, windowHeight, windowWidth} from '../constants/AppStyle';
 import Toast from 'react-native-toast-message';
 import {COLOR, ICON} from '../constants/Theme';
 import ImagePicker from 'react-native-image-crop-picker';
+import GetLocation from 'react-native-get-location';
+import axios from 'axios';
+import {Location} from '../types';
+import {REACT_APP_VIETMAP_API_KEY} from '@env';
 
 export const formatPrice = (price: number) => {
   price = Math.round(price);
@@ -78,6 +82,22 @@ export const timeDateFormat = (date: Date) => {
   const month = date.getMonth() + 1;
 
   return `${hours + 1}h00, ${day}/${month}`;
+};
+
+export const formatTimeApi = (date: Date) => {
+  const seconds =
+    date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+  const minutes =
+    date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
+  const hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
+  const day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+  const month =
+    date.getMonth() + 1 < 10
+      ? '0' + (date.getMonth() + 1)
+      : date.getMonth() + 1;
+  const year = date.getFullYear();
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 };
 
 export const currentDateString = formatTime(currentDay);
@@ -167,4 +187,38 @@ export const selectImage = async (
     img = image;
   });
   return img;
+};
+
+export const getCurrentLocation = async () => {
+  return GetLocation.getCurrentPosition({
+    enableHighAccuracy: false,
+    timeout: 60000,
+  })
+    .then(location => {
+      console.log('Current location: ' + JSON.stringify(location));
+      return getDetailLocation(location);
+    })
+    .catch(error => {
+      const {code, message} = error;
+      console.warn(code, message);
+    });
+};
+
+export const getDetailLocation = async (location: Location) => {
+  const {latitude, longitude} = location;
+  console.log('latitude: ' + latitude + ' longitude: ' + longitude);
+  return axios
+    .get(
+      `https://maps.vietmap.vn/api/reverse/v3?apikey=${REACT_APP_VIETMAP_API_KEY}&lat=${latitude}&lng=${longitude}`,
+    )
+    .then(response => {
+      console.log('Detail location: ' + JSON.stringify(response.data));
+      const data = response.data;
+      console.log(data[0]);
+
+      return data[0];
+    })
+    .catch(error => {
+      console.warn('GetDetailLocation Error: ' + error);
+    });
 };

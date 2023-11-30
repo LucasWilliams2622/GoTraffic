@@ -1,27 +1,12 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  TextInput,
-  Platform,
-} from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
+import {StyleSheet, Text, View, TouchableOpacity, Platform} from 'react-native';
+import React, {useCallback, useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import {COLOR} from '../../../constants/Theme';
-import {Row, Radio, HStack} from 'native-base';
+import {Row, Radio} from 'native-base';
 import AppButton from '../../AppButton';
 import SteeringWheel from '../../../assets/icon/ic_steering_wheel';
 import {appStyle} from '../../../constants/AppStyle';
-import {
-  currentDay,
-  currentTimeString,
-  formatDate,
-  formatTime,
-  returnTimeString,
-  timeDateFormat,
-  timeString,
-} from '../../../utils/utils';
+import {timeDateFormat, timeString} from '../../../utils/utils';
 import {
   ButtonConfig,
   ButtonProps,
@@ -30,7 +15,6 @@ import {
   RadioButtonProps,
   ViewProps,
 } from '../../../types';
-import {useRoute} from '@react-navigation/native';
 import ReactNativeModal from 'react-native-modal';
 import LocationPicking from '../../../screens/Main/HomeTab/LocationPicking';
 import TimePickingModal from '../../../screens/Main/HomeTab/TimePickingModal';
@@ -82,7 +66,13 @@ const BUTTONS_CONFIG: ButtonConfig[] = [
 const tomorrow = new Date();
 tomorrow.setDate(tomorrow.getDate() + 1);
 
-const Booking = ({navigation, selectedTime, setSelectedTime}: any) => {
+const Booking = ({
+  navigation,
+  selectedTime,
+  setSelectedTime,
+  viewedCars,
+  setViewedCars,
+}: any) => {
   const [isSelfDriving, setIsSelfDriving] = useState<boolean>(true);
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
   const [location, setLocation] = useState<string>('');
@@ -137,6 +127,8 @@ const Booking = ({navigation, selectedTime, setSelectedTime}: any) => {
               close={() => setModalVisible(false)}
               selectedTime={selectedTime}
               setSelectedTime={setSelectedTime}
+              viewedCars={viewedCars}
+              setViewedCars={setViewedCars}
             />
           </ReactNativeModal>
         </View>
@@ -183,8 +175,8 @@ export const InputField = ({
                 selectedTime.endDate,
               )} `
             : location
-            ? location.length > 30
-              ? location.slice(0, 30) + '...'
+            ? location.length > 35
+              ? location.slice(0, 35) + '...'
               : location
             : 'Nhập ' + placeholderText.toLowerCase()}
         </Text>

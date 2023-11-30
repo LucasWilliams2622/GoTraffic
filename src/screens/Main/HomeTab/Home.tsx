@@ -19,14 +19,13 @@ import FeaturedLocation from '../../../components/Home/Home/FeaturedLocation';
 import AirportPicking from '../../../components/Home/Home/AirportPicking';
 import {
   promotionData,
-  carData,
   featuredLocationData,
   AirportData,
   benefitData,
-  carDataTest,
 } from './data/data';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {
+  Car,
   RenderListProps,
   SectionProps,
   StackScreenParamList,
@@ -103,6 +102,8 @@ const Home: React.FC = () => {
     endDate: tomorrow,
   });
 
+  const [viewedCars, setViewedCars] = useState<Car[]>([]);
+
   const handleCarPress = (id: number) => {
     setSelectedCarId(id);
     setModalVisible(true);
@@ -161,6 +162,8 @@ const Home: React.FC = () => {
         navigation={navigation}
         selectedTime={selectedTime}
         setSelectedTime={setSelectedTime}
+        viewedCars={viewedCars}
+        setViewedCars={setViewedCars}
       />
 
       <Section
@@ -191,19 +194,22 @@ const Home: React.FC = () => {
             car_id={selectedCarId}
             close={() => setModalVisible(false)}
             setSwipeEnabled={setSwipeEnabled}
+            viewedCars={viewedCars}
+            setViewedCars={setViewedCars}
           />
         )}
       </Modal>
 
-      <Section
-        title="Xe đã xem"
-        data={listCar}
-        reverse={true}
-        renderItem={({item}) => (
-          <CarCardItem {...item} onPress={() => handleCarPress(item.id)} />
-        )}
-        snapToInterval={350}
-      />
+      {viewedCars.length > 0 && (
+        <Section
+          title="Xe đã xem"
+          data={viewedCars}
+          renderItem={({item}) => (
+            <CarCardItem {...item} onPress={() => handleCarPress(item.id)} />
+          )}
+          snapToInterval={350}
+        />
+      )}
 
       <Modal
         isVisible={isModalVisible}
@@ -215,6 +221,8 @@ const Home: React.FC = () => {
             car_id={selectedCarId}
             close={() => setModalVisible(false)}
             setSwipeEnabled={setSwipeEnabled}
+            viewedCars={viewedCars}
+            setViewedCars={setViewedCars}
           />
         )}
       </Modal>
@@ -222,7 +230,13 @@ const Home: React.FC = () => {
       <Section
         title="Địa điểm nổi bật"
         data={featuredLocationData}
-        renderItem={({item}) => <FeaturedLocation {...item} />}
+        renderItem={({item}) => (
+          <FeaturedLocation
+            {...item}
+            selectedTime={selectedTime}
+            setSelectedTime={setSelectedTime}
+          />
+        )}
         snapToInterval={224}
       />
       <Section

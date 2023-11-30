@@ -62,38 +62,30 @@ const BasicInfor = props => {
       selectedTransmission,
       selectedFuel,
     };
-    //  if (
-    //    carNumber == null ||
-    //    selectedBrand == null ||
-    //    selectedModel == null ||
-    //    selectedSeats == null ||
-    //    selectedYear == null ||
-    //    selectedTransmission == null ||
-    //    selectedFuel == null
-    //  ) {
-    //    showToastMessage(
-    //      '',
-    //      'Vui lòng nhập đầy đủ thông tin xe',
-    //      ICON.cancelWhite,
-    //    );
-    //  } else {
-    //    navigation.navigate('DetailsInfor', {carInfo: carInfo});
-    //  }
-    navigation.navigate('DetailsInfor', {carInfo: carInfo});
+    if (
+      carNumber == null ||
+      selectedBrand == null ||
+      selectedModel == null ||
+      selectedSeats == null ||
+      selectedYear == null ||
+      selectedTransmission == null ||
+      selectedFuel == null
+    ) {
+      showToastMessage(
+        'error',
+        'Vui lòng nhập đầy đủ thông tin xe',
+      );
+    } else {
+      navigation.navigate('DetailsInfor', {carInfo: carInfo});
+    }
   };
 
   return (
     <SafeAreaView style={appStyle.container}>
-      {/* <Header
-                backgroundColor={COLOR.bgHeader}
-                text="Thông tin cơ bản"
-                icon={ICON.Back}
-                onPress={() => navigation.navigate('ListCar')}
-            /> */}
       <AppHeader title="Thông tin cơ bản" />
-      <View style={{flex: 1, paddingHorizontal: 10}}>
+      <View style={[appStyle.main, {marginBottom: 20}]}>
         <ScrollView
-          style={{flex: 1, width: '100%', marginBottom: 20}}
+          style={{flex: 1, width: '100%'}}
           showsVerticalScrollIndicator={false}>
           <View style={{paddingHorizontal: 15}}>
             <View

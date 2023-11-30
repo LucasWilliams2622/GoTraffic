@@ -1,6 +1,6 @@
 import {StyleProp, TextProps, TextStyle, ViewStyle} from 'react-native';
 
-export type ImagePickerComponentProps = {
+export type MultiImagePickerComponentProps = {
   containerStyle?: StyleProp<ViewStyle>;
   title?: string;
   titleStyle?: StyleProp<TextStyle>;
@@ -8,15 +8,11 @@ export type ImagePickerComponentProps = {
   borderRadius?: number;
   width?: number;
   height?: number;
-  alignSelf?:
-    | 'center'
-    | 'flex-end'
-    | 'flex-start'
-    | 'baseline'
-    | 'stretch'
-    | 'auto';
+
+  numberImage?: number;
   onImageSelected?: any;
-  icon?: any;
   imageUrl?: any;
   iconSize?: any;
+  icon?: any;
+  space?: number;
 };

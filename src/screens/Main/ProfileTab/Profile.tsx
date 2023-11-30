@@ -7,26 +7,26 @@ import {
   ScrollView,
   Modal,
 } from 'react-native';
-import React, { useState, useEffect, useContext } from 'react';
-import { appStyle, windowHeight, windowWidth } from '../../../constants/AppStyle';
-import { COLOR, ICON } from '../../../constants/Theme';
+import React, {useState, useEffect, useContext} from 'react';
+import {appStyle, windowHeight, windowWidth} from '../../../constants/AppStyle';
+import {COLOR, ICON} from '../../../constants/Theme';
 import FastImage from 'react-native-fast-image';
 import AppProfile from '../../../components/AppProfile';
-import { AppContext } from '../../../utils/AppContext';
+import {AppContext} from '../../../utils/AppContext';
 import AppButton from '../../../components/AppButton';
 import AxiosInstance from '../../../constants/AxiosInstance';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation, useIsFocused } from '@react-navigation/native';
-import { showToastMessage } from '../../../utils/utils';
+import {useNavigation, useIsFocused} from '@react-navigation/native';
+import {showToastMessage} from '../../../utils/utils';
 
 const Profile = props => {
   const isFocused = useIsFocused();
   const navigation = useNavigation();
-  const { route } = props;
-  const { setIsLogin, infoUser, idUser } = useContext(AppContext);
+  const {route} = props;
+  const {setIsLogin, infoUser, idUser} = useContext(AppContext);
   const [name, setName] = useState(infoUser.name);
+  const [avatar, setAvatar] = useState(infoUser.avatar);
   const [isModalVisible, setModalVisible] = useState(false);
-  console.log(infoUser.avatar);
 
   const toggleModal = async () => {
     setModalVisible(!isModalVisible);
@@ -40,7 +40,7 @@ const Profile = props => {
     //     setIsLogin(false);
     //     showToastMessage('','Xóa tài khoản thành công');
     //   } else {
-    //     showToastMessage('','Xóa tài khoản thất bại',ICON.cancelWhite);
+    //     showToastMessage('','Xóa tài khoản thất bại');
     //   }
     // } catch (e) {
     //   console.log(e);
@@ -55,15 +55,15 @@ const Profile = props => {
       console.log('Đã xảy ra lỗi khi xóa thông tin người dùng:', error);
     }
   };
+
   const onDelete = async () => {
     try {
       const response = await AxiosInstance().delete('user/api/delete', {});
-      console.log(response);
       if (response.result) {
         setIsLogin(false);
         showToastMessage('', 'Xóa tài khoản thành công');
       } else {
-        showToastMessage('', 'Xóa tài khoản thất bại', ICON.cancelWhite);
+        showToastMessage('error', 'Xóa tài khoản thất bại');
       }
     } catch (error) {
       console.log(error);
@@ -76,7 +76,7 @@ const Profile = props => {
   }, [isFocused]);
 
   return (
-    <SafeAreaView style={[appStyle.container, { backgroundColor: COLOR.gray }]}>
+    <SafeAreaView style={[appStyle.container, {backgroundColor: COLOR.gray}]}>
       <ScrollView
         style={{
           flex: 1,
@@ -86,25 +86,25 @@ const Profile = props => {
         }}
         showsVerticalScrollIndicator={false}>
         <View style={styles.headBg}>
-          <View style={[appStyle.boxCenter, { marginTop: windowHeight * 0.12 }]}>
+          <View style={[appStyle.boxCenter, {marginTop: windowHeight * 0.12}]}>
             <FastImage
               source={
                 infoUser.avatar
-                  ? { uri: infoUser.avatar }
+                  ? {uri: infoUser.avatar}
                   : require('../../../assets/image/logo_go_traffic.png')
               }
               style={[appStyle.avatar]}></FastImage>
             <Text
               style={[
                 appStyle.text24Bold,
-                { textAlign: 'center', marginTop: 12 },
+                {textAlign: 'center', marginTop: 12},
               ]}>
               {infoUser.name}
             </Text>
           </View>
         </View>
 
-        <View style={[styles.viewGroup, { marginTop: windowHeight * 0.12 }]}>
+        <View style={[styles.viewGroup, {marginTop: windowHeight * 0.12}]}>
           <AppProfile
             icon={ICON.Profile}
             text="Tài khoản của tôi"
@@ -129,11 +129,10 @@ const Profile = props => {
             borderBottomWidth={0}
             onPress={() => navigation.navigate('HomeCar')}
           />
-          
         </View>
 
-        <View style={[styles.viewGroup, { marginTop: 35 }]}>
-        <AppProfile
+        <View style={[styles.viewGroup, {marginTop: 35}]}>
+          <AppProfile
             icon={ICON.Wallet}
             text="Ví của tôi"
             onPress={() => navigation.navigate('MyWallet')}
@@ -147,7 +146,7 @@ const Profile = props => {
           />
         </View>
 
-        <View style={[styles.viewGroup, { marginTop: 35 }]}>
+        <View style={[styles.viewGroup, {marginTop: 35}]}>
           <AppProfile
             icon={ICON.Key}
             text="Đổi mật khẩu"
@@ -166,12 +165,12 @@ const Profile = props => {
             LogOut();
           }}>
           <View
-            style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 20 }}>
+            style={{flexDirection: 'row', alignSelf: 'center', marginTop: 20}}>
             <FastImage source={ICON.Exit} style={[appStyle.iconBig]} />
             <Text
               style={[
                 appStyle.text20,
-                { color: COLOR.exit, marginLeft: 10, fontWeight: '500' },
+                {color: COLOR.exit, marginLeft: 10, fontWeight: '500'},
               ]}>
               Đăng xuất
             </Text>
@@ -181,7 +180,7 @@ const Profile = props => {
       <Modal animationType="fade" transparent={true} visible={isModalVisible}>
         <TouchableOpacity style={styles.modalBackdrop} onPress={toggleModal} />
         <View style={styles.modalContainer}>
-          <Text style={[appStyle.text20Bold, { marginVertical: 20 }]}>
+          <Text style={[appStyle.text20Bold, {marginVertical: 20}]}>
             CẢNH BÁO
           </Text>
           <Text
@@ -203,12 +202,12 @@ const Profile = props => {
             GoTraffic sẽ liên hệ trực tiếp với bạn qua Email hoặc số điện thoại
             bạn đã cung cấp. {'\n\n'} Mọi thắc mắc xin liên hệ Fanpage của
             GoTraffic hoặc hotline{' '}
-            <Text style={{ fontWeight: 'bold' }}>1900 9217</Text> để được hỗ trợ
+            <Text style={{fontWeight: 'bold'}}>1900 9217</Text> để được hỗ trợ
           </Text>
 
           <AppButton title="Hủy" marginTop={50} onPress={() => toggleModal()} />
           <TouchableOpacity onPress={() => onDelete()}>
-            <Text style={[appStyle.text14Bold, { marginTop: 15 }]}>Xác nhận</Text>
+            <Text style={[appStyle.text14Bold, {marginTop: 15}]}>Xác nhận</Text>
           </TouchableOpacity>
         </View>
       </Modal>
@@ -243,8 +242,8 @@ const styles = StyleSheet.create({
     top: '50%',
     left: '50%',
     transform: [
-      { translateX: -windowWidth * 0.45 },
-      { translateY: -windowHeight * 0.36 },
+      {translateX: -windowWidth * 0.45},
+      {translateY: -windowHeight * 0.36},
     ],
     width: windowWidth * 0.9,
     height: windowHeight * 0.65,

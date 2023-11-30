@@ -51,7 +51,7 @@ const CarDelivery = props => {
         goBack();
         showToastMessage('', 'Cập nhật thành công');
       } else {
-        showToastMessage('', 'Cập nhật thất bại', ICON.cancelWhite);
+        showToastMessage('', 'Cập nhật thất bại');
       }
     } catch (e) {
       console.log(e);

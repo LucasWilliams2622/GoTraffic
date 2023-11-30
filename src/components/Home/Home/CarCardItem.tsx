@@ -21,7 +21,7 @@ import {
 import {CarCardItemProps} from '../../../types';
 import AxiosInstance from '../../../constants/AxiosInstance';
 import {AppContext} from '../../../utils/AppContext';
-import { showToastMessage } from '../../../utils/utils';
+import {showToastMessage} from '../../../utils/utils';
 import axios from 'axios';
 
 const CarCardItem = ({
@@ -49,13 +49,13 @@ const CarCardItem = ({
         const response = await AxiosInstance().delete(
           `/favorite-car/api/delete?idUser=${idUser}&idCar=${id}`,
         );
-        showToastMessage('','Đã gỡ yêu thích');
+        showToastMessage('', 'Đã gỡ yêu thích');
         console.log(response, 'Xe đã bị xóa khỏi danh sách yêu thích');
       } else {
         const response = await AxiosInstance().post(
           `/favorite-car/api/add?idUser=${idUser}&idCar=${id}`,
         );
-        showToastMessage('','Xe được thêm vào yêu thích');
+        showToastMessage('', 'Xe được thêm vào yêu thích');
         console.log(response, 'Xe được thêm vào danh sách yêu thích');
       }
       setIsFavorite(!isFavorite);
@@ -76,7 +76,7 @@ const CarCardItem = ({
   );
   useEffect(() => {
     try {
-      console.log(image);
+      // console.log(image);
       let images = JSON.parse(image);
       if (images.length > 0) {
         setThumbnail(images[0]);
@@ -86,7 +86,7 @@ const CarCardItem = ({
         );
       }
     } catch (error) {
-      console.log('Image error:  ' + error);
+      // console.log('Image error:  ' + error);
       setThumbnail(
         'https://2.bp.blogspot.com/-muVbmju-gkA/Vir94NirTeI/AAAAAAAAT9c/VoHzHZzQmR4/s1600/placeholder-image.jpg',
       );
@@ -130,7 +130,7 @@ const CarCardItem = ({
       </Row>
 
       <Row style={CarCardItemStyles.row}>
-        <Text style={[appStyle.text16Bold, CarCardItemStyles.title, {}]}>
+        <Text style={[appStyle.text16Bold, CarCardItemStyles.title]}>
           {name}
         </Text>
         <ShieldIcon color={COLOR.fifth} />
@@ -138,7 +138,11 @@ const CarCardItem = ({
 
       <Row style={CarCardItemStyles.locationRow}>
         <Icon name="location-dot" color={COLOR.borderColor} size={15} />
-        <Text style={CarCardItemStyles.locationText}>{locationCar}</Text>
+        <Text style={CarCardItemStyles.locationText}>
+          {locationCar.length > 40
+            ? locationCar.substring(0, 38) + '...'
+            : locationCar}
+        </Text>
       </Row>
 
       <View style={CarCardItemStyles.separator} />
@@ -188,6 +192,7 @@ export default CarCardItem;
 
 export const CarCardItemStyles = StyleSheet.create({
   container: {
+    backgroundColor: COLOR.white,
     marginRight: 20,
     marginTop: 10,
     borderRadius: 20,
@@ -221,14 +226,12 @@ export const CarCardItemStyles = StyleSheet.create({
   typeView: {
     backgroundColor: COLOR.sixth,
     padding: 8,
-    alignSelf: 'flex-start',
     borderRadius: 15,
     marginRight: 10,
   },
   benefitView: {
     backgroundColor: COLOR.seventh,
     padding: 8,
-    alignSelf: 'flex-start',
     borderRadius: 15,
   },
   title: {

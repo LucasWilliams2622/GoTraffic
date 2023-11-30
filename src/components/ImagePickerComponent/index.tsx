@@ -17,20 +17,16 @@ import AppButton from '../AppButton';
 const ImagePickerComponent = ({
   containerStyle,
   titleStyle,
-  title,
-  backgroundColor,
-  textColor,
-  borderColor,
   width = 100,
   height = 100,
-  fontSize,
   alignSelf = 'center',
   borderRadius = 12,
-  disabled,
-  onPress,
   onImageSelected,
+  imageUrl,
+  iconSize = 30,
+  title = 'Chọn ảnh',
 }: ImagePickerComponentProps) => {
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(imageUrl);
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false);
 
   const pickImageFromGallery = async () => {
@@ -55,7 +51,7 @@ const ImagePickerComponent = ({
         cropping: true,
       });
       setSelectedImage({uri: image.path});
-      console.log(image.path);
+      // console.log(image.path);
 
       // Call the callback function with the image path
       onImageSelected && onImageSelected(image.path);
@@ -79,38 +75,45 @@ const ImagePickerComponent = ({
         {!selectedImage ? (
           <View
             style={[
-              appStyle.column,
               styles.boxCamera,
               {
-                alignSelf: 'center',
+                alignSelf: alignSelf,
                 alignItems: 'center',
-                marginBottom: 20,
+                justifyContent: 'center',
                 borderWidth: 1,
                 borderRadius: 12,
+                width: width,
+                height: height,
               },
+              containerStyle,
             ]}>
             <Icon
               name="camera"
               type={IconType.Entypo}
-              size={30}
+              size={iconSize}
               color={COLOR.primary}
               onPress={() => {}}
             />
             <Text style={[appStyle.text12, {marginTop: 8}, titleStyle]}>
-              Chọn ảnh
+              {title}
             </Text>
           </View>
         ) : (
-          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              alignSelf: alignSelf,
+            }}>
             <Image
-              source={{uri: selectedImage.uri}}
+              source={{uri: imageUrl ? imageUrl : selectedImage.uri}}
               style={[
                 {
                   width: width,
                   height: height,
-                  marginVertical: 24,
                   borderRadius: borderRadius,
                 },
+                containerStyle,
               ]}
             />
           </View>
@@ -125,7 +128,7 @@ const ImagePickerComponent = ({
           style={[
             appStyle.modalContentBottom,
             {
-              height: windowHeight * 0.25,
+              height: windowHeight * 0.3,
               alignItems: 'center',
               justifyContent: 'space-around',
             },
@@ -134,7 +137,11 @@ const ImagePickerComponent = ({
             Chọn hình ảnh
           </Text>
 
-          <AppButton title="Chụp ảnh" onPress={() => captureImage()} />
+          <AppButton
+            title="Chụp ảnh"
+            onPress={() => captureImage()}
+            containerStyle={{}}
+          />
           <AppButton
             title="Chọn ảnh"
             backgroundColor={COLOR.background}
@@ -151,11 +158,9 @@ const ImagePickerComponent = ({
 };
 const styles = StyleSheet.create({
   boxCamera: {
-    borderRadius: 6,
     borderWidth: 1,
     borderColor: '#DFDFDF',
     paddingVertical: 14,
-    paddingHorizontal: 22,
     backgroundColor: COLOR.background,
   },
 });

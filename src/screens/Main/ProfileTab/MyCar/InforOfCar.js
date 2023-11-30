@@ -29,7 +29,6 @@ import AppHeader from '../../../../components/AppHeader';
 const InforOfCar = props => {
   const {navigation, route} = props;
   const updatedCarInfo = route.param?.updatedCarInfo;
-  console.log('Infor of car >>>>>>>>>>>>', updatedCarInfo);
   const [carNumber, setCarNumber] = useState('88A-289.09');
   const [description, setDescription] = useState(null);
   const [fuelConsumption, setFuelConsumption] = useState(null);
@@ -46,12 +45,10 @@ const InforOfCar = props => {
   const [location, setLocation] = useState(null);
   const {data} = props.route.params;
   useEffect(() => {
-    console.log(data.id);
     setCarNumber(data.numberPlate);
     setLocation(data.address);
     setDescription(data.description);
     setFuelConsumption(data.fuelConsumption);
-    console.log('fuel:', data.fuelConsumption);
   }, []);
   const handleAddressClick = () => {
     setOpenAddress(!openAddress);
@@ -128,7 +125,6 @@ const InforOfCar = props => {
 
   const handleUpdateCar = async () => {
     try {
-      console.log(selectedFeatures.toString());
       const response = await AxiosInstance().put(
         '/car/api/update-info-car?idCar=' + data.id,
         {
@@ -139,10 +135,13 @@ const InforOfCar = props => {
         },
       );
       if (response.result) {
-        showToastMessage('Cập nhật thông tin xe thành công');
+        showToastMessage('', 'Cập nhật thông tin xe thành công');
         navigation.navigate('ListCar', {data: data});
       } else {
-        showToastMessage('Cập nhật thông tin xe thất bại',ICON.cancelWhite);
+        showToastMessage(
+          'error',
+          'Cập nhật thông tin xe thất bại',
+        );
       }
     } catch (e) {
       console.log(e);
@@ -152,8 +151,10 @@ const InforOfCar = props => {
   return (
     <SafeAreaView style={appStyle.container}>
       <AppHeader
-        title='Thông tin xe'
-        onPressLeft={() => navigation.goBack('GeneralInformation', {data: data})}
+        title="Thông tin xe"
+        onPressLeft={() =>
+          navigation.goBack('GeneralInformation', {data: data})
+        }
       />
       <ScrollView style={appStyle.main}>
         <View style={[appStyle.cardInfo, {marginTop: 10}]}>

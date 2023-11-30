@@ -47,7 +47,6 @@ const Recharge = () => {
           amount: parseInt(amount),
         },
       );
-      console.log(response.data);
       setBlockInput(true);
       setAmount(0)
       showToastMessage('', 'Thanh toán thành công');
@@ -67,9 +66,7 @@ const Recharge = () => {
           cancelUrl: 'http://103.57.129.166:3000/cancel.html',
         },
       );
-      console.log(response.data.data.checkoutUrl);
       if (response.data.data.checkoutUrl) {
-        console.log('asdas');
         setCheckoutUrl(response.data.data.checkoutUrl);
         setBlockInput(false);
       } else {
