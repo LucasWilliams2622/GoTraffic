@@ -54,6 +54,7 @@ import ChangeBooking from '../screens/Main/HomeTab/ChangeBooking';
 import {appStyle} from '../constants/AppStyle';
 import {Badge} from 'react-native-elements';
 import {useIsFocused} from '@react-navigation/native';
+import WithdrawRequest from '../screens/Main/ProfileTab/MyCar/WithdrawRequest';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -207,6 +208,7 @@ const StackProfile = () => {
       <Stack.Screen name="VerifyLicense" component={VerifyLicense} />
       <Stack.Screen name="Test2" component={Test2} />
       <Stack.Screen name="Recharge" component={Recharge} />
+      <Stack.Screen name="WithdrawRequest" component={WithdrawRequest} />
     </Stack.Navigator>
   );
 };
