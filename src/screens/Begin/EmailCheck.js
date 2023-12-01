@@ -9,32 +9,33 @@ import FastImage from 'react-native-fast-image';
 import * as Yup from 'yup';
 import {Formik} from 'formik';
 import {KeyboardAvoidingView} from 'native-base';
+import AxiosInstance from '../../constants/AxiosInstance';
+import {showToastMessage} from '../../utils/utils';
+import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
 
-const Register = props => {
+const EmailCheck = props => {
+  const {phoneNumber, nameUser} = props.route.params;
   const navigation = useNavigation();
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required('Tên không được để trống'),
-    phoneNumber: Yup.number()
-      .typeError('Không phải định dạng số điện thoại')
-      .positive('Số điện thoại không được có dấu trừ')
-      .integer('Số điện thoại không có dấu thập phân')
-      .required('Số điện thoại không được để trống'),
+    email: Yup.string()
+      .email('Vui lòng nhập email hợp lệ ')
+      .max(255)
+      .required('Email không được để trống'),
   });
-
   return (
     <SafeAreaView style={appStyle.container}>
       <Formik
         initialValues={{
-          name: '',
-          phoneNumber: '',
+          email: '',
         }}
         validationSchema={validationSchema}
         onSubmit={values => {
           console.log(values);
-          navigation.navigate('Verified', {
-            phoneNumber: values.phoneNumber,
-            nameUser: values.name,
+          navigation.navigate('VerifiedEmail', {
+            phoneNumber: phoneNumber,
+            nameUser: nameUser,
+            email: values.email,
           });
         }}>
         {({
@@ -45,9 +46,14 @@ const Register = props => {
           errors,
           touched,
         }) => (
-          <View style={[appStyle.main, {flex: 1}]}>
+          <View style={[appStyle.main, {}]}>
             <KeyboardAvoidingView behavior="padding">
-              <View style={{flexDirection: 'row', width: windowWidth * 0.85,marginBottom:20}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  width: windowWidth * 0.85,
+                  marginBottom: 20,
+                }}>
                 <TouchableOpacity
                   style={{marginTop: 10, marginRight: 14}}
                   onPress={() => navigation.goBack()}>
@@ -63,36 +69,21 @@ const Register = props => {
               </View>
 
               <View style={styles.viewItem}>
-                <Text style={styles.text2}>Tên hiện thị</Text>
+                <Text style={styles.text2}>Email</Text>
                 <AppInput
                   returnKeyType={'next'}
-                  placeholder={'Nhập tên của bạn'}
-                  onChangeText={handleChange('name')}
-                  onBlur={handleBlur('name')}
-                  value={values.name}
+                  placeholder={'Nhập email của bạn'}
+                  onChangeText={handleChange('email')}
+                  onBlur={handleBlur('email')}
+                  value={values.email}
                 />
               </View>
-              {touched.name && errors.name && (
-                <Text style={styles.textError}>{errors.name}</Text>
-              )}
 
-              <View style={styles.viewItem}>
-                <Text style={styles.text2}>Số điện thoại</Text>
-                <AppInput
-                  keyboardType={'phone-pad'}
-                  returnKeyType={'next'}
-                  placeholder={'Nhập số điện thoại của bạn'}
-                  onChangeText={handleChange('phoneNumber')}
-                  onBlur={handleBlur('phoneNumber')}
-                  value={values.phoneNumber}
-                />
-              </View>
-              {touched.phoneNumber && errors.phoneNumber && (
-                <Text style={styles.textError}>{errors.phoneNumber}</Text>
+              {touched.email && errors.email && (
+                <Text style={styles.textError}>{errors.email}</Text>
               )}
-
               <AppButton
-                title="Đăng kí"
+                title="Tiếp theo"
                 color={COLOR.secondary}
                 fontSize={18}
                 onPress={handleSubmit}
@@ -106,7 +97,7 @@ const Register = props => {
   );
 };
 
-export default Register;
+export default EmailCheck;
 
 const styles = StyleSheet.create({
   text1: {

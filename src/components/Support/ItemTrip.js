@@ -1,7 +1,7 @@
 import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
 import FastImage from 'react-native-fast-image';
-import {COLOR} from '../../constants/Theme';
+import {COLOR, ICON} from '../../constants/Theme';
 import {Code} from 'native-base';
 import {appStyle} from '../../constants/AppStyle';
 import numeral from 'numeral';
@@ -36,11 +36,69 @@ const ItemTrip = props => {
           padding: 10,
         }}>
         <View style={{flexDirection: 'row'}}>
-          <FastImage
-            style={{width: 20, height: 20}}
-            resizeMode={'stretch'}
-            source={require('../../assets/icon/ic_warning.png')}
-          />
+          {data.status == 1 ? (
+            <FastImage
+              style={{width: 20, height: 20}}
+              resizeMode={'stretch'}
+              tintColor={COLOR.primary}
+              source={require('../../assets/icon/ic_warning.png')}
+            />
+          ) : data.status == 2 ? (
+            <FastImage
+              style={{width: 20, height: 20}}
+              resizeMode={'stretch'}
+              tintColor={COLOR.primary}
+              source={ICON.Done}
+            />
+          ) : data.status == 3 ? (
+            <FastImage
+              style={{width: 20, height: 20}}
+              resizeMode={'stretch'}
+              source={require('../../assets/icon/ic_warning.png')}
+            />
+          ) : data.status == 4 ? (
+            <FastImage
+              style={{width: 20, height: 20}}
+              resizeMode={'stretch'}
+              tintColor={COLOR.primary}
+              source={ICON.Trip}
+            />
+          ) : data.status == 5 ? (
+            <FastImage
+              style={{width: 20, height: 20}}
+              resizeMode={'stretch'}
+              tintColor={COLOR.primary}
+              source={ICON.Done}
+            />
+          ) : data.status == 6 ? (
+            <FastImage
+              style={{width: 20, height: 20}}
+              resizeMode={'stretch'}
+              tintColor={COLOR.primary}
+              source={ICON.cancelWhite}
+            />
+          ) : data.status == 7 ? (
+            <FastImage
+              style={{width: 20, height: 20}}
+              resizeMode={'stretch'}
+              tintColor={COLOR.primary}
+              source={ICON.cancelWhite}
+            />
+          ) : data.status == 8 ? (
+            <FastImage
+              style={{width: 20, height: 20}}
+              resizeMode={'stretch'}
+              tintColor={COLOR.primary}
+              source={ICON.cancelWhite}
+            />
+          ) : (
+            <FastImage
+              style={{width: 20, height: 20}}
+              resizeMode={'stretch'}
+              source={require('../../assets/icon/ic_warning.png')}
+            />
+          )}
+
           <Text style={[appStyle.text14, {marginLeft: 5}]}>
             {data.status == 1
               ? 'Đang chờ xác nhận'
