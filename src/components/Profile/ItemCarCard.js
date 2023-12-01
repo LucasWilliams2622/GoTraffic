@@ -19,13 +19,12 @@ const ItemCarCard = props => {
         imageThumbnail,
         removeFromFavorites
     } = props;
-    //const { data, removeFromFavorites } = props;
+    // const { data, removeFromFavorites } = props;
     const isImageUrlValid = /^https?:\/\/.*\.(png|jpg)$/i.test(
-        imageThumbnail
+       imageThumbnail
     );
-    console.log(imageThumbnail);
+   // console.log(data.Car.imageThumbnail);
     const [isFavorite, setIsFavorite] = useState(true);
-    // const { setIsLogin, infoUser, idUser } = useContext(AppContext);
 
     const removeFavorite = async () => {
         try {

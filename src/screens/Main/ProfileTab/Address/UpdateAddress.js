@@ -30,7 +30,7 @@ const UpdateAddress = ({ route }) => {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const { addressInfo } = route.params;
-  //console.log(addressInfo);
+  // console.log(addressInfo);
   const { infoUser, idUser } = useContext(AppContext);
   const [isSuccessModalVisible, setSuccessModalVisible] = useState(false);
 
@@ -101,22 +101,22 @@ const UpdateAddress = ({ route }) => {
     }
   };
 
-  useEffect(() => {
-    const getAddress = async () => {
-      try {
-        if (isFocused) {
-          const response = await axios.get(
-            `/address/api/get-address-by-id-user?idUser=${idUser}`,
-          );
-          //setAddresses(response.data);
-          console.log('>>>>>>>>>> get list update');
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getAddress();
-  }, [isFocused, idUser]);
+  // useEffect(() => {
+  //   const getAddress = async () => {
+  //     try {
+  //       if (isFocused) {
+  //         const response = await axios.get(
+  //           `/address/api/get-address-by-id-user?idUser=${idUser}`,
+  //         );
+  //         //setAddresses(response.data);
+  //         console.log('>>>>>>>>>> get list update');
+  //       }
+  //     } catch (error) {
+  //       console.log(">>>>>>>>>>>>>",error);
+  //     }
+  //   };
+  //   getAddress();
+  // }, [isFocused, idUser]);
 
   const deleteAddress = async () => {
     try {

@@ -4,7 +4,7 @@ import { appStyle, windowHeight, windowWidth } from '../../../constants/AppStyle
 import Header from '../../../components/Header'
 import { ICON, COLOR } from '../../../constants/Theme'
 import FastImage from 'react-native-fast-image'
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import CarCardItem from '../../../components/Home/Home/CarCardItem';
 import AxiosInstance from '../../../constants/AxiosInstance';
 import { AppContext } from '../../../utils/AppContext';
@@ -17,7 +17,6 @@ const FavouriteCar = (props) => {
   const navigation = useNavigation();
   const { infoUser, idUser } = useContext(AppContext);
   const [listCar, setListCar] = useState([]);
-  //const [data, setData] = useState('');
 
   const fetchFavoriteCars = async () => {
     try {
@@ -32,14 +31,14 @@ const FavouriteCar = (props) => {
   const removeFromFavorites = async (id) => {
     try {
 
-        await AxiosInstance().delete(`/favorite-car/api/delete?idUser=${idUser}&idCar=${id}`);
-        showToastMessage('','Đã gỡ yêu thích');
-        fetchFavoriteCars();
+      await AxiosInstance().delete(`/favorite-car/api/delete?idUser=${idUser}&idCar=${id}`);
+      showToastMessage('', 'Đã gỡ yêu thích');
+      fetchFavoriteCars();
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
-};
- 
+  };
+
 
   useEffect(() => {
     fetchFavoriteCars();
@@ -47,11 +46,10 @@ const FavouriteCar = (props) => {
 
   return (
     <SafeAreaView style={[appStyle.container]}>
-      <AppHeader title='Xe yêu thích'/>
+      <AppHeader title='Xe yêu thích' />
       <View style={{ padding: 15, width: '100%', height: '90%' }}>
         <FlatList
           style={{ marginBottom: 44 }}
-          //extraData={listUpdate}
           data={listCar}
           renderItem={({ item }) => (
             <ItemCarCard
