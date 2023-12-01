@@ -236,7 +236,6 @@ errorText:{
   rowCenter: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '100%',
   },
   rowBetween: {
     flexDirection: 'row',
