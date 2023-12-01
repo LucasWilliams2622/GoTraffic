@@ -72,40 +72,62 @@ const Account = props => {
         </View>
 
         {/* Giấy phép lái xe */}
-        <TouchableOpacity
-          onPress={() => setIsLicenseModalVisible(true)}
-          style={[
-            styles.viewItem,
-            {borderTopWidth: 2, borderTopColor: '#efefef', marginTop: 12},
-          ]}>
-          <View style={styles.viewChild}>
-            <Text style={appStyle.text14}>Giấy phép lái xe</Text>
-            {infoUser.isVerifiedDriverLicense ? (
-              <View style={[styles.alert, {backgroundColor: COLOR.lightGreen2}]}>
+        {infoUser.isVerifiedDriverLicense ? (
+          <View
+            style={[
+              styles.viewItem,
+              {borderTopWidth: 2, borderTopColor: '#efefef', marginTop: 12},
+            ]}>
+            <View style={styles.viewChild}>
+              <Text style={appStyle.text14}>Giấy phép lái xe</Text>
+              <View
+                style={[styles.alert, {backgroundColor: COLOR.lightGreen2}]}>
                 <FastImage style={[appStyle.iconSmall]} source={ICON.Check} />
                 <Text style={[appStyle.text105, {marginStart: 5}]}>
                   Đã xác thực
                 </Text>
               </View>
-            ) : (
+            </View>
+            <View style={styles.link}>
+              <Text style={[appStyle.text12Bold, {marginRight: 5}]}>
+                Xác thực ngay
+              </Text>
+              <FastImage
+                style={[appStyle.iconSmall, {marginTop: 3}]}
+                source={ICON.Next}
+              />
+            </View>
+          </View>
+        ) : (
+          <TouchableOpacity
+            onPress={() => {
+              setIsLicenseModalVisible(true);
+            }}
+            style={[
+              styles.viewItem,
+              {borderTopWidth: 2, borderTopColor: '#efefef', marginTop: 12},
+            ]}>
+            <View style={styles.viewChild}>
+              <Text style={appStyle.text14}>Giấy phép lái xe</Text>
               <View style={styles.alert}>
                 <FastImage style={[appStyle.iconSmall]} source={ICON.Warning} />
                 <Text style={[appStyle.text105, {marginStart: 5}]}>
                   Chưa xác thực
                 </Text>
               </View>
-            )}
-          </View>
-          <View style={styles.link}>
-            <Text style={[appStyle.text12Bold, {marginRight: 5}]}>
-              Xác thực ngay
-            </Text>
-            <FastImage
-              style={[appStyle.iconSmall, {marginTop: 3}]}
-              source={ICON.Next}
-            />
-          </View>
-        </TouchableOpacity>
+            </View>
+            <View style={styles.link}>
+              <Text style={[appStyle.text12Bold, {marginRight: 5}]}>
+                Xác thực ngay
+              </Text>
+              <FastImage
+                style={[appStyle.iconSmall, {marginTop: 3}]}
+                source={ICON.Next}
+              />
+            </View>
+          </TouchableOpacity>
+        )}
+
         <VerifyLicense
           isVisible={isLicenseModalVisible}
           onClose={() => setIsLicenseModalVisible(false)}
@@ -133,7 +155,8 @@ const Account = props => {
             <Text style={appStyle.text14}>Email</Text>
 
             {infoUser.isVerifiedEmail ? (
-              <View style={[styles.alert, {backgroundColor: COLOR.lightGreen2}]}>
+              <View
+                style={[styles.alert, {backgroundColor: COLOR.lightGreen2}]}>
                 <FastImage style={[appStyle.iconSmall]} source={ICON.Check} />
                 <Text style={[appStyle.text105, {marginStart: 5}]}>
                   Đã xác thực

@@ -326,7 +326,7 @@ const Main = () => {
         headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: {
-          height: 80,
+          height: 70,
           position: 'absolute',
           backgroundColor: COLOR.background,
         },

@@ -131,6 +131,7 @@ const UpdateProfile = props => {
         <ImagePickerComponent
           onImageSelected={handleImageSelected}
           imageUrl={selectedImagePath}
+          containerStyle={{marginBottom:32}}
         />
 
         {/* Validate */}
