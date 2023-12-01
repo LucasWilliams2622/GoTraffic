@@ -30,7 +30,7 @@ const Trip = () => {
   const getListBookingCurrent = async () => {
     try {
       const response = await AxiosInstance().get(
-        '/booking/api/get-list-current-booking-of-user?idUser=' + 1,
+        '/booking/api/get-list-current-booking-of-user?idUser=' + idUser,
       );
       if (response.result) {
         setListBookingCurrent(response.booking);
@@ -102,16 +102,17 @@ const Trip = () => {
             renderRightItem={(data, index) => (
               <View key={index}>
                 <ItemTrip data={data} car={listBookingCurrent} />
+                <Text style={{textAlign:'center',fontStyle:'italic',color:COLOR.primary}}>Cuộn sang trái để hủy chuyến</Text>
               </View>
             )}
             renderHiddenItem={(data, index) => (
               <TouchableOpacity
-                style={[styles.rightAction, {backgroundColor: 'red'}]}
+                style={[styles.rightAction, {backgroundColor: COLOR.redOrange}]}
                 onPress={() => {
                   console.log(data.id);
                   cancelBooking(data.id);
                 }}>
-                <FastImage source={ICON.Delete} style={appStyle.icon} />
+                <FastImage source={ICON.Delete} style={appStyle.iconBig} />
               </TouchableOpacity>
             )}
             rightOpenValue={200}
@@ -168,9 +169,10 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    height: '96%',
+    height: '70%',
     borderRadius: 20,
     borderWidth: 1,
+    marginTop:40
   },
 });
 

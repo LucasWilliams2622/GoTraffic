@@ -54,7 +54,8 @@ const ItemTrip = props => {
             <FastImage
               style={{width: 20, height: 20}}
               resizeMode={'stretch'}
-              source={require('../../assets/icon/ic_warning.png')}
+              tintColor={COLOR.primary}
+              source={ICON.Trip}
             />
           ) : data.status == 4 ? (
             <FastImage
@@ -68,20 +69,20 @@ const ItemTrip = props => {
               style={{width: 20, height: 20}}
               resizeMode={'stretch'}
               tintColor={COLOR.primary}
-              source={ICON.Done}
+              source={ICON.Check}
             />
           ) : data.status == 6 ? (
             <FastImage
               style={{width: 20, height: 20}}
               resizeMode={'stretch'}
-              tintColor={COLOR.primary}
-              source={ICON.cancelWhite}
+              tintColor={COLOR.red}
+              source={ICON.Ban}
             />
           ) : data.status == 7 ? (
             <FastImage
               style={{width: 20, height: 20}}
               resizeMode={'stretch'}
-              tintColor={COLOR.primary}
+              tintColor={COLOR.red}
               source={ICON.cancelWhite}
             />
           ) : data.status == 8 ? (
