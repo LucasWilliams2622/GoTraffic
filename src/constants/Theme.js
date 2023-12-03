@@ -95,8 +95,6 @@ export const ICON = {
   Card: require('../assets/icon/ic_card.png'),
   Wallet: require('../assets/icon/ic_wallet.png'),
   Add: require('../assets/icon/ic_add.png'),
-  MasterCard: require('../assets/image/guide/img_mastercard.png'),
-  Tech: require('../assets/image/guide/img_tech.png'),
   Copy: require('../assets/icon/ic_copy.png'),
   Send: require('../assets/icon/ic_send.png'),
   Delete: require('../assets/icon/ic_delete.png'),
@@ -108,6 +106,7 @@ export const ICON = {
   Calendar: require('../assets/icon/ic_calendar.png'),
   Ban: require('../assets/icon/ic_ban.png'),
 
+  Luggage: require('../assets/icon/ic_luggage.png'),
   License: require('../assets/image/img_license.png'),
   Poster: require('../assets/image/poster.jpg'),
   Done: require('../assets/icon/ic_done.png'),
@@ -117,6 +116,7 @@ export const ICON = {
   Promotion: require('../assets/icon/ic_promotion.png'),
   cancelWhite: require('../assets/icon/ic_cancel_white.png'),
   checkWhite: require('../assets/icon/ic_check_white.png'),
+
   Download: MaterialIcons.getImageSource('file-download', 20, 'black')
     .then(source => {
       ICON.Download = source;

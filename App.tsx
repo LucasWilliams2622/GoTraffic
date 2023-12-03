@@ -35,8 +35,8 @@ const App = () => {
             {isLoading ? (
               <Splash setIsLoading={setIsLoading} />
             ) : (
-              // <BottomTabs />
-              <TestVoice/>
+              <BottomTabs />
+              // <TestVoice/>
             )}
             <Toast
               ref={ref => Toast.setRef(ref)}

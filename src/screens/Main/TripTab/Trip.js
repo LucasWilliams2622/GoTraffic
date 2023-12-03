@@ -71,7 +71,7 @@ const Trip = () => {
     <SafeAreaView style={appStyle.container}>
       <AppHeader
         title="Chuyến của tôi"
-        icon={require('../../../assets/image/logoTrip.png')}
+        icon={require('../../../assets/icon/ic_luggage.png')}
         onPressRight={() => navigation.navigate('HistoryTrip')}
         notLeft
       />
@@ -176,32 +176,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const DATA = [
-  {
-    id: 1,
-    image: require('../../../assets/image/car.jpg'),
-    time: '21/09/2023 | 20:30',
-    name: 'KIA MORNING 2022',
-    timeStart: '21h00,17/10/2023',
-    timeEnd: '21h00,18/10/2023',
-    price: '1.600.666đ',
-  },
-  {
-    id: 2,
-    image: require('../../../assets/image/car.jpg'),
-    time: '21/09/2023 | 20:30',
-    name: 'KIA MORNING 2022',
-    timeStart: '21h00,17/10/2023',
-    timeEnd: '21h00,18/10/2023',
-    price: '1.600.666đ',
-  },
-  {
-    id: 3,
-    image: require('../../../assets/image/car.jpg'),
-    time: '21/09/2023 | 20:30',
-    name: 'KIA MORNING 2022',
-    timeStart: '21h00,17/10/2023',
-    timeEnd: '21h00,18/10/2023',
-    price: '1.600.666đ',
-  },
-];
+
