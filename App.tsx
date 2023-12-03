@@ -15,6 +15,7 @@ import {toastConfig} from './src/configs/ToastConfig';
 import Test2 from './src/test/TestMultiPicker';
 import TestComponent from './src/test/TextSignature';
 import {WebView} from 'react-native-webview';
+import TestVoice from './src/test/TestVoice';
 // Tạo store Redux
 const store = legacy_createStore(rootReducer, applyMiddleware(thunk));
 
@@ -34,7 +35,8 @@ const App = () => {
             {isLoading ? (
               <Splash setIsLoading={setIsLoading} />
             ) : (
-              <BottomTabs />
+              // <BottomTabs />
+              <TestVoice/>
             )}
             <Toast
               ref={ref => Toast.setRef(ref)}
