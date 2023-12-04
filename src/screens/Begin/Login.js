@@ -77,10 +77,10 @@ const Login = props => {
         saveLoginInfo(response['data'].user);
       } else if ((response['data'].result = 0)) {
         showToastMessage('error', 'Tài khoản bị vô hiệu hóa');
-      } else if ((response['data'].result = -1)) {
-        showToastMessage('error', 'Sai mật khẩu');
       } else if ((response['data'].result = -2)) {
         showToastMessage('error', 'Tài khoản không tồn tại');
+      } else if ((response['data'].result = -1)) {
+        showToastMessage('error', 'Sai mật khẩu');
       } else {
       }
     } catch (e) {
