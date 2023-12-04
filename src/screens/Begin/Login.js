@@ -60,9 +60,9 @@ const Login = props => {
   });
 
   //API login
-  const onLogin = async (phoneNumber,password) => {
+  const onLogin = async (phoneNumber, password) => {
     try {
-      console.log(phoneNumber,password);
+      console.log(phoneNumber, password);
       const response = await axios.post(
         'http://103.57.129.166:3000/user/api/login',
         {
@@ -76,16 +76,14 @@ const Login = props => {
         setInfoUser(response['data'].user);
         saveLoginInfo(response['data'].user);
       } else {
-        showToastMessage(
-          'error',
-          'Tên đăng nhập hoặc mật khẩu không đúng',
-        );
+        if (response.data.result == 0)
+          showToastMessage('error', 'Tài khoản bị vô hiệu hóa');
+        if (response.data.result == -1)
+          showToastMessage('error', 'Sai mật khẩu');
+        if (response.data.result == -2)
+          showToastMessage('error', 'Tài khoản không tồn tại');
       }
     } catch (e) {
-      showToastMessage(
-        'error',
-        'Tên đăng nhập hoặc mật khẩu không đúng',
-      );
       console.log(e);
     }
   };
@@ -163,7 +161,7 @@ const Login = props => {
             initialValues={{phoneNumber: '', password: ''}}
             validationSchema={validationSchema}
             onSubmit={values => {
-              onLogin(values.phoneNumber,values.password);
+              onLogin(values.phoneNumber, values.password);
             }}>
             {({
               handleChange,
