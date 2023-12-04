@@ -75,13 +75,13 @@ const Login = props => {
         setIdUser(response['data'].user.id);
         setInfoUser(response['data'].user);
         saveLoginInfo(response['data'].user);
+      } else if ((response['data'].result = 0)) {
+        showToastMessage('error', 'Tài khoản bị vô hiệu hóa');
+      } else if ((response['data'].result = -1)) {
+        showToastMessage('error', 'Sai mật khẩu');
+      } else if ((response['data'].result = -2)) {
+        showToastMessage('error', 'Tài khoản không tồn tại');
       } else {
-        if (response.data.result == 0)
-          showToastMessage('error', 'Tài khoản bị vô hiệu hóa');
-        if (response.data.result == -1)
-          showToastMessage('error', 'Sai mật khẩu');
-        if (response.data.result == -2)
-          showToastMessage('error', 'Tài khoản không tồn tại');
       }
     } catch (e) {
       console.log(e);
