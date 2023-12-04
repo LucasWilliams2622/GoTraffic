@@ -29,7 +29,7 @@ import AppInput from '../../../../components/AppInput';
 import {AppContext} from '../../../../utils/AppContext';
 
 const WithdrawRequest = () => {
-  const {infoUser} = useContext(AppContext);
+  const {infoUser,idUser} = useContext(AppContext);
   const isFocused = useIsFocused();
   const navigation = useNavigation();
   const [selectedBank, setSelectedBank] = useState(null);
@@ -124,17 +124,25 @@ const WithdrawRequest = () => {
     </TouchableOpacity>
   );
 
-  const handleWithdraw = () => {
+  const handleWithdraw = async () => {
     try {
       if (parseFloat(money) > 0) {
         if (accountNumber) {
           if (selectedBank) {
             console.log(selectedBank);
-            showToastMessage(
-              '',
-              'Yêu cầu đã được gửi, bạn sẽ được duyệt sau 72 giờ',
-            );
-            navigation.goBack();
+            const response = await axios.post('http://103.57.129.166:3000/request/api/add',{
+              idUser:idUser,
+              bankName:selectedBank.shortName,
+              bankNumber:accountNumber.toString(),
+              amount:parseInt(money)
+            });
+            console.log(response.data);
+            if(response.data.result){
+              showToastMessage( '','Yêu cầu đã được gửi, bạn sẽ được duyệt sau 72 giờ',);
+              navigation.goBack();
+            }else{
+              showToastMessage('error','Gửi yêu cầu rút tiền thất bại');
+            }
           } else {
             showToastMessage(
               'error',

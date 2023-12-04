@@ -13,15 +13,25 @@ import {appStyle} from '../../constants/AppStyle';
 import Modal from 'react-native-modal';
 
 const ItemNotification = props => {
-  const {data} = props;
+  const {data, handleRead} = props;
   const {image, title, content, time, poster, id} = data;
   const [isModalVisible, setModalVisible] = useState(false);
   const isImageUrlValid = /^https?:\/\/.*\.(png|jpg)$/i.test(data.image);
   const toggleModal = () => {
+    handleRead(data.id);
     setModalVisible(!isModalVisible);
   };
+  let color;
+  if (data.isRead == 0) {
+    color = '#f0faff';
+  } else {
+    color = 'white';
+  }
+
   return (
-    <TouchableOpacity style={styles.container} onPress={toggleModal}>
+    <TouchableOpacity
+      style={[styles.container, {backgroundColor: color}]}
+      onPress={toggleModal}>
       <View style={[{alignSelf: 'flex-start'}]}>
         {!isImageUrlValid ? (
           <FastImage
@@ -60,7 +70,7 @@ const ItemNotification = props => {
             <FastImage
               style={styles.imageInModal}
               resizeMode={'stretch'}
-              source={require('../../assets/image/poster.jpg')}
+              source={{uri: data.image}}
             />
             <Text
               style={[
@@ -84,7 +94,16 @@ const ItemNotification = props => {
             </Text>
             <Text
               style={[
-                [appStyle.text14, {lineHeight: 30, paddingHorizontal: 20,marginTop:50,fontStyle:'italic',color:COLOR.red}],
+                [
+                  appStyle.text14,
+                  {
+                    lineHeight: 30,
+                    paddingHorizontal: 20,
+                    marginTop: 50,
+                    fontStyle: 'italic',
+                    color: COLOR.red,
+                  },
+                ],
               ]}>
               Cảm ơn bạn đã đồng hành cùng chúng tôi !
             </Text>
@@ -107,7 +126,6 @@ export default ItemNotification;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f0faff',
     flexDirection: 'row',
     paddingVertical: 16,
     paddingHorizontal: 10,
@@ -129,7 +147,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalView: {
-    justifyContent:'space-evenly',
+    justifyContent: 'space-evenly',
     width: '100%',
     height: '80%',
     margin: 20,
