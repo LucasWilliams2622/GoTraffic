@@ -18,7 +18,7 @@ const ItemInsurance = (props) => {
 
     return (
         <View>
-            <TouchableOpacity style={{ marginRight: id != 3 ? 10 : 32, borderWidth: .5, borderRadius: 6, borderColor: '#787878' }}
+            <TouchableOpacity style={{ marginRight: id != 3 ? 10 : 32, borderWidth: 1, borderRadius: 6, borderColor: 'gray' }}
                 onPress={() => { { toggleBottomSheet() } }}>
                 <FastImage style={styles.image} resizeMode={'stretch'} source={image} />
             </TouchableOpacity>

@@ -58,13 +58,13 @@ const Profile = props => {
 
   const onDelete = async () => {
     try {
-      const response = await AxiosInstance().delete('user/api/delete', {});
-      if (response.result) {
-        setIsLogin(false);
-        showToastMessage('', 'Xóa tài khoản thành công');
-      } else {
-        showToastMessage('error', 'Xóa tài khoản thất bại');
-      }
+      // const response = await AxiosInstance().delete('user/api/delete', {});
+      // if (response.result) {
+      setIsLogin(false);
+      showToastMessage('', 'Gửi yêu cầu thành công');
+      // } else {
+      //   showToastMessage('error', 'Gửi yêu cầu thất bại');
+      // }
     } catch (error) {
       console.log(error);
     }

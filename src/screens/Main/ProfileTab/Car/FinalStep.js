@@ -89,7 +89,7 @@ const FinalStep = props => {
 
       if (response.data.result) {
         const jsonString = JSON.stringify(response.data.links);
-        const jsonStringWithQuotes = `\"${jsonString}\"`;
+        const jsonStringWithQuotes = `\'${jsonString}\'`;
         console.log('jsonStringWithQuotes', jsonStringWithQuotes);
         setImages(jsonStringWithQuotes);
         // showToastMessage('', 'Upload ảnh xe thành công');
