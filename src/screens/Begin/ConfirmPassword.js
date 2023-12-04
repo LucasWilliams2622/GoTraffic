@@ -9,33 +9,60 @@ import FastImage from 'react-native-fast-image';
 import * as Yup from 'yup';
 import {Formik} from 'formik';
 import {KeyboardAvoidingView} from 'native-base';
+
+import {showToastMessage} from '../../utils/utils';
+import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
 
-const Register = props => {
+const ConfirmPassword = props => {
+  const {phoneNumber, nameUser, email} = props.route.params;
   const navigation = useNavigation();
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required('Tên không được để trống'),
-    phoneNumber: Yup.number()
-      .typeError('Không phải định dạng số điện thoại')
-      .positive('Số điện thoại không được có dấu trừ')
-      .integer('Số điện thoại không có dấu thập phân')
-      .required('Số điện thoại không được để trống'),
+    password: Yup.string()
+      .required('Mật khẩu không được để trống')
+      .min(6, 'Mật khẩu quá ngắn ít nhất phải 6 kí tự'),
+    rePassword: Yup.string()
+      .required('Mật khẩu không được để trống')
+      .min(6, 'Mật khẩu quá ngắn ít nhất phải 6 kí tự'),
   });
-
+  //API REGISTER
+  const onRegister = async (nameUser, phoneNumber, email, password) => {
+    try {
+      const response = await axios.post(
+        'http://103.57.129.166:3000/user/api/register',
+        {
+          email: email,
+          phone: phoneNumber.toString(),
+          password: password,
+          name: nameUser,
+        },
+      );
+      console.log(response.data);
+      if (response.data.result) {
+        showToastMessage('', 'Đăng kí thành công');
+        navigation.navigate('Login');
+      } else {
+        showToastMessage('error', 'Đăng kí thất bại');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <SafeAreaView style={appStyle.container}>
       <Formik
         initialValues={{
-          name: '',
-          phoneNumber: '',
+          password: '',
+          rePassword: '',
         }}
         validationSchema={validationSchema}
         onSubmit={values => {
           console.log(values);
-          navigation.navigate('Verified', {
-            phoneNumber: values.phoneNumber,
-            nameUser: values.name,
-          });
+          if (values.password === values.rePassword) {
+            onRegister(nameUser, phoneNumber, email, values.password);
+          } else {
+            showToastMessage('error', 'Mật khẩu không khớp');
+          }
         }}>
         {({
           handleChange,
@@ -45,9 +72,14 @@ const Register = props => {
           errors,
           touched,
         }) => (
-          <View style={[appStyle.main, {flex: 1}]}>
+          <View style={[appStyle.main, {}]}>
             <KeyboardAvoidingView behavior="padding">
-              <View style={{flexDirection: 'row', width: windowWidth * 0.85,marginBottom:20}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  width: windowWidth * 0.85,
+                  marginBottom: 20,
+                }}>
                 <TouchableOpacity
                   style={{marginTop: 10, marginRight: 14}}
                   onPress={() => navigation.goBack()}>
@@ -62,35 +94,40 @@ const Register = props => {
                 </View>
               </View>
 
-              <View style={styles.viewItem}>
-                <Text style={styles.text2}>Tên hiện thị</Text>
-                <AppInput
-                  returnKeyType={'next'}
-                  placeholder={'Nhập tên của bạn'}
-                  onChangeText={handleChange('name')}
-                  onBlur={handleBlur('name')}
-                  value={values.name}
-                />
-              </View>
-              {touched.name && errors.name && (
-                <Text style={styles.textError}>{errors.name}</Text>
+              {touched.email && errors.email && (
+                <Text style={styles.textError}>{errors.email}</Text>
               )}
 
               <View style={styles.viewItem}>
-                <Text style={styles.text2}>Số điện thoại</Text>
+                <Text style={styles.text2}>Mật khẩu</Text>
                 <AppInput
-                  keyboardType={'phone-pad'}
                   returnKeyType={'next'}
-                  placeholder={'Nhập số điện thoại của bạn'}
-                  onChangeText={handleChange('phoneNumber')}
-                  onBlur={handleBlur('phoneNumber')}
-                  value={values.phoneNumber}
+                  placeholder={'Nhập mật khẩu'}
+                  isPassword
+                  secureTextEntry
+                  onChangeText={handleChange('password')}
+                  onBlur={handleBlur('password')}
+                  value={values.password}
                 />
               </View>
-              {touched.phoneNumber && errors.phoneNumber && (
-                <Text style={styles.textError}>{errors.phoneNumber}</Text>
+              {touched.password && errors.password && (
+                <Text style={styles.textError}>{errors.password}</Text>
               )}
-
+              <View style={styles.viewItem}>
+                <Text style={styles.text2}>Xác nhận lại mật khẩu</Text>
+                <AppInput
+                  returnKeyType={'done'}
+                  placeholder={'Xác nhận mật khẩu'}
+                  isPassword
+                  secureTextEntry
+                  onChangeText={handleChange('rePassword')}
+                  onBlur={handleBlur('rePassword')}
+                  value={values.rePassword}
+                />
+              </View>
+              {touched.rePassword && errors.rePassword && (
+                <Text style={styles.textError}>{errors.rePassword}</Text>
+              )}
               <AppButton
                 title="Đăng kí"
                 color={COLOR.secondary}
@@ -106,7 +143,7 @@ const Register = props => {
   );
 };
 
-export default Register;
+export default ConfirmPassword;
 
 const styles = StyleSheet.create({
   text1: {

@@ -8,9 +8,10 @@ import {COLOR, ICON} from '../../constants/Theme';
 import {useNavigation} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 
-const Verified = props => {
+const VerifiedEmail = props => {
   const navigation = useNavigation();
-  const {phoneNumber, nameUser} = props.route.params;
+  const {phoneNumber, nameUser, email} = props.route.params;
+  console.log(phoneNumber);
 
   // verification code (OTP - One-Time-Passcode)
   const [code, setCode] = useState('');
@@ -24,30 +25,35 @@ const Verified = props => {
     }
   }
   const handleNext = () => {
-    navigation.navigate('EmailCheck', {
+    navigation.navigate('ConfirmPassword', {
       phoneNumber: phoneNumber,
       nameUser: nameUser,
+      email: email,
     });
   };
 
   return (
     <SafeAreaView style={appStyle.main}>
-      <View style={{flexDirection: 'row', width: windowWidth * 0.85,marginTop:10,marginBottom:10}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          width: windowWidth * 0.85,
+          marginTop: 10,
+          marginBottom: 10,
+        }}>
         <TouchableOpacity
           style={{marginTop: 10, marginRight: 14}}
           onPress={() => navigation.goBack()}>
           <FastImage source={ICON.Back} style={appStyle.icon} />
         </TouchableOpacity>
         <View style={{flex: 1, alignItems: 'center'}}>
-          <Text style={styles.text1}>Xác thực số điện thoại</Text>
+          <Text style={styles.text1}>Xác thực Email</Text>
         </View>
       </View>
       <Text style={styles.text2}>
-        Bạn sẽ nhận được mã OTP vào số điện thoại{' '}
-        <Text style={appStyle.text16Bold}>{phoneNumber}</Text>. Hãy xác thực
-        ngay!
+        Bạn sẽ nhận được mã OTP vào email:{' '}
+        <Text style={appStyle.text16Bold}>{email}</Text>. Hãy xác thực ngay!
       </Text>
-
       <Text style={styles.text3}>
         Gửi lại mã sau <Text style={{fontWeight: 'bold'}}>(56s)</Text>{' '}
       </Text>
@@ -64,12 +70,12 @@ const Verified = props => {
           console.log(`Code is ${code}, you are good to go!`);
         }}
       />
-      <AppButton title="Xác thực số điện thoại" onPress={handleNext} />
+      <AppButton title="Xác thực email" onPress={handleNext} />
     </SafeAreaView>
   );
 };
 
-export default Verified;
+export default VerifiedEmail;
 
 const styles = StyleSheet.create({
   text1: {

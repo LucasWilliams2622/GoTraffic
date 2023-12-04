@@ -22,6 +22,9 @@ import UpdateAddress from '../screens/Main/ProfileTab/Address/UpdateAddress';
 import Account from '../screens/Main/ProfileTab/Account/Account';
 import Register from '../screens/Begin/Register';
 import Verified from '../screens/Begin/Verified';
+import EmailCheck from '../screens/Begin/EmailCheck';
+import VerifiedEmail from '../screens/Begin/VerifiedEmail';
+import ConfirmPassword from '../screens/Begin/ConfirmPassword';
 import MyCard from '../screens/Main/ProfileTab/Payment/MyCard';
 import LocationPicking from '../screens/Main/HomeTab/LocationPicking';
 import NewCard from '../screens/Main/ProfileTab/Payment/NewCard';
@@ -54,6 +57,7 @@ import ChangeBooking from '../screens/Main/HomeTab/ChangeBooking';
 import {appStyle} from '../constants/AppStyle';
 import {Badge} from 'react-native-elements';
 import {useIsFocused} from '@react-navigation/native';
+import WithdrawRequest from '../screens/Main/ProfileTab/MyCar/WithdrawRequest';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -64,6 +68,9 @@ const StackBegin = () => {
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Verified" component={Verified} />
+      <Stack.Screen name="EmailCheck" component={EmailCheck} />
+      <Stack.Screen name="VerifiedEmail" component={VerifiedEmail} />
+      <Stack.Screen name="ConfirmPassword" component={ConfirmPassword} />
       <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="BottomNav" component={BottomTabNav} />
     </Stack.Navigator>
@@ -207,6 +214,7 @@ const StackProfile = () => {
       <Stack.Screen name="VerifyLicense" component={VerifyLicense} />
       <Stack.Screen name="Test2" component={Test2} />
       <Stack.Screen name="Recharge" component={Recharge} />
+      <Stack.Screen name="WithdrawRequest" component={WithdrawRequest} />
     </Stack.Navigator>
   );
 };

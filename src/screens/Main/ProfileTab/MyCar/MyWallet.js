@@ -55,7 +55,7 @@ const MyWallet = props => {
                 Nạp tiền
               </Text>
             </TouchableOpacity>
-            <View>
+            <TouchableOpacity onPress={()=>navigation.navigate('WithdrawRequest')}>
               <FastImage
                 style={{
                   width: 30,
@@ -69,7 +69,7 @@ const MyWallet = props => {
               <Text style={[appStyle.text14, {color: COLOR.white}]}>
                 Rút tiền
               </Text>
-            </View>
+            </TouchableOpacity>
             <View>
               <FastImage
                 style={{

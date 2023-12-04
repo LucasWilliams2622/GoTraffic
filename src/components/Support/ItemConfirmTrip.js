@@ -31,7 +31,7 @@ const ItemConfirmTrip = props => {
         <Text style={[appStyle.text14Bold]}>{data.createdAt.slice(0, 10)}</Text>
       </View>
       <TouchableOpacity style={styles.container}>
-        <View style={[{alignSelf: 'center'}]}>
+        <View style={[{alignSelf: 'center',marginLeft:5}]}>
           {!isImageUrlValid ? (
             <FastImage
               style={styles.image}
@@ -65,7 +65,7 @@ const ItemConfirmTrip = props => {
             style={[appStyle.text16Bold, {width: 150, color: COLOR.orange}]}
             numberOfLines={2}>
             <Text style={{color: COLOR.black}}>Tên người thuê: </Text>
-            {data.User.firstName}
+            {data.User.name}
           </Text>
           <Text
             style={{

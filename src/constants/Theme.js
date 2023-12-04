@@ -39,7 +39,8 @@ export const COLOR = {
   title: '#023047',
   text2: '#595959',
   textWarn: '#FF0303',
-
+  lightGray: '#F4F4F4',
+  textGray: '#787878',
   // find color : https://colorhunt.co
   white: '#ffffff',
   black: '#000000',
@@ -61,6 +62,7 @@ export const COLOR = {
   lightGreen2: '#D8F2E1',
   exit: '#F25F57',
   warn: '#fce7e6',
+  
 };
 
 export const ICON = {

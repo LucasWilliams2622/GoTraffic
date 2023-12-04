@@ -8,6 +8,7 @@ import GetLocation from 'react-native-get-location';
 import axios from 'axios';
 import {Location} from '../types';
 import {REACT_APP_VIETMAP_API_KEY} from '@env';
+import numeral from 'numeral';
 
 export const formatPrice = (price: number) => {
   price = Math.round(price);
@@ -124,7 +125,7 @@ export const calculateAvgRating = (ratings: {rating: number}[]) => {
 export const showToastMessage = (type?: string, title?: string, icon?: any) => {
   const topOffset = windowHeight * 0.05;
   const containerStyle = {
-    width: windowWidth * 0.8,
+    width: windowWidth * 0.88,
     height: windowHeight * 0.07,
     backgroundColor: type === 'error' ? COLOR.exit : COLOR.primary,
   };
@@ -221,4 +222,9 @@ export const getDetailLocation = async (location: Location) => {
     .catch(error => {
       console.warn('GetDetailLocation Error: ' + error);
     });
+};
+
+export const MoneyText = (value: number) => {
+  const formattedValue = numeral(value).format('0,0');
+  return formattedValue;
 };
