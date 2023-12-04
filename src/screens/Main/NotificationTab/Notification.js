@@ -10,6 +10,7 @@ import {AppContext} from '../../../utils/AppContext';
 import {useIsFocused} from '@react-navigation/native';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import AppHeader from '../../../components/AppHeader';
+import {showToastMessage} from '../../../utils/utils';
 const Notification = () => {
   const [data, setData] = useState('');
   const [dataTrip, setdataTrip] = useState('');
@@ -24,7 +25,7 @@ const Notification = () => {
         setData(response.notification);
         setTimeout(() => {
           setLoading(false);
-        }, 3000);
+        }, 2000);
       } else {
         console.log('NETWORK ERROR');
       }
@@ -41,6 +42,36 @@ const Notification = () => {
         console.log('Trip:>>>' + response.notifications);
         setNotificationCount(response.notifications.length);
         setdataTrip(response.notifications);
+      } else {
+        console.log('NETWORK ERROR');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const readDetailListNotifications = async id => {
+    try {
+      const response = await AxiosInstance().post(
+        '/notification/api/read?id=' + id,
+      );
+      if (response.result) {
+        //showToastMessage('', 'Đã đọc thông báo');
+        getListNotifications();
+      } else {
+        console.log('NETWORK ERROR');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const readDetailListNotificationsBooking = async id => {
+    try {
+      const response = await AxiosInstance().post(
+        '/notification-booking/api/read?id=' + id,
+      );
+      if (response.result) {
+        //showToastMessage('', 'Đã đọc thông báo');
+        getListNotificationsByIDUser();
       } else {
         console.log('NETWORK ERROR');
       }
@@ -125,7 +156,12 @@ const Notification = () => {
           <FlatList
             style={{width: '100%'}}
             data={dataTrip}
-            renderItem={({item}) => <ItemNotification data={item} />}
+            renderItem={({item}) => (
+              <ItemNotification
+                data={item}
+                handleRead={readDetailListNotificationsBooking}
+              />
+            )}
             keyExtractor={item => item._id}
             showsVerticalScrollIndicator={false}
           />
@@ -180,7 +216,12 @@ const Notification = () => {
           <FlatList
             style={{width: '100%', marginBottom: 65}}
             data={data}
-            renderItem={({item}) => <ItemNotification data={item} />}
+            renderItem={({item}) => (
+              <ItemNotification
+                data={item}
+                handleRead={readDetailListNotifications}
+              />
+            )}
             keyExtractor={item => item._id}
             showsVerticalScrollIndicator={false}
           />

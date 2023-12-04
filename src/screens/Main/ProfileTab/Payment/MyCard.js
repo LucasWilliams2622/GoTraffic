@@ -26,14 +26,7 @@ const MyCard = (props) => {
       <View style={{ padding: 10, width: '100%', height: '100%', alignItems: 'center' }}>
         {hasCard ? (
           <View style={{width: '100%', height:'77%'}}>
-            <ItemCard
-              icon={ICON.Tech}
-              text="ATM 3302"
-            />
-            <ItemCard
-              icon={ICON.Tech}
-              text="ATM 3302"
-            />
+           
             <ItemCard
               icon={ICON.MasterCard}
               text="ATM 3302"
