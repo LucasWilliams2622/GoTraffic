@@ -56,6 +56,7 @@ const Notification = () => {
       );
       if (response.result) {
         //showToastMessage('', 'Đã đọc thông báo');
+        getListNotifications();
       } else {
         console.log('NETWORK ERROR');
       }
@@ -70,6 +71,7 @@ const Notification = () => {
       );
       if (response.result) {
         //showToastMessage('', 'Đã đọc thông báo');
+        getListNotificationsByIDUser();
       } else {
         console.log('NETWORK ERROR');
       }
