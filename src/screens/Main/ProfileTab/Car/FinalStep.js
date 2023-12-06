@@ -56,6 +56,8 @@ const FinalStep = props => {
       if (response.data.result) {
         // showToastMessage('', 'Upload ảnh bìa thành công');
         setImageThumbnail(response.data.link);
+        console.log('response.data.link', response.data.link);
+        await uploadImages(response.data.link);
       } else {
         showToastMessage('error', 'Upload images thumbnail fail');
       }
@@ -64,7 +66,7 @@ const FinalStep = props => {
     }
   };
 
-  const uploadImages = async () => {
+  const uploadImages = async thumbnail => {
     try {
       const formData = new FormData();
       images.forEach((uri, index) => {
@@ -93,7 +95,7 @@ const FinalStep = props => {
         console.log('jsonStringWithQuotes', jsonStringWithQuotes);
         setImages(jsonStringWithQuotes);
         // showToastMessage('', 'Upload ảnh xe thành công');
-        await addCarStep2(jsonStringWithQuotes);
+        await addCarStep2(jsonStringWithQuotes, thumbnail);
       } else {
         showToastMessage('error', 'Upload ảnh xe thất bại');
       }
@@ -101,6 +103,7 @@ const FinalStep = props => {
       console.error('Error uploading images:', error);
     }
   };
+  
   //call api add car here
   const addNewCar = async () => {
     try {
@@ -112,14 +115,13 @@ const FinalStep = props => {
         return;
       } else {
         await uploadImage();
-        await uploadImages();
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  const addCarStep2 = async carImages => {
+  const addCarStep2 = async (carImages, thumbnail) => {
     try {
       console.log(
         ' cardInfo.carInfo2.price',
@@ -157,7 +159,7 @@ const FinalStep = props => {
           price: cardInfo.carInfo2.price,
           utilities: cardInfo.carInfo2.selectedFeatures.toString(),
           image: carImages,
-          imageThumbnail: imageThumbnail,
+          imageThumbnail: thumbnail,
           locationCar: '',
         },
       );
