@@ -97,7 +97,7 @@ export const ICON = {
   Address: require('../assets/icon/ic_address.png'),
   Card: require('../assets/icon/ic_card.png'),
   Wallet: require('../assets/icon/ic_wallet.png'),
-  Add: require('../assets/icon/ic_add.png'),
+  Add:  IconEntypo.getImageSource('plus', 20, 'black'),
   Copy: require('../assets/icon/ic_copy.png'),
   Send: require('../assets/icon/ic_send.png'),
   Delete: require('../assets/icon/ic_delete.png'),
