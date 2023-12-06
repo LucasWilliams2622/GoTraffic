@@ -30,7 +30,7 @@ const GeneralInformation = props => {
         <AppProfile
           icon={ICON.Location}
           text="GPS"
-          onPress={() => navigation.navigate('')}
+          onPress={() => navigation.navigate('GPSMarker', {data: data})}
         />
       </View>
     </SafeAreaView>

@@ -21,6 +21,7 @@ import AppHeader from '../../../../components/AppHeader';
 import {showToastMessage} from '../../../../utils/utils';
 import FailModal from '../../../../components/Profile/Modal/FailModal';
 import CheckBox from '@react-native-community/checkbox';
+import SwitchToggle from 'react-native-switch-toggle';
 
 const DetailInListCar = props => {
   const navigation = useNavigation();
@@ -185,7 +186,9 @@ const DetailInListCar = props => {
     />
   );
   const [modalVisible, setModalVisible] = useState(false);
-
+  const isImageUrlValid = /^https?:\/\/.*\.(png|jpg)$/i.test(
+    data.imageThumbnail,
+  );
   return (
     <SafeAreaView style={appStyle.container}>
       <FailModal
@@ -207,10 +210,20 @@ const DetailInListCar = props => {
       />
       <View style={{padding: 14}}>
         <View style={styles.line1}>
-          <FastImage
-            style={styles.imageCar}
-            source={{uri: data.imageThumbnail}}></FastImage>
-          <View style={{marginLeft: 20,justifyContent:'space-evenly'}}>
+          {!isImageUrlValid ? (
+            <FastImage
+              style={styles.imageCar}
+              resizeMode="stretch"
+              source={require('../../../../assets/image/NoTrip.png')}
+            />
+          ) : (
+            <FastImage
+              style={styles.imageCar}
+              resizeMode={'stretch'}
+              source={{uri: data.imageThumbnail}}
+            />
+          )}
+          <View style={{marginLeft: 20, justifyContent: 'space-evenly'}}>
             <Text style={[appStyle.text16Bold]}>{data.name}</Text>
             <TouchableOpacity
               onPress={() =>
@@ -225,11 +238,24 @@ const DetailInListCar = props => {
               </Text>
             </TouchableOpacity>
             <View style={styles.checkboxContainer}>
-              <CheckBox
-                value={isSelected}
-                onValueChange={newValue => setSelection(newValue)}
-                style={styles.checkbox}
-                onCheckColor={COLOR.green}
+              <SwitchToggle
+                switchOn={isSelected}
+                circleColorOff={COLOR.background}
+                circleColorOn={COLOR.background}
+                backgroundColorOn={COLOR.primary}
+                backgroundColorOff="#C4C4C4"
+                containerStyle={{
+                  width: 42,
+                  height: 24,
+                  borderRadius: 25,
+                  padding: 2,
+                  marginTop: 6,
+                }}
+                circleStyle={{
+                  width: 21,
+                  height: 20,
+                  borderRadius: 20,
+                }}
               />
               <Text style={styles.label}>Đã cho thuê</Text>
             </View>
@@ -336,14 +362,14 @@ const styles = StyleSheet.create({
   },
   checkboxContainer: {
     flexDirection: 'row',
-    marginLeft:-4
+    marginLeft: -4,
   },
   checkbox: {
     alignSelf: 'center',
   },
   label: {
     margin: 8,
-    color: COLOR.green,
+    color: COLOR.fifth,
     fontStyle: 'italic',
     fontSize: 14,
     fontWeight: 'bold',

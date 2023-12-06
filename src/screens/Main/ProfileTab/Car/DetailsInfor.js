@@ -46,7 +46,9 @@ const DetailsInfor = props => {
   const [address, setAddress] = useState(null);
   const [location, setLocation] = useState(null);
   const [onSwitch, setonSwitch] = useState(false);
+  const [onSwitch2, setonSwitch2] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalVisible2, setModalVisible2] = useState(false);
   const [isEnabled, setEnabled] = useState(false);
   const [isEnabledLimitKm, setEnabledLimitKm] = useState(false);
   const [first, setfirst] = useState(0);
@@ -113,6 +115,9 @@ const DetailsInfor = props => {
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
+  const toggleModal2 = () => {
+    setModalVisible2(!isModalVisible2);
+  };
 
   const handleSwitchToggle = () => {
     if (!onSwitch) {
@@ -121,7 +126,13 @@ const DetailsInfor = props => {
       setonSwitch(!onSwitch);
     }
   };
-
+  const handleSwitchToggle2 = () => {
+    if (!onSwitch2) {
+      setModalVisible2(true);
+    } else {
+      setonSwitch2(!onSwitch2);
+    }
+  };
   // địa chỉ
   const handleAddressClick = () => {
     setOpenAddress(!openAddress);
@@ -135,6 +146,10 @@ const DetailsInfor = props => {
   const handleConfirm = () => {
     setonSwitch(true);
     toggleModal();
+  };
+  const handleConfirm2 = () => {
+    setonSwitch2(true);
+    toggleModal2();
   };
   const handleNext = () => {
     const carInfo2 = {
@@ -338,7 +353,31 @@ const DetailsInfor = props => {
               </View>
             )}
           </View>
-
+          {/* Xe có tài xế*/}
+          <View style={appStyle.cardInfo}>
+            <View style={appStyle.rowContent}>
+              <Text style={appStyle.text165}>Xe có tài xế</Text>
+              <SwitchToggle
+                switchOn={onSwitch2}
+                onPress={handleSwitchToggle2}
+                circleColorOff={COLOR.background}
+                circleColorOn={COLOR.background}
+                backgroundColorOn={COLOR.primary}
+                backgroundColorOff="#C4C4C4"
+                containerStyle={{
+                  width: 42,
+                  height: 24,
+                  borderRadius: 25,
+                  padding: 2,
+                }}
+                circleStyle={{
+                  width: 21,
+                  height: 20,
+                  borderRadius: 20,
+                }}
+              />
+            </View>
+          </View>
           {/* Mô tả */}
           <View style={appStyle.cardInfo}>
             <Text style={appStyle.text165}>Mô tả xe</Text>
@@ -577,6 +616,39 @@ const DetailsInfor = props => {
             onPress={() => handleConfirm()}
           />
           <TouchableOpacity onPress={toggleModal}>
+            <Text style={[appStyle.text18, {marginTop: 15}]}>HỦY</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
+      <Modal animationType="fade" transparent={true} visible={isModalVisible2}>
+        <TouchableOpacity
+          // style={appStyle.modalBackdrop}
+          onPress={toggleModal2}
+        />
+        <View style={styles.modalContainer}>
+          <Text style={[appStyle.text20Bold, {marginVertical: 20}]}>LƯU Ý</Text>
+          <Text
+            style={[
+              styles.itemText,
+              {
+                textAlign: 'center',
+                lineHeight: 20,
+                letterSpacing: 0.5,
+              },
+            ]}>
+            Đăng ký này sẽ cập nhật xe của bạn từ trạng thái xe tự lái sang xe
+            có tài xế và tài xế sẽ phải bắt buộc cần di chuyển đến vị trí của
+            người thuê xe.
+          </Text>
+
+          <AppButton
+            title="XÁC NHẬN"
+            fontSize={18}
+            fontWeight={'300'}
+            marginTop={50}
+            onPress={() => handleConfirm2()}
+          />
+          <TouchableOpacity onPress={toggleModal2}>
             <Text style={[appStyle.text18, {marginTop: 15}]}>HỦY</Text>
           </TouchableOpacity>
         </View>

@@ -107,7 +107,7 @@ const Trip = () => {
             )}
             renderHiddenItem={(data, index) => (
               <TouchableOpacity
-                style={[styles.rightAction, {backgroundColor: COLOR.redOrange}]}
+                style={[styles.rightAction, {backgroundColor: COLOR.red2}]}
                 onPress={() => {
                   console.log(data.id);
                   cancelBooking(data.id);
@@ -115,7 +115,7 @@ const Trip = () => {
                 <FastImage source={ICON.Delete} style={appStyle.iconBig} />
               </TouchableOpacity>
             )}
-            rightOpenValue={200}
+            rightOpenValue={150}
           />
         )}
       </ScrollView>
@@ -165,14 +165,13 @@ const styles = StyleSheet.create({
     right: 10,
   },
   rightAction: {
-    width: '50%',
-    marginVertical: 10,
+    width: '30%',
+    marginVertical: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    height: '70%',
-    borderRadius: 20,
-    borderWidth: 1,
-    marginTop:40
+    height: '68%',
+    marginTop:40,
+    marginLeft:-5
   },
 });
 

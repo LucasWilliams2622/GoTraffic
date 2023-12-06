@@ -48,7 +48,7 @@ const Recharge = () => {
         },
       );
       setBlockInput(true);
-      setAmount(0)
+      setAmount(0);
       showToastMessage('', 'Thanh toán thành công');
     } else {
       console.log('Chưa thanh toán');
@@ -57,20 +57,24 @@ const Recharge = () => {
 
   const handleRecharge = async () => {
     try {
-      const response = await axios.post(
-        'http://103.57.129.166:3000/user/api/create-link-payment',
-        {
-          amount: parseInt(amount),
-          description: 'Nap tien',
-          returnUrl: 'http://103.57.129.166:3000/success.html',
-          cancelUrl: 'http://103.57.129.166:3000/cancel.html',
-        },
-      );
-      if (response.data.data.checkoutUrl) {
-        setCheckoutUrl(response.data.data.checkoutUrl);
-        setBlockInput(false);
+      if (amount < 1000) {
+        showToastMessage('error', 'Vui lòng nhập số tiền lớn hơn 1000 VNĐ');
       } else {
-        console.log('==============>');
+        const response = await axios.post(
+          'http://103.57.129.166:3000/user/api/create-link-payment',
+          {
+            amount: parseInt(amount),
+            description: 'Nap tien',
+            returnUrl: 'http://103.57.129.166:3000/success.html',
+            cancelUrl: 'http://103.57.129.166:3000/cancel.html',
+          },
+        );
+        if (response.data.data.checkoutUrl) {
+          setCheckoutUrl(response.data.data.checkoutUrl);
+          setBlockInput(false);
+        } else {
+          console.log('==============>');
+        }
       }
     } catch (error) {
       console.log(error);
@@ -90,10 +94,7 @@ const Recharge = () => {
           />
         </View>
 
-        <AppButton
-          title={'Nạp'}
-          onPress={() => handleRecharge()}
-        />
+        <AppButton title={'Nạp'} onPress={() => handleRecharge()} />
 
         <View style={{flex: 1}}>
           {checkoutUrl != '' && (

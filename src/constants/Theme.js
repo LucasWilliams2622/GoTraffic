@@ -45,6 +45,9 @@ export const COLOR = {
   white: '#ffffff',
   black: '#000000',
   red: '#cc0000',
+  
+  
+  red2:'#F36538',
   redOrange: '#ff3300',
   blue: '#003399',
 

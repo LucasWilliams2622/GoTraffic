@@ -11,7 +11,7 @@ import {COLOR} from '../../constants/Theme';
 import {Code} from 'native-base';
 import {appStyle} from '../../constants/AppStyle';
 import Modal from 'react-native-modal';
-
+import Moment from 'moment';
 const ItemNotification = props => {
   const {data, handleRead} = props;
   const {image, title, content, time, poster, id} = data;
@@ -58,7 +58,9 @@ const ItemNotification = props => {
         <Text style={[appStyle.text12, {paddingVertical: 8}]} numberOfLines={2}>
           {content}
         </Text>
-        <Text style={[appStyle.text12, {color: '#787878'}]}>{time}</Text>
+        <Text style={[appStyle.text12, {color: '#787878'}]}>
+          {Moment(data.createdAt).format('YYYY-MM-DD HH:mm')}
+        </Text>
       </View>
       <Modal
         animationType="fade"

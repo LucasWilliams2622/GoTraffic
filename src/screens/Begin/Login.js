@@ -70,18 +70,17 @@ const Login = props => {
           password: password,
         },
       );
-      console.log('LOGIN INFO', response['data']);
-      if (response.data.result) {
+      console.log('LOGIN INFO', response.status);
+      if (response.status === 202) {
+        showToastMessage('error', 'Tài khoản bị vô hiệu hóa');
+      } else if (response.status === 203) {
+        showToastMessage('error', 'Tài khoản sai mật khẩu');
+      } else if (response.status === 204) {
+        showToastMessage('error', 'Tài khoản không tồn tại');
+      } else {
         setIdUser(response['data'].user.id);
         setInfoUser(response['data'].user);
         saveLoginInfo(response['data'].user);
-      } else if ((response['data'].result = 0)) {
-        showToastMessage('error', 'Tài khoản bị vô hiệu hóa');
-      } else if ((response['data'].result = -2)) {
-        showToastMessage('error', 'Tài khoản không tồn tại');
-      } else if ((response['data'].result = -1)) {
-        showToastMessage('error', 'Sai mật khẩu');
-      } else {
       }
     } catch (e) {
       console.log(e);

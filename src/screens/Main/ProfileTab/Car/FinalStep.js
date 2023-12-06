@@ -161,16 +161,16 @@ const FinalStep = props => {
           locationCar: '',
         },
       );
-      if (response.data.result) {
+      console.log(response.data);
+      if (response.status === 200) {
         console.log(response.data);
-
         showToastMessage('', 'Đăng xe thành công');
         navigation.navigate('ListCar');
       } else {
-        showToastMessage('error', 'Đăng xe thất bại');
+        showToastMessage('error', 'Xe đã tồn tại rồi');
       }
     } catch (error) {
-      showToastMessage('error', 'Đăng xe thất bại'+error);
+      showToastMessage('error', 'Đăng xe thất bại');
     }
   };
   return (

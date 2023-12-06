@@ -4,6 +4,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Modal,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {Checkbox, FlatList, ScrollView} from 'native-base';
@@ -15,7 +16,7 @@ import {
 } from '../../../../constants/AppStyle';
 import {COLOR, ICON} from '../../../../constants/Theme';
 import axios from 'axios';
-
+import SwitchToggle from 'react-native-switch-toggle';
 import Header from '../../../../components/Header';
 import AppInput from '../../../../components/AppInput';
 import AppDropdown from '../../../../components/AppDropdown';
@@ -43,6 +44,8 @@ const InforOfCar = props => {
   const [selectedWard, setSelectedWard] = useState(null);
   const [address, setAddress] = useState(null);
   const [location, setLocation] = useState(null);
+  const [onSwitch, setonSwitch] = useState(false);
+  const [isModalVisible, setModalVisible] = useState(false);
   const {data} = props.route.params;
   useEffect(() => {
     setCarNumber(data.numberPlate);
@@ -82,6 +85,7 @@ const InforOfCar = props => {
       selectedFeatures,
     };
   };
+
   useEffect(() => {
     fetch('https://provinces.open-api.vn/api/p/')
       .then(response => response.json())
@@ -138,15 +142,26 @@ const InforOfCar = props => {
         showToastMessage('', 'Cập nhật thông tin xe thành công');
         navigation.navigate('ListCar', {data: data});
       } else {
-        showToastMessage(
-          'error',
-          'Cập nhật thông tin xe thất bại',
-        );
+        showToastMessage('error', 'Cập nhật thông tin xe thất bại');
       }
     } catch (e) {
       console.log(e);
     }
   };
+  const handleSwitchToggle = () => {
+    if (!onSwitch) {
+      setModalVisible(true);
+    } else {
+      setonSwitch(!onSwitch);
+    }
+  };
+   const toggleModal = () => {
+     setModalVisible(!isModalVisible);
+   };
+    const handleConfirm = () => {
+      setonSwitch(true);
+      toggleModal();
+    };
 
   return (
     <SafeAreaView style={appStyle.container}>
@@ -168,7 +183,31 @@ const InforOfCar = props => {
             />
           </View>
         </View>
-
+        {/* Xe có tài xế*/}
+        <View style={appStyle.cardInfo}>
+          <View style={appStyle.rowContent}>
+            <Text style={appStyle.text165}>Xe có tài xế</Text>
+            <SwitchToggle
+              switchOn={onSwitch}
+              onPress={handleSwitchToggle}
+              circleColorOff={COLOR.background}
+              circleColorOn={COLOR.background}
+              backgroundColorOn={COLOR.primary}
+              backgroundColorOff="#C4C4C4"
+              containerStyle={{
+                width: 42,
+                height: 24,
+                borderRadius: 25,
+                padding: 2,
+              }}
+              circleStyle={{
+                width: 21,
+                height: 20,
+                borderRadius: 20,
+              }}
+            />
+          </View>
+        </View>
         <View style={[appStyle.cardInfo, {marginTop: 10}]}>
           <View style={appStyle.rowContent}>
             <Text style={appStyle.text165}>Địa chỉ</Text>
@@ -297,6 +336,39 @@ const InforOfCar = props => {
           onPress={() => handleUpdateCar()}
         />
       </ScrollView>
+      <Modal animationType="fade" transparent={true} visible={isModalVisible}>
+        <TouchableOpacity
+          style={appStyle.modalBackdrop}
+          onPress={toggleModal}
+        />
+        <View style={styles.modalContainer}>
+          <Text style={[appStyle.text20Bold, {marginVertical: 20}]}>LƯU Ý</Text>
+          <Text
+            style={[
+              styles.itemText,
+              {
+                textAlign: 'center',
+                lineHeight: 20,
+                letterSpacing: 0.5,
+              },
+            ]}>
+            Đăng ký này sẽ cập nhật xe của bạn từ trạng thái xe tự lái sang xe
+            có tài xế và tài xế sẽ phải bắt buộc cần di chuyển đến vị trí của
+            người thuê xe.
+          </Text>
+
+          <AppButton
+            title="XÁC NHẬN"
+            fontSize={18}
+            fontWeight={'300'}
+            marginTop={50}
+            onPress={() => handleConfirm()}
+          />
+          <TouchableOpacity onPress={toggleModal}>
+            <Text style={[appStyle.text18, {marginTop: 15}]}>HỦY</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -308,5 +380,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
+  },
+  modalContainer: {
+    backgroundColor: 'white',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: [
+      {translateX: -windowWidth * 0.45},
+      {translateY: -windowHeight * 0.29},
+    ],
+    width: windowWidth * 0.9,
+    borderRadius: 12,
+    paddingHorizontal: 25,
+    paddingBottom: 10,
+    alignSelf: 'center',
+    alignItems: 'center',
   },
 });
