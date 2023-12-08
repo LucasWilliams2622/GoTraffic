@@ -103,7 +103,7 @@ const FinalStep = props => {
       console.error('Error uploading images:', error);
     }
   };
-  
+
   //call api add car here
   const addNewCar = async () => {
     try {
@@ -127,6 +127,9 @@ const FinalStep = props => {
         ' cardInfo.carInfo2.price',
         parseInt(cardInfo.carInfo2.price),
       );
+      const jsonFeatures = JSON.stringify(cardInfo.carInfo2.selectedFeatures);
+      const jsonStringWithQuotesFeatures = `\'${jsonFeatures}\'`;
+      console.log(jsonStringWithQuotesFeatures);
       const response = await axios.post(
         'http://103.57.129.166:3000/car/api/add',
         {
@@ -157,7 +160,7 @@ const FinalStep = props => {
           exceededFee: cardInfo.carInfo2.exceededFee,
 
           price: cardInfo.carInfo2.price,
-          utilities: cardInfo.carInfo2.selectedFeatures.toString(),
+          utilities: jsonStringWithQuotesFeatures,
           image: carImages,
           imageThumbnail: thumbnail,
           locationCar: '',

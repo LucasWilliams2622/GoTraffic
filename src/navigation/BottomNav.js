@@ -29,7 +29,6 @@ import NewCard from '../screens/Main/ProfileTab/Payment/NewCard';
 import CarDetail from '../screens/Main/HomeTab/CarDetail';
 import HomeCar from '../screens/Main/ProfileTab/MyCar/HomeCar';
 import DetailInListCar from '../screens/Main/ProfileTab/MyCar/DetailInListCar';
-import GeneralInformation from '../screens/Main/ProfileTab/MyCar/GeneralInformation';
 import RentCost from '../screens/Main/ProfileTab/MyCar/RentCost';
 import CalendarOfCar from '../screens/Main/ProfileTab/MyCar/CalendarOfCar';
 import CarDelivery from '../screens/Main/ProfileTab/MyCar/CarDelivery';
@@ -181,7 +180,6 @@ const StackProfile = () => {
       <Stack.Screen name="HomeCar" component={HomeCar} />
       <Stack.Screen name="ListCar" component={ListCar} />
       <Stack.Screen name="DetailInListCar" component={DetailInListCar} />
-      <Stack.Screen name="GeneralInformation" component={GeneralInformation} />
       <Stack.Screen name="RentCost" component={RentCost} />
       <Stack.Screen name="CalendarOfCar" component={CalendarOfCar} />
       <Stack.Screen name="CarDelivery" component={CarDelivery} />
