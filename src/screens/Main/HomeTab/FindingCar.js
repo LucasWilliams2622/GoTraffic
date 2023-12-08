@@ -50,16 +50,30 @@ const FindingCar = ({
         location = 'Hà Nội';
       }
 
+      console.log(
+        'location: ' +
+          ' ward: ' +
+          JSON.stringify(ward) +
+          ' district: ' +
+          JSON.stringify(district) +
+          ' city: ' +
+          JSON.stringify(city),
+      );
+
       const data = {
-        location: `${ward.full_name}, ${district.full_name}, ${city.full_name}`,
+        location: `${ward ? ward.full_name : ''}, ${
+          district ? district.full_name : ''
+        }, ${city ? city.full_name : ''}`,
         startTime: formatTimeApi(selectedTime.startDate),
         endTime: formatTimeApi(selectedTime.endDate),
       };
 
       const locations = [
-        `${ward.full_name}, ${district.full_name}, ${city.full_name}`,
-        `${district.full_name}, ${city.full_name}`,
-        `${city.full_name}`,
+        `${ward ? ward.full_name : ''}, ${
+          district ? district.full_name : ''
+        }, ${city ? city.full_name : ''}`,
+        `${district ? district.full_name : ''}, ${city ? city.full_name : ''}`,
+        `${city ? city.full_name : ''}`,
       ];
 
       let availableCars = [];
@@ -94,7 +108,7 @@ const FindingCar = ({
 
       setListCar(availableCars);
     } catch (e) {
-      console.log(e);
+      console.log('Error in getAllCar: ' + e);
     }
   };
 
@@ -108,9 +122,20 @@ const FindingCar = ({
         .then(response => {
           console.log(6);
           console.log('response.data: ' + JSON.stringify(response.data[0]));
-          const ward = response.data[0].boundaries[0];
-          const district = response.data[0].boundaries[1];
-          const city = response.data[0].boundaries[2];
+          let ward, district, city;
+          if (response.data[0].boundaries.length == 1) {
+            ward = '';
+            district = '';
+            city = response.data[0].boundaries[0];
+          } else if (response.data[0].boundaries.length === 2) {
+            ward = '';
+            district = response.data[0].boundaries[0];
+            city = response.data[0].boundaries[1];
+          } else {
+            ward = response.data[0].boundaries[0];
+            district = response.data[0].boundaries[1];
+            city = response.data[0].boundaries[2];
+          }
           return {ward, district, city};
         });
     } catch (error) {
