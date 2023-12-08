@@ -48,9 +48,13 @@ export const TimeAndPlacePickup = ({
                   {selectedTime.startTime === null &&
                   selectedTime.endTime === null
                     ? currentDateString
-                    : `${selectedTime.startDate?.getHours()}h ${selectedTime.startDate?.getMinutes()}, ${formatDate(
-                        selectedTime.startDate,
-                      )}`}
+                    : selectedTime.startDate
+                    ? `${selectedTime.startDate.getHours()}h ${
+                        selectedTime.startDate.getMinutes() < 10
+                          ? '0' + selectedTime.startDate.getMinutes()
+                          : selectedTime.startDate.getMinutes()
+                      }, ${formatDate(selectedTime.startDate)}`
+                    : ''}
                 </Text>
               </View>
             </View>
@@ -63,9 +67,13 @@ export const TimeAndPlacePickup = ({
                   {selectedTime.startTime === null &&
                   selectedTime.endTime === null
                     ? returnDateString
-                    : `${selectedTime.endDate?.getHours()}h ${selectedTime.endDate?.getMinutes()}, ${formatDate(
-                        selectedTime.endDate,
-                      )}`}
+                    : selectedTime.endDate
+                    ? `${selectedTime.endDate.getHours()}h ${
+                        selectedTime.endDate.getMinutes() < 10
+                          ? '0' + selectedTime.endDate.getMinutes()
+                          : selectedTime.endDate.getMinutes()
+                      }, ${formatDate(selectedTime.endDate)}`
+                    : ''}
                 </Text>
               </Pressable>
             </View>
@@ -79,6 +87,7 @@ export const TimeAndPlacePickup = ({
             price={car.price}
             toggle={() => setModalVisible(!isModalVisible)}
             setSelectedTime={setSelectedTime}
+            car={car}
           />
         </ReactNativeModal>
 
@@ -119,7 +128,7 @@ export const TimeAndPlacePickup = ({
                   </Text>
                 </Row>
                 <Text style={[appStyle.text14Bold, {marginTop: 10}]}>
-                  {car.location}
+                  {car.locationCar}
                 </Text>
                 <Text style={{color: COLOR.placeholder, marginTop: 10}}>
                   Địa chỉ xe cụ thể sẽ được hiển thị sau khi đặt cọc thành công
@@ -128,31 +137,33 @@ export const TimeAndPlacePickup = ({
               </View>
             </Row>
           </Pressable>
-          <Pressable
-            onPress={() => setReceiveCarLocation('atUserLocation')}
-            style={styles.timeAndPlacePickupPressable}>
-            <Row style={{alignItems: 'flex-start'}}>
-              <Radio
-                value={'atUserLocation'}
-                my="1"
-                size="sm"
-                style={{marginRight: 10}}
-              />
-              <View style={{flex: 1}}>
-                <Row
-                  style={{
-                    marginTop: 3,
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                  }}>
-                  <Text>Tôi muốn được giao xe tận nơi</Text>
-                </Row>
-                <Text style={{color: COLOR.placeholder, marginTop: 10}}>
-                  Chủ xe sẽ giao và nhận xe đến địa chỉ cụ thể mà bạn lựa chọn
-                </Text>
-              </View>
-            </Row>
-          </Pressable>
+          {car.isDelivery && (
+            <Pressable
+              onPress={() => setReceiveCarLocation('atUserLocation')}
+              style={styles.timeAndPlacePickupPressable}>
+              <Row style={{alignItems: 'flex-start'}}>
+                <Radio
+                  value={'atUserLocation'}
+                  my="1"
+                  size="sm"
+                  style={{marginRight: 10}}
+                />
+                <View style={{flex: 1}}>
+                  <Row
+                    style={{
+                      marginTop: 3,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}>
+                    <Text>Tôi muốn được giao xe tận nơi</Text>
+                  </Row>
+                  <Text style={{color: COLOR.placeholder, marginTop: 10}}>
+                    Chủ xe sẽ giao và nhận xe đến địa chỉ cụ thể mà bạn lựa chọn
+                  </Text>
+                </View>
+              </Row>
+            </Pressable>
+          )}
         </Radio.Group>
       </View>
     </View>
