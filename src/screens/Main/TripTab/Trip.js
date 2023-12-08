@@ -77,9 +77,9 @@ const Trip = () => {
       />
       <FastImage
         source={{
-          uri: 'https://cdn.dribbble.com/users/6178642/screenshots/14489706/comp_2.gif',
+          uri: 'https://i.pinimg.com/originals/4a/24/2b/4a242b1af58a55c62deaf5a972622909.gif',
         }}
-        style={{width: '100%', height: '30%',marginTop:20}}
+        style={{width: '100%', height: '30%', marginTop: 20}}
       />
       <ScrollView style={[appStyle.main, {marginBottom: 70}]}>
         <Text style={styles.text1}>Hiện tại</Text>
