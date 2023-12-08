@@ -222,7 +222,7 @@ const TimePickingModal: React.FC<{
     }
     const priceText = useMemo(() => formatPrice(dayPrice), [dayPrice]);
     const isDateSelected = date && markedDates[date.dateString];
-    const isDateBooked = date && bookedDates[date.dateString];
+    const isDateBooked = date && bookedDates?.[date.dateString];
 
     const backgroundColor = isDateSelected
       ? markedDates[date.dateString].color
@@ -235,13 +235,6 @@ const TimePickingModal: React.FC<{
       : isDateBooked
       ? bookedDates[date.dateString].textColor
       : 'black';
-
-    const bookedStartDateString = Object.keys(bookedDates).find(
-      date => bookedDates[date].startingDay,
-    );
-    const bookedEndDateString = Object.keys(bookedDates).find(
-      date => bookedDates[date].endingDay,
-    );
 
     const startDateString = startDate
       ? startDate.toISOString().split('T')[0]
@@ -268,23 +261,17 @@ const TimePickingModal: React.FC<{
       ) {
         borderRadiusStyle.borderTopRightRadius = 10;
         borderRadiusStyle.borderBottomRightRadius = 10;
-      } else if (
-        startDateString === date?.dateString ||
-        bookedStartDateString === date?.dateString
-      ) {
-        borderRadiusStyle.borderTopLeftRadius = 10;
-        borderRadiusStyle.borderBottomLeftRadius = 10;
-      } else if (
-        endDateString === date?.dateString ||
-        bookedEndDateString === date?.dateString
-      ) {
-        borderRadiusStyle.borderTopRightRadius = 10;
-        borderRadiusStyle.borderBottomRightRadius = 10;
       }
     }
 
-    console.log('Marked dates', markedDates);
-    console.log('Booked dates', bookedDates);
+    if (startDateString === date?.dateString) {
+      borderRadiusStyle.borderTopLeftRadius = 10;
+      borderRadiusStyle.borderBottomLeftRadius = 10;
+    } else if (endDateString === date?.dateString) {
+      borderRadiusStyle.borderTopRightRadius = 10;
+      borderRadiusStyle.borderBottomRightRadius = 10;
+    }
+
     return (
       <TouchableWithoutFeedback onPress={() => date && onDayPress(date)}>
         <View
@@ -327,8 +314,6 @@ const TimePickingModal: React.FC<{
   useEffect(() => {
     console.log('endDate', endDate);
   }, [endDate]);
-
-  console.log('markedDate: ' + JSON.stringify(markedDates));
 
   LocaleConfig.locales['vn'] = {
     monthNames: [
