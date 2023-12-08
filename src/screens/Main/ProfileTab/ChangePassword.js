@@ -13,6 +13,7 @@ import {AppContext} from '../../../utils/AppContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {showToastMessage} from '../../../utils/utils';
 import AppHeader from '../../../components/AppHeader'
+import axios from 'axios';
 
 const ChangePassword = props => {
   const {navigation} = props;
@@ -32,16 +33,18 @@ const ChangePassword = props => {
 
   const handleChangePassword = async () => {
     try {
-      const response = await AxiosInstance().put('/user/api/change-password', {
+      console.log(infoUser.phone);
+      const response = await axios.put('http://103.57.129.166:3000/user/api/change-password', {
         phone: infoUser.phone,
         oldPassword: oldPassword,
         newPassword: newPassword,
       });
-      if (response.result) {
+      console.log();
+      if (response.status == 200) {
         await AsyncStorage.removeItem('userInfo');
         setIsLogin(false);
 
-        showToastMessage('', 'Đổi mật khẩu thành công');
+        showToastMessage('', 'Đổi mật khẩu thành công, vui lòng đăng nhập lạis');
       } else {
         showToastMessage('error', 'Đổi mật khẩu thất bại');
       }

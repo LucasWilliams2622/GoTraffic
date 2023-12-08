@@ -4,7 +4,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {COLOR} from '../../../constants/Theme';
 import {FlatList, ScrollView} from 'native-base';
 import ItemNotification from '../../../components/Support/ItemNotification';
-import {appStyle} from '../../../constants/AppStyle';
+import {appStyle, windowHeight} from '../../../constants/AppStyle';
 import AxiosInstance from '../../../constants/AxiosInstance';
 import {AppContext} from '../../../utils/AppContext';
 import {useIsFocused} from '@react-navigation/native';
@@ -13,10 +13,11 @@ import AppHeader from '../../../components/AppHeader';
 import {showToastMessage} from '../../../utils/utils';
 const Notification = () => {
   const [data, setData] = useState('');
-  const [dataTrip, setdataTrip] = useState('');
+  const [dataTrip, setDataTrip] = useState([]);
   const {setNotificationCount} = useContext(AppContext);
   const [loading, setLoading] = useState(true);
   const {idUser} = useContext(AppContext);
+  const [checkLength, setCheckLength] = useState(false);
 
   const getListNotifications = async () => {
     try {
@@ -42,7 +43,12 @@ const Notification = () => {
       if (response.result) {
         console.log('Trip:>>>' + response.notifications);
         setNotificationCount(response.notifications.length);
-        setdataTrip(response.notifications);
+        setDataTrip(response.notifications);
+        if (response.notifications.length > 0) {
+          setCheckLength(true);
+        } else {
+          setCheckLength(false);
+        }
       } else {
         console.log('NETWORK ERROR');
       }
@@ -87,10 +93,12 @@ const Notification = () => {
   return (
     <SafeAreaView style={appStyle.container}>
       <AppHeader title="Thông báo" notLeft />
-      <ScrollView>
-        <View style={styles.line1}>
-          <Text style={styles.text1}>Thông báo chuyến</Text>
-        </View>
+      <ScrollView shouldRasterizeIOS showsVerticalScrollIndicator={false}>
+        {checkLength && (
+          <View style={styles.line1}>
+            <Text style={styles.text1}>Thông báo chuyến</Text>
+          </View>
+        )}
         {loading == true ? (
           <SkeletonPlaceholder>
             <View style={{flexDirection: 'column', alignItems: 'flex-start'}}>
@@ -154,19 +162,21 @@ const Notification = () => {
             </View>
           </SkeletonPlaceholder>
         ) : (
-          <FlatList
-            style={{width: '100%'}}
-            data={dataTrip}
-            renderItem={({item}) => (
-              <ItemNotification
-                data={item}
-                handleRead={readDetailListNotificationsBooking}
-                imagelogo={require('../../../assets/image/noti.png')}
-              />
-            )}
-            keyExtractor={item => item._id}
-            showsVerticalScrollIndicator={false}
-          />
+          checkLength && (
+            <FlatList
+              style={{width: '100%', height: windowHeight * 0.5}}
+              data={dataTrip}
+              renderItem={({item}) => (
+                <ItemNotification
+                  data={item}
+                  handleRead={readDetailListNotificationsBooking}
+                  imagelogo={require('../../../assets/image/noti.png')}
+                />
+              )}
+              keyExtractor={item => item._id}
+              showsVerticalScrollIndicator={false}
+            />
+          )
         )}
         <View style={styles.line1}>
           <Text style={styles.text1}>Thông báo ứng dụng</Text>

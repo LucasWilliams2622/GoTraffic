@@ -177,6 +177,8 @@ const Register = props => {
                       onChangeText={handleChange('password')}
                       onBlur={handleBlur('password')}
                       value={values.password}
+                      iconColor={'white'}
+
                     />
                   </View>
                   {touched.password && errors.password && (
@@ -195,6 +197,7 @@ const Register = props => {
                       onChangeText={handleChange('rePassword')}
                       onBlur={handleBlur('rePassword')}
                       value={values.rePassword}
+                      iconColor={'white'}
                     />
                   </View>
                   {touched.rePassword && errors.rePassword && (
