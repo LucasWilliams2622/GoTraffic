@@ -20,6 +20,8 @@ import TestVoice from './src/test/TestVoice';
 const store = legacy_createStore(rootReducer, applyMiddleware(thunk));
 
 LogBox.ignoreAllLogs(true);
+// Ignore all warning notifications
+LogBox.ignoreAllLogs();
 LogBox.ignoreLogs(['Require cycle:']);
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
