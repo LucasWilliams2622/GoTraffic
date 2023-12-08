@@ -13,9 +13,11 @@ import AxiosInstance from '../../constants/AxiosInstance';
 import {showToastMessage} from '../../utils/utils';
 import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
+import OTPInputView from '@twotalltotems/react-native-otp-input';
 
 const EmailCheck = props => {
-  const {phoneNumber, nameUser} = props.route.params;
+  const {phoneNumber, nameUser, password} = props.route.params;
+  console.log(phoneNumber,nameUser,password);
   const navigation = useNavigation();
   const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -23,6 +25,30 @@ const EmailCheck = props => {
       .max(255)
       .required('Email không được để trống'),
   });
+  const [checkEnable, setCheckEnable] = useState(false);
+  //API REGISTER
+  const onRegister = async (nameUser, phoneNumber, email, password) => {
+    try {
+      const response = await axios.post(
+        'http://103.57.129.166:3000/user/api/register',
+        {
+          email: email,
+          phone: phoneNumber.toString(),
+          password: password,
+          name: nameUser,
+        },
+      );
+      console.log(response.data);
+      if (response.data.result) {
+        showToastMessage('', 'Đăng kí thành công');
+        navigation.navigate('Login');
+      } else {
+        showToastMessage('error', 'Đăng kí thất bại');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <SafeAreaView style={appStyle.container}>
       <Formik
@@ -32,11 +58,7 @@ const EmailCheck = props => {
         validationSchema={validationSchema}
         onSubmit={values => {
           console.log(values);
-          navigation.navigate('VerifiedEmail', {
-            phoneNumber: phoneNumber,
-            nameUser: nameUser,
-            email: values.email,
-          });
+          onRegister(nameUser, phoneNumber, values.email, password);
         }}>
         {({
           handleChange,
@@ -78,12 +100,43 @@ const EmailCheck = props => {
                   value={values.email}
                 />
               </View>
-
               {touched.email && errors.email && (
                 <Text style={styles.textError}>{errors.email}</Text>
               )}
+              <View>
+                <Text
+                  style={[appStyle.text14, {marginTop: 20, lineHeight: 16}]}>
+                  Bạn có thể bỏ qua bước xác thực email và sau này có thể vào
+                  mục cá nhân để xác thực sau! Còn nếu bạn muốn xác thực email
+                  ngay vui lòng bấm{' '}
+                  <Text
+                    onPress={() => {
+                      setCheckEnable(true);
+                    }}
+                    style={[
+                      appStyle.text14Bold,
+                      {color: COLOR.fifth, lineHeight: 20},
+                    ]}>
+                    Gửi mã ngay
+                  </Text>
+                </Text>
+              </View>
+              {checkEnable == true ? (
+                <OTPInputView
+                  style={{width: '80%', height: 200, alignSelf: 'center'}}
+                  pinCount={4}
+                  // code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
+                  // onCodeChanged = {code => { this.setState({code})}}
+                  autoFocusOnLoad
+                  codeInputFieldStyle={styles.underlineStyleBase}
+                  codeInputHighlightStyle={styles.underlineStyleHighLighted}
+                  onCodeFilled={code => {
+                    console.log(`Code is ${code}, you are good to go!`);
+                  }}
+                />
+              ) : null}
               <AppButton
-                title="Tiếp theo"
+                title="Đăng ký"
                 color={COLOR.secondary}
                 fontSize={18}
                 onPress={handleSubmit}
@@ -135,5 +188,20 @@ const styles = StyleSheet.create({
     color: COLOR.red,
     marginBottom: 10,
     marginTop: -10,
+  },
+  borderStyleBase: {
+    width: 40,
+    height: 45,
+  },
+
+  borderStyleHighLighted: {
+    borderColor: '#03DAC6',
+  },
+  underlineStyleBase: {
+    borderColor: COLOR.black,
+  },
+
+  underlineStyleHighLighted: {
+    borderColor: '#03DAC6',
   },
 });
