@@ -34,7 +34,7 @@ const Trip = () => {
       );
       if (response.result) {
         setListBookingCurrent(response.booking);
-        console.log(response.booking[0]==null);
+        console.log(response.booking[0] == null);
         if (response.booking[0] == null) {
           setIsLoading(true);
         } else {
@@ -75,10 +75,12 @@ const Trip = () => {
         onPressRight={() => navigation.navigate('HistoryTrip')}
         notLeft
       />
-      <View
-        style={{backgroundColor: COLOR.borderColor2, height: 1, width: '100%'}}
+      <FastImage
+        source={{
+          uri: 'https://cdn.dribbble.com/users/6178642/screenshots/14489706/comp_2.gif',
+        }}
+        style={{width: '100%', height: '30%',marginTop:20}}
       />
-
       <ScrollView style={[appStyle.main, {marginBottom: 70}]}>
         <Text style={styles.text1}>Hiện tại</Text>
         {isLoading == true ? (
@@ -102,7 +104,6 @@ const Trip = () => {
             renderRightItem={(data, index) => (
               <View key={index}>
                 <ItemTrip data={data} car={listBookingCurrent} />
-                <Text style={{textAlign:'center',fontStyle:'italic',color:COLOR.primary}}>Cuộn sang trái để hủy chuyến</Text>
               </View>
             )}
             renderHiddenItem={(data, index) => (
@@ -112,12 +113,24 @@ const Trip = () => {
                   console.log(data.id);
                   cancelBooking(data.id);
                 }}>
-                <FastImage source={ICON.Delete} style={appStyle.iconBig} tintColor={COLOR.white} />
+                <FastImage
+                  source={ICON.Delete}
+                  style={appStyle.iconBig}
+                  tintColor={COLOR.white}
+                />
               </TouchableOpacity>
             )}
             rightOpenValue={100}
           />
         )}
+        <Text
+          style={{
+            textAlign: 'center',
+            fontStyle: 'italic',
+            color: COLOR.primary,
+          }}>
+          Cuộn sang trái để hủy chuyến
+        </Text>
       </ScrollView>
     </SafeAreaView>
   );
@@ -150,6 +163,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
     marginBottom: 20,
+    marginTop: 20,
   },
   line1: {
     width: '100%',
@@ -170,9 +184,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: '68%',
-    marginTop:40,
-    marginLeft:-5
+    marginTop: 40,
+    marginLeft: -5,
   },
 });
-
-

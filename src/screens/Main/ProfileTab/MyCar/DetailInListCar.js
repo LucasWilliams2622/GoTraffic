@@ -105,7 +105,7 @@ const DetailInListCar = props => {
             <FastImage
               style={styles.imageCar}
               resizeMode="stretch"
-              source={require('../../../../assets/image/NoTrip.png')}
+              source={require('../../../../assets/image/bgCar.jpg')}
             />
           ) : (
             <FastImage
@@ -141,7 +141,7 @@ const DetailInListCar = props => {
           </View>
         </View>
       </View>
-      <View style={{flex: 1, padding: 10,marginTop:10}}>
+      <View style={{flex: 1, padding: 10, marginTop: 10}}>
         <View style={{flex: 1}}>
           <AppProfile
             icon={ICON.Trip}
