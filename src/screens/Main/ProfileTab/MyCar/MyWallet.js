@@ -70,7 +70,7 @@ const MyWallet = props => {
                 Rút tiền
               </Text>
             </TouchableOpacity>
-            <View>
+            <TouchableOpacity onPress={()=>navigation.navigate('HistoryMoney')} >
               <FastImage
                 style={{
                   width: 30,
@@ -84,7 +84,7 @@ const MyWallet = props => {
               <Text style={[appStyle.text14, {color: COLOR.white}]}>
                 Lịch sử
               </Text>
-            </View>
+            </TouchableOpacity>
           </View>
           <View
             style={{

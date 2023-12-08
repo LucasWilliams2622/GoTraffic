@@ -38,6 +38,7 @@ import InforOfCar from '../screens/Main/ProfileTab/MyCar/InforOfCar';
 import GPSMarker from '../screens/Main/ProfileTab/MyCar/GPSMarker';
 import ExhibitOfCar from '../screens/Main/ProfileTab/MyCar/ExhibitOfCar';
 import MyWallet from '../screens/Main/ProfileTab/MyCar/MyWallet';
+import HistoryMoney from '../screens/Main/ProfileTab/MyCar/HistoryMoney';
 import HandOverReport from '../screens/Main/ProfileTab/MyCar/Contract/HandOverReport';
 import SampleContract from '../screens/Main/ProfileTab/MyCar/Contract/SampleContract';
 import LeaseCar from '../screens/Main/ProfileTab/MyCar/Contract/LeaseCar';
@@ -189,6 +190,7 @@ const StackProfile = () => {
       <Stack.Screen name="GPSMarker" component={GPSMarker} />
       <Stack.Screen name="ExhibitOfCar" component={ExhibitOfCar} />
       <Stack.Screen name="MyWallet" component={MyWallet} />
+      <Stack.Screen name="HistoryMoney" component={HistoryMoney} />
       <Stack.Screen name="MyAddress" component={MyAddress} />
       <Stack.Screen name="UpdateAddress" component={UpdateAddress} />
       <Stack.Screen name="ShareWithFriend" component={ShareWithFriend} />
