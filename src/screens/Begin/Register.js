@@ -1,5 +1,5 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
+import {Keyboard, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useState, useEffect} from 'react';
 import {Svg, Path, Rect} from 'react-native-svg';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {appStyle, windowWidth} from '../../constants/AppStyle';
@@ -12,6 +12,7 @@ import {Formik} from 'formik';
 import {KeyboardAvoidingView} from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import {showToastMessage} from '../../utils/utils';
+import {MotiView, MotiText} from 'moti';
 
 const Register = props => {
   const navigation = useNavigation();
@@ -39,6 +40,31 @@ const Register = props => {
       console.log('Invalid code.');
     }
   }
+
+  const [showBottom, setShowBottom] = useState(true);
+  useEffect(() => {
+    // Thêm listener cho sự kiện bàn phím mở và đóng
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        console.log('Keyboard is open');
+        setShowBottom(false);
+      },
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        console.log('Keyboard is closed');
+        setShowBottom(true);
+      },
+    );
+
+    // Clear listener khi component unmount
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
 
   return (
     <SafeAreaView style={[appStyle.container]}>
@@ -178,7 +204,6 @@ const Register = props => {
                       onBlur={handleBlur('password')}
                       value={values.password}
                       iconColor={'white'}
-
                     />
                   </View>
                   {touched.password && errors.password && (
@@ -212,27 +237,28 @@ const Register = props => {
                   />
                 </View>
               </View>
-
-              <Svg
-                style={{position: 'absolute', bottom: 20, flex: 1}}
-                xmlns="http://www.w3.org/2000/svg"
-                width="420"
-                height="186"
-                viewBox="0 0 393 186"
-                fill="none">
-                <Path
-                  d="M21.2939 0L-31 98.7526V186H450V68.0722L394.6 20.134L302.438 68.0722L250.144 0L210.277 52.732L161.607 20.134L113.455 41.2268L21.2939 0Z"
-                  fill="#219EBC"
-                />
-                <Path
-                  d="M-27.0323 44L-79 114.613V177H399V92.6753L343.945 58.3969L252.358 92.6753L200.391 44L160.772 81.7062L112.406 58.3969L64.5544 73.4794L-27.0323 44Z"
-                  fill="#90C9E6"
-                />
-                <Path
-                  d="M50.5 91L-31.5 141V188H464.5V126.5L411 101.5L322 126.5L271.5 91L233 118.5L186 101.5L139.5 112.5L50.5 91Z"
-                  fill="white"
-                />
-              </Svg>
+              {showBottom && (
+                <Svg
+                  style={{position: 'absolute', bottom: 20, flex: 1}}
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="420"
+                  height="186"
+                  viewBox="0 0 393 186"
+                  fill="none">
+                    <Path
+                      d="M21.2939 0L-31 98.7526V186H450V68.0722L394.6 20.134L302.438 68.0722L250.144 0L210.277 52.732L161.607 20.134L113.455 41.2268L21.2939 0Z"
+                      fill="#219EBC"
+                    />
+                    <Path
+                      d="M-27.0323 44L-79 114.613V177H399V92.6753L343.945 58.3969L252.358 92.6753L200.391 44L160.772 81.7062L112.406 58.3969L64.5544 73.4794L-27.0323 44Z"
+                      fill="#90C9E6"
+                    />
+                    <Path
+                      d="M50.5 91L-31.5 141V188H464.5V126.5L411 101.5L322 126.5L271.5 91L233 118.5L186 101.5L139.5 112.5L50.5 91Z"
+                      fill="white"
+                    />
+                </Svg>
+              )}
             </KeyboardAvoidingView>
           </View>
         )}

@@ -1,13 +1,6 @@
-import {
-  StyleSheet,
-  SafeAreaView,
-  Text,
-  View,
-  TouchableOpacity,
-} from 'react-native';
-import React, {useState} from 'react';
+import {StyleSheet, SafeAreaView, Text, View, TextInput} from 'react-native';
+import React, {useState, useMemo, useEffect} from 'react';
 import {COLOR, ICON} from '../../../../constants/Theme';
-import Header from '../../../../components/Header';
 import {
   appStyle,
   windowWidth,
@@ -52,7 +45,15 @@ const BasicInfor = props => {
   const [selectedTransmission, setSelectedTransmission] = useState('manual');
   const [selectedFuel, setSelectedFuel] = useState('Xăng');
 
-  const handleNext = () => {
+  const seatNumbers = useMemo(() => {
+    const numbers = [];
+    for (let i = 4; i <= 16; i++) {
+      numbers.push({label: i.toString(), value: i.toString()});
+    }
+    return numbers;
+  }, []);
+
+  useEffect(() => {
     const carInfo = {
       carNumber,
       selectedBrand,
@@ -62,127 +63,134 @@ const BasicInfor = props => {
       selectedTransmission,
       selectedFuel,
     };
+    // Cập nhật giá trị carInfo khi có sự thay đổi
+    navigation.setParams({carInfo});
+  }, [
+    carNumber,
+    selectedBrand,
+    selectedModel,
+    selectedSeats,
+    selectedYear,
+    selectedTransmission,
+    selectedFuel,
+  ]);
+
+  const handleNext = () => {
     if (
-      carNumber == null ||
-      selectedBrand == null ||
-      selectedModel == null ||
-      selectedSeats == null ||
-      selectedYear == null ||
-      selectedTransmission == null ||
-      selectedFuel == null
+      !carNumber ||
+      !selectedBrand ||
+      !selectedModel ||
+      !selectedSeats ||
+      !selectedYear ||
+      !selectedTransmission ||
+      !selectedFuel
     ) {
-      showToastMessage(
-        'error',
-        'Vui lòng nhập đầy đủ thông tin xe',
-      );
+      showToastMessage('error', 'Vui lòng nhập đầy đủ thông tin xe');
     } else {
-      navigation.navigate('DetailsInfor', {carInfo: carInfo});
+      navigation.navigate('DetailsInfor');
     }
   };
-
   return (
     <SafeAreaView style={appStyle.container}>
       <AppHeader title="Thông tin cơ bản" />
-      <View style={[appStyle.main, {marginBottom: 20}]}>
-        <ScrollView
-          style={{flex: 1, width: '100%'}}
-          showsVerticalScrollIndicator={false}>
-          <View style={{paddingHorizontal: 15}}>
-            <View
-              style={[
-                appStyle.cardInfo,
-                {paddingVertical: 30, borderTopWidth: 0},
-              ]}>
-              <Text style={{color: COLOR.textWarn, fontWeight: '300'}}>
-                Lưu ý: Bạn sẽ không thể thay đổi các thông tin về xe sau khi tạo
-                xe thành công. Vì vậy, bạn cần phải điền chính xác các thông tin
-                này dựa trên giấy tờ xe.
-              </Text>
+      <ScrollView
+        style={[appStyle.main, {marginBottom: 20}]}
+        showsVerticalScrollIndicator={false}>
+        <View style={{}}>
+          <Text style={styles.textWarn}>
+            Lưu ý: Bạn sẽ không thể thay đổi các thông tin về xe sau khi tạo xe
+            thành công. Vì vậy, bạn cần phải điền chính xác các thông tin này
+            dựa trên giấy tờ xe.
+          </Text>
+
+          <View style={[appStyle.cardInfo, {marginTop: 24}]}>
+            <View style={appStyle.rowContent}>
+              <Text style={appStyle.text165}>Biển số xe</Text>
+              <TextInput
+                placeholder="Nhập biển số xe"
+                placeholderTextColor={'gray'}
+                value={carNumber}
+                style={{width: '50%'}}
+                textAlign="right"
+                onChangeText={text => setCarNumber(text)}
+              />
             </View>
 
-            <View style={[appStyle.cardInfo, {marginTop: 10}]}>
-              <View style={appStyle.rowContent}>
-                <Text style={appStyle.text165}>Biển số xe</Text>
-                <AppInput
-                  width={windowWidth * 0.4}
-                  placeholder=""
-                  value={carNumber}
-                  onChangeText={text => setCarNumber(text)}
-                />
-              </View>
-              <Text style={{marginTop: 5}}>
-                Bạn cần điền chính xác biển số xe theo đăng kiểm. Không dùng
-                biển số giả hoặc biển số không có thực.
-              </Text>
-            </View>
+            <Text style={{marginTop: 8}}>
+              Bạn cần điền chính xác biển số xe theo đăng kiểm. Không dùng biển
+              số giả hoặc biển số không có thực.
+            </Text>
+          </View>
 
-            <Brand
-              selectedBrand={selectedBrand}
-              setSelectedBrand={setSelectedBrand}
-            />
+          <Brand
+            selectedBrand={selectedBrand}
+            setSelectedBrand={setSelectedBrand}
+          />
 
-            <Model
-              selectedBrand={selectedBrand}
-              selectedModel={selectedModel}
-              setSelectedModel={setSelectedModel}
-            />
-            <Year
-              selectedYear={selectedYear}
-              setSelectedYear={setSelectedYear}
-            />
+          <Model
+            selectedBrand={selectedBrand}
+            selectedModel={selectedModel}
+            setSelectedModel={setSelectedModel}
+          />
+          <Year selectedYear={selectedYear} setSelectedYear={setSelectedYear} />
 
-            <View style={[appStyle.cardInfo]}>
-              <View style={appStyle.rowContent}>
-                <Text style={appStyle.text165}>Số ghế</Text>
-                <AppDropdown
-                  width={windowWidth * 0.3}
-                  height={windowHeight * 0.04}
-                  borderWidth={0}
-                  labelField="label"
-                  valueField="value"
-                  data={seatNumbers}
-                  value={selectedSeats}
-                  onChange={seats => {
-                    setSelectedSeats(seats.value);
-                  }}
-                />
-              </View>
-            </View>
-
-            <View style={appStyle.cardInfo}>
-              <View style={appStyle.rowContent}>
-                <Text style={appStyle.text165}>Truyền động</Text>
-                <OptionDropdown
-                  options={transmissionOptions}
-                  selectedOption={selectedTransmission}
-                  setSelectedOption={setSelectedTransmission}
-                />
-              </View>
-            </View>
-
-            <View style={[appStyle.cardInfo, {borderBottomWidth: 0}]}>
-              <View style={[appStyle.rowContent]}>
-                <Text style={appStyle.text165}>Nhiên liệu</Text>
-                <OptionDropdown
-                  options={fuelOptions}
-                  selectedOption={selectedFuel}
-                  setSelectedOption={setSelectedFuel}
-                />
-              </View>
+          <View style={[appStyle.cardInfo]}>
+            <View style={appStyle.rowContent}>
+              <Text style={appStyle.text165}>Số ghế</Text>
+              <AppDropdown
+                width={windowWidth * 0.3}
+                height={windowHeight * 0.04}
+                borderWidth={0}
+                labelField="label"
+                valueField="value"
+                data={seatNumbers}
+                value={selectedSeats}
+                onChange={seats => {
+                  setSelectedSeats(seats.value);
+                }}
+              />
             </View>
           </View>
-        </ScrollView>
+
+          <View style={appStyle.cardInfo}>
+            <View style={appStyle.rowContent}>
+              <Text style={appStyle.text165}>Truyền động</Text>
+              <OptionDropdown
+                options={transmissionOptions}
+                selectedOption={selectedTransmission}
+                setSelectedOption={setSelectedTransmission}
+              />
+            </View>
+          </View>
+
+          <View style={[appStyle.cardInfo, {borderBottomWidth: 0}]}>
+            <View style={[appStyle.rowContent]}>
+              <Text style={appStyle.text165}>Nhiên liệu</Text>
+              <OptionDropdown
+                options={fuelOptions}
+                selectedOption={selectedFuel}
+                setSelectedOption={setSelectedFuel}
+              />
+            </View>
+          </View>
+        </View>
 
         <AppButton
           title="Tiếp theo"
           marginBottom={70}
+          marginTop={24}
           onPress={() => handleNext()}
         />
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
 
 export default BasicInfor;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  textWarn: {
+    color: COLOR.textWarn,
+    lineHeight: 20,
+  },
+});
