@@ -112,10 +112,10 @@ const Trip = () => {
                   console.log(data.id);
                   cancelBooking(data.id);
                 }}>
-                <FastImage source={ICON.Delete} style={appStyle.iconBig} />
+                <FastImage source={ICON.Delete} style={appStyle.iconBig} tintColor={COLOR.white} />
               </TouchableOpacity>
             )}
-            rightOpenValue={150}
+            rightOpenValue={100}
           />
         )}
       </ScrollView>
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     right: 10,
   },
   rightAction: {
-    width: '30%',
+    width: '100%',
     marginVertical: 0,
     alignItems: 'center',
     justifyContent: 'center',

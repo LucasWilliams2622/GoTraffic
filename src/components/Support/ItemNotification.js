@@ -13,7 +13,7 @@ import {appStyle} from '../../constants/AppStyle';
 import Modal from 'react-native-modal';
 import Moment from 'moment';
 const ItemNotification = props => {
-  const {data, handleRead} = props;
+  const {data, handleRead, imagelogo} = props;
   const {image, title, content, time, poster, id} = data;
   const [isModalVisible, setModalVisible] = useState(false);
   const isImageUrlValid = /^https?:\/\/.*\.(png|jpg)$/i.test(data.image);
@@ -33,34 +33,30 @@ const ItemNotification = props => {
       style={[styles.container, {backgroundColor: color}]}
       onPress={toggleModal}>
       <View style={[{alignSelf: 'flex-start'}]}>
-        {!isImageUrlValid ? (
-          <FastImage
-            style={styles.image}
-            resizeMode="stretch"
-            source={require('../../assets/image/logo-fb.png')}
-          />
-        ) : (
-          <FastImage
-            style={styles.logo}
-            resizeMode={'stretch'}
-            source={{uri: data?.image}}
-          />
-        )}
+        <FastImage
+          style={styles.logo}
+          resizeMode={'stretch'}
+          source={imagelogo}
+        />
       </View>
       <View
         style={{
           justifyContent: 'space-between',
-          width: '80%',
+          width: '90%',
           paddingLeft: 12,
         }}
         numberOfLines={2}>
-        <Text style={appStyle.text16Bold}>{title}</Text>
-        <Text style={[appStyle.text12, {paddingVertical: 8}]} numberOfLines={2}>
-          {content}
-        </Text>
-        <Text style={[appStyle.text12, {color: '#787878'}]}>
-          {Moment(data.createdAt).format('YYYY-MM-DD HH:mm')}
-        </Text>
+        <View style={{flex: 1}}>
+          <Text style={appStyle.text16Bold}>{title}</Text>
+          <Text style={[appStyle.text12, {lineHeight: 20}]} numberOfLines={2}>
+            {content}
+          </Text>
+        </View>
+        <View style={{height: 15}}>
+          <Text style={[appStyle.text12, {color: '#787878', marginTop: 0}]}>
+            {Moment(data.createdAt).format('HH:mm, DD/MM ')}
+          </Text>
+        </View>
       </View>
       <Modal
         animationType="fade"
