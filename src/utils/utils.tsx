@@ -78,11 +78,13 @@ export const formatTime = (date: Date) => {
 };
 
 export const timeDateFormat = (date: Date) => {
-  const hours = date.getHours();
-  const day = date.getDate();
-  const month = date.getMonth() + 1;
+  let hours = date.getHours() + 1;
+  let day = date.getDate();
+  let month = date.getMonth() + 1;
 
-  return `${hours + 1}h00, ${day}/${month}`;
+  return `${hours < 10 ? '0' + hours : hours}h00, ${
+    day < 10 ? '0' + day : day
+  }/${month < 10 ? '0' + month : month}`;
 };
 
 export const formatTimeApi = (date: Date) => {

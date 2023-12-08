@@ -19,13 +19,10 @@ import ItemAddress from '../../../components/Profile/ItemAddress';
 import Suggestion from '../../../components/Home/Home/Suggestion';
 import axios from 'axios';
 import {AppContext} from '../../../utils/AppContext';
-import GetLocation from 'react-native-get-location';
 import {getCurrentLocation} from '../../../utils/utils';
 
 const LocationPicking = props => {
-  const navigation = useNavigation();
   const {idUser} = useContext(AppContext);
-  const [locationPicking, setLocationPicking] = useState('');
   const [searchText, setSearchText] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [defaultAddress, setDefaultAddress] = useState('');
@@ -128,7 +125,7 @@ const LocationPicking = props => {
       props.setInputAddress(
         'Phường ' +
           wardData.name +
-          ', ' +
+          ', Quận ' +
           districtData.name +
           ', ' +
           cityData.name,

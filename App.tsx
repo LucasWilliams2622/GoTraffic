@@ -47,7 +47,6 @@ const App = () => {
         </NavigationContainer>
       </AppContextProvider>
     </Provider>
-    // <Infor/>
   );
 };
 

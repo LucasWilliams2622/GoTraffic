@@ -8,13 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* GoTrafficTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* GoTrafficTests.m */; };
-		0214137DC221ACF8622AC7F2 /* libPods-GoTraffic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A1A47FB8BDCACD39DDE9558D /* libPods-GoTraffic.a */; };
-		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		75ADB540FC648F835880BEDE /* libPods-GoTraffic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C1DBCBBA578AAEF635113 /* libPods-GoTraffic.a */; };
 		7B60B5A249457AA5BB321823 /* libPods-GoTraffic-GoTrafficTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A18DAAA192653E1C67809AF /* libPods-GoTraffic-GoTrafficTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		AF5347EE2B1B995B00DB33AB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		AF5347EF2B1B996500DB33AB /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		AFAB653E2B09A99C007C5423 /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AFAB652B2B09A99C007C5423 /* Fontisto.ttf */; };
 		AFAB653F2B09A99C007C5423 /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AFAB652B2B09A99C007C5423 /* Fontisto.ttf */; };
 		AFAB65402B09A99C007C5423 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AFAB652C2B09A99C007C5423 /* Octicons.ttf */; };
@@ -53,6 +52,7 @@
 		AFAB65612B09A99C007C5423 /* FontAwesome6_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AFAB653C2B09A99C007C5423 /* FontAwesome6_Brands.ttf */; };
 		AFAB65622B09A99C007C5423 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AFAB653D2B09A99C007C5423 /* MaterialIcons.ttf */; };
 		AFAB65632B09A99C007C5423 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AFAB653D2B09A99C007C5423 /* MaterialIcons.ttf */; };
+		B919DFC7AD3D048B55BAFD96 /* libPods-GoTraffic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A1A47FB8BDCACD39DDE9558D /* libPods-GoTraffic.a */; };
 		BD8213C422ACAF2CD2094AA7 /* libPods-GoTraffic-GoTrafficTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D5412E85C08316E172FBE47D /* libPods-GoTraffic-GoTrafficTests.a */; };
 /* End PBXBuildFile section */
 
@@ -122,7 +122,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				75ADB540FC648F835880BEDE /* libPods-GoTraffic.a in Frameworks */,
-				0214137DC221ACF8622AC7F2 /* libPods-GoTraffic.a in Frameworks */,
+				B919DFC7AD3D048B55BAFD96 /* libPods-GoTraffic.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -550,8 +550,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
-				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				AF5347EF2B1B996500DB33AB /* AppDelegate.mm in Sources */,
+				AF5347EE2B1B995B00DB33AB /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -624,6 +624,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6736LJQ283;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = GoTraffic/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -651,6 +652,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6736LJQ283;
 				INFOPLIST_FILE = GoTraffic/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

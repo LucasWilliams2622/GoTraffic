@@ -44,10 +44,38 @@ const BottomBar: React.FC<{
           <Text style={{fontWeight: 'bold'}}>
             {startDate &&
               endDate &&
-              `${startDate.getHours()}h ${startDate.getMinutes()}, ${startDate.getDate()}/${
-                startDate.getMonth() + 1
-              } - ${endDate.getHours()}h ${endDate.getMinutes()}, ${endDate.getDate()}/${
-                endDate.getMonth() + 1
+              `${
+                startDate.getHours() < 10
+                  ? '0' + startDate.getHours()
+                  : startDate.getHours()
+              }h ${
+                startDate.getMinutes() < 10
+                  ? '0' + startDate.getMinutes()
+                  : startDate.getMinutes()
+              }, ${
+                startDate.getDate() < 10
+                  ? '0' + startDate.getDate()
+                  : startDate.getDate()
+              }/${
+                startDate.getMonth() + 1 < 10
+                  ? '0' + (startDate.getMonth() + 1)
+                  : startDate.getMonth() + 1
+              } - ${
+                endDate.getHours() < 10
+                  ? '0' + endDate.getHours()
+                  : endDate.getHours()
+              }h ${
+                endDate.getMinutes() < 10
+                  ? '0' + endDate.getMinutes()
+                  : endDate.getMinutes()
+              }, ${
+                endDate.getDate() < 10
+                  ? '0' + endDate.getDate()
+                  : endDate.getDate()
+              }/${
+                endDate.getMonth() + 1 < 10
+                  ? '0' + (endDate.getMonth() + 1)
+                  : endDate.getMonth() + 1
               }`}
           </Text>
           <Text>
