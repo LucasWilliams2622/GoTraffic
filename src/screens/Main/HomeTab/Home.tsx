@@ -115,7 +115,9 @@ const Home: React.FC = () => {
 
   const getAllCar = async () => {
     try {
-      const response = await AxiosInstance().get('/car/api/list');
+      const response = await AxiosInstance().get(
+        `/car/api/list?idUser=${idUser}`,
+      );
       if (response.result) {
         setListCar(response.listCar);
       } else {
