@@ -76,115 +76,6 @@ const DetailInListCar = props => {
     getDetailCarByIdUser();
   }, []);
 
-  const FirstRoute = () => (
-    <View style={{flex: 1, padding: 10}}>
-      <View style={{flex: 1}}>
-        <AppProfile
-          icon={ICON.Trip}
-          text="Giá cho thuê"
-          onPress={() => navigation.navigate('RentCost', {price: price})}
-        />
-        <AppProfile
-          icon={ICON.Calendar}
-          text="Lịch xe"
-          onPress={() => navigation.navigate('CalendarOfCar')}
-        />
-        <AppProfile
-          icon={ICON.Heart}
-          text="Giao xe tận nơi"
-          onPress={() => navigation.navigate('CarDelivery', {id: id})}
-        />
-        <AppProfile
-          icon={ICON.Card}
-          text="Phụ phí"
-          onPress={() => navigation.navigate('Surcharge', {id: id})}
-        />
-      </View>
-      <View
-        style={{
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          height: 120,
-        }}>
-        <Text style={appStyle.text165}>Trạng thái</Text>
-        {status == 1 ? (
-          <View style={styles.statusContainer}>
-            <Text style={styles.statusText}>Chờ duyệt</Text>
-          </View>
-        ) : status == 2 ? (
-          <View
-            style={[styles.statusContainer, {backgroundColor: COLOR.green}]}>
-            <Text style={styles.statusText}>Đã duyệt</Text>
-          </View>
-        ) : status == 3 ? (
-          <View style={[styles.statusContainer, {backgroundColor: COLOR.red}]}>
-            <Text style={styles.statusText}>Từ chối duyệt</Text>
-          </View>
-        ) : null}
-      </View>
-    </View>
-  );
-  const SecondRoute = () => (
-    <View
-      style={[appStyle.main, {marginTop: 20, justifyContent: 'space-evenly'}]}>
-      <AppInput placeholder={'Nhập tên của bạn'} />
-
-      <AppInput placeholder={'Nhập CCCD'} />
-
-      <AppInput placeholder={'Nhập sdt'} />
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          marginTop: 20,
-        }}>
-        <View style={styles.upLoadImage}>
-          <Text style={{textAlign: 'center'}}>
-            Vui lòng chụp mặt trước của bằng lái
-          </Text>
-          <FastImage
-            style={{width: 30, height: 30, marginTop: 10}}
-            source={ICON.Picture}
-          />
-        </View>
-        <View style={styles.upLoadImage}>
-          <Text style={{textAlign: 'center'}}>
-            Vui lòng chụp mặt sau của bằng lái
-          </Text>
-          <FastImage
-            style={{width: 30, height: 30, marginTop: 10}}
-            source={ICON.Picture}
-          />
-        </View>
-      </View>
-      <TouchableOpacity style={styles.btn}>
-        <Text
-          style={[
-            appStyle.text16Bold,
-            {color: COLOR.white, textAlign: 'center'},
-          ]}>
-          ĐĂNG KÝ
-        </Text>
-      </TouchableOpacity>
-    </View>
-  );
-  const renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute,
-  });
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    {key: 'first', title: 'XE TỰ LÁI'},
-    {key: 'second', title: 'XE CÓ TÀI XẾ'},
-  ]);
-  const renderTabBar = props => (
-    <TabBar
-      {...props}
-      indicatorStyle={{backgroundColor: COLOR.primary}}
-      style={{backgroundColor: COLOR.white}}
-      labelStyle={{color: COLOR.black}}
-    />
-  );
   const [modalVisible, setModalVisible] = useState(false);
   const isImageUrlValid = /^https?:\/\/.*\.(png|jpg)$/i.test(
     data.imageThumbnail,
@@ -204,7 +95,7 @@ const DetailInListCar = props => {
         source={require('../../../../assets/image/bg2.jpg')}
       />
       <AppHeader
-        title={data.name}
+        title={'CHI TIẾT XE'}
         icon={ICON.Delete}
         onPressRight={() => setModalVisible(true)}
       />
@@ -214,7 +105,7 @@ const DetailInListCar = props => {
             <FastImage
               style={styles.imageCar}
               resizeMode="stretch"
-              source={require('../../../../assets/image/NoTrip.png')}
+              source={require('../../../../assets/image/bgCar.jpg')}
             />
           ) : (
             <FastImage
@@ -225,18 +116,6 @@ const DetailInListCar = props => {
           )}
           <View style={{marginLeft: 20, justifyContent: 'space-evenly'}}>
             <Text style={[appStyle.text16Bold]}>{data.name}</Text>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('GeneralInformation', {data: data})
-              }>
-              <Text
-                style={[
-                  appStyle.text14Bold,
-                  {marginTop: 10, color: COLOR.primary},
-                ]}>
-                Thông tin chung {'>'}{' '}
-              </Text>
-            </TouchableOpacity>
             <View style={styles.checkboxContainer}>
               <SwitchToggle
                 switchOn={isSelected}
@@ -262,13 +141,68 @@ const DetailInListCar = props => {
           </View>
         </View>
       </View>
-      <TabView
-        navigationState={{index, routes}}
-        renderTabBar={renderTabBar}
-        renderScene={renderScene}
-        onIndexChange={setIndex}
-        initialLayout={{width: layout.width}}
-      />
+      <View style={{flex: 1, padding: 10, marginTop: 10}}>
+        <View style={{flex: 1}}>
+          <AppProfile
+            icon={ICON.Trip}
+            text="Giá cho thuê"
+            onPress={() => navigation.navigate('RentCost', {price: price})}
+          />
+          <AppProfile
+            icon={ICON.Calendar}
+            text="Lịch xe"
+            onPress={() => navigation.navigate('CalendarOfCar')}
+          />
+          <AppProfile
+            icon={ICON.Heart}
+            text="Giao xe tận nơi"
+            onPress={() => navigation.navigate('CarDelivery', {id: id})}
+          />
+          <AppProfile
+            icon={ICON.Card}
+            text="Phụ phí"
+            onPress={() => navigation.navigate('Surcharge', {id: id})}
+          />
+          <AppProfile
+            icon={ICON.Warning}
+            text="Thông tin xe"
+            onPress={() => navigation.navigate('InforOfCar', {data: data})}
+          />
+          <AppProfile
+            icon={ICON.Wallet}
+            text="Giấy tờ xe & Bảo hiểm"
+            onPress={() => navigation.navigate('ExhibitOfCar')}
+          />
+          <AppProfile
+            icon={ICON.Location}
+            text="GPS"
+            onPress={() => navigation.navigate('GPSMarker', {data: data})}
+          />
+        </View>
+        <View
+          style={{
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            height: 120,
+          }}>
+          <Text style={appStyle.text165}>Trạng thái</Text>
+          {status == 1 ? (
+            <View style={styles.statusContainer}>
+              <Text style={styles.statusText}>Chờ duyệt</Text>
+            </View>
+          ) : status == 2 ? (
+            <View
+              style={[styles.statusContainer, {backgroundColor: COLOR.green}]}>
+              <Text style={styles.statusText}>Đã duyệt</Text>
+            </View>
+          ) : status == 3 ? (
+            <View
+              style={[styles.statusContainer, {backgroundColor: COLOR.red}]}>
+              <Text style={styles.statusText}>Từ chối duyệt</Text>
+            </View>
+          ) : null}
+        </View>
+      </View>
     </SafeAreaView>
   );
 };

@@ -33,7 +33,7 @@ const ItemCar = props => {
           <FastImage
             style={styles.carImage}
             resizeMode="stretch"
-            source={require('../../assets/image/NoTrip.png')}
+            source={require('../../assets/image/bgCar.jpg')}
           />
         ) : (
           <FastImage
@@ -48,18 +48,19 @@ const ItemCar = props => {
           </View>
         ) : data.status == 2 ? (
           <View
-            style={[styles.statusContainer, {backgroundColor: COLOR.lightGreen}]}>
+            style={[
+              styles.statusContainer,
+              {backgroundColor: COLOR.lightGreen},
+            ]}>
             <Text style={styles.statusText}>Đã duyệt</Text>
           </View>
         ) : data.status == 3 ? (
           <View style={[styles.statusContainer, {backgroundColor: COLOR.red}]}>
             <Text style={styles.statusText}>Từ chối duyệt</Text>
           </View>
-        ) : (
-          null
-        )}
+        ) : null}
         <View style={styles.detailsContainer}>
-          <Text style={appStyle.text16Bold}>{data.name}</Text>
+          <Text style={appStyle.text14Bold}>{data.name}</Text>
           <View style={styles.tripContainer}>
             <FastImage source={ICON.Star} style={appStyle.iconSmall} />
             <FastImage source={ICON.Star} style={appStyle.iconSmall} />
@@ -95,21 +96,32 @@ const styles = StyleSheet.create({
   carContainer: {
     width: '90%',
     height: 'auto',
-    backgroundColor: COLOR.background,
+    backgroundColor: '#f6f6f6',
+    borderColor: COLOR.borderColor,
+
     borderRadius: 10,
-    borderWidth: 0.4,
     flexDirection: 'row',
     padding: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   carImage: {
-    width: windowWidth * 0.3,
-    height: '98%',
+    width: 110,
+    height: 100,
     alignSelf: 'center',
+    borderRadius: 20,
   },
   statusContainer: {
     position: 'absolute',
     backgroundColor: 'rgba(65, 207, 242, 0.8)',
-    borderRadius: 8,
+    borderTopLeftRadius: 14,
+    borderBottomRightRadius: 14,
     padding: 5,
     justifyContent: 'center',
   },
@@ -150,13 +162,14 @@ const styles = StyleSheet.create({
   },
   locationContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
     width: 200,
+    marginTop: 5,
   },
   locationText: {
     marginLeft: 3,
     flexWrap: 'wrap',
     flex: 1,
     fontSize: 12,
+    marginTop: -5,
   },
 });

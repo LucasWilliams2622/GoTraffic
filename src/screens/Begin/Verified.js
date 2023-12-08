@@ -10,7 +10,7 @@ import FastImage from 'react-native-fast-image';
 
 const Verified = props => {
   const navigation = useNavigation();
-  const {phoneNumber, nameUser} = props.route.params;
+  const {phoneNumber, nameUser, password} = props.route.params;
 
   // verification code (OTP - One-Time-Passcode)
   const [code, setCode] = useState('');
@@ -27,12 +27,19 @@ const Verified = props => {
     navigation.navigate('EmailCheck', {
       phoneNumber: phoneNumber,
       nameUser: nameUser,
+      password: password,
     });
   };
 
   return (
     <SafeAreaView style={appStyle.main}>
-      <View style={{flexDirection: 'row', width: windowWidth * 0.85,marginTop:10,marginBottom:10}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          width: windowWidth * 0.85,
+          marginTop: 10,
+          marginBottom: 10,
+        }}>
         <TouchableOpacity
           style={{marginTop: 10, marginRight: 14}}
           onPress={() => navigation.goBack()}>

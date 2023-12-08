@@ -146,7 +146,8 @@ const ItemTrip = props => {
             <FastImage
               style={styles.logoMap}
               resizeMode={'stretch'}
-              source={require('../../assets/image/logoMap.png')}
+              source={ICON.SteeringWheel}
+              tintColor={COLOR.primary}
             />
             <Text style={[appStyle.text10, {marginLeft: 5}]}>
               {data.Car.isDelivery ? 'Tự lái' : ''}

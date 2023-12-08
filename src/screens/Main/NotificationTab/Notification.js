@@ -161,6 +161,7 @@ const Notification = () => {
               <ItemNotification
                 data={item}
                 handleRead={readDetailListNotificationsBooking}
+                imagelogo={require('../../../assets/image/noti.png')}
               />
             )}
             keyExtractor={item => item._id}
@@ -221,6 +222,7 @@ const Notification = () => {
               <ItemNotification
                 data={item}
                 handleRead={readDetailListNotifications}
+                imagelogo={require('../../../assets/image/logo_go_traffic.png')}
               />
             )}
             keyExtractor={item => item._id}
