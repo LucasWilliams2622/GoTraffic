@@ -137,16 +137,6 @@ const Profile = props => {
             text="Ví của tôi"
             onPress={() => navigation.navigate('MyWallet')}
           />
-
-          <AppProfile
-            icon={ICON.Share}
-            text="Giới thiệu bạn bè"
-            borderBottomWidth={0}
-            onPress={() => navigation.navigate('ShareWithFriend')}
-          />
-        </View>
-
-        <View style={[styles.viewGroup, {marginTop: 35}]}>
           <AppProfile
             icon={ICON.Key}
             text="Đổi mật khẩu"
@@ -165,7 +155,7 @@ const Profile = props => {
             LogOut();
           }}>
           <View
-            style={{flexDirection: 'row', alignSelf: 'center', marginTop: 20}}>
+            style={{flexDirection: 'row', alignSelf: 'center', marginTop: 50}}>
             <FastImage source={ICON.Exit} style={[appStyle.iconBig]} />
             <Text
               style={[
@@ -246,7 +236,7 @@ const styles = StyleSheet.create({
       {translateY: -windowHeight * 0.36},
     ],
     width: windowWidth * 0.9,
-    height: windowHeight * 0.65,
+    height: windowHeight * 0.66,
     borderRadius: 12,
     paddingHorizontal: 25,
     paddingBottom: 10,
