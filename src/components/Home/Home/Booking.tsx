@@ -130,7 +130,6 @@ const Booking = ({
 
           <AppButton
             title="Tìm xe"
-            backgroundColor={COLOR.fifth}
             onPress={handleFindCar}
           />
           <ReactNativeModal
@@ -415,10 +414,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: BUTTON_PADDING_HORIZONTAL,
   },
   activeButton: {
-    backgroundColor: COLOR.fifth,
+    backgroundColor: COLOR.primary,
   },
   inactiveButton: {
-    backgroundColor: COLOR.secondary,
+    backgroundColor: COLOR.sixth,
   },
   leftButton: {
     borderTopLeftRadius: BUTTON_RADIUS,

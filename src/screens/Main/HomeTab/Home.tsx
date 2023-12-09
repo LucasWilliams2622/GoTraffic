@@ -137,9 +137,9 @@ const Home: React.FC = () => {
     <ScrollView style={[appStyle.container]}>
       <View style={[styles.headBg]}>
         <Row style={styles.nameAndPointWrapper}>
-          <Column style={[styles.iconBG, styles.iconMarginRight]}>
+          <Column style={[styles.iconBG, styles.iconMarginRight,]}>
             <FastImage
-              style={{width: 40, height: 40, borderRadius: 99}}
+              style={{width: 50, height: 50, borderRadius: 99}}
               source={
                 infoUser?.avatar
                   ? {uri: infoUser.avatar}
@@ -276,7 +276,7 @@ export default Home;
 
 const styles = StyleSheet.create({
   headBg: {
-    backgroundColor: COLOR.secondary,
+    backgroundColor: COLOR.bgHeader,
     width: '100%',
     height: Dimensions.get('window').height / 3,
     borderBottomLeftRadius: 40,
@@ -292,8 +292,8 @@ const styles = StyleSheet.create({
 
   iconBG: {
     backgroundColor: COLOR.white,
-    width: 40,
-    height: 40,
+    width: 50,
+    height: 50,
     borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',
