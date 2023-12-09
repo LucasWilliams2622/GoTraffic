@@ -1,4 +1,11 @@
-import {StyleSheet, Text, View, TouchableOpacity, Platform} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Platform,
+  Alert,
+} from 'react-native';
 import React, {useCallback, useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import {COLOR} from '../../../constants/Theme';
@@ -77,6 +84,14 @@ const Booking = ({
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
   const [location, setLocation] = useState<string>('');
 
+  const handleFindCar = () => {
+    if (!location) {
+      Alert.alert('Vui lòng nhập địa điểm');
+      return;
+    }
+    setModalVisible(true);
+  };
+
   return (
     <View style={styles.outerContainer}>
       <View style={styles.heroBtns}>
@@ -116,7 +131,7 @@ const Booking = ({
           <AppButton
             title="Tìm xe"
             backgroundColor={COLOR.fifth}
-            onPress={() => setModalVisible(true)}
+            onPress={handleFindCar}
           />
           <ReactNativeModal
             isVisible={isModalVisible}

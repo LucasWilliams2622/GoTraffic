@@ -191,6 +191,7 @@ const DetailsInfor = props => {
           if (selectedFeatures.length < 4) {
             showToastMessage('error', 'Vui lòng chọn nhiều hơn 4 chức năng');
           } else {
+          
             navigation.navigate('FinalStep', {
               carInfo: cardInfo,
               carInfo2: carInfo2,

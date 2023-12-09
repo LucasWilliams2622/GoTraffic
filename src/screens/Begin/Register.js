@@ -1,16 +1,17 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useState } from 'react';
-import { Svg, Path, Rect } from 'react-native-svg';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { appStyle, windowWidth } from '../../constants/AppStyle';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useState} from 'react';
+import {Svg, Path, Rect} from 'react-native-svg';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {appStyle, windowWidth} from '../../constants/AppStyle';
 import AppInput from '../../components/AppInput';
 import AppButton from '../../components/AppButton';
-import { COLOR, ICON } from '../../constants/Theme';
+import {COLOR, ICON} from '../../constants/Theme';
 import FastImage from 'react-native-fast-image';
 import * as Yup from 'yup';
-import { Formik } from 'formik';
-import { KeyboardAvoidingView } from 'native-base';
-import { useNavigation } from '@react-navigation/native';
+import {Formik} from 'formik';
+import {KeyboardAvoidingView} from 'native-base';
+import {useNavigation} from '@react-navigation/native';
+import {showToastMessage} from '../../utils/utils';
 
 const Register = props => {
   const navigation = useNavigation();
@@ -21,7 +22,23 @@ const Register = props => {
       .positive('Số điện thoại không được có dấu trừ')
       .integer('Số điện thoại không có dấu thập phân')
       .required('Số điện thoại không được để trống'),
+    password: Yup.string()
+      .required('Mật khẩu không được để trống')
+      .min(6, 'Mật khẩu quá ngắn ít nhất phải 6 kí tự'),
+    rePassword: Yup.string()
+      .required('Mật khẩu không được để trống')
+      .min(6, 'Mật khẩu quá ngắn ít nhất phải 6 kí tự'),
   });
+  const [code, setCode] = useState('');
+
+  // Handle login
+  async function confirmCode() {
+    try {
+      await confirm.confirm(code);
+    } catch (error) {
+      console.log('Invalid code.');
+    }
+  }
 
   return (
     <SafeAreaView style={[appStyle.container]}>
@@ -29,14 +46,21 @@ const Register = props => {
         initialValues={{
           name: '',
           phoneNumber: '',
+          password: '',
+          rePassword: '',
         }}
         validationSchema={validationSchema}
         onSubmit={values => {
           console.log(values);
-          navigation.navigate('Verified', {
-            phoneNumber: values.phoneNumber,
-            nameUser: values.name,
-          });
+          if (values.password === values.rePassword) {
+            navigation.navigate('Verified', {
+              phoneNumber: values.phoneNumber,
+              nameUser: values.name,
+              password: values.password,
+            });
+          } else {
+            showToastMessage('error', 'Mật khẩu không khớp');
+          }
         }}>
         {({
           handleChange,
@@ -46,8 +70,23 @@ const Register = props => {
           errors,
           touched,
         }) => (
-          <View style={[appStyle.main, { flex: 1, backgroundColor: '#023047', paddingHorizontal: 0 }]}>
-            <Svg style={{ flex: 1, alignSelf: 'center', position: 'absolute', top: 30 }} xmlns="http://www.w3.org/2000/svg" width="319" height="195" viewBox="0 0 319 195" fill="none">
+          <View
+            style={[
+              appStyle.main,
+              {flex: 1, backgroundColor: '#023047', paddingHorizontal: 0},
+            ]}>
+            <Svg
+              style={{
+                flex: 1,
+                alignSelf: 'center',
+                position: 'absolute',
+                top: 30,
+              }}
+              xmlns="http://www.w3.org/2000/svg"
+              width="319"
+              height="195"
+              viewBox="0 0 319 195"
+              fill="none">
               <Rect x="68" y="56" width="19" height="16" fill="#175071" />
               <Rect x="54" y="151" width="19" height="16" fill="#175071" />
               <Rect x="151" y="56" width="19" height="16" fill="#175071" />
@@ -60,15 +99,26 @@ const Register = props => {
               <Rect x="260" y="124" width="19" height="16" fill="#175071" />
               <Rect x="227" y="16" width="19" height="16" fill="#175071" />
             </Svg>
-            <KeyboardAvoidingView behavior="padding" style={{ height: '100%', marginTop: 20 }}>
-              <View style={{ paddingHorizontal: 14 }}>
-                <View style={{ flexDirection: 'row', width: windowWidth * 0.85, marginBottom: 20 }}>
+            <KeyboardAvoidingView
+              behavior="padding"
+              style={{height: '100%', marginTop: 20}}>
+              <View style={{paddingHorizontal: 14}}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    width: windowWidth * 0.85,
+                    marginBottom: 20,
+                  }}>
                   <TouchableOpacity
-                    style={{ marginTop: 10, marginRight: 14 }}
+                    style={{marginTop: 10, marginRight: 14}}
                     onPress={() => navigation.goBack()}>
-                    <FastImage source={ICON.Back} tintColor={COLOR.white} style={appStyle.icon} />
+                    <FastImage
+                      source={ICON.Back}
+                      tintColor={COLOR.white}
+                      style={appStyle.icon}
+                    />
                   </TouchableOpacity>
-                  <View style={{ flex: 1, alignItems: 'center' }}>
+                  <View style={{flex: 1, alignItems: 'center'}}>
                     <FastImage
                       source={require('../../assets/image/logo_go_traffic.png')}
                       style={styles.image}
@@ -77,7 +127,7 @@ const Register = props => {
                     {/* <Text style={styles.text1}>Đăng ký</Text> */}
                   </View>
                 </View>
-                <View style={{marginTop:30}}>
+                <View style={{marginTop: 30}}>
                   <View style={styles.viewItem}>
                     {/* <Text style={styles.text2}>Tên hiện thị</Text> */}
                     <AppInput
@@ -97,7 +147,6 @@ const Register = props => {
                   )}
 
                   <View style={styles.viewItem}>
-                    {/* <Text style={styles.text2}>Số điện thoại</Text> */}
                     <AppInput
                       keyboardType={'phone-pad'}
                       returnKeyType={'next'}
@@ -116,26 +165,9 @@ const Register = props => {
                   )}
 
                   <View style={styles.viewItem}>
-                    {/* <Text style={styles.text2}>Mật khẩu</Text> */}
                     <AppInput
                       returnKeyType={'done'}
-                      placeholder={'Nhập mật khẩu'}
-                      textColor={COLOR.white}
-                      backgroundColor={'#023047'}
-                      borderColor={COLOR.white}
-                      placeholderTextColor={COLOR.white}
-                      isPassword
-                      secureTextEntry
-                      onChangeText={handleChange('password')}
-                      onBlur={handleBlur('password')}
-                      value={values.password}
-                    />
-                  </View>
-                  <View style={styles.viewItem}>
-                    {/* <Text style={styles.text2}>Mật khẩu</Text> */}
-                    <AppInput
-                      returnKeyType={'done'}
-                      placeholder={'Xác nhận mật khẩu'}
+                      placeholder={'Mật khẩu'}
                       color={COLOR.white}
                       backgroundColor={'#023047'}
                       borderColor={COLOR.white}
@@ -145,9 +177,32 @@ const Register = props => {
                       onChangeText={handleChange('password')}
                       onBlur={handleBlur('password')}
                       value={values.password}
+                      iconColor={'white'}
+
                     />
                   </View>
-
+                  {touched.password && errors.password && (
+                    <Text style={styles.textError}>{errors.password}</Text>
+                  )}
+                  <View style={styles.viewItem}>
+                    <AppInput
+                      returnKeyType={'done'}
+                      placeholder={'Xác nhận mật khẩu'}
+                      color={COLOR.white}
+                      backgroundColor={'#023047'}
+                      borderColor={COLOR.white}
+                      placeholderTextColor={COLOR.white}
+                      isPassword
+                      secureTextEntry
+                      onChangeText={handleChange('rePassword')}
+                      onBlur={handleBlur('rePassword')}
+                      value={values.rePassword}
+                      iconColor={'white'}
+                    />
+                  </View>
+                  {touched.rePassword && errors.rePassword && (
+                    <Text style={styles.textError}>{errors.rePassword}</Text>
+                  )}
                   <AppButton
                     title="Tiếp theo"
                     color={COLOR.secondary}
@@ -158,17 +213,30 @@ const Register = props => {
                 </View>
               </View>
 
-              <Svg style={{ position: 'absolute', bottom: 20, flex: 1 }} xmlns="http://www.w3.org/2000/svg" width="420" height="186" viewBox="0 0 393 186" fill="none">
-                <Path d="M21.2939 0L-31 98.7526V186H450V68.0722L394.6 20.134L302.438 68.0722L250.144 0L210.277 52.732L161.607 20.134L113.455 41.2268L21.2939 0Z" fill="#219EBC" />
-                <Path d="M-27.0323 44L-79 114.613V177H399V92.6753L343.945 58.3969L252.358 92.6753L200.391 44L160.772 81.7062L112.406 58.3969L64.5544 73.4794L-27.0323 44Z" fill="#90C9E6" />
-                <Path d="M50.5 91L-31.5 141V188H464.5V126.5L411 101.5L322 126.5L271.5 91L233 118.5L186 101.5L139.5 112.5L50.5 91Z" fill="white" />
+              <Svg
+                style={{position: 'absolute', bottom: 20, flex: 1}}
+                xmlns="http://www.w3.org/2000/svg"
+                width="420"
+                height="186"
+                viewBox="0 0 393 186"
+                fill="none">
+                <Path
+                  d="M21.2939 0L-31 98.7526V186H450V68.0722L394.6 20.134L302.438 68.0722L250.144 0L210.277 52.732L161.607 20.134L113.455 41.2268L21.2939 0Z"
+                  fill="#219EBC"
+                />
+                <Path
+                  d="M-27.0323 44L-79 114.613V177H399V92.6753L343.945 58.3969L252.358 92.6753L200.391 44L160.772 81.7062L112.406 58.3969L64.5544 73.4794L-27.0323 44Z"
+                  fill="#90C9E6"
+                />
+                <Path
+                  d="M50.5 91L-31.5 141V188H464.5V126.5L411 101.5L322 126.5L271.5 91L233 118.5L186 101.5L139.5 112.5L50.5 91Z"
+                  fill="white"
+                />
               </Svg>
             </KeyboardAvoidingView>
-
           </View>
         )}
       </Formik>
-
     </SafeAreaView>
   );
 };

@@ -41,6 +41,7 @@ const AppInput = props => {
 
     isPassword,
     isLocation,
+    iconColor = 'black',
   } = props;
 
   //=====================| CHANGE BOORDER COLOR |================
@@ -106,7 +107,7 @@ const AppInput = props => {
         style={[
           styles.textInput,
           {
-            color: textColor ? '#000000' : textColor,
+            color: textColor ? textColor : '#000000',
             maxWidth: '90%',
             fontSize: fontSize == null ? 16 : fontSize,
             width: '100%',
@@ -172,6 +173,8 @@ const AppInput = props => {
           <FastImage
             style={{width: 20, height: 20, marginRight: 6}}
             source={iconSource}
+            tintColor={iconColor}
+
           />
         </TouchableOpacity>
       )}

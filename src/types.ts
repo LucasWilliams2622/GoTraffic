@@ -19,7 +19,7 @@ export type Feature = {
 export type Car = {
   id: number;
   images: string[];
-  title: string;
+  name: string;
   price: number;
   licensePlate: string;
   rating: RatingItem[];

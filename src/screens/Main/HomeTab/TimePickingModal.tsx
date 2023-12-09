@@ -4,6 +4,7 @@ import {
   Pressable,
   StyleSheet,
   TouchableWithoutFeedback,
+  Alert,
 } from 'react-native';
 import React, {useEffect, useMemo, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -104,7 +105,8 @@ const TimePickingModal: React.FC<{
   price?: number;
   toggle: any;
   setSelectedTime: any;
-}> = ({price, toggle, setSelectedTime}) => {
+  car?: Car;
+}> = ({price, toggle, setSelectedTime, car}) => {
   const currentDate = new Date();
   const tomorrowDate = new Date();
   tomorrowDate.setDate(tomorrowDate.getDate() + 1);
@@ -137,6 +139,20 @@ const TimePickingModal: React.FC<{
 
   const onDayPress = (day: DateData) => {
     const selectedDate = moment.utc(day.dateString).toDate();
+    const bookedDatesArray = bookedDates
+      ? Object.entries(bookedDates).map(([date, booking]) => ({
+          date,
+          ...booking,
+        }))
+      : [];
+    if (
+      bookedDatesArray.some(
+        booking => booking.date === selectedDate.toISOString().slice(0, 10),
+      )
+    ) {
+      Alert.alert('Ngày này đã có người đặt rồi');
+      return;
+    }
     if (!startDate) {
       setStartDate(selectedDate);
       setMarkedDates(prevState => ({
@@ -192,7 +208,11 @@ const TimePickingModal: React.FC<{
     return dateArray;
   };
 
-  const renderDay = ({date, state}: DayProps & {date?: DateData}) => {
+  const renderDay = ({
+    date,
+    state,
+    bookedDates,
+  }: DayProps & {date?: DateData} & {bookedDates?: any}) => {
     let dayPrice = price !== undefined ? price : 0;
     if (dayPrice !== undefined && date) {
       const day = new Date(date.timestamp).getDay();
@@ -202,11 +222,18 @@ const TimePickingModal: React.FC<{
     }
     const priceText = useMemo(() => formatPrice(dayPrice), [dayPrice]);
     const isDateSelected = date && markedDates[date.dateString];
+    const isDateBooked = date && bookedDates?.[date.dateString];
+
     const backgroundColor = isDateSelected
       ? markedDates[date.dateString].color
+      : isDateBooked
+      ? bookedDates[date.dateString].color
       : 'white';
+
     const textColor = isDateSelected
       ? markedDates[date.dateString].textColor
+      : isDateBooked
+      ? bookedDates[date.dateString].textColor
       : 'black';
 
     const startDateString = startDate
@@ -214,12 +241,36 @@ const TimePickingModal: React.FC<{
       : null;
     const endDateString = endDate ? endDate.toISOString().split('T')[0] : null;
 
-    const borderRadiusStyle =
-      startDateString === date?.dateString
-        ? {borderTopLeftRadius: 10, borderBottomLeftRadius: 10}
-        : endDateString === date?.dateString
-        ? {borderTopRightRadius: 10, borderBottomRightRadius: 10}
-        : {};
+    const borderRadiusStyle: {
+      borderTopLeftRadius?: number;
+      borderBottomLeftRadius?: number;
+      borderTopRightRadius?: number;
+      borderBottomRightRadius?: number;
+    } = {};
+
+    for (const bookedDate in bookedDates) {
+      if (
+        bookedDates[bookedDate].startingDay &&
+        bookedDate === date?.dateString
+      ) {
+        borderRadiusStyle.borderTopLeftRadius = 10;
+        borderRadiusStyle.borderBottomLeftRadius = 10;
+      } else if (
+        bookedDates[bookedDate].endingDay &&
+        bookedDate === date?.dateString
+      ) {
+        borderRadiusStyle.borderTopRightRadius = 10;
+        borderRadiusStyle.borderBottomRightRadius = 10;
+      }
+    }
+
+    if (startDateString === date?.dateString) {
+      borderRadiusStyle.borderTopLeftRadius = 10;
+      borderRadiusStyle.borderBottomLeftRadius = 10;
+    } else if (endDateString === date?.dateString) {
+      borderRadiusStyle.borderTopRightRadius = 10;
+      borderRadiusStyle.borderBottomRightRadius = 10;
+    }
 
     return (
       <TouchableWithoutFeedback onPress={() => date && onDayPress(date)}>
@@ -325,6 +376,42 @@ const TimePickingModal: React.FC<{
     setSelectedTime(itemValue); // Update the selected time state
   };
 
+  const bookedDates = useMemo(() => {
+    if (car.Booking.length > 0) {
+      let dates: {[key: string]: MarkedDate} = {};
+      car.Booking.forEach((booking: any) => {
+        const startDate = booking.timeFrom;
+        const endDate = booking.timeTo;
+        let dateArray = [];
+        let currentDate = new Date(startDate);
+        while (currentDate <= new Date(endDate)) {
+          dateArray.push(currentDate.toISOString().split('T')[0]);
+          currentDate.setDate(currentDate.getDate() + 1);
+        }
+        dateArray.forEach((date, index) => {
+          if (index === 0) {
+            dates[date] = {
+              startingDay: true,
+              color: COLOR.borderColor,
+              textColor: 'white',
+            };
+          } else if (index === dateArray.length - 1) {
+            dates[date] = {
+              endingDay: true,
+              color: COLOR.borderColor,
+              textColor: 'white',
+            };
+          } else {
+            dates[date] = {color: COLOR.borderColor, textColor: 'white'};
+          }
+        });
+      });
+      return dates;
+    }
+  }, []);
+
+  const DayComponent = (props: any) => renderDay({...props, bookedDates});
+
   return (
     <SafeAreaView style={{backgroundColor: COLOR.white, flex: 1}}>
       <View style={{alignItems: 'center', justifyContent: 'center'}}>
@@ -336,8 +423,8 @@ const TimePickingModal: React.FC<{
         <Text style={{fontSize: 22}}>Thời gian</Text>
       </View>
       <CalendarList
-        minDate={currentDate}
-        current={currentDate}
+        minDate={currentDate.toISOString().split('T')[0]}
+        current={currentDate.toISOString().split('T')[0]}
         firstDay={1}
         pastScrollRange={0}
         futureScrollRange={3}
@@ -346,9 +433,9 @@ const TimePickingModal: React.FC<{
         onDayPress={onDayPress}
         horizontal={true}
         pagingEnabled={true}
-        markingType={'period'}
-        markedDates={markedDates}
-        dayComponent={renderDay}
+        // markingType={'period'}
+        // markedDates={combinedMarkedDates}
+        dayComponent={DayComponent}
       />
       <Modal isVisible={isTimePickerVisible}>
         <View

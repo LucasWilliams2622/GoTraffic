@@ -23,15 +23,12 @@ import Account from '../screens/Main/ProfileTab/Account/Account';
 import Register from '../screens/Begin/Register';
 import Verified from '../screens/Begin/Verified';
 import EmailCheck from '../screens/Begin/EmailCheck';
-import VerifiedEmail from '../screens/Begin/VerifiedEmail';
-import ConfirmPassword from '../screens/Begin/ConfirmPassword';
 import MyCard from '../screens/Main/ProfileTab/Payment/MyCard';
 import LocationPicking from '../screens/Main/HomeTab/LocationPicking';
 import NewCard from '../screens/Main/ProfileTab/Payment/NewCard';
 import CarDetail from '../screens/Main/HomeTab/CarDetail';
 import HomeCar from '../screens/Main/ProfileTab/MyCar/HomeCar';
 import DetailInListCar from '../screens/Main/ProfileTab/MyCar/DetailInListCar';
-import GeneralInformation from '../screens/Main/ProfileTab/MyCar/GeneralInformation';
 import RentCost from '../screens/Main/ProfileTab/MyCar/RentCost';
 import CalendarOfCar from '../screens/Main/ProfileTab/MyCar/CalendarOfCar';
 import CarDelivery from '../screens/Main/ProfileTab/MyCar/CarDelivery';
@@ -41,6 +38,7 @@ import InforOfCar from '../screens/Main/ProfileTab/MyCar/InforOfCar';
 import GPSMarker from '../screens/Main/ProfileTab/MyCar/GPSMarker';
 import ExhibitOfCar from '../screens/Main/ProfileTab/MyCar/ExhibitOfCar';
 import MyWallet from '../screens/Main/ProfileTab/MyCar/MyWallet';
+import HistoryMoney from '../screens/Main/ProfileTab/MyCar/HistoryMoney';
 import HandOverReport from '../screens/Main/ProfileTab/MyCar/Contract/HandOverReport';
 import SampleContract from '../screens/Main/ProfileTab/MyCar/Contract/SampleContract';
 import LeaseCar from '../screens/Main/ProfileTab/MyCar/Contract/LeaseCar';
@@ -70,8 +68,6 @@ const StackBegin = () => {
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Verified" component={Verified} />
       <Stack.Screen name="EmailCheck" component={EmailCheck} />
-      <Stack.Screen name="VerifiedEmail" component={VerifiedEmail} />
-      <Stack.Screen name="ConfirmPassword" component={ConfirmPassword} />
       <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="BottomNav" component={BottomTabNav} />
     </Stack.Navigator>
@@ -185,7 +181,6 @@ const StackProfile = () => {
       <Stack.Screen name="HomeCar" component={HomeCar} />
       <Stack.Screen name="ListCar" component={ListCar} />
       <Stack.Screen name="DetailInListCar" component={DetailInListCar} />
-      <Stack.Screen name="GeneralInformation" component={GeneralInformation} />
       <Stack.Screen name="RentCost" component={RentCost} />
       <Stack.Screen name="CalendarOfCar" component={CalendarOfCar} />
       <Stack.Screen name="CarDelivery" component={CarDelivery} />
@@ -195,6 +190,7 @@ const StackProfile = () => {
       <Stack.Screen name="GPSMarker" component={GPSMarker} />
       <Stack.Screen name="ExhibitOfCar" component={ExhibitOfCar} />
       <Stack.Screen name="MyWallet" component={MyWallet} />
+      <Stack.Screen name="HistoryMoney" component={HistoryMoney} />
       <Stack.Screen name="MyAddress" component={MyAddress} />
       <Stack.Screen name="UpdateAddress" component={UpdateAddress} />
       <Stack.Screen name="ShareWithFriend" component={ShareWithFriend} />

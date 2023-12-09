@@ -51,7 +51,6 @@ import {
 import OtherDetails from '../../../components/Home/Detail/OtherDetails';
 import Confirm from './Confirm';
 import Modal from 'react-native-modal';
-import TimePickingModal from './TimePickingModal';
 import axios from 'axios';
 
 Geocoder.init(REACT_APP_GOOGLE_MAPS_API_KEY || '');
@@ -249,8 +248,6 @@ const CarDetail: React.FC<CarDetailProps> = ({
   };
 
   const handleClose = () => {
-    // add current car to viewedCars list
-    // if current car is already in viewedCars list, move it to the top
     if (viewedCars && setViewedCars) {
       const carIndex = viewedCars.findIndex(x => x.id === car_id);
       if (carIndex !== -1) {
@@ -306,13 +303,13 @@ const CarDetail: React.FC<CarDetailProps> = ({
           </Row>
 
           <Row style={{alignItems: 'center'}}>
-            <PressableIconCarDetail
+            {/* <PressableIconCarDetail
               name="share-nodes"
               color={COLOR.black}
               size={24}
               onPress={handleShare}
               style={{marginRight: 20}}
-            />
+            /> */}
             <PressableIconCarDetail
               name="heart"
               color={isFavorite ? COLOR.fifth : COLOR.black}
@@ -343,13 +340,13 @@ const CarDetail: React.FC<CarDetailProps> = ({
             onPress={handleClose}
           />
           <View style={styles.row}>
-            <PressableIcon
+            {/* <PressableIcon
               name="share-nodes"
               color={COLOR.white}
               size={24}
               onPress={handleShare}
               style={{marginRight: 10}}
-            />
+            /> */}
             <PressableIcon
               name="heart"
               color={isFavorite ? COLOR.fifth : COLOR.white}

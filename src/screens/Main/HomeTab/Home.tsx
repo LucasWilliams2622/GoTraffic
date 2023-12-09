@@ -189,7 +189,7 @@ const Home: React.FC = () => {
       <Modal
         isVisible={isModalVisible}
         style={{margin: 0}}
-        onBackButtonPress={() => setSelectedCarId(null)}
+        onBackButtonPress={() => setModalVisible(false)}
         swipeThreshold={50}>
         {selectedCarId && (
           <CarDetail
@@ -216,7 +216,7 @@ const Home: React.FC = () => {
       <Modal
         isVisible={isModalVisible}
         style={{margin: 0}}
-        onBackButtonPress={() => setSelectedCarId(null)}
+        onBackButtonPress={() => setModalVisible(false)}
         swipeThreshold={50}>
         {selectedCarId && (
           <CarDetail
