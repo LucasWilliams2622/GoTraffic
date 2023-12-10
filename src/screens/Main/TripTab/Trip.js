@@ -34,7 +34,7 @@ const Trip = () => {
       );
       if (response.result) {
         setListBookingCurrent(response.booking);
-        console.log(response.booking[0] == null);
+        console.log(response.booking);
         if (response.booking[0] == null) {
           setIsLoading(true);
         } else {
