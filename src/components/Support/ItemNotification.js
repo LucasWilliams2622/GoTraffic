@@ -7,9 +7,9 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import FastImage from 'react-native-fast-image';
-import {COLOR} from '../../constants/Theme';
+import {COLOR, ICON} from '../../constants/Theme';
 import {Code} from 'native-base';
-import {appStyle} from '../../constants/AppStyle';
+import {appStyle, windowHeight, windowWidth} from '../../constants/AppStyle';
 import Modal from 'react-native-modal';
 import Moment from 'moment';
 const ItemNotification = props => {
@@ -75,43 +75,55 @@ const ItemNotification = props => {
                 appStyle.text16Bold,
                 {width: '90%', textAlign: 'center', marginTop: 10},
               ]}>
-              ⚡️ {title}
+              ⚡️ {title.toUpperCase()}
             </Text>
             <View style={styles.line} />
             <Text
               style={[
-                [appStyle.text14, {lineHeight: 30, paddingHorizontal: 20}],
+                [appStyle.text16, {lineHeight: 30, paddingHorizontal: 10}],
               ]}>
               {content}
             </Text>
             <Text
               style={[
-                [appStyle.text14, {lineHeight: 30, paddingHorizontal: 20}],
+                [appStyle.text14, {lineHeight: 30, paddingHorizontal: 10}],
               ]}>
               Hi vọng bạn sẽ có nhiều trải nghiệp tuyệt vời cùng Go Traffic
             </Text>
-            <Text
-              style={[
-                [
-                  appStyle.text14,
-                  {
-                    lineHeight: 30,
-                    paddingHorizontal: 20,
-                    marginTop: 50,
-                    fontStyle: 'italic',
-                    color: COLOR.red,
-                  },
-                ],
-              ]}>
-              Cảm ơn bạn đã đồng hành cùng chúng tôi !
-            </Text>
+            <View
+              style={{
+                height: 50,
+                width: '100%',
+                backgroundColor: '#d2eaf5',
+                justifyContent: 'center',
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+              }}>
+              <Text
+                style={[
+                  [
+                    appStyle.text14,
+                    {
+                      lineHeight: 30,
+                      paddingHorizontal: 20,
+                      fontStyle: 'bold',
+                      color: '#219EBC',
+                      textAlign: 'center',
+                    },
+                  ],
+                ]}>
+                Cảm ơn đã sử dụng dịch vụ GoTraffic
+              </Text>
+            </View>
+
             <Pressable
               style={styles.buttonClose}
               onPress={() => setModalVisible(!isModalVisible)}>
-              <Text
-                style={{fontSize: 15, textAlign: 'center', color: COLOR.black}}>
-                X
-              </Text>
+              <FastImage
+                source={ICON.Close}
+                style={[appStyle.iconMedium, {marginTop: 7}]}
+                tintColor={COLOR.white}
+              />
             </Pressable>
           </View>
         </View>
@@ -138,17 +150,23 @@ const styles = StyleSheet.create({
   imageInModal: {
     width: '100%',
     height: '40%',
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10,
   },
   centeredView: {
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
+    margin:-21,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    padding:20
   },
   modalView: {
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-between',
     width: '100%',
-    height: '80%',
-    margin: 20,
+    height: windowHeight * 0.65,
+   
+    marginTop: 80,
     backgroundColor: 'white',
     alignItems: 'center',
     shadowColor: '#000',
@@ -159,21 +177,23 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 0,
     elevation: 5,
+    borderRadius: 10,
   },
   line: {
     height: 2,
-    width: '30%',
-    backgroundColor: COLOR.primary,
+    width: '40%',
+    backgroundColor: COLOR.fifth,
     marginBottom: 16,
     marginTop: 16,
   },
   buttonClose: {
     borderRadius: 50,
-    backgroundColor: COLOR.gray,
-    width: 20,
-    height: 20,
+    backgroundColor: '#8e8e8e',
+    width: 32,
+    height: 32,
     position: 'absolute',
     top: 5,
     right: 5,
+    alignItems: 'center',
   },
 });
