@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Modal,
 } from 'react-native';
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useContext} from 'react';
 import {
   appStyle,
   windowHeight,
@@ -26,25 +26,44 @@ import AppHeader from '../../../../components/AppHeader';
 import {Switch} from 'native-base';
 import Slider from '@react-native-community/slider';
 import numeral from 'numeral';
+import {AppContext} from '../../../../utils/AppContext';
 
 const DetailsInfor = props => {
   const {navigation, route} = props;
+  const {infoUser} = useContext(AppContext);
+  console.log('infoUser', infoUser);
   const cardInfo = route.params;
   const [description, setDescription] = useState(null);
   const [fuelConsumption, setFuelConsumption] = useState(null);
   const [price, setPrice] = useState(null);
   const [selectedFeatures, setSelectedFeatures] = useState([]);
 
+  const userAddress =
+    infoUser.address.address +
+    ', ' +
+    infoUser.address.street +
+    ', ' +
+    infoUser.address.ward +
+    ', ' +
+    infoUser.address.district +
+    ',' +
+    infoUser.address.city;
+  console.log(userAddress);
   // địa chỉ
   const [openAddress, setOpenAddress] = useState(false);
   const [provinces, setProvinces] = useState([]);
-  const [selectedProvince, setSelectedProvince] = useState(null);
+  const [selectedProvince, setSelectedProvince] = useState(
+    infoUser.address.city,
+  );
   const [districts, setDistricts] = useState([]);
-  const [selectedDistrict, setSelectedDistrict] = useState(null);
+  const [selectedDistrict, setSelectedDistrict] = useState(
+    infoUser.address.district,
+  );
   const [wards, setWards] = useState([]);
-  const [selectedWard, setSelectedWard] = useState(null);
-  const [address, setAddress] = useState(null);
-  const [location, setLocation] = useState(null);
+  const [selectedWard, setSelectedWard] = useState(infoUser.address.ward);
+  const [address, setAddress] = useState(infoUser.address.address);
+  const [location, setLocation] = useState(userAddress);
+
   const [onSwitch, setonSwitch] = useState(false);
   const [onSwitch2, setonSwitch2] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
@@ -191,7 +210,6 @@ const DetailsInfor = props => {
           if (selectedFeatures.length < 4) {
             showToastMessage('error', 'Vui lòng chọn nhiều hơn 4 chức năng');
           } else {
-          
             navigation.navigate('FinalStep', {
               carInfo: cardInfo,
               carInfo2: carInfo2,
@@ -219,7 +237,8 @@ const DetailsInfor = props => {
                   borderRadius: 5,
                   paddingHorizontal: 7,
                 }}
-                onPress={() => handleAddressClick()}>
+                // onPress={() => handleAddressClick()}
+                onPress={() => navigation.navigate('PickLocation')}>
                 <Text
                   style={[
                     appStyle.text12Bold,
