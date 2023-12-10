@@ -97,7 +97,7 @@ export const ICON = {
   Address: require('../assets/icon/ic_address.png'),
   Card: require('../assets/icon/ic_card.png'),
   Wallet: require('../assets/icon/ic_wallet.png'),
-  Add:  require('../assets/icon/ic_add.png'),
+  Add: require('../assets/icon/ic_add.png'),
   Copy: require('../assets/icon/ic_copy.png'),
   Send: require('../assets/icon/ic_send.png'),
   Delete: require('../assets/icon/ic_delete.png'),
@@ -108,7 +108,7 @@ export const ICON = {
   UnStar: require('../assets/icon/icon-unstar.png'),
   Calendar: require('../assets/icon/ic_calendar.png'),
   Ban: require('../assets/icon/ic_ban.png'),
-
+  Phone: require('../assets/icon/ic_phone_outline.png'),
   Luggage: require('../assets/icon/ic_luggage.png'),
   License: require('../assets/image/img_license.png'),
   Poster: require('../assets/image/poster.jpg'),

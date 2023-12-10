@@ -22,7 +22,7 @@ import Swipelist from 'react-native-swipeable-list-view';
 import {showToastMessage} from '../../../utils/utils';
 const Trip = () => {
   const {infoUser, idUser} = useContext(AppContext);
-  const [listBookingCurrent, setListBookingCurrent] = useState(null);
+  const [listBookingCurrent, setListBookingCurrent] = useState([]);
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const [isLoading, setIsLoading] = useState(true);
@@ -99,38 +99,34 @@ const Trip = () => {
             </Text>
           </View>
         ) : (
-          <Swipelist
+          <FlatList
+            style={{width: '100%', marginBottom: 65}}
             data={listBookingCurrent}
-            renderRightItem={(data, index) => (
-              <View key={index}>
-                <ItemTrip data={data} car={listBookingCurrent} />
-              </View>
-            )}
-            renderHiddenItem={(data, index) => (
-              <TouchableOpacity
-                style={[styles.rightAction, {backgroundColor: COLOR.red2}]}
-                onPress={() => {
-                  console.log(data.id);
-                  cancelBooking(data.id);
-                }}>
+            renderItem={({item}) => <ItemTrip data={item} />}
+            keyExtractor={item => item.id}
+            showsVerticalScrollIndicator={false}
+            ListEmptyComponent={
+              <View>
                 <FastImage
-                  source={ICON.Delete}
-                  style={appStyle.iconBig}
-                  tintColor={COLOR.white}
+                  style={styles.imageInvisible}
+                  resizeMode={'stretch'}
+                  source={require('../../../assets/image/NoTrip.png')}
                 />
-              </TouchableOpacity>
-            )}
-            rightOpenValue={100}
+                <Text
+                  style={[
+                    appStyle.text16,
+                    {
+                      textAlign: 'center',
+                      marginBottom: 10,
+                      fontStyle: 'italic',
+                    },
+                  ]}>
+                  Bạn chưa có lịch sử chuyến
+                </Text>
+              </View>
+            }
           />
         )}
-        <Text
-          style={{
-            textAlign: 'center',
-            fontStyle: 'italic',
-            color: COLOR.primary,
-          }}>
-          Cuộn sang trái để hủy chuyến
-        </Text>
       </ScrollView>
     </SafeAreaView>
   );
