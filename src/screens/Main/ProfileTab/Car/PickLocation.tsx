@@ -1,5 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, PermissionsAndroid} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  PermissionsAndroid,
+  StyleSheet,
+} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import Icon, {IconType} from 'react-native-dynamic-vector-icons';
@@ -8,7 +14,9 @@ import {appStyle} from '../../../../constants/AppStyle';
 import AppButton from '../../../../components/AppButton';
 import {useNavigation} from '@react-navigation/native';
 
-const MapScreen = () => {
+const MapScreen = props => {
+  const {carInfo} = props.route.params;
+
   const navigation = useNavigation();
   const [mapRef, setMapRef] = useState(null);
   const [markerPosition, setMarkerPosition] = useState(null);
@@ -72,6 +80,13 @@ const MapScreen = () => {
 
   const handleGetLocation = () => {
     getCurrentLocation();
+    setTimeout(() => {
+      navigation.navigate('DetailsInfor', {
+        carInfo: carInfo,
+        addressCar: address,
+        markerPosition: markerPosition,
+      });
+    }, 500);
   };
 
   const handleMarkerPress = event => {
@@ -80,8 +95,12 @@ const MapScreen = () => {
     convertCoordinatesToAddress(coordinate.latitude, coordinate.longitude);
   };
 
-  const handleLogAddress = () => {
-    console.log('Selected Address:', address);
+  const handleGetAddress = () => {
+    navigation.navigate('DetailsInfor', {
+      carInfo: carInfo,
+      addressCar: address,
+      markerPosition: markerPosition,
+    });
   };
   const handleAddressPress = () => {
     if (markerPosition && mapRef) {
@@ -101,7 +120,7 @@ const MapScreen = () => {
       <MapView
         ref={ref => {
           setMapRef(ref);
-          console.log('Map reference set:', ref);
+          // console.log('Map reference set:', ref);
         }}
         style={{flex: 1}}
         initialRegion={{
@@ -115,16 +134,36 @@ const MapScreen = () => {
         onPress={event => handleMarkerPress(event)}>
         {markerPosition && <Marker coordinate={markerPosition} />}
       </MapView>
-      <Icon
-        name="arrow-back-circle-outline"
-        type={IconType.Ionicons}
-        size={40}
-        color={COLOR.primary}
-        style={{position: 'absolute', top: 10, left: 10}}
+      <TouchableOpacity
+        style={{
+          position: 'absolute',
+          top: 10,
+          width: '74%',
+          alignSelf: 'center',
+          backgroundColor: 'white',
+          opacity: 0.7,
+          justifyContent: 'space-between',
+          flexDirection: 'row',
+          alignItems: 'center',
+          borderRadius: 8,
+        }}
         onPress={() => {
           navigation.goBack();
-        }}
-      />
+        }}>
+        <View style={styles.boxBack}>
+          <Icon
+            name="arrow-back-circle-outline"
+            type={IconType.Ionicons}
+            size={32}
+            color={COLOR.primary}
+            style={{position: 'absolute'}}
+          />
+        </View>
+        <Text style={[appStyle.text14Bold, {color: COLOR.primary}]}>
+          Quay lại
+        </Text>
+        <View style={{width: '10%'}} />
+      </TouchableOpacity>
 
       {address !== '' && (
         <TouchableOpacity
@@ -135,6 +174,7 @@ const MapScreen = () => {
             padding: 12,
             backgroundColor: 'white',
             borderRadius: 8,
+            width: '94%',
           }}
           onPress={handleAddressPress}>
           <Text style={appStyle.text12Bold}>{address}</Text>
@@ -160,7 +200,7 @@ const MapScreen = () => {
           width={'48%'}
           backgroundColor="white"
           textColor={COLOR.primary}
-          onPress={handleLogAddress}
+          onPress={handleGetAddress}
           containerStyle={{}}
           title="Lấy địa chỉ"
         />
@@ -170,3 +210,11 @@ const MapScreen = () => {
 };
 
 export default MapScreen;
+const styles = StyleSheet.create({
+  boxBack: {
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

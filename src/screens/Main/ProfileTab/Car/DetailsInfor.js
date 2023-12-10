@@ -20,19 +20,19 @@ import AppInput from '../../../../components/AppInput';
 import ItemFeature from '../../../../components/Profile/ItemFeature';
 import axios from 'axios';
 import AppDropdown from '../../../../components/AppDropdown';
-import {features} from '../../../../components/Profile/data/DataCar';
 import {formatPriceWithUnit, showToastMessage} from '../../../../utils/utils';
 import AppHeader from '../../../../components/AppHeader';
 import {Switch} from 'native-base';
 import Slider from '@react-native-community/slider';
-import numeral from 'numeral';
 import {AppContext} from '../../../../utils/AppContext';
+import {TextInput} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 const DetailsInfor = props => {
-  const {navigation, route} = props;
+  const navigation = useNavigation();
+  const {carInfo, addressCar, markerPosition} = props.route.params;
   const {infoUser} = useContext(AppContext);
-  console.log('infoUser', infoUser);
-  const cardInfo = route.params;
+  console.log('markerPosition', markerPosition);
   const [description, setDescription] = useState(null);
   const [fuelConsumption, setFuelConsumption] = useState(null);
   const [price, setPrice] = useState(null);
@@ -48,7 +48,6 @@ const DetailsInfor = props => {
     infoUser.address.district +
     ',' +
     infoUser.address.city;
-  console.log(userAddress);
   // địa chỉ
   const [openAddress, setOpenAddress] = useState(false);
   const [provinces, setProvinces] = useState([]);
@@ -62,7 +61,15 @@ const DetailsInfor = props => {
   const [wards, setWards] = useState([]);
   const [selectedWard, setSelectedWard] = useState(infoUser.address.ward);
   const [address, setAddress] = useState(infoUser.address.address);
-  const [location, setLocation] = useState(userAddress);
+  const [location, setLocation] = useState(
+    addressCar == null ? userAddress : addressCar,
+  );
+
+  useEffect(() => {
+    if (addressCar !== null) {
+      setLocation(addressCar == null ? userAddress : addressCar);
+    }
+  }, [addressCar]);
 
   const [onSwitch, setonSwitch] = useState(false);
   const [onSwitch2, setonSwitch2] = useState(false);
@@ -119,6 +126,7 @@ const DetailsInfor = props => {
 
   // feature
   const handleFeatureSelection = featureName => {
+    console.log(featureName);
     if (selectedFeatures.includes(featureName)) {
       setSelectedFeatures(prevSelectedFeatures =>
         prevSelectedFeatures.filter(feature => feature !== featureName),
@@ -171,12 +179,25 @@ const DetailsInfor = props => {
     toggleModal2();
   };
   const handleNext = () => {
+    const jsonString = JSON.stringify(selectedFeatures);
+    const jsonStringWithQuotes = `\'${jsonString}\'`;
+    console.log('jsonStringWithQuotes', jsonStringWithQuotes);
     const carInfo2 = {
-      location,
+      ...carInfo,
+      locationCar: location,
+      city: selectedProvince,
+      district: selectedDistrict,
+      ward: selectedWard,
+      address: address,
       description,
       fuelConsumption,
       price,
-      selectedFeatures,
+      longitude: markerPosition?.longitude
+        ? markerPosition?.longitude
+        : 106.628345,
+
+      latitude: markerPosition?.latitude ? markerPosition?.latitude : 10.853747,
+      selectedFeatures: jsonStringWithQuotes,
 
       isDelivery: isEnabled,
       deliveryWithin: Math.floor(first * 100),
@@ -187,13 +208,12 @@ const DetailsInfor = props => {
       maxKm: Math.floor(fourth * 100 * 8),
       exceededFee: Math.floor(fifth * 10),
     };
-
     // navigation.navigate('FinalStep', {
-    //   carInfo: cardInfo,
+    //   carInfo: carInfo,
     //   carInfo2: carInfo2,
     // });
+
     if (
-      location == null ||
       description == null ||
       fuelConsumption == null ||
       price == null ||
@@ -211,8 +231,8 @@ const DetailsInfor = props => {
             showToastMessage('error', 'Vui lòng chọn nhiều hơn 4 chức năng');
           } else {
             navigation.navigate('FinalStep', {
-              carInfo: cardInfo,
-              carInfo2: carInfo2,
+              carInfo: carInfo2,
+              // carInfo2: carInfo2,
             });
           }
         }
@@ -238,7 +258,9 @@ const DetailsInfor = props => {
                   paddingHorizontal: 7,
                 }}
                 // onPress={() => handleAddressClick()}
-                onPress={() => navigation.navigate('PickLocation')}>
+                onPress={() =>
+                  navigation.navigate('PickLocation', {carInfo: carInfo})
+                }>
                 <Text
                   style={[
                     appStyle.text12Bold,
@@ -248,7 +270,7 @@ const DetailsInfor = props => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <Text>{location ? location : 'Chưa có địa chỉ'}</Text>
+            <Text>{location ? location : userAddress}</Text>
 
             {openAddress && (
               <View
@@ -401,13 +423,22 @@ const DetailsInfor = props => {
           {/* Mô tả */}
           <View style={appStyle.cardInfo}>
             <Text style={appStyle.text165}>Mô tả xe</Text>
-            <AppInput
+            <View style={[appStyle.inputBig]}>
+              <TextInput
+                style={{paddingVertical: 0, alignSelf: 'flex-start'}}
+                placeholder="Mô tả xe của bạn"
+                value={description}
+                multiline
+                onChangeText={text => setDescription(text)}
+              />
+            </View>
+            {/* <AppInput
               height={windowHeight * 0.17}
               marginTop={8}
               placeholder="Mô tả xe của bạn"
               value={description}
               onChangeText={text => setDescription(text)}
-            />
+            /> */}
           </View>
 
           {/* Nhiên liệu */}
@@ -564,8 +595,9 @@ const DetailsInfor = props => {
               {features.map(feature => (
                 <ItemFeature
                   key={feature}
-                  featureName={feature}
-                  isSelected={selectedFeatures.includes(feature)}
+                  featureName={feature.name}
+                  isSelected={selectedFeatures.includes(feature.key)}
+                  featureKey={feature.key}
                   onPress={handleFeatureSelection}
                 />
               ))}
@@ -722,3 +754,53 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
 });
+const features = [
+  {
+    key: 'backup-tire',
+    name: 'Lốp dự phòng',
+  },
+  {
+    key: 'speed-warning',
+    name: 'Cảnh báo tốc độ',
+  },
+  {
+    key: '360-camera',
+    name: 'Camera hành trình',
+  },
+  {
+    key: 'airbag',
+    name: 'Túi khi an toàn',
+  },
+  {
+    key: 'usb',
+    name: 'Khe cắm USB',
+  },
+  {
+    key: 'bluetooth',
+    name: 'BlueTooth',
+  },
+  {
+    key: 'back-camera',
+    name: 'Camera lùi',
+  },
+  {
+    key: 'etc',
+    name: 'ETC',
+  },
+  {
+    key: 'sunroof',
+    name: 'Cửa sổ trời',
+  },
+  {
+    key: 'tire-sensor',
+    name: 'Cảm biến lốp',
+  },
+  {
+    key: 'map',
+    name: 'Bản đồ',
+  },
+  {
+    key: 'gps',
+    name: 'Định vị GPS',
+  },
+];

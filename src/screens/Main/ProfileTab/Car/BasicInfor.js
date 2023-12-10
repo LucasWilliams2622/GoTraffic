@@ -87,7 +87,16 @@ const BasicInfor = props => {
     ) {
       showToastMessage('error', 'Vui lòng nhập đầy đủ thông tin xe');
     } else {
-      navigation.navigate('DetailsInfor');
+      const carInfo = {
+        carNumber,
+        selectedBrand,
+        selectedModel,
+        selectedSeats,
+        selectedYear,
+        selectedTransmission,
+        selectedFuel,
+      };
+      navigation.navigate('DetailsInfor', {carInfo: carInfo});
     }
   };
   return (
