@@ -209,10 +209,10 @@ const TimePickingModal: React.FC<{
       //     );
       //   });
 
-      //   if (bookedRangeFound) {
-      //     showToastMessage('', 'Ngày này đã có người đặt rồi');
-      //     return;
-      //   }
+        if (bookedRangeFound) {
+          showToastMessage('', 'Ngày này đã có người đặt rồi');
+          return;
+        }
 
       //   // const bookedRangeFound = Object.values(bookedDates).some(booking => {
       //   //   const bookingStartDate = booking.startingDay

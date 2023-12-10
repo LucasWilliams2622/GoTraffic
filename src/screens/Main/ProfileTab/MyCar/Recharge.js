@@ -21,10 +21,12 @@ import axios from 'axios';
 import {AppContext} from '../../../../utils/AppContext';
 import {showToastMessage} from '../../../../utils/utils';
 import AppButton from '../../../../components/AppButton';
+import {useFormik} from 'formik';
+import * as Yup from 'yup';
 
 const Recharge = () => {
   const navigation = useNavigation();
-  const [amount, setAmount] = useState(1100);
+  const [amount, setAmount] = useState(0);
   const [blockInput, setBlockInput] = useState(true);
   const [checkoutUrl, setCheckoutUrl] = useState('');
   const {idUser} = useContext(AppContext);
@@ -54,32 +56,41 @@ const Recharge = () => {
       console.log('Chưa thanh toán');
     }
   };
-
-  const handleRecharge = async () => {
-    try {
-      if (amount < 1000) {
-        showToastMessage('error', 'Vui lòng nhập số tiền lớn hơn 1000 VNĐ');
-      } else {
-        const response = await axios.post(
-          'http://103.57.129.166:3000/user/api/create-link-payment',
-          {
-            amount: parseInt(amount),
-            description: 'Nap tien',
-            returnUrl: 'http://103.57.129.166:3000/success.html',
-            cancelUrl: 'http://103.57.129.166:3000/cancel.html',
+  const formik = useFormik({
+    initialValues: {
+      amount: '',
+    },
+    validationSchema: Yup.object({
+      amount: Yup.string()
+        .matches(/^[0-9]+$/, 'Chỉ được nhập số')
+        .test(
+          'greaterThan1000',
+          'Vui lòng nhập số tiền lớn hơn 1000 VNĐ',
+          value => {
+            return parseInt(value) > 1000;
           },
-        );
-        if (response.data.data.checkoutUrl) {
-          setCheckoutUrl(response.data.data.checkoutUrl);
-          setBlockInput(false);
-        } else {
-          console.log('==============>');
-        }
+        )
+        .required('Vui lòng nhập số tiền'),
+    }),
+    onSubmit: async values => {
+      console.log(values.amount);
+      const response = await axios.post(
+        'http://103.57.129.166:3000/user/api/create-link-payment',
+        {
+          amount: parseInt(values.amount),
+          description: 'Nap tien',
+          returnUrl: 'http://103.57.129.166:3000/success.html',
+          cancelUrl: 'http://103.57.129.166:3000/cancel.html',
+        },
+      );
+      if (response.data.data.checkoutUrl) {
+        setCheckoutUrl(response.data.data.checkoutUrl);
+        setBlockInput(false);
+      } else {
+        console.log('==============>ERROR');
       }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    },
+  });
 
   return (
     <SafeAreaView style={appStyle.container}>
@@ -89,22 +100,35 @@ const Recharge = () => {
           <AppInput
             placeholder={'Nhập số tiền muốn nạp'}
             keyboardType={'number-pad'}
-            onChangeText={txt => setAmount(txt)}
+            value={formik.values.amount}
+            onChangeText={formik.handleChange('amount')}
+            onBlur={formik.handleBlur('amount')}
             editable={blockInput}
           />
+          {formik.touched.amount && formik.errors.amount ? (
+            <Text style={{color: 'red', marginTop: 4}}>
+              {formik.errors.amount}
+            </Text>
+          ) : null}
         </View>
 
-        <AppButton title={'Nạp'} onPress={() => handleRecharge()} />
+        <AppButton title={'Nạp'} onPress={formik.handleSubmit} />
 
-        <View style={{flex: 1}}>
-          {checkoutUrl != '' && (
+        <View style={{flex: 1, marginBottom: 70}}>
+          {checkoutUrl != '' ? (
             <>
               <WebView
+                shouldRasterizeIOS
+                showsVerticalScrollIndicator={false}
                 source={{uri: checkoutUrl}}
                 onNavigationStateChange={handleNavigationStateChange}
                 style={{flex: 1}}
               />
             </>
+          ) : (
+            <View style={[appStyle.boxCenter,{marginTop:windowHeight*0.2}]}>
+              <Text style={appStyle.text16}>Hãy nhập số tiền muốn nạp</Text>
+            </View>
           )}
         </View>
       </View>
