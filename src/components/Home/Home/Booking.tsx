@@ -13,7 +13,11 @@ import {Row, Radio} from 'native-base';
 import AppButton from '../../AppButton';
 import SteeringWheel from '../../../assets/icon/ic_steering_wheel';
 import {appStyle} from '../../../constants/AppStyle';
-import {timeDateFormat, timeString} from '../../../utils/utils';
+import {
+  showToastMessage,
+  timeDateFormat,
+  timeString,
+} from '../../../utils/utils';
 import {
   ButtonConfig,
   ButtonProps,
@@ -86,7 +90,7 @@ const Booking = ({
 
   const handleFindCar = () => {
     if (!location) {
-      Alert.alert('Vui lòng nhập địa điểm');
+      showToastMessage('', 'Vui lòng nhập địa điểm');
       return;
     }
     setModalVisible(true);
@@ -249,7 +253,7 @@ const SelfDrivingView = ({
 };
 
 const RadioButton = ({value, tripType, text}: RadioButtonProps) => (
-  <Radio value={value} my="0.5" size="sm">
+  <Radio value={value} my="0.5" size="sm" aria-label="radio-button">
     <Text
       style={[
         {
@@ -282,6 +286,7 @@ const DriverView = ({
         <Radio.Group
           name="myRadioGroup"
           value={tripType}
+          aria-label="myRadioGroup"
           onChange={nextValue => {
             setTripType(nextValue);
             switch (nextValue) {
@@ -341,14 +346,14 @@ const DriverView = ({
         setLocation={setLocation}
       />
 
-      {showLocation && (
+      {/* {showLocation && (
         <InputField
           iconName="location-dot"
           placeholderText="Địa điểm"
           navigation={navigation}
           navigateTo="LocationPicking"
         />
-      )}
+      )} */}
       <Text style={styles.header}>Thời gian</Text>
       <InputField
         iconName="calendar"

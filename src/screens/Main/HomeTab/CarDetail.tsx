@@ -46,14 +46,18 @@ import {
   currentTimeString,
   formatPrice,
   returnTimeString,
+  showToastMessage,
   tomorrow,
 } from '../../../utils/utils';
 import OtherDetails from '../../../components/Home/Detail/OtherDetails';
 import Confirm from './Confirm';
 import Modal from 'react-native-modal';
 import axios from 'axios';
+import {LogBox} from 'react-native';
 
 Geocoder.init(REACT_APP_GOOGLE_MAPS_API_KEY || '');
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs(); //Ignore all log notifications
 
 export const SectionTitle: React.FC<{
   title: string;
@@ -199,14 +203,19 @@ const CarDetail: React.FC<CarDetailProps> = ({
     const response = await axios.get(
       `http://103.57.129.166:3000/car/api/get-by-id-car?idCar=${car_id}`,
     );
+    console.log(response.data);
     const responseData = response.data;
     const car = responseData.car;
     setCar(car);
     if (car.image) {
-      setImages(JSON.parse(car.image));
+      setImages(JSON.parse(car.image.trim().slice(1, -1)));
     }
     if (car.utilities) {
-      setAmenities(JSON.parse(car.utilities));
+      try {
+        setAmenities(JSON.parse(car.utilities));
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -243,7 +252,7 @@ const CarDetail: React.FC<CarDetailProps> = ({
       });
     } catch (error) {
       const message = (error as Error).message;
-      Alert.alert(message);
+      showToastMessage('Error', message);
     }
   };
 

@@ -137,7 +137,7 @@ export const TimeAndPlacePickup = ({
               </View>
             </Row>
           </Pressable>
-          {car.isDelivery && (
+          {/* {car.isDelivery && (
             <Pressable
               onPress={() => setReceiveCarLocation('atUserLocation')}
               style={styles.timeAndPlacePickupPressable}>
@@ -147,6 +147,7 @@ export const TimeAndPlacePickup = ({
                   my="1"
                   size="sm"
                   style={{marginRight: 10}}
+                  aria-label="atUserLocation"
                 />
                 <View style={{flex: 1}}>
                   <Row
@@ -163,7 +164,7 @@ export const TimeAndPlacePickup = ({
                 </View>
               </Row>
             </Pressable>
-          )}
+          )} */}
         </Radio.Group>
       </View>
     </View>
