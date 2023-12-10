@@ -123,6 +123,7 @@ const Surcharge = props => {
               minimumTrackTintColor="#41cff2"
               maximumTrackTintColor="#000000"
               onValueChange={value => setfirst(value)}
+              thumbTintColor="#219EBC"
             />
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -138,6 +139,7 @@ const Surcharge = props => {
               minimumTrackTintColor="#41cff2"
               maximumTrackTintColor="#000000"
               onValueChange={value => setsecond(value)}
+              thumbTintColor="#219EBC"
             />
           </View>
         ) : null}
@@ -188,6 +190,7 @@ const Surcharge = props => {
               minimumTrackTintColor="#41cff2"
               maximumTrackTintColor="#000000"
               onValueChange={value => setthird(value)}
+              thumbTintColor="#219EBC"
             />
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -201,6 +204,7 @@ const Surcharge = props => {
               minimumTrackTintColor="#41cff2"
               maximumTrackTintColor="#000000"
               onValueChange={value => setfourth(value)}
+              thumbTintColor="#219EBC"
             />
           </View>
         ) : null}
@@ -251,6 +255,7 @@ const Surcharge = props => {
               minimumTrackTintColor="#41cff2"
               maximumTrackTintColor="#000000"
               onValueChange={value => setfifth(value)}
+              thumbTintColor="#219EBC"
             />
           </View>
         ) : null}
@@ -301,6 +306,7 @@ const Surcharge = props => {
               minimumTrackTintColor="#41cff2"
               maximumTrackTintColor="#000000"
               onValueChange={value => setsixth(value)}
+              thumbTintColor="#219EBC"
             />
           </View>
         ) : null}

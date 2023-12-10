@@ -178,7 +178,7 @@ const FinalStep = props => {
   };
   return (
     <SafeAreaView style={appStyle.container}>
-      <AppHeader title="ẢNH XE" />
+      <AppHeader title="Ảnh xe" />
       <ScrollView
         style={appStyle.main}
         shouldRasterizeIOS
