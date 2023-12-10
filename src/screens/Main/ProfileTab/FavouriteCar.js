@@ -47,7 +47,7 @@ const FavouriteCar = (props) => {
   return (
     <SafeAreaView style={[appStyle.container]}>
       <AppHeader title='Xe yêu thích' />
-      <View style={{ padding: 15, width: '100%', height: '90%' }}>
+      <View style={{ paddingHorizontal: 15, width: '100%', height: '90%' }}>
         <FlatList
           style={{ marginBottom: 44 }}
           data={listCar}
