@@ -330,7 +330,7 @@ errorText:{
     height: 'auto',
     paddingVertical: 16,
     borderTopWidth: 0.5,
-    borderTopColor: COLOR.borderColor2,
+    borderTopColor: COLOR.borderColor3,
   },
   rowContent: {
     flexDirection: 'row',
