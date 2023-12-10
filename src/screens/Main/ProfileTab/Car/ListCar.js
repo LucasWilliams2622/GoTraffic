@@ -20,6 +20,7 @@ import AxiosInstance from '../../../../constants/AxiosInstance';
 import {AppContext} from '../../../../utils/AppContext';
 import AppHeader from '../../../../components/AppHeader';
 import {useIsFocused} from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
 
 const ListCar = props => {
   const {navigation, route} = props;
@@ -50,10 +51,9 @@ const ListCar = props => {
   return (
     <SafeAreaView style={appStyle.container}>
       <AppHeader
-        title='Xe của tôi'
+        title="Xe của tôi"
         icon={ICON.Add}
-        onPressRight={()=> navigation.navigate('BasicInfor')}
-
+        onPressRight={() => navigation.navigate('BasicInfor')}
       />
       <FlatList
         style={{marginBottom: 100}}
@@ -61,6 +61,22 @@ const ListCar = props => {
         renderItem={({item}) => <ItemCar data={item} />}
         keyExtractor={(item, index) => index.toString()}
         showsVerticalScrollIndicator={false}
+        ListEmptyComponent={
+          <View>
+            <FastImage
+              style={styles.imageInvisible}
+              resizeMode={'stretch'}
+              source={require('../../../../assets/image/NoTrip.png')}
+            />
+            <Text
+              style={[
+                appStyle.text16,
+                {textAlign: 'center', marginBottom: 10, fontStyle: 'italic'},
+              ]}>
+              Bạn chưa có xe nào !
+            </Text>
+          </View>
+        }
       />
     </SafeAreaView>
   );
@@ -68,4 +84,11 @@ const ListCar = props => {
 
 export default ListCar;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  imageInvisible: {
+    width: 192,
+    height: 138,
+    alignSelf: 'center',
+    marginBottom: 20,
+  },
+});

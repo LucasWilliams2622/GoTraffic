@@ -149,11 +149,6 @@ const DetailInListCar = props => {
             onPress={() => navigation.navigate('RentCost', {price: price})}
           />
           <AppProfile
-            icon={ICON.Calendar}
-            text="Lịch xe"
-            onPress={() => navigation.navigate('CalendarOfCar')}
-          />
-          <AppProfile
             icon={ICON.Heart}
             text="Giao xe tận nơi"
             onPress={() => navigation.navigate('CarDelivery', {id: id})}
@@ -171,7 +166,7 @@ const DetailInListCar = props => {
           <AppProfile
             icon={ICON.Wallet}
             text="Giấy tờ xe & Bảo hiểm"
-            onPress={() => navigation.navigate('ExhibitOfCar')}
+            onPress={() => navigation.navigate('ExhibitOfCar', {id: data.id})}
           />
           <AppProfile
             icon={ICON.Location}

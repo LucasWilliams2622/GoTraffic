@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {appStyle} from '../../../constants/AppStyle';
+import {appStyle, windowHeight} from '../../../constants/AppStyle';
 import {FlatList, ScrollView} from 'native-base';
 import {COLOR, ICON} from '../../../constants/Theme';
 import ItemTrip from '../../../components/Support/ItemTrip';
@@ -75,16 +75,17 @@ const Trip = () => {
         onPressRight={() => navigation.navigate('HistoryTrip')}
         notLeft
       />
-      <FastImage
-        source={{
-          uri: 'https://i.pinimg.com/originals/4a/24/2b/4a242b1af58a55c62deaf5a972622909.gif',
-        }}
-        style={{width: '100%', height: '30%', marginTop: 20}}
-      />
+
       <ScrollView style={[appStyle.main, {marginBottom: 70}]}>
+        <FastImage
+          source={{
+            uri: 'https://i.pinimg.com/originals/4a/24/2b/4a242b1af58a55c62deaf5a972622909.gif',
+          }}
+          style={{width: '100%', height: 200}}
+        />
         <Text style={styles.text1}>Hiện tại</Text>
         {isLoading == true ? (
-          <View>
+          <View style={appStyle.ma}>
             <FastImage
               style={styles.imageInvisible}
               resizeMode={'stretch'}
@@ -99,34 +100,29 @@ const Trip = () => {
             </Text>
           </View>
         ) : (
-          <FlatList
+          <Swipelist
             style={{width: '100%', marginBottom: 65}}
             data={listBookingCurrent}
-            renderItem={({item}) => (
-              <ItemTrip data={item} handleCancle={cancelBooking} />
-            )}
-            keyExtractor={item => item.id}
-            showsVerticalScrollIndicator={false}
-            ListEmptyComponent={
-              <View>
-                <FastImage
-                  style={styles.imageInvisible}
-                  resizeMode={'stretch'}
-                  source={require('../../../assets/image/NoTrip.png')}
-                />
-                <Text
-                  style={[
-                    appStyle.text16,
-                    {
-                      textAlign: 'center',
-                      marginBottom: 10,
-                      fontStyle: 'italic',
-                    },
-                  ]}>
-                  Bạn chưa có lịch sử chuyến
-                </Text>
+            renderRightItem={(data, index) => (
+              <View key={index} >
+                <ItemTrip data={data} car={listBookingCurrent} />
               </View>
-            }
+            )}
+            renderHiddenItem={(data, index) => (
+              <TouchableOpacity
+                style={[styles.rightAction, {backgroundColor: COLOR.red2}]}
+                onPress={() => {
+                  console.log(data.id);
+                  cancelBooking(data.id);
+                }}>
+                <FastImage
+                  source={ICON.Delete}
+                  style={appStyle.iconBig}
+                  tintColor={COLOR.white}
+                />
+              </TouchableOpacity>
+            )}
+            rightOpenValue={100}
           />
         )}
       </ScrollView>
@@ -137,11 +133,6 @@ const Trip = () => {
 export default Trip;
 
 const styles = StyleSheet.create({
-  viewTitle: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    borderBottomWidth: 0.5,
-  },
   imageInvisible: {
     width: 192,
     height: 138,
@@ -181,8 +172,8 @@ const styles = StyleSheet.create({
     marginVertical: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    height: '76%',
-    marginTop: 40,
+    height: '84%',
+    marginTop: 8,
     marginLeft: -5,
   },
 });

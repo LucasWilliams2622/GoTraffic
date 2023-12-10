@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {appStyle} from '../../../../../constants/AppStyle';
 import ItemTrip from '../../../../../components/Support/ItemTrip';
 import ItemCancleTrip from '../../../../../components/Support/ItemCancleTrip';
@@ -7,14 +7,16 @@ import { FlatList } from 'native-base';
 import AxiosInstance from '../../../../../constants/AxiosInstance';
 import {useIsFocused} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
+import { AppContext } from '../../../../../utils/AppContext';
 
 const CancleTrip = () => {
    const [data, setData] = useState('');
+  const {idUser} = useContext(AppContext);
   const isFocused = useIsFocused();
    const getCarByIdUser = async () => {
      try {
        const response = await AxiosInstance().get(
-         '/booking/api/get-list-cancel?idOwner=1',
+         '/booking/api/get-list-cancel?idOwner='+idUser,
        );
        if (response.result) {
          setData(response.booking);

@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {appStyle} from '../../../../../constants/AppStyle';
 import ItemActiveTrip from '../../../../../components/Support/ItemActiveTrip';
 import {FlatList} from 'native-base';
@@ -8,14 +8,16 @@ import {useIsFocused} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import {showToastMessage} from '../../../../../utils/utils';
 import { ICON } from '../../../../../constants/Theme';
+import { AppContext } from '../../../../../utils/AppContext';
 
 const ActiveTrip = () => {
   const isFocused = useIsFocused();
+  const {idUser} = useContext(AppContext);
   const [data, setData] = useState('');
   const getCarByIdUser = async () => {
     try {
       const response = await AxiosInstance().get(
-        '/booking/api/get-list-processing?idOwner=1',
+        '/booking/api/get-list-processing?idOwner='+idUser,
       );
       if (response.result) {
         setData(response.booking);

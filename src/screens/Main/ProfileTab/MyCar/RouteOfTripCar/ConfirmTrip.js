@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {appStyle} from '../../../../../constants/AppStyle';
 import ItemConfirmTrip from '../../../../../components/Support/ItemConfirmTrip';
 import {FlatList} from 'native-base';
@@ -9,14 +9,16 @@ import Swipelist from 'react-native-swipeable-list-view';
 import {showToastMessage} from '../../../../../utils/utils';
 import {ICON} from '../../../../../constants/Theme';
 import FastImage from 'react-native-fast-image';
+import { AppContext } from '../../../../../utils/AppContext';
 
 const ConfirmTrip = () => {
   const isFocused = useIsFocused();
+  const {idUser} = useContext(AppContext);
   const [data, setData] = useState('');
   const getCarByIdUser = async () => {
     try {
       const response = await AxiosInstance().get(
-        '/booking/api/get-list-pending?idOwner=1',
+        '/booking/api/get-list-pending?idOwner='+idUser,
       );
       if (response.result) {
         //console.log(response.booking[0].Car.address);

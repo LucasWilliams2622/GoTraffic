@@ -19,6 +19,7 @@ const Notification = () => {
   const {idUser} = useContext(AppContext);
   const [checkLength, setCheckLength] = useState(false);
   const [heightList, setHeightList] = useState(0);
+  const isFocused = useIsFocused();
 
   const getListNotifications = async () => {
     try {
@@ -95,7 +96,7 @@ const Notification = () => {
   useEffect(() => {
     getListNotificationsByIDUser();
     getListNotifications();
-  }, [useIsFocused]);
+  }, [isFocused]);
   return (
     <SafeAreaView style={appStyle.container}>
       <AppHeader title="Thông báo" notLeft />
