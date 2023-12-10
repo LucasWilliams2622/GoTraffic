@@ -184,7 +184,7 @@ const FindingCar = ({
           />
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => setModalVisible(true)}
+          onPress={() => setChangeBookingModalVisible(true)}
           style={styles.viewSearch}>
           <View style={{alignItems: 'center', width: '90%'}}>
             <Text style={appStyle.text14Bold}>
@@ -218,6 +218,7 @@ const FindingCar = ({
           style={{
             padding: 0,
             margin: 0,
+            paddingHorizontal: 14,
           }}>
           <ButtonSelected
             text="Xóa"
