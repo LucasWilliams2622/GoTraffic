@@ -102,7 +102,9 @@ const Trip = () => {
           <FlatList
             style={{width: '100%', marginBottom: 65}}
             data={listBookingCurrent}
-            renderItem={({item}) => <ItemTrip data={item} />}
+            renderItem={({item}) => (
+              <ItemTrip data={item} handleCancle={cancelBooking} />
+            )}
             keyExtractor={item => item.id}
             showsVerticalScrollIndicator={false}
             ListEmptyComponent={

@@ -14,7 +14,7 @@ import Moment from 'moment';
 
 const ItemTrip = props => {
   const navigation = useNavigation();
-  const {data} = props;
+  const {data, handleCancle} = props;
   const [openDetail, setOpenDetail] = useState(false);
   const checkStatus = () => {
     if (data.status == 5) {
@@ -33,7 +33,7 @@ const ItemTrip = props => {
       <TouchableOpacity onPress={() => checkStatus()}>
         {openDetail == false ? (
           <View style={styles.container}>
-            <View style={[{justifyContent:'center'}]}>
+            <View style={[{justifyContent: 'center'}]}>
               {!isImageUrlValid ? (
                 <FastImage
                   style={styles.image}
@@ -304,6 +304,9 @@ const ItemTrip = props => {
               </View>
               {data.status == 1 ? (
                 <TouchableOpacity
+                  onPress={() => {
+                    handleCancle(data.id);
+                  }}
                   style={{
                     backgroundColor: 'red',
                     width: 140,
