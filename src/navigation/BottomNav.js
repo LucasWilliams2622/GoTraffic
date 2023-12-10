@@ -45,6 +45,8 @@ import LeaseCar from '../screens/Main/ProfileTab/MyCar/Contract/LeaseCar';
 import BasicInfor from '../screens/Main/ProfileTab/Car/BasicInfor';
 import DetailsInfor from '../screens/Main/ProfileTab/Car/DetailsInfor';
 import FinalStep from '../screens/Main/ProfileTab/Car/FinalStep';
+import PickLocation from '../screens/Main/ProfileTab/Car/PickLocation';
+
 import ListCar from '../screens/Main/ProfileTab/Car/ListCar';
 import VerifyLicense from '../screens/Main/ProfileTab/Account/VerifyLicense';
 import ListCarCity from '../components/Home/Home/ListCarCity';
@@ -213,6 +215,9 @@ const StackProfile = () => {
       <Stack.Screen name="Test2" component={Test2} />
       <Stack.Screen name="Recharge" component={Recharge} />
       <Stack.Screen name="WithdrawRequest" component={WithdrawRequest} />
+      <Stack.Screen name="PickLocation" component={PickLocation} />
+
+      
     </Stack.Navigator>
   );
 };

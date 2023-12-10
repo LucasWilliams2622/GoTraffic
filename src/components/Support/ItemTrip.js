@@ -391,6 +391,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-around',
     marginHorizontal: 4,
+    paddingVertical: 10,
+    paddingHorizontal: 5,
     borderRadius: 14,
     borderColor: COLOR.borderColor,
     shadowColor: '#000',
