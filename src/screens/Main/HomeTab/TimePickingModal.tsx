@@ -19,87 +19,6 @@ import {Picker} from '@react-native-picker/picker';
 import Modal from 'react-native-modal';
 import moment from 'moment';
 
-const BottomBar: React.FC<{
-  startDate: Date | null;
-  endDate: Date | null;
-  startTime: string;
-  endTime: string;
-  toggle: any;
-  setSelectedTime: any;
-}> = ({startDate, endDate, startTime, endTime, toggle, setSelectedTime}) => {
-  return (
-    <View
-      style={{
-        backgroundColor: COLOR.white,
-        width: '100%',
-        position: 'absolute',
-        bottom: 0,
-        paddingHorizontal: 20,
-        paddingVertical: 20,
-        borderTopColor: COLOR.borderColor,
-        borderTopWidth: StyleSheet.hairlineWidth,
-        paddingBottom: 30,
-      }}>
-      <Row style={{justifyContent: 'space-between', alignItems: 'center'}}>
-        <View>
-          <Text style={{fontWeight: 'bold'}}>
-            {startDate &&
-              endDate &&
-              `${
-                startDate.getHours() < 10
-                  ? '0' + startDate.getHours()
-                  : startDate.getHours()
-              }h ${
-                startDate.getMinutes() < 10
-                  ? '0' + startDate.getMinutes()
-                  : startDate.getMinutes()
-              }, ${
-                startDate.getDate() < 10
-                  ? '0' + startDate.getDate()
-                  : startDate.getDate()
-              }/${
-                startDate.getMonth() + 1 < 10
-                  ? '0' + (startDate.getMonth() + 1)
-                  : startDate.getMonth() + 1
-              } - ${
-                endDate.getHours() < 10
-                  ? '0' + endDate.getHours()
-                  : endDate.getHours()
-              }h ${
-                endDate.getMinutes() < 10
-                  ? '0' + endDate.getMinutes()
-                  : endDate.getMinutes()
-              }, ${
-                endDate.getDate() < 10
-                  ? '0' + endDate.getDate()
-                  : endDate.getDate()
-              }/${
-                endDate.getMonth() + 1 < 10
-                  ? '0' + (endDate.getMonth() + 1)
-                  : endDate.getMonth() + 1
-              }`}
-          </Text>
-          <Text>
-            Số ngày thuê:{' '}
-            {startDate && endDate && endDate.getDate() - startDate.getDate()}{' '}
-            ngày
-          </Text>
-        </View>
-
-        <Pressable
-          style={{backgroundColor: COLOR.fifth, padding: 15, borderRadius: 8}}
-          onPress={() => {
-            setSelectedTime({startTime, endTime, startDate, endDate});
-            toggle();
-          }}>
-          <Text style={{color: COLOR.white, fontWeight: 'bold'}}>
-            Tiếp theo
-          </Text>
-        </Pressable>
-      </Row>
-    </View>
-  );
-};
 
 const TimePickingModal: React.FC<{
   price?: number;
@@ -137,34 +56,36 @@ const TimePickingModal: React.FC<{
     setTimePickerVisibility(false);
   };
 
-  const onDayPress = (day: DateData) => {
-    const selectedDate = moment.utc(day.dateString).toDate();
-
+  const isDateRangeOverlap = (
+    selectedStartDate: Date,
+    selectedEndDate: Date,
+  ) => {
     if (car && car.Booking.length > 0) {
-      const bookedRangeFound = Object.values(car.Booking).some(booking => {
-        const bookingStartDate = booking.timeFrom;
-        const bookingEndDate = booking.timeTo;
-        console.log('\n\n');
-        console.log('selectedDate', selectedDate);
-        console.log('bookingStartDate', bookingStartDate);
-        console.log('bookingEndDate', bookingEndDate);
-        // selectedDate.setHours(0, 0, 0, 0);
-        // if (bookingStartDate != null) bookingStartDate.setHours(0, 0, 0, 0);
-        // if (bookingEndDate != null) bookingEndDate.setHours(0, 0, 0, 0);
-        console.log(
-          'bookedRangeFound',
-          selectedDate >= bookingStartDate && selectedDate <= bookingEndDate,
-        );
+      for (const booking of car.Booking) {
+        const bookingStartDate = new Date(booking.timeFrom);
+        const bookingEndDate = new Date(booking.timeTo);
 
-        return (
-          selectedDate >= bookingStartDate && selectedDate <= bookingEndDate
-        );
-      });
-      if (bookedRangeFound) {
-        showToastMessage('', 'Ngày này đã có người đặt rồi');
-        return;
+        // Check if the selected range overlaps with any booked range
+        if (
+          (selectedStartDate >= bookingStartDate &&
+            selectedStartDate <= bookingEndDate) ||
+          (selectedEndDate >= bookingStartDate &&
+            selectedEndDate <= bookingEndDate) ||
+          (selectedStartDate <= bookingStartDate &&
+            selectedEndDate >= bookingEndDate)
+        ) {
+          return true; // Overlapping dates found
+        }else{
+          console.log("ERRROR");
+          
+        }
       }
     }
+    return false; // No overlapping dates found
+  };
+
+  const onDayPress = (day: DateData) => {
+    const selectedDate = moment.utc(day.dateString).toDate();
 
     if (!startDate) {
       setStartDate(selectedDate);
@@ -198,44 +119,7 @@ const TimePickingModal: React.FC<{
       });
       setEndDate(selectedDate);
       // Check if starting date is within any booked range
-      // if (car && car.Booking.length > 0) {
-      //   const bookedRangeFound = Object.values(car.Booking).some(booking => {
-      //     const bookingStartDate = booking.timeFrom;
-      //     const bookingEndDate = booking.timeTo;
-      //     console.log('bookingStartDate', bookingStartDate);
-      //     console.log('bookingEndDate', bookingEndDate);
-      //     return (
-      //       selectedDate >= bookingStartDate && selectedDate <= bookingEndDate
-      //     );
-      //   });
 
-        if (bookedRangeFound) {
-          showToastMessage('', 'Ngày này đã có người đặt rồi');
-          return;
-        }
-
-      //   // const bookedRangeFound = Object.values(bookedDates).some(booking => {
-      //   //   const bookingStartDate = booking.startingDay
-      //   //     ? moment.utc(booking.date).toDate()
-      //   //     : moment.utc(booking.date).subtract(1, 'days').toDate();
-      //   //   console.log('bookingStartDate', bookingStartDate);
-      //   //   const bookingEndDate = booking.endingDay
-      //   //     ? moment.utc(booking.date).add(1, 'days').toDate()
-      //   //     : moment.utc(booking.date).toDate();
-
-      //   //   console.log('bookingStartDate 2: ', bookingStartDate);
-      //   //   console.log('bookingEndDate', bookingEndDate);
-      //   //   console.log('selectedDate', selectedDate);
-      //   //   return (
-      //   //     selectedDate >= bookingStartDate && selectedDate <= bookingEndDate
-      //   //   );
-      //   // });
-
-      //   // if (bookedRangeFound) {
-      //   //   showToastMessage('', 'Ngày này đã có người đặt rồi');
-      //   //   return;
-      //   // }
-      // }
       setMarkedDates(prevState => ({...prevState, ...newMarkedDates}));
     } else {
       setStartDate(selectedDate);
@@ -470,6 +354,17 @@ const TimePickingModal: React.FC<{
 
   const DayComponent = (props: any) => renderDay({...props, bookedDates});
 
+  const handleNextPress = () => {
+    if (startDate && endDate) {
+      if (isDateRangeOverlap(startDate, endDate)) {
+        alert("Ngày này đã được dặt, Vui lòng chọn ngày khác")
+        showToastMessage('error','Ngày này đã được dặt, Vui lòng chọn ngày khác');
+      } else {
+        setSelectedTime({startTime, endTime, startDate, endDate});
+        toggle();
+      }
+    }
+  };
   return (
     <SafeAreaView style={{backgroundColor: COLOR.white, flex: 1}}>
       <View style={{alignItems: 'center', justifyContent: 'center'}}>
@@ -589,14 +484,77 @@ const TimePickingModal: React.FC<{
           </Row>
         </Pressable>
       </Row>
-      <BottomBar
-        startDate={startDate}
-        endDate={endDate}
-        startTime={startTime}
-        endTime={endTime}
-        setSelectedTime={setSelectedTime}
-        toggle={toggle}
-      />
+      <View
+      style={{
+        backgroundColor: COLOR.white,
+        width: '100%',
+        position: 'absolute',
+        bottom: 0,
+        paddingHorizontal: 20,
+        paddingVertical: 20,
+        borderTopColor: COLOR.borderColor,
+        borderTopWidth: StyleSheet.hairlineWidth,
+        paddingBottom: 30,
+      }}>
+      <Row style={{justifyContent: 'space-between', alignItems: 'center'}}>
+        <View>
+          <Text style={{fontWeight: 'bold'}}>
+            {startDate &&
+              endDate &&
+              `${
+                startDate.getHours() < 10
+                  ? '0' + startDate.getHours()
+                  : startDate.getHours()
+              }h ${
+                startDate.getMinutes() < 10
+                  ? '0' + startDate.getMinutes()
+                  : startDate.getMinutes()
+              }, ${
+                startDate.getDate() < 10
+                  ? '0' + startDate.getDate()
+                  : startDate.getDate()
+              }/${
+                startDate.getMonth() + 1 < 10
+                  ? '0' + (startDate.getMonth() + 1)
+                  : startDate.getMonth() + 1
+              } - ${
+                endDate.getHours() < 10
+                  ? '0' + endDate.getHours()
+                  : endDate.getHours()
+              }h ${
+                endDate.getMinutes() < 10
+                  ? '0' + endDate.getMinutes()
+                  : endDate.getMinutes()
+              }, ${
+                endDate.getDate() < 10
+                  ? '0' + endDate.getDate()
+                  : endDate.getDate()
+              }/${
+                endDate.getMonth() + 1 < 10
+                  ? '0' + (endDate.getMonth() + 1)
+                  : endDate.getMonth() + 1
+              }`}
+          </Text>
+          <Text>
+            Số ngày thuê:{' '}
+            {startDate && endDate && endDate.getDate() - startDate.getDate()}{' '}
+            ngày
+          </Text>
+        </View>
+
+        <Pressable
+          style={{backgroundColor: COLOR.fifth, padding: 15, borderRadius: 8}}
+          // onPress={() => {
+          //   // setSelectedTime({startTime, endTime, startDate, endDate});
+          //   // toggle();
+          // }}
+          onPress={handleNextPress}>
+          <Text style={{color: COLOR.white, fontWeight: 'bold'}}>
+            Tiếp theo
+          </Text>
+        </Pressable>
+      </Row>
+    </View>
     </SafeAreaView>
   );
 };
