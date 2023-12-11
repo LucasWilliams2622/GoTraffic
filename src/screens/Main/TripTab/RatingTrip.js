@@ -24,23 +24,29 @@ const RatingTrip = props => {
 
   const sendFeedback = async () => {
     try {
-      const response = await axios.post(
-        'http://103.57.129.166:3000/review/api/add',
-        {
-          idBooking: id,
-          content: comment,
-          rating: selectedStars,
-        },
-      );
-      console.log(response);
-      if (response.data.result) {
-        console.log(response);
-        setSelectedStars(response.rating);
-        setComment(response.content);
-        showToastMessage('', 'Đánh giá thành công ');
-        navigation.navigate('HistoryTrip');
+      if (comment == null) {
+        showToastMessage('error', 'Vui lòng nhập đánh giá');
+      } else if (selectedStars < 1) {
+        showToastMessage('error', 'Số sao thấp nhất là 1');
       } else {
-        showToastMessage('', 'Đánh giá thất bại ', ICON.cancelWhite);
+        const response = await axios.post(
+          'http://103.57.129.166:3000/review/api/add',
+          {
+            idBooking: id,
+            content: comment,
+            rating: selectedStars,
+          },
+        );
+        console.log(response);
+        if (response.data.result) {
+          console.log(response);
+          setSelectedStars(response.rating);
+          setComment(response.content);
+          showToastMessage('', 'Đánh giá thành công ');
+          navigation.navigate('HistoryTrip');
+        } else {
+          showToastMessage('', 'Đánh giá thất bại ', ICON.cancelWhite);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -53,7 +59,7 @@ const RatingTrip = props => {
       );
       if (response.result) {
         console.log(response.review[0].user.id);
-        if (response.review[0].user.id == 9) {
+        if (response.review[0].user.id == idUser) {
           navigation.navigate('HistoryTrip');
           showToastMessage('', 'Đã đánh giá rồi ');
         } else {

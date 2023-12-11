@@ -18,6 +18,8 @@ const Notification = () => {
   const [loading, setLoading] = useState(true);
   const {idUser} = useContext(AppContext);
   const [checkLength, setCheckLength] = useState(false);
+  const [heightList, setHeightList] = useState(0);
+  const isFocused = useIsFocused();
 
   const getListNotifications = async () => {
     try {
@@ -46,6 +48,11 @@ const Notification = () => {
         setDataTrip(response.notifications);
         if (response.notifications.length > 0) {
           setCheckLength(true);
+          if (response.notifications.length < 5) {
+            setHeightList(windowHeight * 0.106 * response.notifications.length);
+          }else{
+            setHeightList(windowHeight * 0.5);
+          }
         } else {
           setCheckLength(false);
         }
@@ -89,7 +96,7 @@ const Notification = () => {
   useEffect(() => {
     getListNotificationsByIDUser();
     getListNotifications();
-  }, [useIsFocused]);
+  }, [isFocused]);
   return (
     <SafeAreaView style={appStyle.container}>
       <AppHeader title="Thông báo" notLeft />
@@ -164,7 +171,7 @@ const Notification = () => {
         ) : (
           checkLength && (
             <FlatList
-              style={{width: '100%', height: windowHeight * 0.5}}
+              style={{width: '100%', height: heightList}}
               data={dataTrip}
               renderItem={({item}) => (
                 <ItemNotification

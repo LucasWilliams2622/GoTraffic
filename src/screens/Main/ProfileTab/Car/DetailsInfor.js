@@ -245,7 +245,7 @@ const DetailsInfor = props => {
       <AppHeader title="Thông tin chi tiết" />
       <View style={{flex: 1, paddingHorizontal: 10}}>
         <ScrollView
-          style={{flex: 1, width: '100%', marginBottom: 20}}
+          style={{flex: 1, width: '100%', marginBottom: 10}}
           showsVerticalScrollIndicator={false}>
           {/* Địa chỉ */}
           <View style={appStyle.cardInfo}>
@@ -468,7 +468,7 @@ const DetailsInfor = props => {
                 justifyContent: 'space-between',
                 height: 50,
               }}>
-              <Text style={appStyle.text16Bold}>GIAO NHẬN XE TẬN NƠI</Text>
+              <Text style={appStyle.text165}>Giao nhận xe tận nơi</Text>
               <Switch
                 style={{alignSelf: 'center', marginTop: -20}}
                 value={isEnabled}
@@ -537,8 +537,8 @@ const DetailsInfor = props => {
                 justifyContent: 'space-between',
                 height: 50,
               }}>
-              <Text style={[appStyle.text16Bold, {marginRight: 10}]}>
-                GIỚI HẠN SỐ KM THUÊ XE
+              <Text style={[appStyle.text165, {marginRight: 10}]}>
+                Giới hạn km thuê xe
               </Text>
               <Switch
                 style={{alignSelf: 'center', marginTop: -20}}
@@ -630,7 +630,7 @@ const DetailsInfor = props => {
 
         <AppButton
           title="Tiếp theo"
-          marginBottom={90}
+          marginBottom={80}
           onPress={() => handleNext()}
         />
       </View>
@@ -674,7 +674,7 @@ const DetailsInfor = props => {
       </Modal>
       <Modal animationType="fade" transparent={true} visible={isModalVisible2}>
         <TouchableOpacity
-          // style={appStyle.modalBackdrop}
+          style={appStyle.modalBackdrop}
           onPress={toggleModal2}
         />
         <View style={styles.modalContainer}>

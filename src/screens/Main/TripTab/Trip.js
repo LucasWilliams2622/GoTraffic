@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {appStyle} from '../../../constants/AppStyle';
+import {appStyle, windowHeight} from '../../../constants/AppStyle';
 import {FlatList, ScrollView} from 'native-base';
 import {COLOR, ICON} from '../../../constants/Theme';
 import ItemTrip from '../../../components/Support/ItemTrip';
@@ -22,7 +22,7 @@ import Swipelist from 'react-native-swipeable-list-view';
 import {showToastMessage} from '../../../utils/utils';
 const Trip = () => {
   const {infoUser, idUser} = useContext(AppContext);
-  const [listBookingCurrent, setListBookingCurrent] = useState(null);
+  const [listBookingCurrent, setListBookingCurrent] = useState([]);
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const [isLoading, setIsLoading] = useState(true);
@@ -34,7 +34,7 @@ const Trip = () => {
       );
       if (response.result) {
         setListBookingCurrent(response.booking);
-        console.log(response.booking[0] == null);
+        console.log(response.booking);
         if (response.booking[0] == null) {
           setIsLoading(true);
         } else {
@@ -75,16 +75,17 @@ const Trip = () => {
         onPressRight={() => navigation.navigate('HistoryTrip')}
         notLeft
       />
-      <FastImage
-        source={{
-          uri: 'https://i.pinimg.com/originals/4a/24/2b/4a242b1af58a55c62deaf5a972622909.gif',
-        }}
-        style={{width: '100%', height: '30%', marginTop: 20}}
-      />
+
       <ScrollView style={[appStyle.main, {marginBottom: 70}]}>
+        <FastImage
+          source={{
+            uri: 'https://i.pinimg.com/originals/4a/24/2b/4a242b1af58a55c62deaf5a972622909.gif',
+          }}
+          style={{width: '100%', height: 200}}
+        />
         <Text style={styles.text1}>Hiện tại</Text>
         {isLoading == true ? (
-          <View>
+          <View style={appStyle.ma}>
             <FastImage
               style={styles.imageInvisible}
               resizeMode={'stretch'}
@@ -100,9 +101,10 @@ const Trip = () => {
           </View>
         ) : (
           <Swipelist
+            style={{width: '100%', marginBottom: 65}}
             data={listBookingCurrent}
             renderRightItem={(data, index) => (
-              <View key={index}>
+              <View key={index} >
                 <ItemTrip data={data} car={listBookingCurrent} />
               </View>
             )}
@@ -123,14 +125,6 @@ const Trip = () => {
             rightOpenValue={100}
           />
         )}
-        <Text
-          style={{
-            textAlign: 'center',
-            fontStyle: 'italic',
-            color: COLOR.primary,
-          }}>
-          Cuộn sang trái để hủy chuyến
-        </Text>
       </ScrollView>
     </SafeAreaView>
   );
@@ -139,11 +133,6 @@ const Trip = () => {
 export default Trip;
 
 const styles = StyleSheet.create({
-  viewTitle: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    borderBottomWidth: 0.5,
-  },
   imageInvisible: {
     width: 192,
     height: 138,
@@ -183,8 +172,8 @@ const styles = StyleSheet.create({
     marginVertical: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    height: '76%',
-    marginTop: 40,
+    height: '84%',
+    marginTop: 8,
     marginLeft: -5,
   },
 });
