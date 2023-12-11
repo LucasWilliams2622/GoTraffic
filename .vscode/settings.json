@@ -1,7 +1,7 @@
 {
     "java.compile.nullAnalysis.mode": "automatic",
     "java.configuration.updateBuildConfiguration": "automatic",
-    "editor.fontSize": 14,
+    "editor.fontSize": 16,
     "search.exclude": {
         "**/node_modules": false
     }

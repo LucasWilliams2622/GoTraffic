@@ -15,7 +15,7 @@ const RentCost = props => {
   };
   return (
     <SafeAreaView style={appStyle.container}>
-      <AppHeader title="Gía xe" />
+      <AppHeader title="Giá xe" />
       <View style={styles.line1}>
         <Text
           style={[appStyle.text16, {color: COLOR.white, textAlign: 'center'}]}>

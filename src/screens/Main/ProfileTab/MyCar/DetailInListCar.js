@@ -41,11 +41,7 @@ const DetailInListCar = props => {
       if (response.result) {
         console.log(response.car);
         console.log(response.car.Booking[0] == null);
-        if (response.car.Booking[0] == null) {
-          setSelection(false);
-        } else {
-          setSelection(true);
-        }
+
         setData(response.car);
       } else {
         console.log('Failed to get car');
@@ -95,7 +91,7 @@ const DetailInListCar = props => {
         source={require('../../../../assets/image/bg2.jpg')}
       />
       <AppHeader
-        title={'CHI TIẾT XE'}
+        title={'Chi tiết xe'}
         icon={ICON.Delete}
         onPressRight={() => setModalVisible(true)}
       />
@@ -118,6 +114,7 @@ const DetailInListCar = props => {
             <Text style={[appStyle.text16Bold]}>{data.name}</Text>
             <View style={styles.checkboxContainer}>
               <SwitchToggle
+                onPress={() => setSelection(!isSelected)}
                 switchOn={isSelected}
                 circleColorOff={COLOR.background}
                 circleColorOn={COLOR.background}
@@ -136,7 +133,7 @@ const DetailInListCar = props => {
                   borderRadius: 20,
                 }}
               />
-              <Text style={styles.label}>Đã cho thuê</Text>
+              <Text style={styles.label}>Cho thuê xe</Text>
             </View>
           </View>
         </View>
@@ -148,11 +145,6 @@ const DetailInListCar = props => {
             icon={ICON.Trip}
             text="Giá cho thuê"
             onPress={() => navigation.navigate('RentCost', {price: price})}
-          />
-          <AppProfile
-            icon={ICON.Calendar}
-            text="Lịch xe"
-            onPress={() => navigation.navigate('CalendarOfCar')}
           />
           <AppProfile
             icon={ICON.Heart}
@@ -172,7 +164,7 @@ const DetailInListCar = props => {
           <AppProfile
             icon={ICON.Wallet}
             text="Giấy tờ xe & Bảo hiểm"
-            onPress={() => navigation.navigate('ExhibitOfCar')}
+            onPress={() => navigation.navigate('ExhibitOfCar', {id: data.id})}
           />
           <AppProfile
             icon={ICON.Location}

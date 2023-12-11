@@ -59,10 +59,7 @@ const CarDelivery = props => {
   };
   return (
     <SafeAreaView style={appStyle.container}>
-      <AppHeader title="GIAO NHẬN XE TẬN NƠI" />
-      <View
-        style={{backgroundColor: COLOR.borderColor2, height: 1, width: '100%'}}
-      />
+      <AppHeader title="Giao nhận xe tận nơi" />
       <View style={[appStyle.main, {marginTop: 20}]}>
         <View
           style={{
@@ -91,6 +88,7 @@ const CarDelivery = props => {
               minimumTrackTintColor="#41cff2"
               maximumTrackTintColor="#000000"
               onValueChange={value => setfirst(value)}
+              thumbTintColor="#219EBC"
             />
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -104,6 +102,7 @@ const CarDelivery = props => {
               minimumTrackTintColor="#41cff2"
               maximumTrackTintColor="#000000"
               onValueChange={value => setsecond(value)}
+              thumbTintColor="#219EBC"
             />
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -118,6 +117,7 @@ const CarDelivery = props => {
               minimumTrackTintColor="#41cff2"
               maximumTrackTintColor="#000000"
               onValueChange={value => setthird(value)}
+              thumbTintColor="#219EBC"
             />
           </View>
         ) : null}

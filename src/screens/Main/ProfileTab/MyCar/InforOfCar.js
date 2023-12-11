@@ -296,13 +296,15 @@ const InforOfCar = props => {
 
         <View style={appStyle.cardInfo}>
           <Text style={appStyle.text165}>Mô tả xe</Text>
-          <AppInput
-            height={windowHeight * 0.17}
-            marginTop={8}
-            placeholder="Mô tả xe của bạn"
-            value={description}
-            onChangeText={text => setDescription(text)}
-          />
+          <View style={[appStyle.inputBig]}>
+            <TextInput
+              style={{paddingVertical: 0, alignSelf: 'flex-start'}}
+              placeholder="Mô tả xe của bạn"
+              value={description}
+              multiline
+              onChangeText={text => setDescription(text)}
+            />
+          </View>
         </View>
 
         <View style={appStyle.cardInfo}>

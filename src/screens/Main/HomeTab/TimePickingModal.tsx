@@ -12,8 +12,8 @@ import {COLOR} from '../../../constants/Theme';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import {CalendarList, DateData, LocaleConfig} from 'react-native-calendars';
 import {DayProps} from 'react-native-calendars/src/calendar/day';
-import {DateRange, MarkedDate} from '../../../types';
-import {formatPrice} from '../../../utils/utils';
+import {Car, DateRange, MarkedDate} from '../../../types';
+import {formatPrice, showToastMessage} from '../../../utils/utils';
 import {Row} from 'native-base';
 import {Picker} from '@react-native-picker/picker';
 import Modal from 'react-native-modal';
@@ -139,20 +139,33 @@ const TimePickingModal: React.FC<{
 
   const onDayPress = (day: DateData) => {
     const selectedDate = moment.utc(day.dateString).toDate();
-    const bookedDatesArray = bookedDates
-      ? Object.entries(bookedDates).map(([date, booking]) => ({
-          date,
-          ...booking,
-        }))
-      : [];
-    if (
-      bookedDatesArray.some(
-        booking => booking.date === selectedDate.toISOString().slice(0, 10),
-      )
-    ) {
-      Alert.alert('Ngày này đã có người đặt rồi');
-      return;
+
+    if (car && car.Booking.length > 0) {
+      const bookedRangeFound = Object.values(car.Booking).some(booking => {
+        const bookingStartDate = booking.timeFrom;
+        const bookingEndDate = booking.timeTo;
+        console.log('\n\n');
+        console.log('selectedDate', selectedDate);
+        console.log('bookingStartDate', bookingStartDate);
+        console.log('bookingEndDate', bookingEndDate);
+        // selectedDate.setHours(0, 0, 0, 0);
+        // if (bookingStartDate != null) bookingStartDate.setHours(0, 0, 0, 0);
+        // if (bookingEndDate != null) bookingEndDate.setHours(0, 0, 0, 0);
+        console.log(
+          'bookedRangeFound',
+          selectedDate >= bookingStartDate && selectedDate <= bookingEndDate,
+        );
+
+        return (
+          selectedDate >= bookingStartDate && selectedDate <= bookingEndDate
+        );
+      });
+      if (bookedRangeFound) {
+        showToastMessage('', 'Ngày này đã có người đặt rồi');
+        return;
+      }
     }
+
     if (!startDate) {
       setStartDate(selectedDate);
       setMarkedDates(prevState => ({
@@ -184,6 +197,45 @@ const TimePickingModal: React.FC<{
         }
       });
       setEndDate(selectedDate);
+      // Check if starting date is within any booked range
+      // if (car && car.Booking.length > 0) {
+      //   const bookedRangeFound = Object.values(car.Booking).some(booking => {
+      //     const bookingStartDate = booking.timeFrom;
+      //     const bookingEndDate = booking.timeTo;
+      //     console.log('bookingStartDate', bookingStartDate);
+      //     console.log('bookingEndDate', bookingEndDate);
+      //     return (
+      //       selectedDate >= bookingStartDate && selectedDate <= bookingEndDate
+      //     );
+      //   });
+
+        if (bookedRangeFound) {
+          showToastMessage('', 'Ngày này đã có người đặt rồi');
+          return;
+        }
+
+      //   // const bookedRangeFound = Object.values(bookedDates).some(booking => {
+      //   //   const bookingStartDate = booking.startingDay
+      //   //     ? moment.utc(booking.date).toDate()
+      //   //     : moment.utc(booking.date).subtract(1, 'days').toDate();
+      //   //   console.log('bookingStartDate', bookingStartDate);
+      //   //   const bookingEndDate = booking.endingDay
+      //   //     ? moment.utc(booking.date).add(1, 'days').toDate()
+      //   //     : moment.utc(booking.date).toDate();
+
+      //   //   console.log('bookingStartDate 2: ', bookingStartDate);
+      //   //   console.log('bookingEndDate', bookingEndDate);
+      //   //   console.log('selectedDate', selectedDate);
+      //   //   return (
+      //   //     selectedDate >= bookingStartDate && selectedDate <= bookingEndDate
+      //   //   );
+      //   // });
+
+      //   // if (bookedRangeFound) {
+      //   //   showToastMessage('', 'Ngày này đã có người đặt rồi');
+      //   //   return;
+      //   // }
+      // }
       setMarkedDates(prevState => ({...prevState, ...newMarkedDates}));
     } else {
       setStartDate(selectedDate);
@@ -236,6 +288,12 @@ const TimePickingModal: React.FC<{
       ? bookedDates[date.dateString].textColor
       : 'black';
 
+    const disabledTextColor = isDateSelected
+      ? markedDates[date.dateString].textColor
+      : isDateBooked
+      ? bookedDates[date.dateString].textColor
+      : 'gray';
+
     const startDateString = startDate
       ? startDate.toISOString().split('T')[0]
       : null;
@@ -286,7 +344,7 @@ const TimePickingModal: React.FC<{
           <Text
             style={{
               textAlign: 'center',
-              color: state === 'disabled' ? 'gray' : textColor,
+              color: state === 'disabled' ? disabledTextColor : textColor,
               fontWeight: 'bold',
             }}>
             {date?.day}
@@ -295,7 +353,7 @@ const TimePickingModal: React.FC<{
             <Text
               style={{
                 textAlign: 'center',
-                color: state === 'disabled' ? 'gray' : textColor,
+                color: state === 'disabled' ? disabledTextColor : textColor,
                 fontSize: 10,
                 marginTop: 3,
               }}>
@@ -377,7 +435,7 @@ const TimePickingModal: React.FC<{
   };
 
   const bookedDates = useMemo(() => {
-    if (car.Booking.length > 0) {
+    if (car && car.Booking.length > 0) {
       let dates: {[key: string]: MarkedDate} = {};
       car.Booking.forEach((booking: any) => {
         const startDate = booking.timeFrom;

@@ -76,7 +76,7 @@ const ItemCar = props => {
           <View style={styles.locationContainer}>
             <FastImage source={ICON.Location} style={appStyle.iconMedium} />
             <Text style={styles.locationText}>
-              {data.locationCar} {data.city}
+              {data.locationCar} 
             </Text>
           </View>
         </View>

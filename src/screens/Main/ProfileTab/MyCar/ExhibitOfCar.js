@@ -1,151 +1,175 @@
-import { StyleSheet, Text, TouchableOpacity, View, ScrollView, Modal, PermissionsAndroid } from 'react-native';
-import React, { useState } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { appStyle, windowHeight, windowWidth } from '../../../../constants/AppStyle'
-import { COLOR, ICON } from '../../../../constants/Theme';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ScrollView,
+  Modal,
+  PermissionsAndroid,
+} from 'react-native';
+import React, {useContext, useState} from 'react';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {
+  appStyle,
+  windowHeight,
+  windowWidth,
+} from '../../../../constants/AppStyle';
+import {COLOR, ICON} from '../../../../constants/Theme';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import FastImage from 'react-native-fast-image';
 import Header from '../../../../components/Header';
 import AppButton from '../../../../components/AppButton';
 import CarImageSection from '../../../../components/Profile/CameraImageSection';
 import AppHeader from '../../../../components/AppHeader';
+import {useNavigation} from '@react-navigation/native';
+import {AppContext} from '../../../../utils/AppContext';
+import ImagePickerComponent from '../../../../components/ImagePickerComponent';
+import MultipleImagePicker from '../../../../components/MultiImagePicker';
+import axios from 'axios';
+import {showToastMessage} from '../../../../utils/utils';
 
 const ExhibitOfCar = props => {
-  const { navigation } = props;
-  const [isCameraModalVisible, setIsCameraModalVisible] = useState(false);
-  const [selectedImageType, setSelectedImageType] = useState(null);
-
-  const [carImages, setCarImages] = useState({
-    front: null,
-    back: null,
-    left: null,
-    right: null,
-  });
-
-
-  const goBack = () => {
-    navigation.goBack('HomeCar');
+  const navigation = useNavigation();
+  const {id} = props.route.params;
+  const {idUser} = useContext(AppContext);
+  const [imageRegister, setImageRegister] = useState('');
+  const [imageInsurance, setImageInsurance] = useState('');
+  const handleImageRegister = path => {
+    setImageRegister(path);
   };
-
-
-  const cameraModal = (imageType) => {
-    setSelectedImageType(imageType);
-    setIsCameraModalVisible(true);
+  const handleImageInsurance = path => {
+    setImageInsurance(path);
   };
-
-  const requestCameraPermission = async () => {
+  const [images, setImages] = useState([]);
+  const handleImagesSelected = path => {
+    setImages(path);
+  };
+  const uploadImage = async () => {
     try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.CAMERA,
+      const formData = new FormData();
+      formData.append('image', {
+        uri: imageRegister,
+        type: 'icon/icon_jpeg',
+        name: 'image.jpg',
+      });
+      const formData2 = new FormData();
+      formData2.append('image', {
+        uri: imageInsurance,
+        type: 'icon/icon_jpeg',
+        name: 'image.jpg',
+      });
+      const response = await axios.post(
+        'http://103.57.129.166:3000/car/api/upload-single-image',
+        formData,
         {
-          title: "App Camera Permission",
-          message: "App needs access to your camera ",
-          buttonNeutral: "Ask Me Later",
-          buttonNegative: "Cancel",
-          buttonPositive: "OK"
-        }
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
       );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log("Camera permission given");
-        const result = await launchCamera();
-
-        switch (selectedImageType) {
-          case 'front':
-            setCarImages((prevImages) => ({
-              ...prevImages,
-              front: result.assets[0].uri,
-            }));
-            console.log(result.assets[0].uri);
-            break;
-          case 'left':
-            setCarImages((prevImages) => ({
-              ...prevImages,
-              left: result.assets[0].uri,
-            }));
-            console.log(result.assets[0].uri);
-            break;
-          case 'right':
-            setCarImages((prevImages) => ({
-              ...prevImages,
-              right: result.assets[0].uri,
-            }));
-            console.log(result.assets[0].uri);
-            break;
-          case 'back':
-            setCarImages((prevImages) => ({
-              ...prevImages,
-              back: result.assets[0].uri,
-            }));
-            console.log(result.assets[0].uri);
-            break;
-          default:
-            break;
-        }
-        setIsCameraModalVisible(false);
+      const response2 = await axios.post(
+        'http://103.57.129.166:3000/car/api/upload-single-image',
+        formData2,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
+      if (response.data.result && response2.data.result) {
+        setImageRegister(response.data.link);
+        setImageInsurance(response2.data.link);
+        await uploadImages(response.data.link, response2.data.link);
       } else {
-        console.log("Camera permission denied");
+        showToastMessage('error', 'Upload image fail');
       }
-    } catch (err) {
-      console.warn(err);
+    } catch (error) {
+      console.error('Error uploading images:', error);
     }
   };
 
-  // Chọn ảnh từ thư viện
-  const chooseImage = () => {
-    const options = {
-      mediaType: 'photo',
-    };
-
-    launchImageLibrary(options, (response) => {
-      if (response.didCancel) {
-        console.log('Hủy chọn ảnh');
-      } else if (response.error) {
-        console.log('Lỗi:', response.error);
-      } else {
-        console.log(response.assets[0].uri);
-        switch (selectedImageType) {
-          case 'front':
-            setCarImages((prevImages) => ({
-              ...prevImages,
-              front: response.assets[0].uri,
-            }));
-            setIsCameraModalVisible(false);
-            break;
-          case 'left':
-            setCarImages((prevImages) => ({
-              ...prevImages,
-              left: response.assets[0].uri,
-            }));
-            setIsCameraModalVisible(false);
-            break;
-          case 'right':
-            setCarImages((prevImages) => ({
-              ...prevImages,
-              right: response.assets[0].uri,
-            }));
-            setIsCameraModalVisible(false);
-            break;
-          case 'back':
-            setCarImages((prevImages) => ({
-              ...prevImages,
-              back: response.assets[0].uri,
-            }));
-            setIsCameraModalVisible(false);
-            break;
-          default:
-            break;
+  const uploadImages = async (imageRegister, imageInsurance) => {
+    try {
+      const formData = new FormData();
+      images.forEach((uri, index) => {
+        if (uri) {
+          const fileName = `image_${index}.jpg`;
+          formData.append('images', {
+            uri,
+            type: 'image/jpeg',
+            name: fileName,
+          });
         }
+      });
+      const response = await axios.post(
+        'http://103.57.129.166:3000/car/api/upload-car-images',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
+
+      if (response.data.result) {
+        const jsonString = JSON.stringify(response.data.links);
+        const jsonStringWithQuotes = `\'${jsonString}\'`;
+        console.log('jsonStringWithQuotes', jsonStringWithQuotes);
+        setImages(jsonStringWithQuotes);
+        await updateImage(jsonStringWithQuotes, imageRegister, imageInsurance);
+      } else {
+        showToastMessage('error', 'Upload ảnh xe thất bại');
       }
-    });
+    } catch (error) {
+      console.error('Error uploading images:', error);
+    }
+  };
+  const handleUpdate = async () => {
+    try {
+      if (imageRegister.length == 0) {
+        showToastMessage('error', 'Vui lòng chọn ảnh đăng ký');
+        return;
+      } else if (imageInsurance.length == 0) {
+        showToastMessage('error', 'Vui lòng chọn ảnh bảo hiểm');
+        return;
+      } else if (images && images.filter(image => image !== null).length < 4) {
+        showToastMessage('error', 'Vui lòng chọn nhiều hơn 4 tấm ảnh');
+        return;
+      } else {
+        await uploadImage();
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const handleUpdate = () => { console.log(carImages); };
+  const updateImage = async (images, imageRegister, imageInsurance) => {
+    try {
+      console.log('anh xe:   ', images);
+      const response = await axios.put(
+        'http://103.57.129.166:3000/car/api/update-image-car?idCar=' + id,
+        {
+          image: images,
+          imageRegister: imageRegister,
+          imageRegistry: imageRegister,
+          imageInsurance: imageInsurance,
+        },
+      );
+      if (response.data.result) {
+        showToastMessage('', 'Cập nhật hình ảnh xe thành công');
+        navigation.navigate('ListCar');
+      } else {
+        showToastMessage('error', 'Cập nhật hình ảnh xe thất bại');
+      }
+    } catch (error) {
+      showToastMessage('error', 'Cập nhật hình ảnh xe thất bại !!!');
+    }
+  };
+
   return (
     <SafeAreaView style={appStyle.container}>
-      <AppHeader title='Hợp đồng & bảo hiểm'/>
-      <View
-        style={{backgroundColor: COLOR.borderColor2, height: 1, width: '100%'}}
-      />
+      <AppHeader title="Hợp đồng & bảo hiểm" />
+      
       <ScrollView
         style={{
           flex: 1,
@@ -158,15 +182,14 @@ const ExhibitOfCar = props => {
           <View style={{marginTop: 20}}>
             <Text style={[appStyle.text18Bold]}>Giấy tờ của xe</Text>
             <View style={[appStyle.rowBetween, {marginTop: 10}]}>
-              <TouchableOpacity style={styles.upLoadImage}>
-                <Text style={{textAlign: 'center'}}>
-                  Vui lòng chụp mặt trước của giấy tờ xe
-                </Text>
-                <FastImage
-                  style={{width: 30, height: 30, marginTop: 10}}
-                  source={ICON.Picture}
-                />
-              </TouchableOpacity>
+              <ImagePickerComponent
+                containerStyle={{marginTop: 24, marginBottom: 32}}
+                width={windowWidth * 0.8}
+                height={200}
+                iconSize={50}
+                title="Chọn ảnh giấy tờ"
+                onImageSelected={handleImageRegister}
+              />
             </View>
           </View>
 
@@ -174,15 +197,14 @@ const ExhibitOfCar = props => {
           <View style={{marginTop: 20}}>
             <Text style={[appStyle.text18Bold]}>Bảo hiểm của xe</Text>
             <View style={[appStyle.rowBetween, {marginTop: 10}]}>
-              <TouchableOpacity style={styles.upLoadImage}>
-                <Text style={{textAlign: 'center'}}>
-                  Vui lòng chụp mặt trước của bảo hiểm
-                </Text>
-                <FastImage
-                  style={{width: 30, height: 30, marginTop: 10}}
-                  source={ICON.Picture}
-                />
-              </TouchableOpacity>
+              <ImagePickerComponent
+                containerStyle={{marginTop: 24, marginBottom: 32}}
+                width={windowWidth * 0.8}
+                height={200}
+                iconSize={50}
+                title="Chọn ảnh bảo hiểm"
+                onImageSelected={handleImageInsurance}
+              />
             </View>
           </View>
 
@@ -190,36 +212,10 @@ const ExhibitOfCar = props => {
           <View style={{marginTop: 20}}>
             <Text style={[appStyle.text18Bold]}>Ảnh của xe</Text>
             <View style={[appStyle.columnCenter, {marginTop: 10}]}>
-              <CarImageSection
-                title="Vui lòng chụp bên trái xe"
-                imageType="left"
-                onEdit={handleUpdate}
-                imageURI={carImages.left}
-                cameraModal={cameraModal}
-              />
-
-              <CarImageSection
-                title="Vui lòng chụp bên phải xe"
-                imageType="right"
-                onEdit={handleUpdate}
-                imageURI={carImages.right}
-                cameraModal={cameraModal}
-              />
-
-              <CarImageSection
-                title="Vui lòng chụp phía trước xe"
-                imageType="front"
-                onEdit={handleUpdate}
-                imageURI={carImages.front}
-                cameraModal={cameraModal}
-              />
-
-              <CarImageSection
-                title="Vui lòng chụp phía sau xe"
-                imageType="back"
-                onEdit={handleUpdate}
-                imageURI={carImages.back}
-                cameraModal={cameraModal}
+              <MultipleImagePicker
+                onImageSelected={handleImagesSelected}
+                numberImage={9}
+                space={14}
               />
             </View>
           </View>
@@ -230,36 +226,6 @@ const ExhibitOfCar = props => {
           />
         </View>
       </ScrollView>
-
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={isCameraModalVisible}>
-        <TouchableOpacity
-          style={appStyle.modalBackdrop}
-          onPress={() => setIsCameraModalVisible(false)}
-        />
-        <View style={appStyle.modalContainerCam}>
-          <AppButton
-            title="Chụp ảnh"
-            marginTop={5}
-            onPress={() => {
-              requestCameraPermission(selectedImageType);
-              setSelectedImageType(null);
-            }}
-          />
-          <AppButton
-            title="Chọn ảnh"
-            marginTop={15}
-            backgroundColor={COLOR.background}
-            textColor={COLOR.primary}
-            onPress={() => {
-              chooseImage(selectedImageType);
-              setSelectedImageType(null);
-            }}
-          />
-        </View>
-      </Modal>
     </SafeAreaView>
   );
 };
@@ -280,7 +246,6 @@ const styles = StyleSheet.create({
   imgCar: {
     width: 250,
     height: 150,
-    marginTop: 20
-  }
+    marginTop: 20,
+  },
 });
-

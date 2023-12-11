@@ -19,7 +19,7 @@ import ItemAddress from '../../../components/Profile/ItemAddress';
 import Suggestion from '../../../components/Home/Home/Suggestion';
 import axios from 'axios';
 import {AppContext} from '../../../utils/AppContext';
-import {getCurrentLocation} from '../../../utils/utils';
+import {getCurrentLocation, showToastMessage} from '../../../utils/utils';
 
 const LocationPicking = props => {
   const {idUser} = useContext(AppContext);
@@ -131,7 +131,7 @@ const LocationPicking = props => {
           cityData.name,
       );
     } else {
-      Alert.alert('Chỉ hỗ trợ địa điểm trong lãnh thổ Việt Nam');
+      showToastMessage('', 'Chỉ hỗ trợ địa điểm trong lãnh thổ Việt Nam');
     }
   };
 
@@ -263,7 +263,7 @@ const LocationPicking = props => {
           />
         </View>
 
-        <View style={{marginTop: 10}}>
+        {/* <View style={{marginTop: 10}}>
           <Text style={appStyle.text14}>Tìm kiếm gần đây</Text>
           <FlatList
             style={{width: '100%', marginVertical: 10}}
@@ -278,7 +278,7 @@ const LocationPicking = props => {
             keyExtractor={item => item.id}
             showsVerticalScrollIndicator={false}
           />
-        </View>
+        </View> */}
       </View>
     </SafeAreaView>
   );
