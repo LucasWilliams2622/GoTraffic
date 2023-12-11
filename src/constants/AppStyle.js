@@ -165,6 +165,15 @@ export const appStyle = StyleSheet.create({
     letterSpacing: 0.5,
     color: COLOR.text,
   },
+
+  text185: {
+    fontSize: 18,
+    fontWeight: '500',
+    fontStyle: 'normal',
+    letterSpacing: 0.5,
+    color: COLOR.text,
+  },
+
   text18Bold: {
     fontSize: 18,
     fontWeight: 'bold',

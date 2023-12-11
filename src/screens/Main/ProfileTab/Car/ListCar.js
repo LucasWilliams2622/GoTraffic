@@ -56,7 +56,7 @@ const ListCar = props => {
         onPressRight={() => navigation.navigate('BasicInfor')}
       />
       <FlatList
-        style={{marginBottom: 100}}
+        style={{marginBottom: 90, paddingBottom: 30}}
         data={carData}
         renderItem={({item}) => <ItemCar data={item} />}
         keyExtractor={(item, index) => index.toString()}

@@ -12,7 +12,7 @@ import GuideComponent, { GuideType1, GuideType2, GuideType3 } from '../Support/G
 const ItemGuide = (props) => {
     const navigation = useNavigation();
     const { data } = props;
-    const { image, keyExtractor, id } = data;
+    const { image, id } = data;
     const [isVisible, setIsVisible] = useState(false);
 
     const toggleModal = () => {

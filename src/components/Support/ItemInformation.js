@@ -4,6 +4,8 @@ import FastImage from 'react-native-fast-image';
 import { appStyle, windowHeight, windowWidth } from '../../constants/AppStyle';
 import { COLOR } from '../../constants/Theme';
 import Modal from 'react-native-modal';
+import AppHeader from '../AppHeader';
+import {  GuideType4, GuideType5, GuideType6 } from './GuideComponent';
 
 
 const ItemInformation = (props) => {
@@ -13,6 +15,17 @@ const ItemInformation = (props) => {
 
   const toggleModal = () => {
     setIsVisible(!isVisible);
+  }
+
+  const renderContent = () => {
+    switch (id) {
+      case 0:
+        return <GuideType4 />;
+      case 1:
+        return <GuideType5 />;
+      case 2:
+        return <GuideType6 />;
+    }
   }
   //===========================| ONPEN FANPAGE |==================
   const openFanpage = () => {
@@ -26,14 +39,30 @@ const ItemInformation = (props) => {
   };
 
   return (
-      <TouchableOpacity style={[styles.boxItem]}
-        onPress={() => {
-          id == 4 ? openFanpage() : toggleModal();
-        }}>
-        <FastImage resizeMode='stretch' tintColor={COLOR.primary} style={{ width: 48, height: 48 }} source={image} />
-        <Text style={[appStyle.text18, { textAlign: 'center', width: '90%', paddingTop: 8, minHeight: 30, fontWeight: '500', lineHeight: 24 }]} numberOfLines={2}
-        >{title}</Text>
-      </TouchableOpacity>
+    <TouchableOpacity style={[styles.boxItem]}
+      onPress={() => {
+        id == 4 ? openFanpage() : toggleModal();
+      }}>
+      <FastImage resizeMode='stretch' tintColor={COLOR.primary} style={{ width: 48, height: 48 }} source={image} />
+      <Text style={[appStyle.text18, { textAlign: 'center', width: '90%', paddingTop: 8, minHeight: 30, fontWeight: '500', lineHeight: 24 }]} numberOfLines={2}
+      >{title}</Text>
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={isVisible}
+        onRequestClose={toggleModal}
+        style={{ margin: 0, paddingTop: 8 }}
+      >
+        <AppHeader
+          title=''
+          iconLeft={'close'}
+          onPressLeft={toggleModal}
+        />
+        <View style={{ flex: 1, padding: 16 }}>
+          {renderContent()}
+        </View>
+      </Modal>
+    </TouchableOpacity>
   )
 }
 
@@ -52,8 +81,8 @@ const styles = StyleSheet.create({
     top: '50%',
     left: '50%',
     transform: [
-      {translateX: -windowWidth * 0.45},
-      {translateY: -windowHeight * 0.36},
+      { translateX: -windowWidth * 0.45 },
+      { translateY: -windowHeight * 0.36 },
     ],
     width: windowWidth * 0.9,
     height: windowHeight * 0.65,

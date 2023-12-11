@@ -61,7 +61,7 @@ const RatingTrip = props => {
         console.log(response.review[0].user.id);
         if (response.review[0].user.id == idUser) {
           navigation.navigate('HistoryTrip');
-          showToastMessage('', 'Đã đánh giá rồi ');
+          showToastMessage('error', 'Bạn đã đánh giá rồi ');
         } else {
           console.log('chua co danh gia');
         }

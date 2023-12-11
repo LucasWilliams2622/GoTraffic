@@ -1,6 +1,6 @@
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
-import {appStyle} from '../constants/AppStyle';
+import {appStyle, windowHeight} from '../constants/AppStyle';
 import {COLOR} from '../constants/Theme';
 import FastImage from 'react-native-fast-image';
 
@@ -11,7 +11,7 @@ const ButtonSelected = props => {
       style={[
         styles.button,
         {
-          borderColor: isSelected ? COLOR.secondary : COLOR.borderColor,
+          borderColor: isSelected ? COLOR.fifth : COLOR.borderColor,
           borderWidth: isSelected ? 2 : 0.7,
         },
       ]}
@@ -20,7 +20,8 @@ const ButtonSelected = props => {
         style={[
           appStyle.text14,
           {
-            color: isSelected ? COLOR.secondary : 'black',
+            alignItems:'center',
+            color: isSelected ? COLOR.fifth : 'black',
             fontWeight: isSelected ? 'bold' : 'normal',
           },
         ]}>
@@ -41,7 +42,7 @@ const styles = StyleSheet.create({
   button: {
     paddingHorizontal: 10,
     paddingVertical: 5,
-    height: 30,
+    height: windowHeight*0.04,
     borderRadius: 20,
     borderWidth: 0.7,
     marginHorizontal: 5,
