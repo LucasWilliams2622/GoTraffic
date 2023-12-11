@@ -9,16 +9,16 @@ import Swipelist from 'react-native-swipeable-list-view';
 import {showToastMessage} from '../../../../../utils/utils';
 import {ICON} from '../../../../../constants/Theme';
 import FastImage from 'react-native-fast-image';
-import { AppContext } from '../../../../../utils/AppContext';
+import {AppContext} from '../../../../../utils/AppContext';
 
 const ConfirmTrip = () => {
   const isFocused = useIsFocused();
   const {idUser} = useContext(AppContext);
-  const [data, setData] = useState('');
+  const [data, setData] = useState([]);
   const getCarByIdUser = async () => {
     try {
       const response = await AxiosInstance().get(
-        '/booking/api/get-list-pending?idOwner='+idUser,
+        '/booking/api/get-list-pending?idOwner=' + idUser,
       );
       if (response.result) {
         //console.log(response.booking[0].Car.address);
@@ -55,11 +55,9 @@ const ConfirmTrip = () => {
         console.log('Xác nhận thanh cong');
         showToastMessage('', 'Xác nhận yêu càu đặt xe thành công');
         getCarByIdUser();
+        isFocused;
       } else {
-        showToastMessage(
-          'error',
-          'Xác nhận yêu càu đặt xe thất bại',
-        );
+        showToastMessage('error', 'Xác nhận yêu càu đặt xe thất bại');
       }
     } catch (error) {
       console.log('=========>', error);

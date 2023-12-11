@@ -116,7 +116,7 @@ const ItemTrip = props => {
               }}>
               <View style={{flexDirection: 'row'}}>
                 <Text
-                  style={[appStyle.text16Bold, {width: '63%'}]}
+                  style={[appStyle.text16Bold, {width: '60%'}]}
                   numberOfLines={1}>
                   {data.Car.name}
                 </Text>
@@ -128,7 +128,7 @@ const ItemTrip = props => {
                   />
                   <Text
                     style={[appStyle.text10, {marginLeft: 5, marginTop: -2}]}>
-                    {data.Car.isDelivery ? 'Tự lái' : ''}
+                    {data.Car.isDelivery ? 'Tự lái' : 'Xe có tài'}
                   </Text>
                 </View>
               </View>
@@ -431,7 +431,6 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     marginBottom: 20,
-    borderWidth: 0.1,
     padding: 10,
   },
   containerDetail: {
@@ -478,8 +477,8 @@ const styles = StyleSheet.create({
   statusContainer: {
     position: 'absolute',
     backgroundColor: 'rgba(65, 207, 242, 0.8)',
-    borderTopLeftRadius: 14,
-    borderBottomRightRadius: 14,
+    borderTopLeftRadius: 13,
+    borderBottomRightRadius: 13,
     padding: 5,
     justifyContent: 'center',
     left: 0,

@@ -5,12 +5,12 @@ import ItemTrip from '../../../../../components/Support/ItemTrip';
 import ItemComplete from '../../../../../components/Support/ItemComplete';
 import {FlatList} from 'native-base';
 import AxiosInstance from '../../../../../constants/AxiosInstance';
-import {useIsFocused} from '@react-navigation/native';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import {AppContext} from '../../../../../utils/AppContext';
 
 const FinishTrip = () => {
-  const [data, setData] = useState('');
+  const [data, setData] = useState([]);
   const {idUser} = useContext(AppContext);
   const isFocused = useIsFocused();
 
@@ -28,9 +28,11 @@ const FinishTrip = () => {
       console.log('=========>', error);
     }
   };
-  useEffect(() => {
-    getCarByIdUser();
-  }, [isFocused]);
+  useFocusEffect(
+    React.useCallback(() => {
+      getCarByIdUser();
+    }, []),
+  );
   return (
     <View style={{flex: 1, padding: 10}}>
       <FlatList

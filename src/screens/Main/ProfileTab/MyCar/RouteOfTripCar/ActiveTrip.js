@@ -13,7 +13,7 @@ import { AppContext } from '../../../../../utils/AppContext';
 const ActiveTrip = () => {
   const isFocused = useIsFocused();
   const {idUser} = useContext(AppContext);
-  const [data, setData] = useState('');
+  const [data, setData] = useState([]);
   const getCarByIdUser = async () => {
     try {
       const response = await AxiosInstance().get(

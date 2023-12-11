@@ -52,6 +52,7 @@ const TripOfCar = props => {
     <SafeAreaView style={appStyle.container}>
       <AppHeader title="Danh sách chuyến" />
       <TabView
+        lazy={true}
         navigationState={{index, routes}}
         renderTabBar={renderTabBar}
         renderScene={renderScene}

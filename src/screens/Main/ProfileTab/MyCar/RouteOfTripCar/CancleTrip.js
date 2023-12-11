@@ -10,7 +10,7 @@ import FastImage from 'react-native-fast-image';
 import { AppContext } from '../../../../../utils/AppContext';
 
 const CancleTrip = () => {
-   const [data, setData] = useState('');
+   const [data, setData] = useState([]);
   const {idUser} = useContext(AppContext);
   const isFocused = useIsFocused();
    const getCarByIdUser = async () => {
