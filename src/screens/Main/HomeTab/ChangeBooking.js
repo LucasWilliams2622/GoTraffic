@@ -32,21 +32,7 @@ const ChangeBooking = ({
     <SafeAreaView style={appStyle.container}>
       <Header text="" icon={ICON.Close} onPress={() => close()} />
       <View style={{flex: 1, padding: 15}}>
-        {/* <TouchableOpacity
-          onPress={() => setModalVisible(true)}
-          style={styles.outside}>
-          <FastImage
-            source={ICON.Location}
-            resizeMode="stretch"
-            style={appStyle.icon}
-          />
-          <View style={styles.card}>
-            <Text>Địa điểm</Text>
-            <Text numberOfLines={1} style={appStyle.text165}>
-              342 Lô H Phường 28, Quận Bình Thạnh, TP.HCM
-            </Text>
-          </View>
-        </TouchableOpacity> */}
+        
         <InputField
           iconName="location-dot"
           placeholderText="Địa điểm"
@@ -63,21 +49,7 @@ const ChangeBooking = ({
             setInputAddress={setInputAddress}
           />
         </ReactNativeModal>
-        {/* <TouchableOpacity
-          onPress={() => navigation.navigate('TimePickingModal')}
-          style={styles.outside}>
-          <FastImage
-            source={ICON.Calendar}
-            resizeMode="stretch"
-            style={appStyle.icon}
-          />
-          <View style={styles.card}>
-            <Text>Thời gian thuê</Text>
-            <Text numberOfLines={1} style={appStyle.text165}>
-              21h00, 10/11 - 20h00, 11/11
-            </Text>
-          </View>
-        </TouchableOpacity> */}
+        
         <InputField
           iconName="calendar"
           placeholderText="Thời gian thuê"
@@ -103,7 +75,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: windowHeight * 0.08,
     position: 'absolute',
-    bottom: 70,
+    bottom: 0,
     alignSelf: 'center',
     borderTopWidth: 0.8,
     borderTopColor: COLOR.borderColor,

@@ -142,11 +142,6 @@ const DetailInListCar = props => {
       <View style={{flex: 1, padding: 10, marginTop: 22}}>
         <View style={{flex: 1}}>
           <AppProfile
-            icon={ICON.Trip}
-            text="Giá cho thuê"
-            onPress={() => navigation.navigate('RentCost', {price: price})}
-          />
-          <AppProfile
             icon={ICON.Heart}
             text="Giao xe tận nơi"
             onPress={() => navigation.navigate('CarDelivery', {id: id})}

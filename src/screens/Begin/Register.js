@@ -79,7 +79,7 @@ const Register = props => {
         onSubmit={values => {
           console.log(values);
           if (values.password === values.rePassword) {
-            navigation.navigate('Verified', {
+            navigation.navigate('EmailCheck', {
               phoneNumber: values.phoneNumber,
               nameUser: values.name,
               password: values.password,
@@ -194,7 +194,7 @@ const Register = props => {
                     <AppInput
                       returnKeyType={'done'}
                       placeholder={'Mật khẩu'}
-                      color={COLOR.white}
+                      textColor={COLOR.white}
                       backgroundColor={'#023047'}
                       borderColor={COLOR.white}
                       placeholderTextColor={COLOR.white}
@@ -213,7 +213,7 @@ const Register = props => {
                     <AppInput
                       returnKeyType={'done'}
                       placeholder={'Xác nhận mật khẩu'}
-                      color={COLOR.white}
+                      textColor={COLOR.white}
                       backgroundColor={'#023047'}
                       borderColor={COLOR.white}
                       placeholderTextColor={COLOR.white}

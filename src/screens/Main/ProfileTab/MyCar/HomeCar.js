@@ -24,11 +24,11 @@ const HomeCar = props => {
     <SafeAreaView style={appStyle.container}>
       <FastImage
         style={styles.image}
-        source={require('../../../../assets/image/bg_homecar.jpg')}
+        source={require('../../../../assets/image/background.png')}
       />
       <AppHeader
         title='Xe của tôi' 
-        backgroundColor='#92D1FA' 
+        //backgroundColor='#92D1FA' 
       />
       <View style={{ padding: 14, marginTop: 100 }}>
         <View style={styles.line1}>

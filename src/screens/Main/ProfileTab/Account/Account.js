@@ -88,7 +88,7 @@ const Account = props => {
                 </Text>
               </View>
             </View>
-            <View style={styles.link}>
+            {/* <View style={styles.link}>
               <Text style={[appStyle.text12Bold, {marginRight: 5}]}>
                 Xác thực ngay
               </Text>
@@ -96,7 +96,7 @@ const Account = props => {
                 style={[appStyle.iconSmall, {marginTop: 3}]}
                 source={ICON.Next}
               />
-            </View>
+            </View> */}
           </View>
         ) : (
           <TouchableOpacity
@@ -144,17 +144,15 @@ const Account = props => {
               </Text>
             </View>
           </View>
-          <View style={styles.link}>
+          {/* <View style={styles.link}>
             <FastImage style={[appStyle.iconSmall]} source={ICON.Next} />
-          </View>
+          </View> */}
         </View>
 
         {/* Email */}
         <View style={styles.viewItem}>
           <View style={styles.viewChild}>
             <Text style={appStyle.text14}>Email</Text>
-
-            {infoUser.isVerifiedEmail ? (
               <View
                 style={[styles.alert, {backgroundColor: COLOR.lightGreen2}]}>
                 <FastImage style={[appStyle.iconSmall]} source={ICON.Check} />
@@ -162,16 +160,8 @@ const Account = props => {
                   Đã xác thực
                 </Text>
               </View>
-            ) : (
-              <View style={styles.alert}>
-                <FastImage style={[appStyle.iconSmall]} source={ICON.Warning} />
-                <Text style={[appStyle.text105, {marginStart: 5}]}>
-                  Chưa xác thực
-                </Text>
-              </View>
-            )}
           </View>
-          <View style={styles.link}>
+          {/* <View style={styles.link}>
             <Text style={[appStyle.text12Bold, {marginRight: 5}]}>
               Liên kết ngay
             </Text>
@@ -179,52 +169,8 @@ const Account = props => {
               style={[appStyle.iconSmall, {marginTop: 3}]}
               source={ICON.Next}
             />
-          </View>
+          </View> */}
         </View>
-
-        {/* Facebook */}
-        {/* <View style={styles.viewItem}>
-          <View style={styles.viewChild}>
-            <Text style={appStyle.text14}>Facebook</Text>
-            <View style={styles.alert}>
-              <FastImage style={[appStyle.iconSmall]} source={ICON.Warning} />
-              <Text style={[appStyle.text105, {marginStart: 5}]}>
-                Chưa liên kết
-              </Text>
-            </View>
-          </View>
-          <View style={styles.link}>
-            <Text style={[appStyle.text12Bold, {marginRight: 5}]}>
-              Liên kết ngay
-            </Text>
-            <FastImage
-              style={[appStyle.iconSmall, {marginTop: 3}]}
-              source={ICON.Next}
-            />
-          </View>
-        </View> */}
-
-        {/* Google */}
-        {/* <View style={styles.viewItem}>
-          <View style={styles.viewChild}>
-            <Text style={appStyle.text14}>Google</Text>
-            <View style={styles.alert}>
-              <FastImage style={[appStyle.iconSmall]} source={ICON.Warning} />
-              <Text style={[appStyle.text105, {marginStart: 5}]}>
-                Chưa liên kết
-              </Text>
-            </View>
-          </View>
-          <View style={styles.link}>
-            <Text style={[appStyle.text12Bold, {marginRight: 5}]}>
-              Liên kết ngay
-            </Text>
-            <FastImage
-              style={[appStyle.iconSmall, {marginTop: 3}]}
-              source={ICON.Next}
-            />
-          </View>
-        </View> */}
       </View>
     </SafeAreaView>
   );

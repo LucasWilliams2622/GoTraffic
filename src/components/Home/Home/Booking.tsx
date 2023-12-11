@@ -90,7 +90,7 @@ const Booking = ({
 
   const handleFindCar = () => {
     if (!location) {
-      showToastMessage('', 'Vui lòng nhập địa điểm');
+      showToastMessage('error', 'Vui lòng nhập địa điểm');
       return;
     }
     setModalVisible(true);
