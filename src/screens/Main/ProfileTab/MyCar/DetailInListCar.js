@@ -141,7 +141,8 @@ const DetailInListCar = props => {
           </View>
         </View>
       </View>
-      <View style={{flex: 1, padding: 10, marginTop: 10}}>
+
+      <View style={{flex: 1, padding: 10, marginTop: 22}}>
         <View style={{flex: 1}}>
           <AppProfile
             icon={ICON.Trip}
@@ -177,6 +178,7 @@ const DetailInListCar = props => {
             icon={ICON.Location}
             text="GPS"
             onPress={() => navigation.navigate('GPSMarker', {data: data})}
+            borderBottomWidth={0}
           />
         </View>
         <View

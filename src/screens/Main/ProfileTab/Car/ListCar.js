@@ -31,7 +31,7 @@ const ListCar = props => {
   const getCarByIdUser = async () => {
     try {
       const response = await AxiosInstance().get(
-        '/car/api/list-by-id-user?idUser='+idUser,
+        `/car/api/list-by-id-user?idUser=${idUser}`,
       );
       if (response.result) {
         setCarData(response.listCar);

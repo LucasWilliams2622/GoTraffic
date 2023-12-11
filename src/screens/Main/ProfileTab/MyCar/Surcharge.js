@@ -1,23 +1,23 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
-import {appStyle} from '../../../../constants/AppStyle';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {COLOR, ICON} from '../../../../constants/Theme';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { appStyle } from '../../../../constants/AppStyle';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { COLOR, ICON } from '../../../../constants/Theme';
 import FastImage from 'react-native-fast-image';
-import {Calendar, LocaleConfig} from 'react-native-calendars';
-import {CalendarList} from 'react-native-calendars';
+import { Calendar, LocaleConfig } from 'react-native-calendars';
+import { CalendarList } from 'react-native-calendars';
 import ToggleSwitch from 'toggle-switch-react-native';
-import {ScrollView, Switch} from 'native-base';
+import { ScrollView, Switch } from 'native-base';
 import Slider from '@react-native-community/slider';
 import AppHeader from '../../../../components/AppHeader';
-import {showToastMessage} from '../../../../utils/utils';
+import { showToastMessage } from '../../../../utils/utils';
 import axios from 'axios';
 import Modal from 'react-native-modal';
 import AppButton from '../../../../components/AppButton';
 
 const Surcharge = props => {
-  const {navigation} = props;
-  const {id} = props.route.params;
+  const { navigation } = props;
+  const { id } = props.route.params;
   console.log(id);
   const goBack = () => {
     navigation.goBack('DetailInListCar');
@@ -75,10 +75,10 @@ const Surcharge = props => {
   return (
     <SafeAreaView style={appStyle.container}>
       <AppHeader title="Phụ phí" />
-      <View
-        style={{backgroundColor: COLOR.borderColor2, height: 1, width: '100%'}}
-      />
-      <ScrollView style={[appStyle.main, {marginTop: 20}]}>
+      {/* <View
+        style={{ backgroundColor: COLOR.borderColor2, height: 1, width: '100%' }}
+      /> */}
+      <ScrollView style={[appStyle.main, { marginTop: 0 }]}>
         {/*Visible of LimitKilometer*/}
         <View
           style={{
@@ -86,8 +86,8 @@ const Surcharge = props => {
             justifyContent: 'space-between',
             height: 50,
           }}>
-          <View style={{flexDirection: 'row'}}>
-            <Text style={[appStyle.text16Bold, {marginRight: 10}]}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={[appStyle.text16Bold, { marginRight: 10 }]}>
               GIỚI HẠN SỐ KM THUÊ XE
             </Text>
             <TouchableOpacity
@@ -100,11 +100,12 @@ const Surcharge = props => {
                 borderWidth: 1,
               }}
               onPress={() => setModalLimitKm(true)}>
-              <Text style={{textAlign: 'center'}}>?</Text>
+              <Text style={{ textAlign: 'center' }}>?</Text>
             </TouchableOpacity>
+
           </View>
           <Switch
-            style={{alignSelf: 'center', marginTop: -20}}
+            style={{ alignSelf: 'center', marginTop: 0 }}
             value={isEnabledLimitKm}
             onValueChange={value => setEnabledLimitKm(value)}
           />
@@ -112,14 +113,14 @@ const Surcharge = props => {
         {isEnabledLimitKm ? (
           <View style={styles.containerSlider}>
             <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <Text style={appStyle.text14}>Số km tối đa</Text>
               <Text style={appStyle.text14}>
                 {Math.floor(first * 100 * 8)} km/ngày
               </Text>
             </View>
             <Slider
-              style={{width: '100%', height: 40}}
+              style={{ width: '100%', height: 40 }}
               minimumValue={0}
               maximumValue={1}
               minimumTrackTintColor="#41cff2"
@@ -127,14 +128,14 @@ const Surcharge = props => {
               onValueChange={value => setfirst(value)}
             />
             <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <Text style={appStyle.text14}>Phí vượt qua giới hạn</Text>
               <Text style={appStyle.text14}>
                 {Math.floor(second * 10)} K/km
               </Text>
             </View>
             <Slider
-              style={{width: '100%', height: 40}}
+              style={{ width: '100%', height: 40 }}
               minimumValue={0}
               maximumValue={1}
               minimumTrackTintColor="#41cff2"
@@ -149,10 +150,10 @@ const Surcharge = props => {
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
-            height: 50,
+            height: 50
           }}>
-          <View style={{flexDirection: 'row'}}>
-            <Text style={[appStyle.text16Bold, {marginRight: 10}]}>
+          <View style={{ flexDirection: 'row',  alignItems: 'center' }}>
+            <Text style={[appStyle.text16Bold, { marginRight: 10 }]}>
               QUÁ GIỜ
             </Text>
             <TouchableOpacity
@@ -165,11 +166,11 @@ const Surcharge = props => {
                 borderWidth: 1,
               }}
               onPress={() => setModalLimitKm(true)}>
-              <Text style={{textAlign: 'center'}}>?</Text>
+              <Text style={{ textAlign: 'center' }}>?</Text>
             </TouchableOpacity>
           </View>
           <Switch
-            style={{alignSelf: 'center', marginTop: -20}}
+            style={{ alignSelf: 'center' }}
             value={isEnabledOffTime}
             onValueChange={value => setisEnabledOffTime(value)}
           />
@@ -177,14 +178,14 @@ const Surcharge = props => {
         {isEnabledOffTime ? (
           <View style={styles.containerSlider}>
             <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <Text style={appStyle.text14}>Phí quá giờ</Text>
               <Text style={appStyle.text14}>
                 {Math.floor(third * 1000)} K/giờ
               </Text>
             </View>
             <Slider
-              style={{width: '100%', height: 40}}
+              style={{ width: '100%', height: 40 }}
               minimumValue={0}
               maximumValue={1}
               minimumTrackTintColor="#41cff2"
@@ -192,12 +193,12 @@ const Surcharge = props => {
               onValueChange={value => setthird(value)}
             />
             <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <Text style={appStyle.text14}>Tính giá tiền 1 ngày nếu quá</Text>
               <Text style={appStyle.text14}>{Math.floor(fourth * 10)} giờ</Text>
             </View>
             <Slider
-              style={{width: '100%', height: 40}}
+              style={{ width: '100%', height: 40 }}
               minimumValue={0}
               maximumValue={1}
               minimumTrackTintColor="#41cff2"
@@ -214,8 +215,8 @@ const Surcharge = props => {
             justifyContent: 'space-between',
             height: 50,
           }}>
-          <View style={{flexDirection: 'row'}}>
-            <Text style={[appStyle.text16Bold, {marginRight: 10}]}>
+          <View style={{ flexDirection: 'row', alignItems:'center' }}>
+            <Text style={[appStyle.text16Bold, { marginRight: 10 }]}>
               VỆ SINH XE
             </Text>
             <TouchableOpacity
@@ -228,11 +229,11 @@ const Surcharge = props => {
                 borderWidth: 1,
               }}
               onPress={() => setModalLimitKm(true)}>
-              <Text style={{textAlign: 'center'}}>?</Text>
+              <Text style={{ textAlign: 'center' }}>?</Text>
             </TouchableOpacity>
           </View>
           <Switch
-            style={{alignSelf: 'center', marginTop: -20}}
+            style={{ alignSelf: 'center' }}
             value={isEnabledHygiene}
             onValueChange={value => setisEnabledHygiene(value)}
           />
@@ -240,14 +241,14 @@ const Surcharge = props => {
         {isEnabledHygiene ? (
           <View style={styles.containerSlider2}>
             <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <Text style={appStyle.text14}>Phí</Text>
               <Text style={appStyle.text14}>
                 {Math.floor(fifth * 100 * 3)} K/chuyến
               </Text>
             </View>
             <Slider
-              style={{width: '100%', height: 40}}
+              style={{ width: '100%', height: 40 }}
               minimumValue={0}
               maximumValue={1}
               minimumTrackTintColor="#41cff2"
@@ -264,8 +265,8 @@ const Surcharge = props => {
             justifyContent: 'space-between',
             height: 50,
           }}>
-          <View style={{flexDirection: 'row'}}>
-            <Text style={[appStyle.text16Bold, {marginRight: 10}]}>
+          <View style={{ flexDirection: 'row', alignItems:'center' }}>
+            <Text style={[appStyle.text16Bold, { marginRight: 10 }]}>
               PHỤ PHÍ
             </Text>
             <TouchableOpacity
@@ -278,11 +279,11 @@ const Surcharge = props => {
                 borderWidth: 1,
               }}
               onPress={() => setModalLimitKm(true)}>
-              <Text style={{textAlign: 'center'}}>?</Text>
+              <Text style={{ textAlign: 'center' }}>?</Text>
             </TouchableOpacity>
           </View>
           <Switch
-            style={{alignSelf: 'center', marginTop: -20}}
+            style={{ alignSelf: 'center' }}
             value={isEnabledDeodorize}
             onValueChange={value => setisEnabledDeodorize(value)}
           />
@@ -290,14 +291,14 @@ const Surcharge = props => {
         {isEnabledDeodorize ? (
           <View style={styles.containerSlider2}>
             <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <Text style={appStyle.text14}>Khử mùi xe</Text>
               <Text style={appStyle.text14}>
                 {Math.floor(sixth * 1000)} K/chuyến
               </Text>
             </View>
             <Slider
-              style={{width: '100%', height: 40}}
+              style={{ width: '100%', height: 40 }}
               minimumValue={0}
               maximumValue={1}
               minimumTrackTintColor="#41cff2"
@@ -312,7 +313,7 @@ const Surcharge = props => {
           <Text
             style={[
               appStyle.text16Bold,
-              {color: COLOR.white, textAlign: 'center'},
+              { color: COLOR.white, textAlign: 'center' },
             ]}>
             CẬP NHẬT
           </Text>
@@ -327,7 +328,7 @@ const Surcharge = props => {
           <View style={styles.modalView}>
             <Text
               style={[
-                [appStyle.text18Bold, {lineHeight: 30, paddingHorizontal: 20}],
+                [appStyle.text18Bold, { lineHeight: 30, paddingHorizontal: 20 }],
               ]}>
               Phụ thu quá km
             </Text>
@@ -371,7 +372,7 @@ const Surcharge = props => {
           <View style={styles.modalView}>
             <Text
               style={[
-                [appStyle.text18Bold, {lineHeight: 30, paddingHorizontal: 20}],
+                [appStyle.text18Bold, { lineHeight: 30, paddingHorizontal: 20 }],
               ]}>
               Phụ thu quá km
             </Text>
@@ -447,7 +448,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   containerSlider: {
-    backgroundColor: COLOR.borderColor3,
+    backgroundColor: COLOR.gray,
     height: 150,
     width: '100%',
     justifyContent: 'space-evenly',
@@ -455,7 +456,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   containerSlider2: {
-    backgroundColor: COLOR.borderColor3,
+    backgroundColor: COLOR.gray,
     height: 80,
     width: '100%',
     justifyContent: 'space-evenly',
