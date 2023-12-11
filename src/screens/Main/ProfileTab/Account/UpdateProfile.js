@@ -57,7 +57,8 @@ const UpdateProfile = props => {
     const randomNum = Math.floor(Math.random() * timestamp);
     return randomNum;
   };
-  const handleUpdate = async name => {
+  const handleUpdate = async values => {
+    console.log(values);
     try {
       const formData = new FormData();
       formData.append('image', {
@@ -78,15 +79,16 @@ const UpdateProfile = props => {
       const response = await axios.put(
         'http://103.57.129.166:3000/user/api/update?idUser=' + idUser,
         {
-          name: name,
+          name: values.name,
           firstName: '',
           lastName: '',
           email: infoUser.email,
-          gender: selectedSex === 'Nam',
-          dob: selectedDate,
+          gender: values.sex === 'Nam' ? true : false,
+          dob: values.dob,
           avatar: responseAvatar.data.link,
         },
       );
+      console.log(response.data);
       if (response.data.result) {
         await updateUserInfo({newInfo: response.data.user});
         await setAppState(generateRandomNumber());
@@ -131,7 +133,7 @@ const UpdateProfile = props => {
         <ImagePickerComponent
           onImageSelected={handleImageSelected}
           imageUrl={selectedImagePath}
-          containerStyle={{marginBottom:32}}
+          containerStyle={{marginBottom: 32}}
         />
 
         {/* Validate */}
@@ -143,19 +145,10 @@ const UpdateProfile = props => {
               sex: infoUser.gender ? 'Nam' : 'Nữ',
             }}
             validationSchema={AccountSchema}
-            onSubmit={(values, {setSubmitting}) => {
-              setSubmitting(true); // Đánh dấu rằng việc xác thực đang diễn ra
-              AccountSchema.validate(values)
-                .then(valid => {
-                  if (valid) {
-                    handleUpdate(values.name);
-                  } else {
-                    console.log('Dữ liệu không hợp lệ');
-                  }
-                })
-                .finally(() => {
-                  setSubmitting(false); // Kết thúc quá trình xác thực
-                });
+            onSubmit={values => {
+              console.log(values);
+              // handleUpdate(values);
+             
             }}>
             {({
               values,
@@ -206,12 +199,13 @@ const UpdateProfile = props => {
                     Giới tính
                   </Text>
                   <AppDropdown
-                    labelField="label"
+                    labelField="value"
                     valueField="value"
                     data={sex}
                     value={selectedSex}
-                    onChange={sexs => {
-                      setSelectedSex(sexs.value);
+                    onChange={async sexs => {
+                      console.log(sexs);
+                       handleChange('');
                     }}
                   />
                 </View>
