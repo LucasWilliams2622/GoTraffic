@@ -1,18 +1,18 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useContext, useState } from 'react';
-import { appStyle } from '../../../../constants/AppStyle';
-import { COLOR, ICON } from '../../../../constants/Theme';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useContext, useState} from 'react';
+import {appStyle} from '../../../../constants/AppStyle';
+import {COLOR, ICON} from '../../../../constants/Theme';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import FastImage from 'react-native-fast-image';
 import AppHomeCar from '../../../../components/AppHomeCar';
-import { AppContext } from '../../../../utils/AppContext';
+import {AppContext} from '../../../../utils/AppContext';
 import numeral from 'numeral';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import AppHeader from '../../../../components/AppHeader';
 
 const HomeCar = props => {
   const navigation = useNavigation();
-  const { infoUser, idUser } = useContext(AppContext);
+  const {infoUser, idUser} = useContext(AppContext);
   const [hideSurplus, setHideSurplus] = useState(true);
   const handleButtonPress = () => {
     setHideSurplus(!hideSurplus);
@@ -26,19 +26,21 @@ const HomeCar = props => {
         style={styles.image}
         source={require('../../../../assets/image/bg_homecar.jpg')}
       />
-      <AppHeader
-        title='Xe của tôi' 
-        backgroundColor='#92D1FA' 
-      />
-      <View style={{ padding: 14, marginTop: 100 }}>
+      <AppHeader title="Xe của tôi" backgroundColor="#92D1FA" />
+      <View style={{padding: 14, marginTop: 100}}>
         <View style={styles.line1}>
-          <Text style={[appStyle.text16Bold, { textAlign: 'center' }]}>
-            Số dư: {hideSurplus ? '*******' : numeral(infoUser.surplus).format('0,0')}
+          <Text style={[appStyle.text16Bold, {textAlign: 'center'}]}>
+            Số dư:{' '}
+            {hideSurplus ? '*******' : numeral(infoUser.surplus).format('0,0')}
           </Text>
           <TouchableOpacity onPress={() => handleButtonPress()}>
             <FastImage
-              style={[appStyle.icon, { marginLeft: 10 }]}
-              source={!hideSurplus ? require('../../../../assets/icon/ic_visible.png') : require('../../../../assets/icon/ic_invisible.png')}
+              style={[appStyle.icon, {marginLeft: 10}]}
+              source={
+                !hideSurplus
+                  ? require('../../../../assets/icon/ic_visible.png')
+                  : require('../../../../assets/icon/ic_invisible.png')
+              }
               resizeMode="stretch"
             />
           </TouchableOpacity>
@@ -66,6 +68,12 @@ const HomeCar = props => {
           title="Danh sách chuyến"
           text="Lịch sử và trạng thái các chuyến"
           onPress={() => navigation.navigate('TripOfCar')}
+        />
+        <AppHomeCar
+          icon={ICON.Address}
+          title="Bản đồ xe"
+          text="Bản đồ vị trí của tất cả xe của bạn"
+          onPress={() => navigation.navigate('MapCars')}
         />
       </View>
     </SafeAreaView>

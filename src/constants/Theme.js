@@ -1,4 +1,6 @@
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
+import IconFontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+
 import IconEntypo from 'react-native-vector-icons/Entypo';
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import IconIonicons from 'react-native-vector-icons/Ionicons';
@@ -45,9 +47,8 @@ export const COLOR = {
   white: '#ffffff',
   black: '#000000',
   red: '#cc0000',
-  
-  
-  red2:'#F36538',
+
+  red2: '#F36538',
   redOrange: '#ff3300',
   blue: '#003399',
 
@@ -65,7 +66,6 @@ export const COLOR = {
   lightGreen2: '#D8F2E1',
   exit: '#F25F57',
   warn: '#fce7e6',
-  
 };
 
 export const ICON = {
@@ -127,4 +127,6 @@ export const ICON = {
     .catch(error => {
       console.error('Error loading icon:', error);
     }),
+
+
 };
