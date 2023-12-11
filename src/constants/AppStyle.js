@@ -224,10 +224,10 @@ export const appStyle = StyleSheet.create({
     letterSpacing: 0.5,
     color: COLOR.text,
   },
-errorText:{
-  fontSize: 14,
-  color: COLOR.red,
-},
+  errorText: {
+    fontSize: 14,
+    color: COLOR.red,
+  },
   // ===================| ROW - COLUMN |========================
   row: {
     flexDirection: 'row',
@@ -375,6 +375,14 @@ errorText:{
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 10,
+  },
+  inputBig: {
+    borderWidth: 1,
+    borderColor: COLOR.borderColor2,
+    borderRadius: 8,
+    height: 80,
+    alignItems:'flex-start',
+    justifyContent:'flex-start'
   },
 
   inputRight: {

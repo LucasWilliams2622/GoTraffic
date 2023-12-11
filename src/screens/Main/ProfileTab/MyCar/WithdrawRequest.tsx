@@ -29,7 +29,7 @@ import AppInput from '../../../../components/AppInput';
 import {AppContext} from '../../../../utils/AppContext';
 
 const WithdrawRequest = () => {
-  const {infoUser,idUser} = useContext(AppContext);
+  const {infoUser, idUser} = useContext(AppContext);
   const isFocused = useIsFocused();
   const navigation = useNavigation();
   const [selectedBank, setSelectedBank] = useState(null);
@@ -64,7 +64,7 @@ const WithdrawRequest = () => {
 
   const setValue = useCallback((item, index) => {
     if (item?.value > surplusMoney) {
-      showToastMessage('error', 'Số dư không đủ vui lòng nhập lại');
+      showToastMessage('error', 'Số dư không đủ, vui lòng chọn lại');
       return;
     }
     setData(prevData =>
@@ -126,37 +126,63 @@ const WithdrawRequest = () => {
 
   const handleWithdraw = async () => {
     try {
-      if (parseFloat(money) > 0) {
-        if (accountNumber) {
-          if (selectedBank) {
-            console.log(selectedBank);
-            const response = await axios.post('http://103.57.129.166:3000/request/api/add',{
-              idUser:idUser,
-              bankName:selectedBank.shortName,
-              bankNumber:accountNumber.toString(),
-              amount:parseInt(money)
-            });
-            console.log(response.data);
-            if(response.data.result){
-              showToastMessage( '','Yêu cầu đã được gửi, bạn sẽ được duyệt sau 72 giờ',);
-              navigation.goBack();
-            }else{
-              showToastMessage('error','Gửi yêu cầu rút tiền thất bại');
+      if (/^[0-9]+$/.test(accountNumber)) {
+        if (accountNumber.length > 10) {
+          if (/^[0-9]+$/.test(money)) {
+            if (parseFloat(money) > 0) {
+              if (parseFloat(money) <= infoUser.surplus) {
+                if (parseFloat(money) <= 2000000) {
+                  if (selectedBank) {
+                    const response = await axios.post(
+                      'http://103.57.129.166:3000/request/api/add',
+                      {
+                        idUser: idUser,
+                        bankName: selectedBank.shortName,
+                        bankNumber: accountNumber.toString(),
+                        amount: parseInt(money),
+                      },
+                    );
+                    console.log(response.data);
+                    if (response.data.result) {
+                      showToastMessage(
+                        '',
+                        'Yêu cầu đã được gửi, bạn sẽ được duyệt sau 72 giờ',
+                      );
+                      navigation.goBack();
+                    } else {
+                      showToastMessage(
+                        'error',
+                        'Gửi yêu cầu rút tiền thất bại',
+                      );
+                    }
+                  } else {
+                    showToastMessage(
+                      'error',
+                      'Bạn chưa chọn ngân hàng tiền rút ,vui lòng chọn lại',
+                    );
+                  }
+                } else {
+                  showToastMessage('error', 'Số tiền rút tối đa là 2.000.000đ');
+                  return;
+                }
+              } else {
+                showToastMessage('error', 'Tài khoản không đủ tiền');
+              }
+            } else {
+              showToastMessage('error', 'Vui lòng kiểm tra số tiền muốn rút');
+              return;
             }
           } else {
-            showToastMessage(
-              'error',
-              'Bạn chưa chọn ngân hàng tiền rút ,vui lòng chọn lại',
-            );
+            showToastMessage('error', 'Vui lòng nhập đúng số tiền');
           }
         } else {
           showToastMessage(
             'error',
-            'Bạn chưa nhập số tài khoản ,vui lòng nhập lại',
+            'Vui lòng kiểm tra số tài khoản ,hãy nhập lại',
           );
         }
       } else {
-        showToastMessage('error', 'Vui lòng kiểm tra số tiền muốn rút');
+        showToastMessage('error', 'Tài khoản không hợp lệ');
       }
     } catch (error) {
       console.log(error);
@@ -200,8 +226,15 @@ const WithdrawRequest = () => {
                   <View style={{width: '10%'}} />
                   <View style={[appStyle.rowCenter, {}]}>
                     <TextInput
-                      value={MoneyText(money)}
-                      style={[appStyle.text20, {maxWidth: 300}]}
+                      value={money}
+                      style={[
+                        appStyle.text20,
+                        {
+                          marginHorizontal: 4,
+                          borderWidth: 2,
+                          borderColor: COLOR.lightGray,
+                        },
+                      ]}
                       keyboardType="number-pad"
                       onChangeText={text => setMoney(text)}
                     />
@@ -310,6 +343,7 @@ const WithdrawRequest = () => {
           </View>
         </>
       </DismissKeyboard>
+
       <BottomSheet
         visible={modalVisible}
         onBackButtonPress={() => setModalVisible(false)}

@@ -21,10 +21,11 @@ import AppHeader from '../../../../components/AppHeader';
 import ImagePickerComponent from '../../../../components/ImagePickerComponent';
 import {AppContext} from '../../../../utils/AppContext';
 import MultipleImagePicker from '../../../../components/MultiImagePicker';
+import { useNavigation } from '@react-navigation/native';
 
 const FinalStep = props => {
-  const {navigation, route} = props;
-  const cardInfo = route.params;
+  const navigation = useNavigation()
+  const {carInfo} = props.route.params;
 
   const {idUser} = useContext(AppContext);
   const [imageThumbnail, setImageThumbnail] = useState('');
@@ -56,7 +57,6 @@ const FinalStep = props => {
       if (response.data.result) {
         // showToastMessage('', 'Upload ảnh bìa thành công');
         setImageThumbnail(response.data.link);
-        console.log('response.data.link', response.data.link);
         await uploadImages(response.data.link);
       } else {
         showToastMessage('error', 'Upload images thumbnail fail');
@@ -94,7 +94,6 @@ const FinalStep = props => {
         const jsonStringWithQuotes = `\'${jsonString}\'`;
         console.log('jsonStringWithQuotes', jsonStringWithQuotes);
         setImages(jsonStringWithQuotes);
-        // showToastMessage('', 'Upload ảnh xe thành công');
         await addCarStep2(jsonStringWithQuotes, thumbnail);
       } else {
         showToastMessage('error', 'Upload ảnh xe thất bại');
@@ -123,59 +122,58 @@ const FinalStep = props => {
 
   const addCarStep2 = async (carImages, thumbnail) => {
     try {
-      console.log(
-        ' cardInfo.carInfo2.price',
-        parseInt(cardInfo.carInfo2.price),
-      );
-      const jsonFeatures = JSON.stringify(cardInfo.carInfo2.selectedFeatures);
-      const jsonStringWithQuotesFeatures = `\'${jsonFeatures}\'`;
-      console.log(jsonStringWithQuotesFeatures);
+      const data = {
+        idUser: idUser,
+        //step1
+        carBrand: carInfo.selectedBrand,
+        numberPlate: carInfo.carNumber,
+        name: carInfo.selectedModel,
+        yearOfManufacture: carInfo.selectedYear,
+        seats: carInfo.selectedSeats,
+        gear: carInfo.selectedTransmission,
+        fuel: carInfo.selectedFuel,
+
+        //step2
+        locationCar: carInfo.locationCar,
+        latitude: carInfo.latitude,
+        longitude: carInfo.longitude,
+        description: carInfo.description,
+        fuelConsumption: parseInt(carInfo.fuelConsumption),
+
+        isDelivery: carInfo.isDelivery,
+        deliveryWithin: carInfo.deliveryWithin,
+        deliveryFee: carInfo.deliveryFee,
+        freeDeliveryWithin: carInfo.freeDeliveryWithin,
+
+        limitKmStatus: carInfo.limitKmStatus,
+        maxKm: carInfo.maxKm,
+        exceededFee: carInfo.exceededFee,
+
+        price: carInfo.price,
+        utilities: carInfo.selectedFeatures,
+        image: carImages,
+        imageThumbnail: thumbnail,
+      };
+
       const response = await axios.post(
         'http://103.57.129.166:3000/car/api/add',
-        {
-          idUser: idUser,
-          //step1
-          carBrand: cardInfo.carInfo.carInfo.selectedBrand,
-          numberPlate: cardInfo.carInfo.carInfo.carNumber,
-          name: cardInfo.carInfo.carInfo.selectedModel,
-          yearOfManufacture: cardInfo.carInfo.carInfo.selectedYear,
-          seats: cardInfo.carInfo.carInfo.selectedSeats,
-          gear: cardInfo.carInfo.carInfo.selectedTransmission,
-          fuel: cardInfo.carInfo.carInfo.selectedFuel,
-
-          //step2
-          locationCar: cardInfo.carInfo2.location,
-          latitude: 0,
-          longitude: 0,
-          description: cardInfo.carInfo2.description,
-          fuelConsumption: parseInt(cardInfo.carInfo2.fuelConsumption),
-
-          isDelivery: cardInfo.carInfo2.isDelivery,
-          deliveryWithin: cardInfo.carInfo2.deliveryWithin,
-          deliveryFee: cardInfo.carInfo2.deliveryFee,
-          freeDeliveryWithin: cardInfo.carInfo2.freeDeliveryWithin,
-
-          limitKmStatus: cardInfo.carInfo2.limitKmStatus,
-          maxKm: cardInfo.carInfo2.maxKm,
-          exceededFee: cardInfo.carInfo2.exceededFee,
-
-          price: cardInfo.carInfo2.price,
-          utilities: jsonStringWithQuotesFeatures,
-          image: carImages,
-          imageThumbnail: thumbnail,
-          locationCar: '',
-        },
+        data,
       );
-      console.log(response.data);
-      if (response.status === 200) {
-        console.log(response.data);
+      console.log('=========================', response.data);
+      console.log('=========================aaa', response.data.result);
+      console.log(
+        '=========================aaaaaaaaaaaa',
+        response.data.message,
+      );
+
+      if (response.data.result) {
         showToastMessage('', 'Đăng xe thành công');
         navigation.navigate('ListCar');
       } else {
-        showToastMessage('error', 'Xe đã tồn tại rồi');
+        showToastMessage('error', 'Đăng xe thất bại');
       }
     } catch (error) {
-      showToastMessage('error', 'Đăng xe thất bại');
+      showToastMessage('error', 'Đăng xe thất bại !!!');
     }
   };
   return (
