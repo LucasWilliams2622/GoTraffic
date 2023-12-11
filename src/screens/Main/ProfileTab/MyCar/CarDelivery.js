@@ -113,6 +113,7 @@ const CarDelivery = props => {
               style={{width: '100%', height: 40}}
               minimumValue={0}
               maximumValue={1}
+              thumbTintColor='#219EBC'
               minimumTrackTintColor="#41cff2"
               maximumTrackTintColor="#000000"
               onValueChange={value => setthird(value)}

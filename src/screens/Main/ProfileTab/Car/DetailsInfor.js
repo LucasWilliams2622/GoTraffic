@@ -245,7 +245,7 @@ const DetailsInfor = props => {
       <AppHeader title="Thông tin chi tiết" />
       <View style={{flex: 1, paddingHorizontal: 10}}>
         <ScrollView
-          style={{flex: 1, width: '100%', marginBottom: 20}}
+          style={{flex: 1, width: '100%', marginBottom: 10}}
           showsVerticalScrollIndicator={false}>
           {/* Địa chỉ */}
           <View style={appStyle.cardInfo}>
@@ -630,7 +630,7 @@ const DetailsInfor = props => {
 
         <AppButton
           title="Tiếp theo"
-          marginBottom={90}
+          marginBottom={80}
           onPress={() => handleNext()}
         />
       </View>
