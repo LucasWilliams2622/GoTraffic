@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Go Traffic 🚙</string>
+    <string name="app_name">GoTraffic</string>
     <string name="facebook_app_id">248850361474761</string>
     <string name="fb_login_protocol_scheme">fb248850361474761</string>
     <string name="facebook_client_token">e5e956cefc7e3ed6fe62f831f255d8d6</string>

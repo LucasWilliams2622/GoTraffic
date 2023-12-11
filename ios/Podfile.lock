@@ -79,14 +79,48 @@ PODS:
     - FlipperKit/FlipperKitNetworkPlugin
   - fmt (6.2.1)
   - glog (0.3.5)
+  - GoogleDataTransport (9.3.0):
+    - GoogleUtilities/Environment (~> 7.7)
+    - nanopb (< 2.30910.0, >= 2.30908.0)
+    - PromisesObjC (< 3.0, >= 1.2)
+  - GoogleMLKit/LanguageID (2.5.0):
+    - GoogleMLKit/MLKitCore
+    - MLKitLanguageID (~> 2.0.0)
+  - GoogleMLKit/MLKitCore (2.5.0):
+    - MLKitCommon (~> 5.0.0)
+  - GoogleMLKit/Translate (2.5.0):
+    - GoogleMLKit/MLKitCore
+    - MLKitTranslate (~> 1.5.0)
   - GoogleSignIn (7.0.0):
     - AppAuth (~> 1.5)
     - GTMAppAuth (< 3.0, >= 1.3)
     - GTMSessionFetcher/Core (< 4.0, >= 1.1)
+  - GoogleToolboxForMac/DebugUtils (2.3.2):
+    - GoogleToolboxForMac/Defines (= 2.3.2)
+  - GoogleToolboxForMac/Defines (2.3.2)
+  - GoogleToolboxForMac/Logger (2.3.2):
+    - GoogleToolboxForMac/Defines (= 2.3.2)
+  - "GoogleToolboxForMac/NSData+zlib (2.3.2)":
+    - GoogleToolboxForMac/Defines (= 2.3.2)
+  - "GoogleToolboxForMac/NSDictionary+URLArguments (2.3.2)":
+    - GoogleToolboxForMac/DebugUtils (= 2.3.2)
+    - GoogleToolboxForMac/Defines (= 2.3.2)
+    - "GoogleToolboxForMac/NSString+URLArguments (= 2.3.2)"
+  - "GoogleToolboxForMac/NSString+URLArguments (2.3.2)"
+  - GoogleToolboxForMac/StringEncoding (2.3.2):
+    - GoogleToolboxForMac/Defines (= 2.3.2)
+  - GoogleUtilities/Environment (7.12.0):
+    - PromisesObjC (< 3.0, >= 1.2)
+  - GoogleUtilities/Logger (7.12.0):
+    - GoogleUtilities/Environment
+  - GoogleUtilities/UserDefaults (7.12.0):
+    - GoogleUtilities/Logger
+  - GoogleUtilitiesComponents (1.1.0):
+    - GoogleUtilities/Logger
   - GTMAppAuth (2.0.0):
     - AppAuth/Core (~> 1.6)
     - GTMSessionFetcher/Core (< 4.0, >= 1.5)
-  - GTMSessionFetcher/Core (3.1.1)
+  - GTMSessionFetcher/Core (1.7.2)
   - hermes-engine (0.72.4):
     - hermes-engine/Pre-built (= 0.72.4)
   - hermes-engine/Pre-built (0.72.4)
@@ -107,7 +141,36 @@ PODS:
   - lottie-react-native (6.3.1):
     - lottie-ios (~> 4.3.0)
     - React-Core
+  - MLKitCommon (5.0.0):
+    - GoogleDataTransport (~> 9.0)
+    - GoogleToolboxForMac/Logger (~> 2.1)
+    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
+    - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
+    - GoogleUtilities/UserDefaults (~> 7.0)
+    - GoogleUtilitiesComponents (~> 1.0)
+    - GTMSessionFetcher/Core (~> 1.1)
+    - Protobuf (~> 3.12)
+  - MLKitLanguageID (2.0.0):
+    - MLKitNaturalLanguage (~> 3.0)
+  - MLKitNaturalLanguage (3.0.0):
+    - GoogleToolboxForMac/Logger (~> 2.1)
+    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
+    - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
+    - GoogleToolboxForMac/StringEncoding (~> 2.1)
+    - GTMSessionFetcher/Core (~> 1.1)
+    - MLKitCommon (~> 5.0)
+    - Protobuf (~> 3.12)
+  - MLKitTranslate (1.5.0):
+    - MLKitNaturalLanguage (~> 3.0)
+    - SSZipArchive (~> 2.1)
+  - nanopb (2.30909.1):
+    - nanopb/decode (= 2.30909.1)
+    - nanopb/encode (= 2.30909.1)
+  - nanopb/decode (2.30909.1)
+  - nanopb/encode (2.30909.1)
   - OpenSSL-Universal (1.1.1100)
+  - PromisesObjC (2.3.1)
+  - Protobuf (3.25.1)
   - RCT-Folly (2021.07.22.00):
     - boost
     - DoubleConversion
@@ -422,15 +485,22 @@ PODS:
     - React-Core
   - react-native-maps (1.8.0):
     - React-Core
-  - react-native-pager-view (6.2.2):
+  - react-native-mlkit-translate-text (1.0.3):
+    - GoogleMLKit/LanguageID (= 2.5.0)
+    - GoogleMLKit/Translate (= 2.5.0)
+    - React
+  - react-native-pager-view (6.2.3):
+    - RCT-Folly (= 2021.07.22.00)
     - React-Core
-  - react-native-pdf (6.7.1):
+  - react-native-pdf (6.7.3):
     - React-Core
   - react-native-safe-area-context (3.3.2):
     - React-Core
   - react-native-signature-capture (0.4.12):
     - React
   - react-native-slider (4.4.3):
+    - React-Core
+  - react-native-voice (3.2.4):
     - React-Core
   - react-native-webview (13.6.2):
     - React-Core
@@ -572,7 +642,7 @@ PODS:
   - RNGestureHandler (2.13.4):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
-  - RNGoogleSignin (10.0.1):
+  - RNGoogleSignin (10.1.1):
     - GoogleSignIn (~> 7.0)
     - React-Core
   - RNImageCropPicker (0.40.2):
@@ -615,7 +685,7 @@ PODS:
     - React-RCTText
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.27.0):
+  - RNScreens (3.29.0):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - RNShare (9.4.1):
@@ -629,6 +699,7 @@ PODS:
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
   - SocketRocket (0.6.1)
+  - SSZipArchive (2.4.3)
   - TOCropViewController (2.6.1)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
@@ -689,11 +760,13 @@ DEPENDENCIES:
   - react-native-html-to-pdf (from `../node_modules/react-native-html-to-pdf`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-maps (from `../node_modules/react-native-maps`)
+  - react-native-mlkit-translate-text (from `../node_modules/react-native-mlkit-translate-text`)
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-pdf (from `../node_modules/react-native-pdf`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-signature-capture (from `../node_modules/react-native-signature-capture`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
+  - "react-native-voice (from `../node_modules/@react-native-voice/voice`)"
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -747,16 +820,29 @@ SPEC REPOS:
     - Flipper-PeerTalk
     - FlipperKit
     - fmt
+    - GoogleDataTransport
+    - GoogleMLKit
     - GoogleSignIn
+    - GoogleToolboxForMac
+    - GoogleUtilities
+    - GoogleUtilitiesComponents
     - GTMAppAuth
     - GTMSessionFetcher
     - libevent
     - libwebp
     - lottie-ios
+    - MLKitCommon
+    - MLKitLanguageID
+    - MLKitNaturalLanguage
+    - MLKitTranslate
+    - nanopb
     - OpenSSL-Universal
+    - PromisesObjC
+    - Protobuf
     - SDWebImage
     - SDWebImageWebPCoder
     - SocketRocket
+    - SSZipArchive
     - TOCropViewController
     - YogaKit
 
@@ -822,6 +908,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-picker"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
+  react-native-mlkit-translate-text:
+    :path: "../node_modules/react-native-mlkit-translate-text"
   react-native-pager-view:
     :path: "../node_modules/react-native-pager-view"
   react-native-pdf:
@@ -832,6 +920,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-signature-capture"
   react-native-slider:
     :path: "../node_modules/@react-native-community/slider"
+  react-native-voice:
+    :path: "../node_modules/@react-native-voice/voice"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
   React-NativeModulesApple:
@@ -928,15 +1018,27 @@ SPEC CHECKSUMS:
   FlipperKit: 2efad7007d6745a3f95e4034d547be637f89d3f6
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
+  GoogleDataTransport: 57c22343ab29bc686febbf7cbb13bad167c2d8fe
+  GoogleMLKit: 0d7f5aa2f8a2f2ea9d849a05abdbe80974b0ec83
   GoogleSignIn: b232380cf495a429b8095d3178a8d5855b42e842
+  GoogleToolboxForMac: 8bef7c7c5cf7291c687cf5354f39f9db6399ad34
+  GoogleUtilities: 0759d1a57ebb953965c2dfe0ba4c82e95ccc2e34
+  GoogleUtilitiesComponents: 679b2c881db3b615a2777504623df6122dd20afe
   GTMAppAuth: 99fb010047ba3973b7026e45393f51f27ab965ae
-  GTMSessionFetcher: e8647203b65cee28c5f73d0f473d096653945e72
+  GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
   hermes-engine: 81191603c4eaa01f5e4ae5737a9efcf64756c7b2
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
   lottie-ios: 25e7b2675dad5c3ddad369ac9baab03560c5bfdd
   lottie-react-native: c9f1db4f4124dcce9f8159e65d8dc6e8bcb11fb4
+  MLKitCommon: 3bc17c6f7d25ce3660f030350b46ae7ec9ebca6e
+  MLKitLanguageID: 0f6eb73b437c84aa32268c9916edbc34357c0dfa
+  MLKitNaturalLanguage: effd1e1268a5e6c734f769dd988b5d293bdc564b
+  MLKitTranslate: 6ea27ef248debd2b2021e582e3ed7befb4f254a9
+  nanopb: d4d75c12cd1316f4a64e3c6963f879ecd4b5e0d5
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
+  PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
+  Protobuf: d94761c33f1239c0a43a0817ca1a5f7f7c900241
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
   RCTRequired: c0569ecc035894e4a68baecb30fe6a7ea6e399f9
   RCTTypeSafety: e90354072c21236e0bcf1699011e39acd25fea2f
@@ -959,11 +1061,13 @@ SPEC CHECKSUMS:
   react-native-html-to-pdf: 4c5c6e26819fe202971061594058877aa9b25265
   react-native-image-picker: 2e2e82aba9b6a91a7c78f7d9afde341a2659c7b8
   react-native-maps: f699e0753c22c4d5c3a44d03895b193a4dbca6c2
-  react-native-pager-view: 02a5c4962530f7efc10dd51ee9cdabeff5e6c631
-  react-native-pdf: 7c0e91ada997bac8bac3bb5bea5b6b81f5a3caae
+  react-native-mlkit-translate-text: 76f72efe777fdabc90a5257316a14150ce8e06e5
+  react-native-pager-view: e26d35e382d86950c936f8917e3beb9188115ccc
+  react-native-pdf: b4ca3d37a9a86d9165287741c8b2ef4d8940c00e
   react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
   react-native-signature-capture: 416a3947684e049a5b012cdd6496f878dc797f16
   react-native-slider: 1cdd6ba29675df21f30544253bf7351d3c2d68c4
+  react-native-voice: f5e8eec2278451d0017eb6a30a6ccc726aca34e0
   react-native-webview: 8fc09f66a1a5b16bbe37c3878fda27d5982bb776
   React-NativeModulesApple: edb5ace14f73f4969df6e7b1f3e41bef0012740f
   React-perflogger: 496a1a3dc6737f964107cb3ddae7f9e265ddda58
@@ -994,20 +1098,21 @@ SPEC CHECKSUMS:
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: 6e46dde1f87e5f018a54fe5d40cd0e0b942b49ee
-  RNGoogleSignin: ccaa4a81582cf713eea562c5dd9dc1961a715fd0
+  RNGoogleSignin: aac5c1ec73422109dec1da770247a1e410dcc620
   RNImageCropPicker: d9616a0cb9b72e8551ff94a7a5021fbd29050aa5
   RNPermissions: 4e3714e18afe7141d000beae3755e5b5fb2f5e05
   RNReanimated: ab2e96c6d5591c3dfbb38a464f54c8d17fb34a87
-  RNScreens: 3c2d122f5e08c192e254c510b212306da97d2581
+  RNScreens: 3c5b9f4a9dcde752466854b6109b79c0e205dad3
   RNShare: 32e97adc8d8c97d4a26bcdd3c45516882184f8b6
   RNSVG: d00c8f91c3cbf6d476451313a18f04d220d4f396
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
+  SSZipArchive: fe6a26b2a54d5a0890f2567b5cc6de5caa600aef
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   Yoga: 3efc43e0d48686ce2e8c60f99d4e6bd349aff981
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 8e640ed68c05c3f401638e2cacd763ad0035eb06
+PODFILE CHECKSUM: 6721fdc3526462ca37f023786d47c79a6ffe1018
 
 COCOAPODS: 1.14.2

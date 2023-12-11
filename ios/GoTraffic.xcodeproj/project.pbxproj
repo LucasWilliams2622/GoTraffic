@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* GoTrafficTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* GoTrafficTests.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		75ADB540FC648F835880BEDE /* libPods-GoTraffic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3C1DBCBBA578AAEF635113 /* libPods-GoTraffic.a */; };
 		7B60B5A249457AA5BB321823 /* libPods-GoTraffic-GoTrafficTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A18DAAA192653E1C67809AF /* libPods-GoTraffic-GoTrafficTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		AF5347EE2B1B995B00DB33AB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -121,7 +120,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				75ADB540FC648F835880BEDE /* libPods-GoTraffic.a in Frameworks */,
 				B919DFC7AD3D048B55BAFD96 /* libPods-GoTraffic.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
