@@ -143,8 +143,8 @@ const styles = StyleSheet.create({
     borderBottomColor: COLOR.borderColor,
   },
   logo: {
-    width: 36,
-    height: 36,
+    width: 42,
+    height: 37,
     alignSelf: 'flex-start',
   },
   imageInModal: {
