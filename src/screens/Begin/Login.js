@@ -43,6 +43,7 @@ const Login = props => {
   const [password, setpassword] = useState('');
   const [email, setEmail] = useState('');
 
+
   const toggleBottomNavigationView = () => {
     setVisible(!visible);
   };
@@ -58,6 +59,9 @@ const Login = props => {
     password: Yup.string().required('Mật khẩu không được để trống'),
     // .min(5, 'Mật khẩu quá ngắn ít nhất phải 8 kí tự')
     // .matches(/[a-zA-Z]/, 'Mật khẩu chỉ chứa các chữ các latinh'),
+    email: Yup.string()
+      .matches(/^[a-zA-Z]{3}@[gG]\.com$/, 'Email không hợp lệ')
+      .required('Email không được để trống'),
   });
 
   //API login
@@ -92,17 +96,29 @@ const Login = props => {
   const onForgotPassword = async () => {
     try {
       console.log(email);
-      const response = await axios.put(
-        'http://103.57.129.166:3000/user/api/forgot-password',
+
+      const checkEmail = await axios.post(
+        'http://103.57.129.166:3000/user/api/check-email',
         {
           email: email,
         },
       );
-      console.log(response.data);
-      if (response.data.result) {
-        showToastMessage('', 'Gửi mật khẩu mới thành công');
+
+      if (checkEmail.data.result) {
+        const response = await axios.put(
+          'http://103.57.129.166:3000/user/api/forgot-password',
+          {
+            email: email,
+          },
+        );
+        console.log(response.data);
+        if (response.data.result) {
+          showToastMessage('', 'Gửi mật khẩu mới thành công');
+        } else {
+          showToastMessage('error', 'Gửi mật khẩu mới thất bại');
+        }
       } else {
-        showToastMessage('error', 'Gửi mật khẩu mới thất bại');
+        showToastMessage('error', 'Email không tồn tại');
       }
     } catch (e) {
       console.log(e);
@@ -187,72 +203,72 @@ const Login = props => {
               errors,
               touched,
             }) => (
-              
-                <KeyboardAvoidingView behavior="padding" style={{ height:'73%'}}>
-                  <View style={{ paddingHorizontal: 14 }}>
-                    <View>
-                      <View style={styles.viewItem}>
-                        <Text style={styles.text2}>Số điện thoại</Text>
-                        <AppInput
-                          keyboardType={'phone-pad'}
-                          returnKeyType={'next'}
-                          placeholder={'Nhập số điện thoại của bạn'}
-                          onChangeText={handleChange('phoneNumber')}
-                          onBlur={handleBlur('phoneNumber')}
-                          value={values.phoneNumber}
-                        />
-                      </View>
-                    </View>
-                    {touched.phoneNumber && errors.phoneNumber && (
-                      <Text style={styles.textError}>{errors.phoneNumber}</Text>
-                    )}
 
-                    <View>
-                      <View style={styles.viewItem}>
-                        <Text style={styles.text2}>Mật khẩu</Text>
-                        <AppInput
-                          returnKeyType={'done'}
-                          placeholder={'Nhập mật khẩu'}
-                          isPassword
-                          secureTextEntry
-                          onChangeText={handleChange('password')}
-                          onBlur={handleBlur('password')}
-                          value={values.password}
-                        />
-                      </View>
-                    </View>
-                    {touched.password && errors.password && (
-                      <Text style={styles.textError}>{errors.password}</Text>
-                    )}
-
-                    <Text
-                      style={styles.text3}
-                      onPress={() => {
-                        toggleBottomNavigationView();
-                      }}>
-                      Quên mật khẩu
-                    </Text>
-                    <AppButton
-                      title="Đăng nhập"
-                      color={COLOR.secondary}
-                      fontSize={18}
-                      onPress={handleSubmit}
-                    />
-                    <View style={{ marginTop: 20, alignItems: 'center' }}>
-                      <Text style={appStyle.text14}>Bạn chưa là thành viên?</Text>
-                      <Text style={appStyle.text16Bold} onPress={() => {
-                        goRegister();
-                      }}>Hãy đăng ký</Text>
+              <KeyboardAvoidingView behavior="padding" style={{ height: '73%' }}>
+                <View style={{ paddingHorizontal: 14 }}>
+                  <View>
+                    <View style={styles.viewItem}>
+                      <Text style={styles.text2}>Số điện thoại</Text>
+                      <AppInput
+                        keyboardType={'phone-pad'}
+                        returnKeyType={'next'}
+                        placeholder={'Nhập số điện thoại của bạn'}
+                        onChangeText={handleChange('phoneNumber')}
+                        onBlur={handleBlur('phoneNumber')}
+                        value={values.phoneNumber}
+                      />
                     </View>
                   </View>
+                  {touched.phoneNumber && errors.phoneNumber && (
+                    <Text style={styles.textError}>{errors.phoneNumber}</Text>
+                  )}
 
-                  <Svg style={{flex:1,position:'absolute', bottom:0, zIndex:-1}} xmlns="http://www.w3.org/2000/svg" width="420" height="186" viewBox="0 0 393 186" fill="none">
-                    <Path d="M35.5544 0L-15 98.7526V186H450V68.0722L396.442 20.134L307.347 68.0722L256.792 0L218.251 52.732L171.2 20.134L124.65 41.2268L35.5544 0Z" fill="#90C9E6" />
-                    <Path d="M-27.0323 44L-79 114.613V177H399V92.6753L343.945 58.3969L252.358 92.6753L200.391 44L160.772 81.7062L112.406 58.3969L64.5544 73.4794L-27.0323 44Z" fill="#219EBC" />
-                    <Path d="M54.5985 89L-27.5 157L-34 186H494V124.5L437.217 99.5L342.757 124.5L289.158 89L248.296 116.5L198.412 99.5L149.059 110.5L54.5985 89Z" fill="#023047" />
-                  </Svg>
+                  <View>
+                    <View style={styles.viewItem}>
+                      <Text style={styles.text2}>Mật khẩu</Text>
+                      <AppInput
+                        returnKeyType={'done'}
+                        placeholder={'Nhập mật khẩu'}
+                        isPassword
+                        secureTextEntry
+                        onChangeText={handleChange('password')}
+                        onBlur={handleBlur('password')}
+                        value={values.password}
+                      />
+                    </View>
+                  </View>
+                  {touched.password && errors.password && (
+                    <Text style={styles.textError}>{errors.password}</Text>
+                  )}
 
-                </KeyboardAvoidingView>
+                  <Text
+                    style={styles.text3}
+                    onPress={() => {
+                      toggleBottomNavigationView();
+                    }}>
+                    Quên mật khẩu
+                  </Text>
+                  <AppButton
+                    title="Đăng nhập"
+                    color={COLOR.secondary}
+                    fontSize={18}
+                    onPress={handleSubmit}
+                  />
+                  <View style={{ marginTop: 20, alignItems: 'center' }}>
+                    <Text style={appStyle.text14}>Bạn chưa là thành viên?</Text>
+                    <Text style={appStyle.text16Bold} onPress={() => {
+                      goRegister();
+                    }}>Hãy đăng ký</Text>
+                  </View>
+                </View>
+
+                <Svg style={{ flex: 1, position: 'absolute', bottom: 0, zIndex: -1 }} xmlns="http://www.w3.org/2000/svg" width="420" height="186" viewBox="0 0 393 186" fill="none">
+                  <Path d="M35.5544 0L-15 98.7526V186H450V68.0722L396.442 20.134L307.347 68.0722L256.792 0L218.251 52.732L171.2 20.134L124.65 41.2268L35.5544 0Z" fill="#90C9E6" />
+                  <Path d="M-27.0323 44L-79 114.613V177H399V92.6753L343.945 58.3969L252.358 92.6753L200.391 44L160.772 81.7062L112.406 58.3969L64.5544 73.4794L-27.0323 44Z" fill="#219EBC" />
+                  <Path d="M54.5985 89L-27.5 157L-34 186H494V124.5L437.217 99.5L342.757 124.5L289.158 89L248.296 116.5L198.412 99.5L149.059 110.5L54.5985 89Z" fill="#023047" />
+                </Svg>
+
+              </KeyboardAvoidingView>
 
             )}
           </Formik>
@@ -269,29 +285,59 @@ const Login = props => {
         onBackdropPress={toggleBottomNavigationView}>
         <View style={styles.bottomNavigationView}>
           <View style={{ flex: 1, justifyContent: 'space-between' }}>
-            <View>
-              <Text style={appStyle.text16Bold}>Quên mật khẩu</Text>
-              <Text
-                style={[appStyle.text14, { marginBottom: 10, marginTop: 10 }]}>
-                Nhập email của bạn để thực hiện quá trình xác minh, chúng tôi sẽ
-                gửi mật khẩu mới qua gmail của bạn.
-              </Text>
-              <AppInput
-                placeholder={'Nhập email của tài khoản'}
-                onChangeText={email => [setEmail(email)]}
-                value={email}
-              />
-            </View>
+            <Formik
+              initialValues={{ email: '' }}
+              validationSchema={validationSchema}
+              onSubmit={(values, { setSubmitting }) => {
+                setVisible(false);
+                onForgotPassword(values.email);
+                setSubmitting(false);
+              }}
+            >
+              {({
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                values,
+                errors,
+                touched,
+              }) => (
+                <View>
+                  <Text style={appStyle.text16Bold}>Quên mật khẩu</Text>
+                  <Text
+                    style={[appStyle.text14, { marginBottom: 10, marginTop: 10 }]}>
+                    Nhập email của bạn để thực hiện quá trình xác minh, chúng tôi sẽ
+                    gửi mật khẩu mới qua gmail của bạn.
+                  </Text>
+                  <AppInput
+                    placeholder={'Nhập email của tài khoản'}
+                    onChangeText={handleChange('email')}
+                    onBlur={handleBlur('email')}
+                    value={values.email}
+                  />
+                  {touched.email && errors.email && (
+                    <Text style={[styles.textError,{marginTop:10}]}>{errors.email}</Text>
+                  )}
+
+                  <AppButton
+                    title="Tiếp tục"
+                    color={COLOR.secondary}
+                    fontSize={18}
+                    marginTop={30}
+                    onPress={handleSubmit}
+                  // onPress={() => {
+                  //   // setVisible(false);
+                  //   // onForgotPassword();
+
+                  // }}
+                  />
+                </View>
+
+              )}
+
+            </Formik>
           </View>
-          <AppButton
-            title="Tiếp tục"
-            color={COLOR.secondary}
-            fontSize={18}
-            onPress={() => {
-              setVisible(false);
-              onForgotPassword();
-            }}
-          />
+
         </View>
       </BottomSheet>
     </SafeAreaView>
