@@ -42,7 +42,10 @@ const FinishTrip = () => {
         keyExtractor={item => item._id}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
-          <View>
+          <View
+            style={{
+              marginTop: 50,
+            }}>
             <FastImage
               style={styles.imageInvisible}
               resizeMode={'stretch'}

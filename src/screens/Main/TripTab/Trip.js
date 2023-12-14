@@ -20,6 +20,7 @@ import AppHeader from '../../../components/AppHeader';
 import {useIsFocused} from '@react-navigation/native';
 import Swipelist from 'react-native-swipeable-list-view';
 import {showToastMessage} from '../../../utils/utils';
+import data from '../../data';
 const Trip = () => {
   const {infoUser, idUser} = useContext(AppContext);
   const [listBookingCurrent, setListBookingCurrent] = useState([]);
@@ -63,7 +64,38 @@ const Trip = () => {
       console.log('=========>', error);
     }
   };
-
+  const receivedBooking = async id => {
+    try {
+      console.log(id);
+      const response = await AxiosInstance().post(
+        '/booking/api/receive?id=' + id,
+      );
+      if (response.result) {
+        showToastMessage('', 'Nhận xe thành công');
+        getListBookingCurrent();
+      } else {
+        showToastMessage('', 'Nhận xe thất bại');
+      }
+    } catch (error) {
+      console.log('=========>', error);
+    }
+  };
+  const returnCar = async id => {
+    try {
+      console.log(id);
+      const response = await AxiosInstance().post(
+        '/booking/api/return-car?id=' + id,
+      );
+      if (response.result) {
+        showToastMessage('', 'Trả xe thành công');
+        getListBookingCurrent();
+      } else {
+        showToastMessage('', 'Trả xe thất bại');
+      }
+    } catch (error) {
+      console.log('=========>', error);
+    }
+  };
   useEffect(() => {
     getListBookingCurrent();
   }, [isFocused]);
@@ -104,13 +136,19 @@ const Trip = () => {
             style={{width: '100%', marginBottom: 65}}
             data={listBookingCurrent}
             renderRightItem={(data, index) => (
-              <View key={index} >
-                <ItemTrip data={data} car={listBookingCurrent} />
+              <View key={index}>
+                <ItemTrip
+                  data={data}
+                  car={listBookingCurrent}
+                  handleCancle={cancelBooking}
+                  handleReceived={receivedBooking}
+                  handleReturn={returnCar}
+                />
               </View>
             )}
             renderHiddenItem={(data, index) => (
               <TouchableOpacity
-                style={[styles.rightAction, {backgroundColor: COLOR.red2}]}
+                style={[styles.rightAction, {backgroundColor: COLOR.red}]}
                 onPress={() => {
                   console.log(data.id);
                   cancelBooking(data.id);

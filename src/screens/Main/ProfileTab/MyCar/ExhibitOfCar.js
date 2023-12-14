@@ -153,6 +153,7 @@ const ExhibitOfCar = props => {
           imageRegister: imageRegister,
           imageRegistry: imageRegister,
           imageInsurance: imageInsurance,
+          imageThumbnail: '',
         },
       );
       if (response.data.result) {
@@ -169,7 +170,7 @@ const ExhibitOfCar = props => {
   return (
     <SafeAreaView style={appStyle.container}>
       <AppHeader title="Hợp đồng & bảo hiểm" />
-      
+
       <ScrollView
         style={{
           flex: 1,

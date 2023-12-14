@@ -22,6 +22,7 @@ import AppHeader from '../../../../components/AppHeader';
 import {useIsFocused} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import {Dropdown} from 'react-native-element-dropdown';
+import {ScrollView} from 'native-base';
 const ListCar = props => {
   const {navigation, route} = props;
   const updatedCarInfo = route.params?.updatedCarInfo;
@@ -41,6 +42,23 @@ const ListCar = props => {
       }
     } catch (error) {
       console.log('=========>', error);
+    }
+  };
+  const getCarByIdUserByStatus = async status => {
+    try {
+      const response = await AxiosInstance().get(
+        `/car/api/get-car-by-status-of-user?idUser=${idUser}&status=` +
+          parseInt(status),
+      );
+      if (response.result) {
+        console.log(response);
+        setCarData(response.car);
+      } else {
+        setCarData([]);
+      }
+    } catch (error) {
+      console.log('=========>', error);
+      setCarData([]);
     }
   };
   const [value, setValue] = useState(null);
@@ -71,16 +89,7 @@ const ListCar = props => {
         icon={ICON.Add}
         onPressRight={() => navigation.navigate('BasicInfor')}
       />
-      <View
-        style={{
-          height: '20%',
-          width: '100%',
-          padding: 10,
-          backgroundColor: '#eff7fb',
-          borderTopColor: COLOR.fifth,
-          borderTopWidth: 1,
-        }}>
-        <Text style={[appStyle.text185, {color: '#023047'}]}>Quản lý xe</Text>
+      <ScrollView>
         <Dropdown
           style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
           placeholderStyle={appStyle.text165}
@@ -100,48 +109,35 @@ const ListCar = props => {
           onChange={item => {
             setValue(item.value);
             setIsFocus(false);
+            console.log(item.value);
+            getCarByIdUserByStatus(item.value);
           }}
-          // renderLeftIcon={() => (
-          //   <AntDesign
-          //     style={styles.icon}
-          //     color={isFocus ? 'blue' : 'black'}
-          //     name="Safety"
-          //     size={20}
-          //   />
-          // )}
         />
-      </View>
-      <Text
-        style={[
-          appStyle.text14,
-          {marginLeft: 20, fontStyle: 'italic', marginTop: 10},
-        ]}>
-        Danh sách xe của tôi:
-      </Text>
 
-      <FlatList
-        style={{marginBottom: 72}}
-        data={carData}
-        renderItem={({item}) => <ItemCar data={item} />}
-        keyExtractor={(item, index) => index.toString()}
-        showsVerticalScrollIndicator={false}
-        ListEmptyComponent={
-          <View>
-            <FastImage
-              style={styles.imageInvisible}
-              resizeMode={'stretch'}
-              source={require('../../../../assets/image/NoTrip.png')}
-            />
-            <Text
-              style={[
-                appStyle.text16,
-                {textAlign: 'center', marginBottom: 10, fontStyle: 'italic'},
-              ]}>
-              Bạn chưa có xe nào !
-            </Text>
-          </View>
-        }
-      />
+        <FlatList
+          style={{marginBottom: 72}}
+          data={carData}
+          renderItem={({item}) => <ItemCar data={item} />}
+          keyExtractor={(item, index) => index.toString()}
+          showsVerticalScrollIndicator={false}
+          ListEmptyComponent={
+            <View style={{marginTop: 20}}>
+              <FastImage
+                style={styles.imageInvisible}
+                resizeMode={'stretch'}
+                source={require('../../../../assets/image/NoTrip.png')}
+              />
+              <Text
+                style={[
+                  appStyle.text16,
+                  {textAlign: 'center', marginBottom: 10, fontStyle: 'italic'},
+                ]}>
+                Bạn chưa có xe nào !
+              </Text>
+            </View>
+          }
+        />
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -163,6 +159,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     backgroundColor: COLOR.white,
     marginTop: 10,
+    marginHorizontal: 20,
   },
   icon: {
     marginRight: 5,

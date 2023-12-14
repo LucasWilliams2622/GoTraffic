@@ -18,34 +18,39 @@ import ConfirmTrip from './RouteOfTripCar/ConfirmTrip';
 import ActiveTrip from './RouteOfTripCar/ActiveTrip';
 import CancleTrip from './RouteOfTripCar/CancleTrip';
 import FinishTrip from './RouteOfTripCar/FinishTrip';
+import DuringTrip from './RouteOfTripCar/DuringTrip';
 import AppHeader from '../../../../components/AppHeader';
 
 const TripOfCar = props => {
   const {navigation} = props;
-  const goBack = () => {
-    navigation.goBack('HomeCar');
-  };
+
   const layout = useWindowDimensions();
 
   const renderScene = SceneMap({
     first: ConfirmTrip,
     second: CancleTrip,
     third: ActiveTrip,
-    forth: FinishTrip,
+    forth: DuringTrip,
+    fifth: FinishTrip,
   });
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     {key: 'first', title: 'Chờ duyệt'},
     {key: 'second', title: 'Đã hùy'},
-    {key: 'third', title: 'Trong chuyến'},
-    {key: 'forth', title: 'Hoàn thành'},
+    {key: 'third', title: 'Đã xác nhận'},
+    {key: 'forth', title: 'Trong chuyến'},
+    {key: 'fifth', title: 'Hoàn thành'},
   ]);
   const renderTabBar = props => (
     <TabBar
       {...props}
       indicatorStyle={{backgroundColor: COLOR.primary}}
       style={{backgroundColor: COLOR.white}}
-      labelStyle={{color: COLOR.black}}
+      labelStyle={{
+        color: COLOR.black,
+        fontSize: 12,
+        //textTransform: 'none',
+      }}
     />
   );
   return (
