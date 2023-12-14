@@ -26,24 +26,28 @@ const RentCost = props => {
   const hanldUpdatePrice = async () => {
     try {
       console.log(priceUpdate);
-      const response = await axios.put(
-        'http://103.57.129.166:3000/car/api/update-price-car?idCar=' + id,
-        {
-          price: parseInt(priceUpdate),
-        },
-      );
-      if (response.data.result) {
-        showToastMessage('', 'Cập nhật giá thành công');
-        navigation.navigate('ListCar');
+      if (priceUpdate < 100) {
+        showToastMessage('error', 'Vui lòng nhập giá lớn hơn 100K');
       } else {
-        showToastMessage('error', 'Cập nhật giá thất bại');
+        const response = await axios.put(
+          'http://103.57.129.166:3000/car/api/update-price-car?idCar=' + id,
+          {
+            price: parseInt(priceUpdate * 1000),
+          },
+        );
+        if (response.data.result) {
+          showToastMessage('', 'Cập nhật giá thành công');
+          navigation.navigate('ListCar');
+        } else {
+          showToastMessage('error', 'Cập nhật giá thất bại');
+        }
       }
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
-    setPriceUpdate(price);
+    setPriceUpdate(price / 1000);
   }, []);
   return (
     <SafeAreaView style={appStyle.container}>
@@ -58,20 +62,39 @@ const RentCost = props => {
           Giá cơ bản sẽ được sử dụng cho các ngày {'\n'} không có Giá tùy chỉnh
           thiết lập bởi chủ xe.
         </Text>
-        <TextInput
-          style={[
-            appStyle.text30Bold,
-            {
-              color: COLOR.primary,
-              paddingVertical: 0,
-              width: '100%',
-              textAlign: 'center',
-            },
-          ]}
-          numberOfLines={1}
-          value={priceUpdate.toString()}
-          onChangeText={price => setPriceUpdate(price)}
-        />
+        <View
+          style={{
+            width: '100%',
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}>
+          <TextInput
+            style={[
+              appStyle.text30Bold,
+              {
+                color: COLOR.primary,
+                paddingVertical: 0,
+                width: '20%',
+                textAlign: 'center',
+              },
+            ]}
+            numberOfLines={1}
+            value={priceUpdate.toString()}
+            onChangeText={price => setPriceUpdate(price)}
+            maxLength={4}
+          />
+          <Text
+            style={[
+              appStyle.text30Bold,
+              {
+                color: COLOR.primary,
+                paddingVertical: 0,
+                textAlign: 'center',
+              },
+            ]}>
+            K
+          </Text>
+        </View>
         <View
           style={{width: '30%', height: 1, backgroundColor: COLOR.primary}}
         />
