@@ -6,19 +6,19 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Svg, Path, Rect } from 'react-native-svg';
-import React, { useState, useContext, useEffect } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {Svg, Path, Rect} from 'react-native-svg';
+import React, {useState, useContext, useEffect} from 'react';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import AppInput from '../../components/AppInput';
-import { appStyle, windowHeight } from '../../constants/AppStyle';
+import {appStyle, windowHeight} from '../../constants/AppStyle';
 import AppButton from '../../components/AppButton';
-import { COLOR, ICON } from '../../constants/Theme';
+import {COLOR, ICON} from '../../constants/Theme';
 import FastImage from 'react-native-fast-image';
-import { Center } from 'native-base';
-import { BottomSheet } from 'react-native-btr';
+import {Center} from 'native-base';
+import {BottomSheet} from 'react-native-btr';
 import * as Yup from 'yup';
-import { Formik, useFormik } from 'formik';
-import { AppContext } from '../../utils/AppContext';
+import {Formik, useFormik} from 'formik';
+import {AppContext} from '../../utils/AppContext';
 import {
   GoogleSignin,
   GoogleSigninButton,
@@ -27,12 +27,12 @@ import {
 import AxiosInstance from '../../constants/AxiosInstance';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { showToastMessage } from '../../utils/utils';
+import {showToastMessage} from '../../utils/utils';
 
 const Login = props => {
-  const { isLogin, setIsLogin, setInfoUser, setIdUser, idUser } =
+  const {isLogin, setIsLogin, setInfoUser, setIdUser, idUser} =
     useContext(AppContext);
-  const { navigation } = props;
+  const {navigation} = props;
 
   const goRegister = () => {
     navigation.navigate('Register');
@@ -42,7 +42,6 @@ const Login = props => {
   const [phoneNumber, setphoneNumber] = useState('');
   const [password, setpassword] = useState('');
   const [email, setEmail] = useState('');
-
 
   const toggleBottomNavigationView = () => {
     setVisible(!visible);
@@ -166,9 +165,14 @@ const Login = props => {
 
   return (
     <SafeAreaView style={appStyle.container}>
-
       <View style={styles.main}>
-        <Svg style={{ flex: 1, alignSelf: 'center', position: 'absolute', top: 30 }} xmlns="http://www.w3.org/2000/svg" width="400" height="266" viewBox="0 0 319 266" fill="none">
+        <Svg
+          style={{flex: 1, alignSelf: 'center', position: 'absolute', top: 30}}
+          xmlns="http://www.w3.org/2000/svg"
+          width="400"
+          height="266"
+          viewBox="0 0 319 266"
+          fill="none">
           <Rect x="48" y="140" width="19" height="16" fill="#E2F0F4" />
           <Rect x="65" y="64" width="19" height="16" fill="#E2F0F4" />
           <Rect x="128" y="39" width="19" height="16" fill="#E2F0F4" />
@@ -183,15 +187,17 @@ const Login = props => {
           <Rect x="260" y="124" width="19" height="16" fill="#E2F0F4" />
           <Rect x="227" y="16" width="19" height="16" fill="#E2F0F4" />
         </Svg>
-        <View style={{ marginTop: 70 }}>
+        <View style={{marginTop: 70}}>
           <FastImage
             source={require('../../assets/image/logo_go_traffic.png')}
             style={styles.image}
           />
           <Text style={styles.text1}>Chào mừng đến với GoTraffic</Text>
-          <Text style={[styles.text1, { marginBottom: 30 }]}>Đăng nhập ngay!</Text>
+          <Text style={[styles.text1, {marginBottom: 30}]}>
+            Đăng nhập ngay!
+          </Text>
           <Formik
-            initialValues={{ phoneNumber: '', password: '' }}
+            initialValues={{phoneNumber: '', password: ''}}
             validationSchema={validationSchema}
             onSubmit={values => {
               onLogin(values.phoneNumber, values.password);
@@ -204,9 +210,8 @@ const Login = props => {
               errors,
               touched,
             }) => (
-
-              <KeyboardAvoidingView behavior="padding" style={{ height: '73%' }}>
-                <View style={{ paddingHorizontal: 14 }}>
+              <KeyboardAvoidingView behavior="padding" style={{height: '73%'}}>
+                <View style={{paddingHorizontal: 14}}>
                   <View>
                     <View style={styles.viewItem}>
                       <Text style={styles.text2}>Số điện thoại</Text>
@@ -255,28 +260,42 @@ const Login = props => {
                     fontSize={18}
                     onPress={handleSubmit}
                   />
-                  <View style={{ marginTop: 20, alignItems: 'center' }}>
+                  <View style={{marginTop: 20, alignItems: 'center'}}>
                     <Text style={appStyle.text14}>Bạn chưa là thành viên?</Text>
-                    <Text style={appStyle.text16Bold} onPress={() => {
-                      goRegister();
-                    }}>Hãy đăng ký</Text>
+                    <Text
+                      style={appStyle.text16Bold}
+                      onPress={() => {
+                        goRegister();
+                      }}>
+                      Hãy đăng ký
+                    </Text>
                   </View>
                 </View>
 
-                <Svg style={{ flex: 1, position: 'absolute', bottom: 0, zIndex: -1 }} xmlns="http://www.w3.org/2000/svg" width="420" height="186" viewBox="0 0 393 186" fill="none">
-                  <Path d="M35.5544 0L-15 98.7526V186H450V68.0722L396.442 20.134L307.347 68.0722L256.792 0L218.251 52.732L171.2 20.134L124.65 41.2268L35.5544 0Z" fill="#90C9E6" />
-                  <Path d="M-27.0323 44L-79 114.613V177H399V92.6753L343.945 58.3969L252.358 92.6753L200.391 44L160.772 81.7062L112.406 58.3969L64.5544 73.4794L-27.0323 44Z" fill="#219EBC" />
-                  <Path d="M54.5985 89L-27.5 157L-34 186H494V124.5L437.217 99.5L342.757 124.5L289.158 89L248.296 116.5L198.412 99.5L149.059 110.5L54.5985 89Z" fill="#023047" />
+                <Svg
+                  style={{flex: 1, position: 'absolute', bottom: 0, zIndex: -1}}
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="420"
+                  height="186"
+                  viewBox="0 0 393 186"
+                  fill="none">
+                  <Path
+                    d="M35.5544 0L-15 98.7526V186H450V68.0722L396.442 20.134L307.347 68.0722L256.792 0L218.251 52.732L171.2 20.134L124.65 41.2268L35.5544 0Z"
+                    fill="#90C9E6"
+                  />
+                  <Path
+                    d="M-27.0323 44L-79 114.613V177H399V92.6753L343.945 58.3969L252.358 92.6753L200.391 44L160.772 81.7062L112.406 58.3969L64.5544 73.4794L-27.0323 44Z"
+                    fill="#219EBC"
+                  />
+                  <Path
+                    d="M54.5985 89L-27.5 157L-34 186H494V124.5L437.217 99.5L342.757 124.5L289.158 89L248.296 116.5L198.412 99.5L149.059 110.5L54.5985 89Z"
+                    fill="#023047"
+                  />
                 </Svg>
-
               </KeyboardAvoidingView>
-
             )}
           </Formik>
-
         </View>
-
-
       </View>
 
       {/*Bottom Sheet FORGOT PASSWORD*/}
@@ -285,16 +304,15 @@ const Login = props => {
         onBackButtonPress={toggleBottomNavigationView}
         onBackdropPress={toggleBottomNavigationView}>
         <View style={styles.bottomNavigationView}>
-          <View style={{ flex: 1, justifyContent: 'space-between' }}>
-            {/* <Formik
-              initialValues={{ email: '' }}
+          <View style={{flex: 1, justifyContent: 'space-between'}}>
+            <Formik
+              initialValues={{email: ''}}
               validationSchema={validationSchema}
-              onSubmit={(values, { setSubmitting }) => {
-                setVisible(false);
-                onForgotPassword(values.email);
-                setSubmitting(false);
-              }}
-            >
+              onSubmit={values => {
+                // onForgotPassword(values.email);
+                console.log(values);
+                // setVisible(false);
+              }}>
               {({
                 handleChange,
                 handleBlur,
@@ -306,9 +324,12 @@ const Login = props => {
                 <View>
                   <Text style={appStyle.text16Bold}>Quên mật khẩu</Text>
                   <Text
-                    style={[appStyle.text14, { marginBottom: 10, marginTop: 10 }]}>
-                    Nhập email của bạn để thực hiện quá trình xác minh, chúng tôi sẽ
-                    gửi mật khẩu mới qua gmail của bạn.
+                    style={[
+                      appStyle.text14,
+                      {marginBottom: 10, marginTop: 10},
+                    ]}>
+                    Nhập email của bạn để thực hiện quá trình xác minh, chúng
+                    tôi sẽ gửi mật khẩu mới qua gmail của bạn.
                   </Text>
                   <AppInput
                     placeholder={'Nhập email của tài khoản'}
@@ -317,7 +338,9 @@ const Login = props => {
                     value={values.email}
                   />
                   {touched.email && errors.email && (
-                    <Text style={[styles.textError,{marginTop:10}]}>{errors.email}</Text>
+                    <Text style={[styles.textError, {marginTop: 10}]}>
+                      {errors.email}
+                    </Text>
                   )}
 
                   <AppButton
@@ -326,19 +349,16 @@ const Login = props => {
                     fontSize={18}
                     marginTop={30}
                     onPress={handleSubmit}
-                  // onPress={() => {
-                  //   // setVisible(false);
-                  //   // onForgotPassword();
+                    // onPress={() => {
+                    //   // setVisible(false);
+                    //   // onForgotPassword();
 
-                  // }}
+                    // }}
                   />
                 </View>
-
               )}
-
-            </Formik> */}
+            </Formik>
           </View>
-
         </View>
       </BottomSheet>
     </SafeAreaView>
