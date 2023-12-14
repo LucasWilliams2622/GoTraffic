@@ -93,38 +93,38 @@ const Login = props => {
   };
 
   //API forgotPassword
-  // const onForgotPassword = async () => {
-  //   try {
-  //     console.log('+++++++++++TAP');
-  //     console.log(email);
+  const onForgotPassword = async () => {
+    try {
+      console.log('+++++++++++TAP');
+      console.log(email);
 
-  //     const checkEmail = await axios.post(
-  //       'http://103.57.129.166:3000/user/api/check-email',
-  //       {
-  //         email: email,
-  //       },
-  //     );
+      const checkEmail = await axios.post(
+        'http://103.57.129.166:3000/user/api/check-email',
+        {
+          email: email,
+        },
+      );
 
-  //     if (checkEmail.data.result) {
-  //       const response = await axios.put(
-  //         'http://103.57.129.166:3000/user/api/forgot-password',
-  //         {
-  //           email: email,
-  //         },
-  //       );
-  //       console.log(response.data);
-  //       if (response.data.result) {
-  //         showToastMessage('', 'Gửi mật khẩu mới thành công');
-  //       } else {
-  //         showToastMessage('error', 'Gửi mật khẩu mới thất bại');
-  //       }
-  //     } else {
-  //       showToastMessage('error', 'Email không tồn tại');
-  //     }
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
+      if (checkEmail.data.result) {
+        const response = await axios.put(
+          'http://103.57.129.166:3000/user/api/forgot-password',
+          {
+            email: email,
+          },
+        );
+        console.log(response.data);
+        if (response.data.result) {
+          showToastMessage('', 'Gửi mật khẩu mới thành công');
+        } else {
+          showToastMessage('error', 'Gửi mật khẩu mới thất bại');
+        }
+      } else {
+        showToastMessage('error', 'Email không tồn tại');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   // Hàm lưu thông tin đăng nhập vào AsyncStorage
   const saveLoginInfo = async userInfo => {
