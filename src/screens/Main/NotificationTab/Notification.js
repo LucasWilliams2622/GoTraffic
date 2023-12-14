@@ -43,8 +43,7 @@ const Notification = () => {
         '/notification-booking/api/get-by-user?idUser=' + idUser,
       );
       if (response.result) {
-        console.log('Trip:>>>' + response.notifications);
-        setNotificationCount(response.notifications.length);
+        setNotificationCount(0);
         setDataTrip(response.notifications);
         if (response.notifications.length > 0) {
           setCheckLength(true);

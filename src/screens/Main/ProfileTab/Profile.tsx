@@ -14,7 +14,6 @@ import FastImage from 'react-native-fast-image';
 import AppProfile from '../../../components/AppProfile';
 import {AppContext} from '../../../utils/AppContext';
 import AppButton from '../../../components/AppButton';
-import AxiosInstance from '../../../constants/AxiosInstance';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation, useIsFocused} from '@react-navigation/native';
 import {showToastMessage} from '../../../utils/utils';
@@ -23,7 +22,7 @@ const Profile = props => {
   const isFocused = useIsFocused();
   const navigation = useNavigation();
   const {route} = props;
-  const {setIsLogin, infoUser, idUser} = useContext(AppContext);
+  const {setIsLogin, infoUser, idUser,setNotificationCount} = useContext(AppContext);
   const [name, setName] = useState(infoUser.name);
   const [avatar, setAvatar] = useState(infoUser.avatar);
   const [isModalVisible, setModalVisible] = useState(false);
@@ -153,6 +152,7 @@ const Profile = props => {
         <TouchableOpacity
           onPress={() => {
             LogOut();
+            
           }}>
           <View
             style={{flexDirection: 'row', alignSelf: 'center', marginTop: 50}}>
