@@ -49,7 +49,7 @@ const DuringTrip = () => {
   return (
     <View style={{flex: 1, padding: 10}}>
       <FlatList
-        style={[appStyle.main, {marginBottom: 70}]}
+        style={[appStyle.container, {marginBottom: 70}]}
         data={data}
         renderItem={({item}) => (
           <ItemDuringTrip data={item} handleCompelete={completeBooking} />

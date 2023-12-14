@@ -12,9 +12,10 @@ import AppButton from '../AppButton';
 const ItemTrip = props => {
   const navigation = useNavigation();
   const {data, handleCancle, handleReceived, handleReturn} = props;
+  // console.log("datadatadatadata",data);
   const [openDetail, setOpenDetail] = useState(false);
   const checkStatus = () => {
-    // console.log('id Car:' + data.idCar);
+    // console.log('id Car:' + data);
     setOpenDetail(!openDetail);
   };
 
@@ -139,10 +140,10 @@ const ItemTrip = props => {
             </Text>
             <View
               style={{
-                height: 1,
+                height: 0.5,
                 width: '100%',
                 marginVertical: 4,
-                backgroundColor: COLOR.borderColor2,
+                backgroundColor: '#787878',
               }}
             />
             <Text style={[appStyle.text12, {}]}>
@@ -277,9 +278,12 @@ const ItemTrip = props => {
               }}>
               <View style={appStyle.rowCenter}>
                 <FastImage source={ICON.Star} style={appStyle.iconSmall} />
-                <Text style={appStyle.text145}> 5.0 • </Text>
+                <Text style={appStyle.text145}> {data.Car.rating} • </Text>
                 <FastImage source={ICON.Trip} style={appStyle.iconSmall} />
-                <Text style={appStyle.text145}> 5 chuyến</Text>
+                <Text style={appStyle.text145}>
+                  {' '}
+                  {data.Car.numberOfBooked} chuyến
+                </Text>
               </View>
               <View style={styles.tripContainer}>
                 <Text
@@ -330,34 +334,53 @@ const ItemTrip = props => {
                   backgroundColor: '#F0F0F0',
                   borderRadius: 8,
                   paddingHorizontal: 12,
-                  paddingVertical:8,
+                  paddingVertical: 8,
                   marginVertical: 12,
-                  
                 },
               ]}>
               <View style={appStyle.rowCenter}>
-                <FastImage
-                  style={{
-                    width: 50,
-                    height: 50,
-                    borderRadius: 99,
-                    marginRight: 8,
-                  }}
-                  resizeMode={'stretch'}
-                  source={require('../../assets/image/logo-fb.png')}
-                />
+                {data.User?.avatar ? (
+                  <FastImage
+                    style={{
+                      width: 50,
+                      height: 50,
+                      borderRadius: 99,
+                      marginRight: 8,
+                    }}
+                    resizeMode={'stretch'}
+                    source={{uri: data.User?.avatar}}
+                  />
+                ) : (
+                  <FastImage
+                    style={{
+                      width: 50,
+                      height: 50,
+                      borderRadius: 99,
+                      marginRight: 8,
+                    }}
+                    resizeMode={'stretch'}
+                    source={require('../../assets/image/logo_go_traffic.png')}
+                  />
+                )}
+
                 <View style={{width: '70%'}}>
-                  <Text style={appStyle.text12Bold} numberOfLines={1}>
-                    TÀI MẬP
+                  <Text style={appStyle.text14Bold} numberOfLines={1}>
+                    {data.User?.name}
                   </Text>
-                  <View style={appStyle.rowCenter}>
+                  <View style={[appStyle.rowCenter, {paddingVertical: 4}]}>
                     <FastImage source={ICON.Star} style={appStyle.iconSmall} />
-                    <Text style={appStyle.text145}> 5.0 • </Text>
+                    <Text style={appStyle.text12Medium}>
+                      {' '}
+                      {data.User?.rating} •{' '}
+                    </Text>
                     <FastImage source={ICON.Trip} style={appStyle.iconSmall} />
-                    <Text style={appStyle.text145}> 5 chuyến</Text>
+                    <Text style={appStyle.text12Medium}>
+                      {' '}
+                      {data.User?.totalRide} chuyến
+                    </Text>
                   </View>
-                  <Text style={appStyle.text14} numberOfLines={1}>
-                    0344112283
+                  <Text style={appStyle.text12Bold} numberOfLines={1}>
+                    {data.User?.phone}
                   </Text>
                 </View>
               </View>

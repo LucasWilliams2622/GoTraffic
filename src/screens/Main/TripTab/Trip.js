@@ -35,7 +35,7 @@ const Trip = () => {
       );
       if (response.result) {
         setListBookingCurrent(response.booking);
-        console.log(response.booking);
+        console.log('=============================>', response.booking);
         if (response.booking[0] == null) {
           setIsLoading(true);
         } else {
@@ -108,61 +108,63 @@ const Trip = () => {
         notLeft
       />
 
-      <ScrollView style={[appStyle.main, {marginBottom: 70,}]}>
+      <ScrollView style={[appStyle.container, {marginBottom: 70}]}>
         <FastImage
           source={{
             uri: 'https://i.pinimg.com/originals/4a/24/2b/4a242b1af58a55c62deaf5a972622909.gif',
           }}
           style={{width: '100%', height: 200}}
         />
-        <Text style={styles.text1}>Hiện tại</Text>
-        {isLoading == true ? (
-          <View style={appStyle.ma}>
-            <FastImage
-              style={styles.imageInvisible}
-              resizeMode={'stretch'}
-              source={require('../../../assets/image/NoTrip.png')}
+        <View style={[appStyle.main, {}]}>
+          <Text style={styles.text1}>Hiện tại</Text>
+          {isLoading == true ? (
+            <View style={appStyle.ma}>
+              <FastImage
+                style={styles.imageInvisible}
+                resizeMode={'stretch'}
+                source={require('../../../assets/image/NoTrip.png')}
+              />
+              <Text
+                style={[
+                  appStyle.text16,
+                  {textAlign: 'center', marginBottom: 10, fontStyle: 'italic'},
+                ]}>
+                Bạn chưa có lịch sử chuyến
+              </Text>
+            </View>
+          ) : (
+            <Swipelist
+              style={{width: '100%', marginBottom: 65}}
+              data={listBookingCurrent}
+              renderRightItem={(data, index) => (
+                <View key={index}>
+                  <ItemTrip
+                    data={data}
+                    car={listBookingCurrent}
+                    handleCancle={cancelBooking}
+                    handleReceived={receivedBooking}
+                    handleReturn={returnCar}
+                  />
+                </View>
+              )}
+              renderHiddenItem={(data, index) => (
+                <TouchableOpacity
+                  style={[styles.rightAction, {backgroundColor: COLOR.red}]}
+                  onPress={() => {
+                    console.log(data.id);
+                    cancelBooking(data.id);
+                  }}>
+                  <FastImage
+                    source={ICON.Delete}
+                    style={appStyle.iconBig}
+                    tintColor={COLOR.white}
+                  />
+                </TouchableOpacity>
+              )}
+              rightOpenValue={100}
             />
-            <Text
-              style={[
-                appStyle.text16,
-                {textAlign: 'center', marginBottom: 10, fontStyle: 'italic'},
-              ]}>
-              Bạn chưa có lịch sử chuyến
-            </Text>
-          </View>
-        ) : (
-          <Swipelist
-            style={{width: '100%', marginBottom: 65}}
-            data={listBookingCurrent}
-            renderRightItem={(data, index) => (
-              <View key={index}>
-                <ItemTrip
-                  data={data}
-                  car={listBookingCurrent}
-                  handleCancle={cancelBooking}
-                  handleReceived={receivedBooking}
-                  handleReturn={returnCar}
-                />
-              </View>
-            )}
-            renderHiddenItem={(data, index) => (
-              <TouchableOpacity
-                style={[styles.rightAction, {backgroundColor: COLOR.red}]}
-                onPress={() => {
-                  console.log(data.id);
-                  cancelBooking(data.id);
-                }}>
-                <FastImage
-                  source={ICON.Delete}
-                  style={appStyle.iconBig}
-                  tintColor={COLOR.white}
-                />
-              </TouchableOpacity>
-            )}
-            rightOpenValue={100}
-          />
-        )}
+          )}
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
