@@ -111,14 +111,6 @@ const ListCar = props => {
           // )}
         />
       </View>
-      <Text
-        style={[
-          appStyle.text14,
-          {marginLeft: 20, fontStyle: 'italic', marginTop: 10},
-        ]}>
-        Danh sách xe của tôi:
-      </Text>
-
       <FlatList
         style={{marginBottom: 72}}
         data={carData}
@@ -126,7 +118,7 @@ const ListCar = props => {
         keyExtractor={(item, index) => index.toString()}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
-          <View>
+          <View style={{marginTop: 20}}>
             <FastImage
               style={styles.imageInvisible}
               resizeMode={'stretch'}

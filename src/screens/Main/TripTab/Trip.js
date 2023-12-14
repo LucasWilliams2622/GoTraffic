@@ -104,13 +104,13 @@ const Trip = () => {
             style={{width: '100%', marginBottom: 65}}
             data={listBookingCurrent}
             renderRightItem={(data, index) => (
-              <View key={index} >
+              <View key={index}>
                 <ItemTrip data={data} car={listBookingCurrent} />
               </View>
             )}
             renderHiddenItem={(data, index) => (
               <TouchableOpacity
-                style={[styles.rightAction, {backgroundColor: COLOR.red2}]}
+                style={[styles.rightAction, {backgroundColor: COLOR.red}]}
                 onPress={() => {
                   console.log(data.id);
                   cancelBooking(data.id);

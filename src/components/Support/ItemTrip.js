@@ -26,12 +26,8 @@ const ItemTrip = props => {
   const {data, handleCancle} = props;
   const [openDetail, setOpenDetail] = useState(false);
   const checkStatus = () => {
-    if (data.status == 5) {
-      navigation.navigate('RatingTrip', {id: data.id});
-    } else {
-      // console.log('id Car:' + data.idCar);
-      setOpenDetail(!openDetail);
-    }
+    // console.log('id Car:' + data.idCar);
+    setOpenDetail(!openDetail);
   };
 
   const isImageUrlValid = /^https?:\/\/.*\.(png|jpg)$/i.test(
@@ -373,7 +369,24 @@ const ItemTrip = props => {
                       Hủy chuyến
                     </Text>
                   </TouchableOpacity>
-                ) : data.status == 4 ? (
+                ) : data.status == 2 ? (
+                  <TouchableOpacity
+                    style={{
+                      backgroundColor: COLOR.primary,
+                      width: 140,
+                      height: 40,
+                      borderRadius: 50,
+                      justifyContent: 'center',
+                    }}>
+                    <Text
+                      style={[
+                        appStyle.text14Bold,
+                        {color: 'white', textAlign: 'center'},
+                      ]}>
+                      Đã nhận xe
+                    </Text>
+                  </TouchableOpacity>
+                ) : data.status == 3 ? (
                   <TouchableOpacity
                     style={{
                       backgroundColor: COLOR.primary,
@@ -392,8 +405,15 @@ const ItemTrip = props => {
                   </TouchableOpacity>
                 ) : data.status == 5 ? (
                   <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('RatingTrip', {id: data.id});
+                    }}
                     style={{
                       backgroundColor: COLOR.lightGreen,
+                      width: 140,
+                      height: 40,
+                      borderRadius: 50,
+                      justifyContent: 'center',
                     }}>
                     <Text
                       style={[
