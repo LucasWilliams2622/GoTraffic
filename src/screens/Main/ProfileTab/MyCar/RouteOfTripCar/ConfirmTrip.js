@@ -70,7 +70,7 @@ const ConfirmTrip = () => {
   return (
     <View style={{flex: 1, padding: 10}}>
       <FlatList
-        style={[appStyle.main, {marginBottom: 70}]}
+        style={[appStyle.container, {marginBottom: 70}]}
         data={data}
         renderItem={({item}) => (
           <ItemConfirmTrip
@@ -82,7 +82,10 @@ const ConfirmTrip = () => {
         keyExtractor={item => item._id}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
-          <View>
+          <View
+            style={{
+              marginTop: 50,
+            }}>
             <FastImage
               style={styles.imageInvisible}
               resizeMode={'stretch'}

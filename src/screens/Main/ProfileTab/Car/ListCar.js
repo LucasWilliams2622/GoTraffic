@@ -21,7 +21,8 @@ import {AppContext} from '../../../../utils/AppContext';
 import AppHeader from '../../../../components/AppHeader';
 import {useIsFocused} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
-
+import {Dropdown} from 'react-native-element-dropdown';
+import {ScrollView} from 'native-base';
 const ListCar = props => {
   const {navigation, route} = props;
   const updatedCarInfo = route.params?.updatedCarInfo;
@@ -43,7 +44,40 @@ const ListCar = props => {
       console.log('=========>', error);
     }
   };
-  
+  const getCarByIdUserByStatus = async status => {
+    try {
+      const response = await AxiosInstance().get(
+        `/car/api/get-car-by-status-of-user?idUser=${idUser}&status=` +
+          parseInt(status),
+      );
+      if (response.result) {
+        console.log(response);
+        setCarData(response.car);
+      } else {
+        setCarData([]);
+      }
+    } catch (error) {
+      console.log('=========>', error);
+      setCarData([]);
+    }
+  };
+  const [value, setValue] = useState(null);
+  const [isFocus, setIsFocus] = useState(false);
+  const data = [
+    {label: 'Chưa duyệt', value: '1'},
+    {label: 'Đã duyệt', value: '2'},
+    {label: 'Từ chối', value: '3'},
+  ];
+  const renderLabel = () => {
+    if (value || isFocus) {
+      return (
+        <Text style={[styles.label, isFocus && {color: 'blue'}]}>
+          Dropdown label
+        </Text>
+      );
+    }
+    return null;
+  };
   useEffect(() => {
     getCarByIdUser();
   }, [isFocused]);
@@ -55,29 +89,55 @@ const ListCar = props => {
         icon={ICON.Add}
         onPressRight={() => navigation.navigate('BasicInfor')}
       />
-      <FlatList
-        style={{marginBottom: 90, paddingBottom: 30}}
-        data={carData}
-        renderItem={({item}) => <ItemCar data={item} />}
-        keyExtractor={(item, index) => index.toString()}
-        showsVerticalScrollIndicator={false}
-        ListEmptyComponent={
-          <View>
-            <FastImage
-              style={styles.imageInvisible}
-              resizeMode={'stretch'}
-              source={require('../../../../assets/image/NoTrip.png')}
-            />
-            <Text
-              style={[
-                appStyle.text16,
-                {textAlign: 'center', marginBottom: 10, fontStyle: 'italic'},
-              ]}>
-              Bạn chưa có xe nào !
-            </Text>
-          </View>
-        }
-      />
+      <ScrollView>
+        <Dropdown
+          style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
+          placeholderStyle={appStyle.text165}
+          selectedTextStyle={appStyle.text16}
+          inputSearchStyle={styles.inputSearchStyle}
+          iconStyle={styles.iconStyle}
+          data={data}
+          search
+          maxHeight={300}
+          labelField="label"
+          valueField="value"
+          placeholder={!isFocus ? 'Tìm xe' : '...'}
+          searchPlaceholder="Tìm kiếm"
+          value={value}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChange={item => {
+            setValue(item.value);
+            setIsFocus(false);
+            console.log(item.value);
+            getCarByIdUserByStatus(item.value);
+          }}
+        />
+
+        <FlatList
+          style={{marginBottom: 72}}
+          data={carData}
+          renderItem={({item}) => <ItemCar data={item} />}
+          keyExtractor={(item, index) => index.toString()}
+          showsVerticalScrollIndicator={false}
+          ListEmptyComponent={
+            <View style={{marginTop: 20}}>
+              <FastImage
+                style={styles.imageInvisible}
+                resizeMode={'stretch'}
+                source={require('../../../../assets/image/NoTrip.png')}
+              />
+              <Text
+                style={[
+                  appStyle.text16,
+                  {textAlign: 'center', marginBottom: 10, fontStyle: 'italic'},
+                ]}>
+                Bạn chưa có xe nào !
+              </Text>
+            </View>
+          }
+        />
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -90,5 +150,41 @@ const styles = StyleSheet.create({
     height: 138,
     alignSelf: 'center',
     marginBottom: 20,
+  },
+  dropdown: {
+    height: 50,
+    borderColor: 'gray',
+    borderWidth: 0.5,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    backgroundColor: COLOR.white,
+    marginTop: 10,
+    marginHorizontal: 20,
+  },
+  icon: {
+    marginRight: 5,
+  },
+  label: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    left: 22,
+    top: 8,
+    zIndex: 999,
+    paddingHorizontal: 8,
+    fontSize: 14,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
   },
 });

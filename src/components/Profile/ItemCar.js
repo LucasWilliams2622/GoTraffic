@@ -56,7 +56,7 @@ const ItemCar = props => {
           </View>
         ) : data.status == 3 ? (
           <View style={[styles.statusContainer, {backgroundColor: COLOR.red}]}>
-            <Text style={styles.statusText}>Từ chối duyệt</Text>
+            <Text style={styles.statusText}>Từ chối</Text>
           </View>
         ) : null}
         <View style={styles.detailsContainer}>
@@ -75,9 +75,7 @@ const ItemCar = props => {
           </View>
           <View style={styles.locationContainer}>
             <FastImage source={ICON.Location} style={appStyle.iconMedium} />
-            <Text style={styles.locationText}>
-              {data.locationCar} 
-            </Text>
+            <Text style={styles.locationText}>{data.locationCar}</Text>
           </View>
         </View>
       </View>
@@ -96,7 +94,7 @@ const styles = StyleSheet.create({
   carContainer: {
     width: '90%',
     height: 'auto',
-    backgroundColor: '#f6f6f6',
+    backgroundColor: '#ffffff',
     borderColor: COLOR.borderColor,
 
     borderRadius: 10,
@@ -119,11 +117,12 @@ const styles = StyleSheet.create({
   },
   statusContainer: {
     position: 'absolute',
-    backgroundColor: 'rgba(65, 207, 242, 0.8)',
+    backgroundColor: '#FFB703',
     borderTopLeftRadius: 14,
     borderBottomRightRadius: 14,
     padding: 5,
     justifyContent: 'center',
+    opacity: 0.9,
   },
   statusText: {
     color: 'white',

@@ -19,6 +19,11 @@ const ItemActiveTrip = props => {
   const checkStatus = () => {
     setOpenDetail(!openDetail);
   };
+  const [checkBtn, setCheckBtn] = useState(false);
+  const handleDeliveryCar = id => {
+    handleCompelete(id);
+    setCheckBtn(true);
+  };
   return (
     <TouchableOpacity onPress={() => checkStatus()}>
       {openDetail == false ? (
@@ -104,29 +109,31 @@ const ItemActiveTrip = props => {
                 </Text>
                 {formatPrice(data.totalMoney)}
               </Text>
-              <TouchableOpacity
-                onPress={() => handleCompelete(data.id)}
-                style={{
-                  width: 100,
-                  height: 26,
-                  borderRadius: 8,
-                  borderColor: COLOR.primary,
-                  borderWidth: 1,
-                  justifyContent: 'center',
-                  backgroundColor: COLOR.primary,
-                }}>
-                <Text
-                  style={[
-                    appStyle.text12,
-                    {
-                      color: COLOR.white,
-                      textAlign: 'center',
-                      fontWeight: 'bold',
-                    },
-                  ]}>
-                  Đã nhận xe
-                </Text>
-              </TouchableOpacity>
+              {checkBtn == false ? (
+                <TouchableOpacity
+                  onPress={() => handleDeliveryCar(data.id)}
+                  style={{
+                    width: 100,
+                    height: 26,
+                    borderRadius: 8,
+                    borderColor: COLOR.lightGreen,
+                    borderWidth: 1,
+                    justifyContent: 'center',
+                    backgroundColor: COLOR.lightGreen,
+                  }}>
+                  <Text
+                    style={[
+                      appStyle.text12,
+                      {
+                        color: COLOR.white,
+                        textAlign: 'center',
+                        fontWeight: 'bold',
+                      },
+                    ]}>
+                    Đã giao xe
+                  </Text>
+                </TouchableOpacity>
+              ) : null}
             </View>
           </View>
         </View>
@@ -217,31 +224,33 @@ const ItemActiveTrip = props => {
             <Text style={{color: COLOR.black}}>Tổng giá tiền : </Text>
             {formatPrice(data.totalMoney)}
           </Text>
-          <TouchableOpacity
-            onPress={() => handleCompelete(data.id)}
-            style={{
-              width: 324,
-              height: 40,
-              borderRadius: 8,
-              borderColor: COLOR.primary,
-              borderWidth: 1,
-              justifyContent: 'center',
-              backgroundColor: COLOR.primary,
-              marginTop: 10,
-              alignSelf: 'center',
-            }}>
-            <Text
-              style={[
-                appStyle.text12,
-                {
-                  color: COLOR.white,
-                  textAlign: 'center',
-                  fontWeight: 'bold',
-                },
-              ]}>
-              Đã nhận xe
-            </Text>
-          </TouchableOpacity>
+          {checkBtn == false ? (
+            <TouchableOpacity
+              onPress={() => handleDeliveryCar(data.id)}
+              style={{
+                width: 324,
+                height: 40,
+                borderRadius: 8,
+                borderColor: COLOR.lightGreen,
+                borderWidth: 1,
+                justifyContent: 'center',
+                backgroundColor: COLOR.lightGreen,
+                marginTop: 10,
+                alignSelf: 'center',
+              }}>
+              <Text
+                style={[
+                  appStyle.text12,
+                  {
+                    color: COLOR.white,
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                  },
+                ]}>
+                Đã giao xe
+              </Text>
+            </TouchableOpacity>
+          ) : null}
         </View>
       )}
     </TouchableOpacity>

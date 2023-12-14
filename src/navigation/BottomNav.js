@@ -54,7 +54,7 @@ import RatingTrip from '../screens/Main/TripTab/RatingTrip';
 import Recharge from '../screens/Main/ProfileTab/MyCar/Recharge';
 import FindingCar from '../screens/Main/HomeTab/FindingCar';
 import ChangeBooking from '../screens/Main/HomeTab/ChangeBooking';
-import {appStyle} from '../constants/AppStyle';
+import {appStyle, windowHeight} from '../constants/AppStyle';
 import {Badge} from 'react-native-elements';
 import {useIsFocused} from '@react-navigation/native';
 import WithdrawRequest from '../screens/Main/ProfileTab/MyCar/WithdrawRequest';
@@ -119,21 +119,7 @@ const StackHome = () => {
 };
 
 const StackNotification = () => {
-  const {setNotificationCount} = useContext(AppContext);
-
-  // Simulate fetching notification count from server
-  useEffect(() => {
-    // Replace this with your logic to fetch notification count
-    const fetchNotificationCount = async () => {
-      // Simulate fetching count from server
-      // const count = await yourApiCallToFetchNotificationCount();
-      setNotificationCount(2);
-    };
-
-    // Fetch notification count
-    fetchNotificationCount();
-  }, []);
-
+  
   return (
     <Stack.Navigator
       initialRouteName="Notification"
@@ -216,9 +202,6 @@ const StackProfile = () => {
       <Stack.Screen name="WithdrawRequest" component={WithdrawRequest} />
       <Stack.Screen name="PickLocation" component={PickLocation} />
       <Stack.Screen name="MapCars" component={MapCars} />
-
-      
-      
     </Stack.Navigator>
   );
 };
@@ -244,7 +227,10 @@ const Main = () => {
           } else if (route.name === 'StackNotification') {
             // ... Các thiết lập khác
             return (
-              <View style={[{flex: 1, alignItems: 'center', marginTop: 10}]}>
+              <Animatable.View
+                animation="zoomIn"
+                duration={2000}
+                style={[{flex: 1, alignItems: 'center', marginTop: 10}]}>
                 <Image
                   source={
                     (iconName = focused
@@ -258,13 +244,14 @@ const Main = () => {
                     tintColor: focused ? COLOR.focus : COLOR.notFocus,
                   }}
                 />
-                {notificationCount <= 0 && (
+                {notificationCount > 0 && (
                   <Badge
                     value={notificationCount}
-                    containerStyle={{position: 'absolute', top: -6, right: -6}}
+                    containerStyle={{position: 'absolute', top: -6, right: 4}}
                     badgeStyle={{backgroundColor: 'red'}}
                   />
                 )}
+
                 <Text
                   style={[
                     appStyle.text8,
@@ -279,7 +266,7 @@ const Main = () => {
                   ]}>
                   Thông báo
                 </Text>
-              </View>
+              </Animatable.View>
             );
           } else if (route.name === 'StackTrip') {
             iconName = focused ? ICON.TripFocus : ICON.Trip;
@@ -330,7 +317,7 @@ const Main = () => {
         headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: {
-          height: 70,
+          height: windowHeight * 0.075,
           position: 'absolute',
           backgroundColor: COLOR.background,
         },

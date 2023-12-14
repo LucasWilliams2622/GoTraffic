@@ -28,13 +28,13 @@ export const appStyle = StyleSheet.create({
   main: {
     flex: 1,
     backgroundColor: COLOR.main,
-    paddingHorizontal: 14,
+    paddingHorizontal: 12,
   },
 
   // =============| ICON - IMAGE |===================
   iconSmall: {
-    width: 12,
-    height: 12,
+    width: 14,
+    height: 14,
   },
   iconMedium: {
     width: 16,
@@ -102,6 +102,12 @@ export const appStyle = StyleSheet.create({
     fontSize: 12,
     fontWeight: '400',
     fontStyle: 'normal',
+    letterSpacing: 0.5,
+    color: COLOR.text,
+  },
+  text12Medium: {
+    fontSize: 12,
+    fontWeight: '500',
     letterSpacing: 0.5,
     color: COLOR.text,
   },

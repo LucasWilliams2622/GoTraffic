@@ -1,45 +1,48 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, { useContext, useEffect, useState } from 'react'
+import {StyleSheet, Text, View} from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
 import {appStyle} from '../../../../../constants/AppStyle';
 import ItemTrip from '../../../../../components/Support/ItemTrip';
 import ItemCancleTrip from '../../../../../components/Support/ItemCancleTrip';
-import { FlatList } from 'native-base';
+import {FlatList} from 'native-base';
 import AxiosInstance from '../../../../../constants/AxiosInstance';
 import {useIsFocused} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
-import { AppContext } from '../../../../../utils/AppContext';
+import {AppContext} from '../../../../../utils/AppContext';
 
 const CancleTrip = () => {
-   const [data, setData] = useState([]);
+  const [data, setData] = useState([]);
   const {idUser} = useContext(AppContext);
   const isFocused = useIsFocused();
-   const getCarByIdUser = async () => {
-     try {
-       const response = await AxiosInstance().get(
-         '/booking/api/get-list-cancel?idOwner='+idUser,
-       );
-       if (response.result) {
-         setData(response.booking);
-       } else {
-         console.log('Failed to get car complete');
-       }
-     } catch (error) {
-       console.log('=========>', error);
-     }
-   };
-   useEffect(() => {
-     getCarByIdUser();
-   }, [isFocused]);
+  const getCarByIdUser = async () => {
+    try {
+      const response = await AxiosInstance().get(
+        '/booking/api/get-list-cancel?idOwner=' + idUser,
+      );
+      if (response.result) {
+        setData(response.booking);
+      } else {
+        console.log('Failed to get car complete');
+      }
+    } catch (error) {
+      console.log('=========>', error);
+    }
+  };
+  useEffect(() => {
+    getCarByIdUser();
+  }, [isFocused]);
   return (
     <View style={{flex: 1, padding: 10}}>
       <FlatList
-        style={[appStyle.main, {marginBottom: 70}]}
+        style={[appStyle.container, {marginBottom: 70}]}
         data={data}
         renderItem={({item}) => <ItemCancleTrip data={item} />}
         keyExtractor={item => item._id}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
-          <View>
+          <View
+            style={{
+              marginTop: 50,
+            }}>
             <FastImage
               style={styles.imageInvisible}
               resizeMode={'stretch'}
@@ -56,9 +59,9 @@ const CancleTrip = () => {
         }></FlatList>
     </View>
   );
-}
+};
 
-export default CancleTrip
+export default CancleTrip;
 
 const styles = StyleSheet.create({
   imageInvisible: {

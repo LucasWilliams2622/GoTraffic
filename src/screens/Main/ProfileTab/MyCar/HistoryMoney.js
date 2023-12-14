@@ -6,10 +6,8 @@ import ItemHistoryMoney from '../../../../components/Profile/ItemHistoryMoney';
 import AppHeader from '../../../../components/AppHeader';
 import {FlatList} from 'native-base';
 import AxiosInstance from '../../../../constants/AxiosInstance';
-import {get} from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 import {useIsFocused} from '@react-navigation/native';
 import {AppContext} from '../../../../utils/AppContext';
-import axios from 'axios';
 
 const HistoryMoney = () => {
   const [data, setData] = useState([]);
@@ -50,26 +48,3 @@ const HistoryMoney = () => {
 export default HistoryMoney;
 
 const styles = StyleSheet.create({});
-const DATA = [
-  {
-    id: 1,
-    status: 'Rút tiền',
-    from: 'Đến VPBank ***5338',
-    time: '21 Tháng 10, 2023',
-    price: '200.312',
-  },
-  {
-    id: 2,
-    status: 'Nạp tiền',
-    from: 'Đến VPBank ***5338',
-    time: '21 Tháng 10, 2023',
-    price: '200.312',
-  },
-  {
-    id: 3,
-    status: 'Rút tiền',
-    from: 'Đến VPBank ***5338',
-    time: '21 Tháng 10, 2023',
-    price: '200.312',
-  },
-];

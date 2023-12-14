@@ -7,8 +7,8 @@ import AxiosInstance from '../../../../../constants/AxiosInstance';
 import {useIsFocused} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import {showToastMessage} from '../../../../../utils/utils';
-import { ICON } from '../../../../../constants/Theme';
-import { AppContext } from '../../../../../utils/AppContext';
+import {ICON} from '../../../../../constants/Theme';
+import {AppContext} from '../../../../../utils/AppContext';
 
 const ActiveTrip = () => {
   const isFocused = useIsFocused();
@@ -17,7 +17,7 @@ const ActiveTrip = () => {
   const getCarByIdUser = async () => {
     try {
       const response = await AxiosInstance().get(
-        '/booking/api/get-list-processing?idOwner='+idUser,
+        '/booking/api/get-list-accepted?idOwner=' + idUser,
       );
       if (response.result) {
         setData(response.booking);
@@ -31,13 +31,13 @@ const ActiveTrip = () => {
   const completeBooking = async id => {
     try {
       const response = await AxiosInstance().post(
-        '/booking/api/complete?id=' + id,
+        '/booking/api/delivering?id=' + id,
       );
       if (response.result) {
-        showToastMessage('', 'Đã nhận được xe thành công');
+        showToastMessage('', 'Giao xe thành công');
         getCarByIdUser();
       } else {
-        showToastMessage('', 'Đã nhận được xe thất bại',ICON.cancelWhite);
+        showToastMessage('', 'Giao xe thất bại', ICON.cancelWhite);
       }
     } catch (error) {
       console.log('=========>', error);
@@ -49,7 +49,7 @@ const ActiveTrip = () => {
   return (
     <View style={{flex: 1, padding: 10}}>
       <FlatList
-        style={[appStyle.main, {marginBottom: 70}]}
+        style={[appStyle.container, {marginBottom: 70}]}
         data={data}
         renderItem={({item}) => (
           <ItemActiveTrip data={item} handleCompelete={completeBooking} />
@@ -57,7 +57,10 @@ const ActiveTrip = () => {
         keyExtractor={item => item._id}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
-          <View>
+          <View
+            style={{
+              marginTop: 50,
+            }}>
             <FastImage
               style={styles.imageInvisible}
               resizeMode={'stretch'}

@@ -169,9 +169,10 @@ export default MapCars;
 
 const styles = StyleSheet.create({
   listContainer: {
-    padding: 10,
+    paddingHorizontal: 10,
     width: windowWidth * 0.3,
     height: windowHeight * 0.75,
+    
   },
   listTitle: {
     fontSize: 16,
