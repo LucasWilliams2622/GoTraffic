@@ -149,7 +149,9 @@ const DetailInListCar = props => {
           <AppProfile
             icon={ICON.Wallet}
             text="Giá xe"
-            onPress={() => navigation.navigate('RentCost', {price: data.price})}
+            onPress={() =>
+              navigation.navigate('RentCost', {price: data.price, id: data.id})
+            }
           />
           <AppProfile
             icon={ICON.Card}
