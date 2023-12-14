@@ -1,4 +1,4 @@
-import {Text, View} from 'react-native';
+import {Text, View,Dimensions} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {appStyle, windowHeight, windowWidth} from '../constants/AppStyle';
 import Toast from 'react-native-toast-message';
@@ -229,4 +229,8 @@ export const getDetailLocation = async (location: Location) => {
 export const MoneyText = (value: number) => {
   const formattedValue = numeral(value).format('0,0');
   return formattedValue;
+};
+export const squareImageSize = scale => {
+  const {width, height} = Dimensions.get('window');
+  return Math.min(width * scale, height * scale);
 };

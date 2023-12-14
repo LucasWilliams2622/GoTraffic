@@ -108,7 +108,7 @@ const Trip = () => {
         notLeft
       />
 
-      <ScrollView style={[appStyle.main, {marginBottom: 70}]}>
+      <ScrollView style={[appStyle.main, {marginBottom: 70,}]}>
         <FastImage
           source={{
             uri: 'https://i.pinimg.com/originals/4a/24/2b/4a242b1af58a55c62deaf5a972622909.gif',

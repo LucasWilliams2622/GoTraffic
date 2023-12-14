@@ -44,7 +44,7 @@ const Support = () => {
       <View style={{marginHorizontal: 12}}>
         <View style={styles.boxSupport}>
           <Text style={[appStyle.text18, styles.textSupport]}>
-            Cần hỗ trợ nhanh, vui lòng gọi 1900 0000 (7AM - 10PM) hoặc gửi tin
+            Cần hỗ trợ nhanh, vui lòng gọi 03377 44148 (7AM - 10PM) hoặc gửi tin
             nhắn vào GoTraffic Fanpage
           </Text>
 
