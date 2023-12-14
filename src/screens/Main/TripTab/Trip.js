@@ -122,7 +122,7 @@ const Trip = () => {
         />
         <View style={[appStyle.main, {}]}>
           <Text style={styles.text1}>Hiện tại</Text>
-       
+
           {isLoading == true ? (
             <View style={appStyle.ma}>
               <FastImage
@@ -142,33 +142,39 @@ const Trip = () => {
             <Swipelist
               style={{width: '100%', marginBottom: 65}}
               data={listBookingCurrent}
-              
               renderRightItem={(data, index) => (
                 <View key={index}>
-                  <ItemTrip
-                    data={data}
-                    car={listBookingCurrent}
-                    handleCancle={cancelBooking}
-                    handleReceived={receivedBooking}
-                    handleReturn={returnCar}
-                  />
+                  {loading == true ? (
+                    <SkeletonTrip />
+                  ) : (
+                    <ItemTrip
+                      data={data}
+                      car={listBookingCurrent}
+                      handleCancle={cancelBooking}
+                      handleReceived={receivedBooking}
+                      handleReturn={returnCar}
+                    />
+                  )}
                 </View>
               )}
               renderHiddenItem={(data, index) => (
-                <TouchableOpacity
-                  style={[styles.rightAction, {backgroundColor: COLOR.red}]}
-                  onPress={() => {
-                    console.log(data.id);
-                    cancelBooking(data.id);
-                  }}>
-                  <FastImage
-                    source={ICON.Delete}
-                    style={appStyle.iconBig}
-                    tintColor={COLOR.white}
-                  />
-                </TouchableOpacity>
+                <View>
+                  {data.status == 1 ? (
+                    <TouchableOpacity
+                      style={[styles.rightAction, {backgroundColor: COLOR.red}]}
+                      onPress={() => {
+                        console.log(data.id);
+                        cancelBooking(data.id);
+                      }}>
+                      <FastImage
+                        source={ICON.Delete}
+                        style={appStyle.iconBig}
+                        tintColor={COLOR.white}
+                      />
+                    </TouchableOpacity>
+                  ) : null}
+                </View>
               )}
-              
               rightOpenValue={100}
             />
           )}
