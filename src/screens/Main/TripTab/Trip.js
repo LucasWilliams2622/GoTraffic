@@ -120,63 +120,75 @@ const Trip = () => {
           }}
           style={{width: '100%', height: 200}}
         />
-        <View style={[appStyle.main, {}]}>
+        <View style={[appStyle.main]}>
           <Text style={styles.text1}>Hiện tại</Text>
-
-          {isLoading == true ? (
-            <View style={appStyle.ma}>
-              <FastImage
-                style={styles.imageInvisible}
-                resizeMode={'stretch'}
-                source={require('../../../assets/image/NoTrip.png')}
-              />
-              <Text
-                style={[
-                  appStyle.text16,
-                  {textAlign: 'center', marginBottom: 10, fontStyle: 'italic'},
-                ]}>
-                Bạn chưa có lịch sử chuyến
-              </Text>
+          {loading == true ? (
+            <View>
+              <SkeletonTrip />
+              <SkeletonTrip />
+              <SkeletonTrip />
             </View>
           ) : (
-            <Swipelist
-              style={{width: '100%', marginBottom: 65}}
-              data={listBookingCurrent}
-              renderRightItem={(data, index) => (
-                <View key={index}>
-                  {loading == true ? (
-                    <SkeletonTrip />
-                  ) : (
-                    <ItemTrip
-                      data={data}
-                      car={listBookingCurrent}
-                      handleCancle={cancelBooking}
-                      handleReceived={receivedBooking}
-                      handleReturn={returnCar}
-                    />
-                  )}
+            <View>
+              {isLoading == true ? (
+                <View style={appStyle.ma}>
+                  <FastImage
+                    style={styles.imageInvisible}
+                    resizeMode={'stretch'}
+                    source={require('../../../assets/image/NoTrip.png')}
+                  />
+                  <Text
+                    style={[
+                      appStyle.text16,
+                      {
+                        textAlign: 'center',
+                        marginBottom: 10,
+                        fontStyle: 'italic',
+                      },
+                    ]}>
+                    Bạn chưa có lịch sử chuyến
+                  </Text>
                 </View>
-              )}
-              renderHiddenItem={(data, index) => (
-                <View>
-                  {data.status == 1 ? (
-                    <TouchableOpacity
-                      style={[styles.rightAction, {backgroundColor: COLOR.red}]}
-                      onPress={() => {
-                        console.log(data.id);
-                        cancelBooking(data.id);
-                      }}>
-                      <FastImage
-                        source={ICON.Delete}
-                        style={appStyle.iconBig}
-                        tintColor={COLOR.white}
+              ) : (
+                <Swipelist
+                  style={{width: '100%', marginBottom: 65}}
+                  data={listBookingCurrent}
+                  renderRightItem={(data, index) => (
+                    <View key={index}>
+                      <ItemTrip
+                        data={data}
+                        car={listBookingCurrent}
+                        handleCancle={cancelBooking}
+                        handleReceived={receivedBooking}
+                        handleReturn={returnCar}
                       />
-                    </TouchableOpacity>
-                  ) : null}
-                </View>
+                    </View>
+                  )}
+                  renderHiddenItem={(data, index) => (
+                    <View>
+                      {data.status == 1 ? (
+                        <TouchableOpacity
+                          style={[
+                            styles.rightAction,
+                            {backgroundColor: COLOR.red},
+                          ]}
+                          onPress={() => {
+                            console.log(data.id);
+                            cancelBooking(data.id);
+                          }}>
+                          <FastImage
+                            source={ICON.Delete}
+                            style={appStyle.iconBig}
+                            tintColor={COLOR.white}
+                          />
+                        </TouchableOpacity>
+                      ) : null}
+                    </View>
+                  )}
+                  rightOpenValue={100}
+                />
               )}
-              rightOpenValue={100}
-            />
+            </View>
           )}
         </View>
       </ScrollView>
