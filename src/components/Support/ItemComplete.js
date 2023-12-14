@@ -3,11 +3,11 @@ import React, {useState} from 'react';
 import FastImage from 'react-native-fast-image';
 import {COLOR, ICON} from '../../constants/Theme';
 import {Code} from 'native-base';
-import {appStyle, windowWidth} from '../../constants/AppStyle';
+import {appStyle, windowHeight, windowWidth} from '../../constants/AppStyle';
 import numeral from 'numeral';
 import {useNavigation} from '@react-navigation/native';
 import Moment from 'moment';
-import {formatPrice} from '../../utils/utils';
+import {formatPrice, squareImageSize} from '../../utils/utils';
 const ItemComplete = props => {
   const navigation = useNavigation();
   const {data} = props;
@@ -239,8 +239,9 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FFFFFF',
     flexDirection: 'row',
+    justifyContent: 'flex-start',
     marginHorizontal: 4,
-    borderRadius: 14,
+    borderRadius: 12,
     borderColor: COLOR.borderColor,
     shadowColor: '#000',
     shadowOffset: {
@@ -251,7 +252,6 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     marginBottom: 20,
-
     padding: 10,
   },
   containerDetail: {
@@ -259,8 +259,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-around',
     marginHorizontal: 4,
-    padding: 14,
-    borderRadius: 14,
+    padding: 10,
+    borderRadius: 12,
     borderColor: COLOR.borderColor,
     shadowColor: '#000',
     shadowOffset: {
@@ -271,19 +271,26 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     marginBottom: 10,
+    marginTop: 2,
+  },
+  boxContentDetail: {
+    backgroundColor: '#FAFAFA',
+    borderBottomRightRadius: 20,
+    borderBottomLeftRadius: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 8,
   },
   image: {
-    width: 110,
-    height: 110,
+    width: squareImageSize(0.3),
+    height: squareImageSize(0.3),
     alignSelf: 'center',
-
-    borderRadius: 10,
+    borderRadius: 20,
   },
   imageDetail: {
     width: '100%',
-    height: 182,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    height: windowHeight * 0.22,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
   logoMap: {
     width: 14,
@@ -301,12 +308,10 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 13,
     borderBottomRightRadius: 13,
     padding: 5,
-    paddingLeft: 10,
     justifyContent: 'center',
     left: 0,
     top: 0,
     opacity: 0.9,
-    width: 90,
   },
   statusText: {
     color: 'white',

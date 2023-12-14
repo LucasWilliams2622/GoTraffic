@@ -19,6 +19,7 @@ import {useNavigation} from '@react-navigation/native';
 import AppHeader from '../../../components/AppHeader';
 import {useIsFocused} from '@react-navigation/native';
 import Swipelist from 'react-native-swipeable-list-view';
+import SkeletonTrip from '../../../components/SkeletonTrip';
 import {showToastMessage} from '../../../utils/utils';
 import data from '../../data';
 const Trip = () => {
@@ -27,6 +28,7 @@ const Trip = () => {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   const getListBookingCurrent = async () => {
     try {
@@ -34,6 +36,9 @@ const Trip = () => {
         '/booking/api/get-list-current-booking-of-user?idUser=' + idUser,
       );
       if (response.result) {
+        setTimeout(() => {
+          setLoading(false);
+        }, 2000);
         setListBookingCurrent(response.booking);
         console.log('=============================>', response.booking);
         if (response.booking[0] == null) {
@@ -117,6 +122,7 @@ const Trip = () => {
         />
         <View style={[appStyle.main, {}]}>
           <Text style={styles.text1}>Hiện tại</Text>
+       
           {isLoading == true ? (
             <View style={appStyle.ma}>
               <FastImage
@@ -136,6 +142,7 @@ const Trip = () => {
             <Swipelist
               style={{width: '100%', marginBottom: 65}}
               data={listBookingCurrent}
+              
               renderRightItem={(data, index) => (
                 <View key={index}>
                   <ItemTrip
@@ -161,6 +168,7 @@ const Trip = () => {
                   />
                 </TouchableOpacity>
               )}
+              
               rightOpenValue={100}
             />
           )}
