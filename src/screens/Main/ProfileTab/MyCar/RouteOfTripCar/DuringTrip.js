@@ -1,27 +1,43 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import {appStyle} from '../../../../../constants/AppStyle';
-import ItemTrip from '../../../../../components/Support/ItemTrip';
-import ItemCancleTrip from '../../../../../components/Support/ItemCancleTrip';
+import ItemDuringTrip from '../../../../../components/Support/ItemDuringTrip';
 import {FlatList} from 'native-base';
 import AxiosInstance from '../../../../../constants/AxiosInstance';
 import {useIsFocused} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
+import {showToastMessage} from '../../../../../utils/utils';
+import {ICON} from '../../../../../constants/Theme';
 import {AppContext} from '../../../../../utils/AppContext';
 
-const CancleTrip = () => {
-  const [data, setData] = useState([]);
-  const {idUser} = useContext(AppContext);
+const DuringTrip = () => {
   const isFocused = useIsFocused();
+  const {idUser} = useContext(AppContext);
+  const [data, setData] = useState([]);
   const getCarByIdUser = async () => {
     try {
       const response = await AxiosInstance().get(
-        '/booking/api/get-list-cancel?idOwner=' + idUser,
+        '/booking/api/get-list-during?idOwner=' + idUser,
       );
       if (response.result) {
         setData(response.booking);
       } else {
         console.log('Failed to get car complete');
+      }
+    } catch (error) {
+      console.log('=========>', error);
+    }
+  };
+  const completeBooking = async id => {
+    try {
+      const response = await AxiosInstance().post(
+        '/booking/api/complete?id=' + id,
+      );
+      if (response.result) {
+        showToastMessage('', 'Đã nhận được xe thành công');
+        getCarByIdUser();
+      } else {
+        showToastMessage('', 'Đã nhận được xe thất bại', ICON.cancelWhite);
       }
     } catch (error) {
       console.log('=========>', error);
@@ -35,7 +51,9 @@ const CancleTrip = () => {
       <FlatList
         style={[appStyle.main, {marginBottom: 70}]}
         data={data}
-        renderItem={({item}) => <ItemCancleTrip data={item} />}
+        renderItem={({item}) => (
+          <ItemDuringTrip data={item} handleCompelete={completeBooking} />
+        )}
         keyExtractor={item => item._id}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
@@ -61,7 +79,7 @@ const CancleTrip = () => {
   );
 };
 
-export default CancleTrip;
+export default DuringTrip;
 
 const styles = StyleSheet.create({
   imageInvisible: {

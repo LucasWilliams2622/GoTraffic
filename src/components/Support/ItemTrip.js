@@ -23,7 +23,7 @@ import Moment from 'moment';
 
 const ItemTrip = props => {
   const navigation = useNavigation();
-  const {data, handleCancle} = props;
+  const {data, handleCancle, handleReceived, handleReturn} = props;
   const [openDetail, setOpenDetail] = useState(false);
   const checkStatus = () => {
     // console.log('id Car:' + data.idCar);
@@ -79,9 +79,17 @@ const ItemTrip = props => {
                   styles.statusContainer,
                   {backgroundColor: COLOR.primary},
                 ]}>
-                <Text style={styles.statusText}>Đã nhận xe</Text>
+                <Text style={styles.statusText}>Trong chuyến</Text>
               </View>
             ) : data.status == 5 ? (
+              <View
+                style={[
+                  styles.statusContainer,
+                  {backgroundColor: COLOR.primary},
+                ]}>
+                <Text style={styles.statusText}>Đang trả xe</Text>
+              </View>
+            ) : data.status == 6 ? (
               <View
                 style={[
                   styles.statusContainer,
@@ -89,20 +97,20 @@ const ItemTrip = props => {
                 ]}>
                 <Text style={styles.statusText}>Hoàn thành</Text>
               </View>
-            ) : data.status == 6 ? (
-              <View
-                style={[styles.statusContainer, {backgroundColor: COLOR.red}]}>
-                <Text style={styles.statusText}>Bị từ chối</Text>
-              </View>
-            ) : data.status == 7 ? (
+            ) : data.status == 8 ? (
               <View
                 style={[styles.statusContainer, {backgroundColor: COLOR.red}]}>
                 <Text style={styles.statusText}>Đã hủy</Text>
               </View>
-            ) : data.status == 8 ? (
+            ) : data.status == 9 ? (
               <View
                 style={[styles.statusContainer, {backgroundColor: COLOR.red}]}>
                 <Text style={styles.statusText}>Chủ xe hủy</Text>
+              </View>
+            ) : data.status == 10 ? (
+              <View
+                style={[styles.statusContainer, {backgroundColor: COLOR.red}]}>
+                <Text style={styles.statusText}>Từ chối thuê</Text>
               </View>
             ) : null}
             <View
@@ -206,9 +214,17 @@ const ItemTrip = props => {
                   styles.statusContainer,
                   {backgroundColor: COLOR.primary},
                 ]}>
-                <Text style={styles.statusText}>Đã nhận xe</Text>
+                <Text style={styles.statusText}>Trong chuyến</Text>
               </View>
             ) : data.status == 5 ? (
+              <View
+                style={[
+                  styles.statusContainer,
+                  {backgroundColor: COLOR.primary},
+                ]}>
+                <Text style={styles.statusText}>Đang trả xe</Text>
+              </View>
+            ) : data.status == 6 ? (
               <View
                 style={[
                   styles.statusContainer,
@@ -216,20 +232,20 @@ const ItemTrip = props => {
                 ]}>
                 <Text style={styles.statusText}>Hoàn thành</Text>
               </View>
-            ) : data.status == 6 ? (
-              <View
-                style={[styles.statusContainer, {backgroundColor: COLOR.red}]}>
-                <Text style={styles.statusText}>Bị từ chối</Text>
-              </View>
-            ) : data.status == 7 ? (
+            ) : data.status == 8 ? (
               <View
                 style={[styles.statusContainer, {backgroundColor: COLOR.red}]}>
                 <Text style={styles.statusText}>Đã hủy</Text>
               </View>
-            ) : data.status == 8 ? (
+            ) : data.status == 9 ? (
               <View
                 style={[styles.statusContainer, {backgroundColor: COLOR.red}]}>
                 <Text style={styles.statusText}>Chủ xe hủy</Text>
+              </View>
+            ) : data.status == 10 ? (
+              <View
+                style={[styles.statusContainer, {backgroundColor: COLOR.red}]}>
+                <Text style={styles.statusText}>Từ chối thuê</Text>
               </View>
             ) : null}
             <View
@@ -369,8 +385,11 @@ const ItemTrip = props => {
                       Hủy chuyến
                     </Text>
                   </TouchableOpacity>
-                ) : data.status == 2 ? (
+                ) : data.status == 3 ? (
                   <TouchableOpacity
+                    onPress={() => {
+                      handleReceived(data.id);
+                    }}
                     style={{
                       backgroundColor: COLOR.primary,
                       width: 140,
@@ -386,8 +405,11 @@ const ItemTrip = props => {
                       Đã nhận xe
                     </Text>
                   </TouchableOpacity>
-                ) : data.status == 3 ? (
+                ) : data.status == 4 ? (
                   <TouchableOpacity
+                    onPress={() => {
+                      handleReturn(data.id);
+                    }}
                     style={{
                       backgroundColor: COLOR.primary,
                       width: 140,
@@ -403,7 +425,7 @@ const ItemTrip = props => {
                       Trả xe
                     </Text>
                   </TouchableOpacity>
-                ) : data.status == 5 ? (
+                ) : data.status == 6 ? (
                   <TouchableOpacity
                     onPress={() => {
                       navigation.navigate('RatingTrip', {id: data.id});
