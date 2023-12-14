@@ -112,7 +112,7 @@ const Recharge = () => {
           ) : null}
         </View>
 
-        <AppButton title={'Nạp'} onPress={formik.handleSubmit} />
+        <AppButton title={'Nạp'} onPress={formik.handleSubmit}  />
 
         <View style={{flex: 1, marginBottom: 70}}>
           {checkoutUrl != '' ? (
@@ -126,7 +126,7 @@ const Recharge = () => {
               />
             </>
           ) : (
-            <View style={[appStyle.boxCenter,{marginTop:windowHeight*0.2}]}>
+            <View style={[appStyle.boxCenter, {marginTop: windowHeight * 0.2}]}>
               <Text style={appStyle.text16}>Hãy nhập số tiền muốn nạp</Text>
             </View>
           )}

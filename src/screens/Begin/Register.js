@@ -37,7 +37,9 @@ const Register = props => {
 
   const handleNext = async (values) => {
     try {
-      const response = await axios.post(`http://103.57.129.166:3000/user/api/check-phone?phoneNumber=${values.phoneNumber}`);
+      console.log(values.phoneNumber);
+      const phone = values.phoneNumber
+      const response = await axios.post(`http://103.57.129.166:3000/user/api/check-phone?phone=${phone}`);
       const result = response.data.result;
       console.log(result);
 
