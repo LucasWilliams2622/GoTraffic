@@ -24,9 +24,7 @@ const RatingTrip = props => {
 
   const sendFeedback = async () => {
     try {
-      if (comment == null) {
-        showToastMessage('error', 'Vui lòng nhập đánh giá');
-      } else if (selectedStars < 1) {
+      if  (selectedStars < 1) {
         showToastMessage('error', 'Số sao thấp nhất là 1');
       } else {
         const response = await axios.post(

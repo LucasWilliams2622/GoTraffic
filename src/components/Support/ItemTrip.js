@@ -252,7 +252,7 @@ const ItemTrip = props => {
             </View>
             <View
               style={{
-                backgroundColor: '#FAFAFA',
+                backgroundColor:'white',
                 borderBottomRightRadius: 10,
                 borderBottomLeftRadius: 10,
                 padding: 10,

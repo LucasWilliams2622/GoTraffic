@@ -59,9 +59,9 @@ const Login = props => {
     password: Yup.string().required('Mật khẩu không được để trống'),
     // .min(5, 'Mật khẩu quá ngắn ít nhất phải 8 kí tự')
     // .matches(/[a-zA-Z]/, 'Mật khẩu chỉ chứa các chữ các latinh'),
-    email: Yup.string()
-      .matches(/^[a-zA-Z]{3}@[gG]\.com$/, 'Email không hợp lệ')
-      .required('Email không được để trống'),
+    // email: Yup.string()
+    //   .matches(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/, 'Email không hợp lệ')
+    //   .required('Email không được để trống'),
   });
 
   //API login
@@ -93,37 +93,38 @@ const Login = props => {
   };
 
   //API forgotPassword
-  const onForgotPassword = async () => {
-    try {
-      console.log(email);
+  // const onForgotPassword = async () => {
+  //   try {
+  //     console.log('+++++++++++TAP');
+  //     console.log(email);
 
-      const checkEmail = await axios.post(
-        'http://103.57.129.166:3000/user/api/check-email',
-        {
-          email: email,
-        },
-      );
+  //     const checkEmail = await axios.post(
+  //       'http://103.57.129.166:3000/user/api/check-email',
+  //       {
+  //         email: email,
+  //       },
+  //     );
 
-      if (checkEmail.data.result) {
-        const response = await axios.put(
-          'http://103.57.129.166:3000/user/api/forgot-password',
-          {
-            email: email,
-          },
-        );
-        console.log(response.data);
-        if (response.data.result) {
-          showToastMessage('', 'Gửi mật khẩu mới thành công');
-        } else {
-          showToastMessage('error', 'Gửi mật khẩu mới thất bại');
-        }
-      } else {
-        showToastMessage('error', 'Email không tồn tại');
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  //     if (checkEmail.data.result) {
+  //       const response = await axios.put(
+  //         'http://103.57.129.166:3000/user/api/forgot-password',
+  //         {
+  //           email: email,
+  //         },
+  //       );
+  //       console.log(response.data);
+  //       if (response.data.result) {
+  //         showToastMessage('', 'Gửi mật khẩu mới thành công');
+  //       } else {
+  //         showToastMessage('error', 'Gửi mật khẩu mới thất bại');
+  //       }
+  //     } else {
+  //       showToastMessage('error', 'Email không tồn tại');
+  //     }
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
 
   // Hàm lưu thông tin đăng nhập vào AsyncStorage
   const saveLoginInfo = async userInfo => {
@@ -285,7 +286,7 @@ const Login = props => {
         onBackdropPress={toggleBottomNavigationView}>
         <View style={styles.bottomNavigationView}>
           <View style={{ flex: 1, justifyContent: 'space-between' }}>
-            <Formik
+            {/* <Formik
               initialValues={{ email: '' }}
               validationSchema={validationSchema}
               onSubmit={(values, { setSubmitting }) => {
@@ -335,7 +336,7 @@ const Login = props => {
 
               )}
 
-            </Formik>
+            </Formik> */}
           </View>
 
         </View>
