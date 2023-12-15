@@ -27,10 +27,10 @@ const HomeCar = props => {
         source={require('../../../../assets/image/background.png')}
       />
       <AppHeader
-        title='Xe của tôi' 
-        //backgroundColor='#92D1FA' 
+        title="Xe của tôi"
+        //backgroundColor='#92D1FA'
       />
-      <View style={{ padding: 14, marginTop: 100 }}>
+      <View style={{padding: 14, marginTop: 100}}>
         <View style={styles.line1}>
           <Text style={[appStyle.text16Bold, {textAlign: 'center'}]}>
             Số dư:{' '}
@@ -55,8 +55,16 @@ const HomeCar = props => {
           onPress={() => navigation.navigate('ListCar')}
         />
         <AppHomeCar
+          icon={ICON.Address}
+          title="Bản đồ xe"
+          text="Bản đồ vị trí của tất cả xe của bạn"
+          onPress={() => navigation.navigate('MapCars')}
+        />
+
+        <AppHomeCar
           icon={ICON.Wallet}
           title="Ví của tôi"
+          borderBottomWidth={0}
           text="Theo dõi số dư và lịch sử cho thuê"
           onPress={() => navigation.navigate('MyWallet')}
         />
@@ -71,12 +79,6 @@ const HomeCar = props => {
           title="Danh sách chuyến"
           text="Lịch sử và trạng thái các chuyến"
           onPress={() => navigation.navigate('TripOfCar')}
-        />
-        <AppHomeCar
-          icon={ICON.Address}
-          title="Bản đồ xe"
-          text="Bản đồ vị trí của tất cả xe của bạn"
-          onPress={() => navigation.navigate('MapCars')}
         />
       </View>
     </SafeAreaView>
