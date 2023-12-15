@@ -59,9 +59,9 @@ const Login = props => {
     password: Yup.string().required('Mật khẩu không được để trống'),
     // .min(5, 'Mật khẩu quá ngắn ít nhất phải 8 kí tự')
     // .matches(/[a-zA-Z]/, 'Mật khẩu chỉ chứa các chữ các latinh'),
-    // email: Yup.string()
-    //   .matches(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/, 'Email không hợp lệ')
-    //   .required('Email không được để trống'),
+    email: Yup.string()
+      .matches(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/, 'Email không hợp lệ')
+      .required('Email không được để trống'),
   });
 
   //API login
@@ -105,22 +105,26 @@ const Login = props => {
         },
       );
 
-      if (checkEmail.data.result) {
-        const response = await axios.put(
-          'http://103.57.129.166:3000/user/api/forgot-password',
-          {
-            email: email,
-          },
-        );
-        console.log(response.data);
-        if (response.data.result) {
-          showToastMessage('', 'Gửi mật khẩu mới thành công');
-        } else {
-          showToastMessage('error', 'Gửi mật khẩu mới thất bại');
-        }
-      } else {
-        showToastMessage('error', 'Email không tồn tại');
-      }
+      // if (checkEmail.result) {
+      //   const response = await axios.put(
+      //     'http://103.57.129.166:3000/user/api/forgot-password',
+      //     {
+      //       email: email,
+      //     },
+      //   )
+      //   console.log(response.massage);
+      //   if (response.result) {
+      //     showToastMessage('', 'Gửi mật khẩu mới thành công');
+      //     setVisible(false);
+      //   } else {
+      //     showToastMessage('error', 'Gửi mật khẩu mới thất bại');
+      //   }
+      // } else {
+      //   showToastMessage('error', 'Email không tồn tại');
+      //   setVisible(false);
+      //   console.log(">>>>>>>>>Email không tồn tại");
+      //   console.log(checkEmail.message);
+      // }
     } catch (e) {
       console.log(e);
     }
@@ -286,13 +290,11 @@ const Login = props => {
         onBackdropPress={toggleBottomNavigationView}>
         <View style={styles.bottomNavigationView}>
           <View style={{ flex: 1, justifyContent: 'space-between' }}>
-            {/* <Formik
+            <Formik
               initialValues={{ email: '' }}
               validationSchema={validationSchema}
-              onSubmit={(values, { setSubmitting }) => {
-                setVisible(false);
+              onSubmit={values => {
                 onForgotPassword(values.email);
-                setSubmitting(false);
               }}
             >
               {({
@@ -317,7 +319,7 @@ const Login = props => {
                     value={values.email}
                   />
                   {touched.email && errors.email && (
-                    <Text style={[styles.textError,{marginTop:10}]}>{errors.email}</Text>
+                    <Text style={[styles.textError, { marginTop: 10 }]}>{errors.email}</Text>
                   )}
 
                   <AppButton
@@ -325,18 +327,18 @@ const Login = props => {
                     color={COLOR.secondary}
                     fontSize={18}
                     marginTop={30}
-                    onPress={handleSubmit}
-                  // onPress={() => {
-                  //   // setVisible(false);
-                  //   // onForgotPassword();
+                    // onPress={handleSubmit}
+                    onPress={() => {
+                      //setVisible(false);
+                      onForgotPassword();
 
-                  // }}
+                    }}
                   />
                 </View>
 
               )}
 
-            </Formik> */}
+            </Formik>
           </View>
 
         </View>
