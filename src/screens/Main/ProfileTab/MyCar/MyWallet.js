@@ -90,7 +90,7 @@ const MyWallet = () => {
                 appStyle.boxCenter,
                 appStyle.rowCenter,
                 styles.boxSurplus,
-                {width: '47.5%'},
+                {width: '47.5%', justifyContent: 'center'},
               ]}>
               <Icon
                 name="wallet"
@@ -110,7 +110,7 @@ const MyWallet = () => {
                 appStyle.boxCenter,
                 appStyle.rowCenter,
                 styles.boxSurplus,
-                {width: '47.5%'},
+                {width: '47.5%', justifyContent: 'center'},
               ]}>
               <Icon
                 name="hand-coin"
