@@ -16,7 +16,7 @@ export type AppButtonProps = {
     | 'baseline'
     | 'stretch'
     | 'auto';
-  disabled?: string;
+  disabled?: boolean;
   noShadow?: boolean;
   iconColor?: string;
   icon?: any;

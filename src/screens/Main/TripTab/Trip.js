@@ -129,6 +129,7 @@ const Trip = () => {
               <SkeletonTrip />
               <SkeletonTrip />
               <SkeletonTrip />
+              <SkeletonTrip />
             </View>
           ) : (
             <View>
