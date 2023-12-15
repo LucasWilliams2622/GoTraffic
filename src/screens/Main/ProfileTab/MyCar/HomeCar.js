@@ -76,13 +76,15 @@ const HomeCar = props => {
           text="Quản lí các xe đang cho thuê"
           onPress={() => navigation.navigate('ListCar')}
         />
-        <AppHomeCar
-          icon={ICON.Address}
-          title="Bản đồ xe"
-          text="Bản đồ vị trí của tất cả xe của bạn"
-          onPress={() => navigation.navigate('MapCars')}
-        />
 
+        {data.length == 0 ? null : (
+          <AppHomeCar
+            icon={ICON.Address}
+            title="Bản đồ xe"
+            text="Bản đồ vị trí của tất cả xe của bạn"
+            onPress={() => navigation.navigate('MapCars')}
+          />
+        )}
         <AppHomeCar
           icon={ICON.Wallet}
           title="Ví của tôi"
@@ -102,14 +104,6 @@ const HomeCar = props => {
           text="Lịch sử và trạng thái các chuyến"
           onPress={() => navigation.navigate('TripOfCar')}
         />
-        {data.length == 0 ? null : (
-          <AppHomeCar
-            icon={ICON.Address}
-            title="Bản đồ xe"
-            text="Bản đồ vị trí của tất cả xe của bạn"
-            onPress={() => navigation.navigate('MapCars')}
-          />
-        )}
       </View>
     </SafeAreaView>
   );
