@@ -10,10 +10,13 @@ import AxiosInstance from '../../../constants/AxiosInstance';
 import {AppContext} from '../../../utils/AppContext';
 import {useNavigation} from '@react-navigation/native';
 import AppHeader from '../../../components/AppHeader';
+import SkeletonTrip from '../../../components/SkeletonTrip';
 
 const HistoryTrip = () => {
   const {infoUser, idUser} = useContext(AppContext);
   const [listBooked, setListBooking] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const getListBooked = async () => {
     try {
       const response = await AxiosInstance().get(
@@ -21,6 +24,9 @@ const HistoryTrip = () => {
       );
       if (response.result) {
         setListBooking(response.booking);
+        setTimeout(() => {
+          setLoading(false);
+        }, 2000);
       } else {
         console.log('NETWORK ERROR');
       }
@@ -38,29 +44,43 @@ const HistoryTrip = () => {
       {/* <View style={{backgroundColor:COLOR.borderColor2,height:1,width:'100%'}}/> */}
       <ScrollView style={appStyle.main}>
         <Text style={styles.text1}>Đã thuê</Text>
-        <FlatList
-          style={{width: '100%', marginBottom: 65}}
-          data={listBooked}
-          renderItem={({item}) => <ItemTrip data={item} />}
-          keyExtractor={item => item.id}
-          showsVerticalScrollIndicator={false}
-          ListEmptyComponent={
-            <View>
-              <FastImage
-                style={styles.imageInvisible}
-                resizeMode={'stretch'}
-                source={require('../../../assets/image/NoTrip.png')}
-              />
-              <Text
-                style={[
-                  appStyle.text16,
-                  {textAlign: 'center', marginBottom: 10, fontStyle: 'italic'},
-                ]}>
-                Bạn chưa có lịch sử chuyến
-              </Text>
-            </View>
-          }
-        />
+        {loading == true ? (
+          <View>
+            <SkeletonTrip />
+            <SkeletonTrip />
+            <SkeletonTrip />
+            <SkeletonTrip />
+         
+          </View>
+        ) : (
+          <FlatList
+            style={{width: '100%', marginBottom: 65}}
+            data={listBooked}
+            renderItem={({item}) => <ItemTrip data={item} />}
+            keyExtractor={item => item.id}
+            showsVerticalScrollIndicator={false}
+            ListEmptyComponent={
+              <View>
+                <FastImage
+                  style={styles.imageInvisible}
+                  resizeMode={'stretch'}
+                  source={require('../../../assets/image/NoTrip.png')}
+                />
+                <Text
+                  style={[
+                    appStyle.text16,
+                    {
+                      textAlign: 'center',
+                      marginBottom: 10,
+                      fontStyle: 'italic',
+                    },
+                  ]}>
+                  Bạn chưa có lịch sử chuyến
+                </Text>
+              </View>
+            }
+          />
+        )}
       </ScrollView>
     </SafeAreaView>
   );

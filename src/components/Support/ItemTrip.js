@@ -121,7 +121,7 @@ const ItemTrip = props => {
                   tintColor={COLOR.primary}
                 />
                 <Text style={[appStyle.text105, {marginLeft: 5}]}>
-                  {data.Car.isDelivery ? 'Tự lái' : 'Xe có tài'}
+                  {data.Car.withDriver == false ? 'Tự lái' : 'Xe có tài'}
                 </Text>
               </View>
             </View>
@@ -148,7 +148,9 @@ const ItemTrip = props => {
             />
             <Text style={[appStyle.text12, {}]}>
               Loại nhận:{' '}
-              <Text style={{fontWeight: '500'}}>Giao xe tận nơi</Text>
+              <Text style={{fontWeight: '500'}}>
+                {data.Car.isDelivery == 1 ? 'Giao xe tận nơi' : 'Tự đến lấy'}
+              </Text>
             </Text>
             <Text
               style={{
@@ -398,10 +400,11 @@ const ItemTrip = props => {
             <View style={appStyle.rowBetween}>
               <View>
                 <Text style={appStyle.text12Medium}>
-                  Loại nhận: Giao xe tận nơi
+                  Loại nhận:{' '}
+                  {data.Car.isDelivery == 1 ? 'Giao xe tận nơi' : 'Tự đến lấy'}
                 </Text>
                 <Text style={appStyle.text12Medium}>
-                  Loại thuê: Xe có tài xế
+                  Loại thuê: {data.Car.withDriver == false ? 'Tự lái' : 'Xe có tài'}
                 </Text>
               </View>
               {data.status == 1 ? (

@@ -8,11 +8,13 @@ import AxiosInstance from '../../../../../constants/AxiosInstance';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import {AppContext} from '../../../../../utils/AppContext';
+import SkeletonTrip from '../../../../../components/SkeletonTrip';
 
 const FinishTrip = () => {
   const [data, setData] = useState([]);
   const {idUser} = useContext(AppContext);
   const isFocused = useIsFocused();
+  const [loading, setLoading] = useState(true);
 
   const getCarByIdUser = async () => {
     try {
@@ -21,6 +23,9 @@ const FinishTrip = () => {
       );
       if (response.result) {
         setData(response.booking);
+        setTimeout(() => {
+          setLoading(false);
+        }, 2000);
       } else {
         console.log('Failed to get car complete');
       }
@@ -35,31 +40,40 @@ const FinishTrip = () => {
   );
   return (
     <View style={{flex: 1, padding: 10}}>
-      <FlatList
-        style={[appStyle.container, {marginBottom: 70}]}
-        data={data}
-        renderItem={({item}) => <ItemComplete data={item} />}
-        keyExtractor={item => item._id}
-        showsVerticalScrollIndicator={false}
-        ListEmptyComponent={
-          <View
-            style={{
-              marginTop: 50,
-            }}>
-            <FastImage
-              style={styles.imageInvisible}
-              resizeMode={'stretch'}
-              source={require('../../../../../assets/image/NoTrip.png')}
-            />
-            <Text
-              style={[
-                appStyle.text16,
-                {textAlign: 'center', marginBottom: 10, fontStyle: 'italic'},
-              ]}>
-              Bạn chưa có lịch sử chuyến
-            </Text>
-          </View>
-        }></FlatList>
+      {loading == true ? (
+        <View>
+          <SkeletonTrip />
+          <SkeletonTrip />
+          <SkeletonTrip />
+          <SkeletonTrip />
+        </View>
+      ) : (
+        <FlatList
+          style={[appStyle.container, {marginBottom: 70}]}
+          data={data}
+          renderItem={({item}) => <ItemComplete data={item} />}
+          keyExtractor={item => item._id}
+          showsVerticalScrollIndicator={false}
+          ListEmptyComponent={
+            <View
+              style={{
+                marginTop: 50,
+              }}>
+              <FastImage
+                style={styles.imageInvisible}
+                resizeMode={'stretch'}
+                source={require('../../../../../assets/image/NoTrip.png')}
+              />
+              <Text
+                style={[
+                  appStyle.text16,
+                  {textAlign: 'center', marginBottom: 10, fontStyle: 'italic'},
+                ]}>
+                Bạn chưa có lịch sử chuyến
+              </Text>
+            </View>
+          }></FlatList>
+      )}
     </View>
   );
 };
