@@ -341,7 +341,7 @@ const ItemTrip = props => {
                 },
               ]}>
               <View style={appStyle.rowCenter}>
-                {data.User?.avatar ? (
+                {data.Car.User?.avatar ? (
                   <FastImage
                     style={{
                       width: 50,
@@ -350,7 +350,7 @@ const ItemTrip = props => {
                       marginRight: 8,
                     }}
                     resizeMode={'stretch'}
-                    source={{uri: data.User?.avatar}}
+                    source={{uri: data.Car.User?.avatar}}
                   />
                 ) : (
                   <FastImage
@@ -367,22 +367,22 @@ const ItemTrip = props => {
 
                 <View style={{width: '70%'}}>
                   <Text style={appStyle.text14Bold} numberOfLines={1}>
-                    {data.User?.name}
+                    {data.Car.User?.name}
                   </Text>
                   <View style={[appStyle.rowCenter, {paddingVertical: 4}]}>
                     <FastImage source={ICON.Star} style={appStyle.iconSmall} />
                     <Text style={appStyle.text12Medium}>
                       {' '}
-                      {data.User?.rating} •{' '}
+                      {data.Car.User?.rating} •{' '}
                     </Text>
                     <FastImage source={ICON.Trip} style={appStyle.iconSmall} />
                     <Text style={appStyle.text12Medium}>
                       {' '}
-                      {data.User?.totalRide} chuyến
+                      {data.Car.User?.totalRide} chuyến
                     </Text>
                   </View>
                   <Text style={appStyle.text12Bold} numberOfLines={1}>
-                    {data.User?.phone}
+                    {data.Car.User?.phone}
                   </Text>
                 </View>
               </View>
@@ -393,7 +393,7 @@ const ItemTrip = props => {
                 size={30}
                 color="green"
                 onPress={() => {
-                  Linking.openURL(`tel:0344112283`);
+                  Linking.openURL(`tel:${data.Car.User?.phone}`);
                 }}
               />
             </View>
@@ -404,7 +404,8 @@ const ItemTrip = props => {
                   {data.Car.isDelivery == 1 ? 'Giao xe tận nơi' : 'Tự đến lấy'}
                 </Text>
                 <Text style={appStyle.text12Medium}>
-                  Loại thuê: {data.Car.withDriver == false ? 'Tự lái' : 'Xe có tài'}
+                  Loại thuê:{' '}
+                  {data.Car.withDriver == false ? 'Tự lái' : 'Xe có tài'}
                 </Text>
               </View>
               {data.status == 1 ? (
