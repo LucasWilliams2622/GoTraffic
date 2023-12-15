@@ -6,19 +6,19 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Svg, Path, Rect} from 'react-native-svg';
-import React, {useState, useContext, useEffect} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { Svg, Path, Rect } from 'react-native-svg';
+import React, { useState, useContext, useEffect } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import AppInput from '../../components/AppInput';
-import {appStyle, windowHeight} from '../../constants/AppStyle';
+import { appStyle, windowHeight } from '../../constants/AppStyle';
 import AppButton from '../../components/AppButton';
-import {COLOR, ICON} from '../../constants/Theme';
+import { COLOR, ICON } from '../../constants/Theme';
 import FastImage from 'react-native-fast-image';
-import {Center} from 'native-base';
-import {BottomSheet} from 'react-native-btr';
+import { Center } from 'native-base';
+import { BottomSheet } from 'react-native-btr';
 import * as Yup from 'yup';
-import {Formik, useFormik} from 'formik';
-import {AppContext} from '../../utils/AppContext';
+import { Formik, useFormik } from 'formik';
+import { AppContext } from '../../utils/AppContext';
 import {
   GoogleSignin,
   GoogleSigninButton,
@@ -27,12 +27,12 @@ import {
 import AxiosInstance from '../../constants/AxiosInstance';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {showToastMessage} from '../../utils/utils';
+import { showToastMessage } from '../../utils/utils';
 
 const Login = props => {
-  const {isLogin, setIsLogin, setInfoUser, setIdUser, idUser} =
+  const { isLogin, setIsLogin, setInfoUser, setIdUser, idUser } =
     useContext(AppContext);
-  const {navigation} = props;
+  const { navigation } = props;
 
   const goRegister = () => {
     navigation.navigate('Register');
@@ -42,6 +42,8 @@ const Login = props => {
   const [phoneNumber, setphoneNumber] = useState('');
   const [password, setpassword] = useState('');
   const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [forgotEmail, setForgotEmail] = useState('');
 
   const toggleBottomNavigationView = () => {
     setVisible(!visible);
@@ -58,9 +60,9 @@ const Login = props => {
     password: Yup.string().required('Mật khẩu không được để trống'),
     // .min(5, 'Mật khẩu quá ngắn ít nhất phải 8 kí tự')
     // .matches(/[a-zA-Z]/, 'Mật khẩu chỉ chứa các chữ các latinh'),
-    email: Yup.string()
-      .matches(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/, 'Email không hợp lệ')
-      .required('Email không được để trống'),
+    // email: Yup.string()
+    //   .matches(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/, 'Email không hợp lệ')
+    //   .required('Email không được để trống'),
   });
 
   //API login
@@ -92,40 +94,56 @@ const Login = props => {
   };
 
   //API forgotPassword
+  const handleEmailChange = (email) => {
+    setForgotEmail(email);
+    const formatEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (!formatEmail.test(email)) {
+      setEmailError('Email không hợp lệ');
+    } else {
+      setEmailError('');
+    }
+  };
   const onForgotPassword = async () => {
     try {
-      console.log('+++++++++++TAP');
-      console.log(email);
-
+      console.log('>>>>>>>>>>>>>>>', forgotEmail);
       const checkEmail = await axios.post(
         'http://103.57.129.166:3000/user/api/check-email',
         {
-          email: email,
+          email: forgotEmail,
         },
       );
+      if (checkEmail.status === 200) {
+        const response = await axios.put(
+          'http://103.57.129.166:3000/user/api/forgot-password',
+          {
+            email: forgotEmail,
+          },
+        )
+        console.log(response.data.massage);
+        if (response.data.result) {
+          showToastMessage('', 'Gửi mật khẩu mới thành công');
+          setVisible(false);
+        } else {
+          showToastMessage('error', 'Gửi mật khẩu mới thất bại');
+        }
+      } else {
+        showToastMessage('error', 'Email không tồn tại');
+        setVisible(false);
+        console.log(">>>>>>>>>Email không tồn tại");
+        console.log(checkEmail.message);
+      }
 
-      // if (checkEmail.result) {
-      //   const response = await axios.put(
-      //     'http://103.57.129.166:3000/user/api/forgot-password',
-      //     {
-      //       email: email,
-      //     },
-      //   )
-      //   console.log(response.massage);
-      //   if (response.result) {
-      //     showToastMessage('', 'Gửi mật khẩu mới thành công');
-      //     setVisible(false);
-      //   } else {
-      //     showToastMessage('error', 'Gửi mật khẩu mới thất bại');
-      //   }
-      // } else {
-      //   showToastMessage('error', 'Email không tồn tại');
-      //   setVisible(false);
-      //   console.log(">>>>>>>>>Email không tồn tại");
-      //   console.log(checkEmail.message);
-      // }
-    } catch (e) {
+    } catch (error) {
       console.log(e);
+    }
+  }
+
+  const handleForgotPassword = () => {
+    if (!emailError && forgotEmail.trim() !== '') {
+      onForgotPassword();
+    } else {
+      setEmailError('Email không được để trống');
+      //showToastMessage('error', 'Vui lòng nhập một email hợp lệ');
     }
   };
 
@@ -171,7 +189,7 @@ const Login = props => {
     <SafeAreaView style={appStyle.container}>
       <View style={styles.main}>
         <Svg
-          style={{flex: 1, alignSelf: 'center', position: 'absolute', top: 30}}
+          style={{ flex: 1, alignSelf: 'center', position: 'absolute', top: 30 }}
           xmlns="http://www.w3.org/2000/svg"
           width="400"
           height="266"
@@ -191,17 +209,17 @@ const Login = props => {
           <Rect x="260" y="124" width="19" height="16" fill="#E2F0F4" />
           <Rect x="227" y="16" width="19" height="16" fill="#E2F0F4" />
         </Svg>
-        <View style={{marginTop: 70}}>
+        <View style={{ marginTop: 70 }}>
           <FastImage
             source={require('../../assets/image/logo_go_traffic.png')}
             style={styles.image}
           />
           <Text style={styles.text1}>Chào mừng đến với GoTraffic</Text>
-          <Text style={[styles.text1, {marginBottom: 30}]}>
+          <Text style={[styles.text1, { marginBottom: 30 }]}>
             Đăng nhập ngay!
           </Text>
           <Formik
-            initialValues={{phoneNumber: '', password: ''}}
+            initialValues={{ phoneNumber: '', password: '' }}
             validationSchema={validationSchema}
             onSubmit={values => {
               onLogin(values.phoneNumber, values.password);
@@ -214,8 +232,8 @@ const Login = props => {
               errors,
               touched,
             }) => (
-              <KeyboardAvoidingView behavior="padding" style={{height: '73%'}}>
-                <View style={{paddingHorizontal: 14}}>
+              <KeyboardAvoidingView behavior="padding" style={{ height: '73%' }}>
+                <View style={{ paddingHorizontal: 14 }}>
                   <View>
                     <View style={styles.viewItem}>
                       <Text style={styles.text2}>Số điện thoại</Text>
@@ -264,7 +282,7 @@ const Login = props => {
                     fontSize={18}
                     onPress={handleSubmit}
                   />
-                  <View style={{marginTop: 20, alignItems: 'center'}}>
+                  <View style={{ marginTop: 20, alignItems: 'center' }}>
                     <Text style={appStyle.text14}>Bạn chưa là thành viên?</Text>
                     <Text
                       style={appStyle.text16Bold}
@@ -277,7 +295,7 @@ const Login = props => {
                 </View>
 
                 <Svg
-                  style={{flex: 1, position: 'absolute', bottom: 0, zIndex: -1}}
+                  style={{ flex: 1, position: 'absolute', bottom: 0, zIndex: -1 }}
                   xmlns="http://www.w3.org/2000/svg"
                   width="420"
                   height="186"
@@ -309,12 +327,18 @@ const Login = props => {
         onBackdropPress={toggleBottomNavigationView}>
         <View style={styles.bottomNavigationView}>
           <View style={{ flex: 1, justifyContent: 'space-between' }}>
-            <Formik
+            {/* <Formik
               initialValues={{ email: '' }}
               validationSchema={validationSchema}
-              onSubmit={values => {
-                onForgotPassword(values.email);
+              onSubmit={(values) =>{
+                testClick(values.email);
               }}
+              // onSubmit={(values) => {
+              //   // Thực hiện kiểm tra và gọi hàm testClick
+                
+              //     testClick(values.email);
+                
+              // }}
             >
               {({
                 handleChange,
@@ -323,42 +347,45 @@ const Login = props => {
                 values,
                 errors,
                 touched,
-              }) => (
-                <View>
-                  <Text style={appStyle.text16Bold}>Quên mật khẩu</Text>
-                  <Text
-                    style={[
-                      appStyle.text14,
-                      {marginBottom: 10, marginTop: 10},
-                    ]}>
-                    Nhập email của bạn để thực hiện quá trình xác minh, chúng
-                    tôi sẽ gửi mật khẩu mới qua gmail của bạn.
-                  </Text>
-                  <AppInput
-                    placeholder={'Nhập email của tài khoản'}
-                    onChangeText={handleChange('email')}
-                    onBlur={handleBlur('email')}
-                    value={values.email}
-                  />
-                  {touched.email && errors.email && (
-                    <Text style={[styles.textError, { marginTop: 10 }]}>{errors.email}</Text>
-                  )}
+              }) => ( */}
+            <View>
+              <Text style={appStyle.text16Bold}>Quên mật khẩu</Text>
+              <Text
+                style={[
+                  appStyle.text14,
+                  { marginBottom: 10, marginTop: 10 },
+                ]}>
+                Nhập email của bạn để thực hiện quá trình xác minh, chúng
+                tôi sẽ gửi mật khẩu mới qua gmail của bạn.
+              </Text>
+              <AppInput
+                placeholder={'Nhập email của tài khoản'}
+                onChangeText={handleEmailChange}
+                value={forgotEmail}
+              // onChangeText={handleChange('email')}
+              // onBlur={handleBlur('email')}
+              // value={values.email}
+              />
+              {emailError ? (
+                <Text style={[styles.textError, { marginTop: 10 }]}>{emailError}</Text>
+              ) : null}
 
-                  <AppButton
-                    title="Tiếp tục"
-                    color={COLOR.secondary}
-                    fontSize={18}
-                    marginTop={30}
-                    // onPress={handleSubmit}
-                    onPress={() => {
-                      //setVisible(false);
-                      onForgotPassword();
+              <AppButton
+                title="Tiếp tục"
+                color={COLOR.secondary}
+                fontSize={18}
+                marginTop={30}
+                onPress={handleForgotPassword}
+              // onPress={() => {
+              //   //setVisible(false);
+              //   //onForgotPassword();
+              //  testClick();
 
-                    }}
-                  />
-                </View>
-              )}
-            </Formik>
+              // }}
+              />
+            </View>
+            {/* )}
+            </Formik> */}
           </View>
         </View>
       </BottomSheet>

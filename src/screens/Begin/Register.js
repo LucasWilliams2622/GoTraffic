@@ -42,7 +42,7 @@ const Register = props => {
     try {
       const phone = values.phoneNumber;
       const response = await axios.post(
-        `http://103.57.129.166:3000/user/api/check-phone?phone=${phone}`,
+        `http://103.57.129.166:3000/user/api/check-phone?phone=${values.phoneNumber}`,
       );
       const result = response.data.result;
       if (result) {
