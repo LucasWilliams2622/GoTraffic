@@ -11,6 +11,7 @@ import FastImage from 'react-native-fast-image';
 import ItemInsurance from '../../../components/Support/ItemInsurance';
 import data from '../../data';
 import {Linking} from 'react-native';
+import { Image } from 'react-native';
 
 const Support = () => {
   const openMessengerWithFanpage = () => {
@@ -131,7 +132,7 @@ const Support = () => {
           keyExtractor={item => item.id}
           ListFooterComponent={
             <View style={[appStyle.boxCenter, appStyle.rowCenter]}>
-              <FastImage
+              <Image
                 style={appStyle.logo}
                 source={require('../../../assets/image/logo_go_traffic.png')}
               />

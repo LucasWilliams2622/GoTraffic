@@ -1,20 +1,28 @@
-import { Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import React, { useState, useEffect } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { appStyle, windowHeight, windowWidth } from '../../constants/AppStyle';
-import { Svg, Path, Rect } from 'react-native-svg';
+import {
+  Keyboard,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {appStyle, windowHeight, windowWidth} from '../../constants/AppStyle';
+import {Svg, Path, Rect} from 'react-native-svg';
 import AppInput from '../../components/AppInput';
 import AppButton from '../../components/AppButton';
-import { COLOR, ICON } from '../../constants/Theme';
+import {COLOR, ICON} from '../../constants/Theme';
 import FastImage from 'react-native-fast-image';
 import * as Yup from 'yup';
-import { Formik } from 'formik';
-import { KeyboardAvoidingView } from 'native-base';
+import {Formik} from 'formik';
+import {KeyboardAvoidingView} from 'native-base';
 import AxiosInstance from '../../constants/AxiosInstance';
-import { showToastMessage } from '../../utils/utils';
+import {showToastMessage} from '../../utils/utils';
 import axios from 'axios';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
+import DismissKeyboard from '../../components/DismissKeyboard';
 
 const EmailCheck = props => {
   const { name, password, phone } = props.route.params;
@@ -278,18 +286,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 8
+    paddingHorizontal: 8,
   },
   code: {
     width: windowWidth * 0.5,
     height: windowHeight * 0.06,
-    fontSize: 16
+    fontSize: 16,
   },
   btnCode: {
     width: windowWidth * 0.22,
     height: windowHeight * 0.05,
     justifyContent: 'center',
     backgroundColor: COLOR.fifth,
-    borderRadius: 8
-  }
+    borderRadius: 8,
+  },
 });

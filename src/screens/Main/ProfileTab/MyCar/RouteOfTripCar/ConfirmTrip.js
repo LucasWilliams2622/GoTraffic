@@ -37,6 +37,7 @@ const ConfirmTrip = () => {
       console.log('=========>', error);
     }
   };
+   
   const cancelBooking = async id => {
     try {
       const response = await AxiosInstance().post(

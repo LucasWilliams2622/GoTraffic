@@ -184,9 +184,12 @@ const Notification = () => {
             />
           )
         )}
-        <View style={styles.line1}>
-          <Text style={styles.text1}>Thông báo ứng dụng</Text>
-        </View>
+        {checkLength && (
+          <View style={styles.line1}>
+            <Text style={styles.text1}>Thông báo ứng dụng</Text>
+          </View>
+        )}
+        
         {loading == true ? (
           <SkeletonPlaceholder>
             <View style={{flexDirection: 'column', alignItems: 'flex-start'}}>
