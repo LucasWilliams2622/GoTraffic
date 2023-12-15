@@ -85,6 +85,7 @@ const Trip = () => {
       console.log('=========>', error);
     }
   };
+
   const returnCar = async id => {
     try {
       console.log(id);
@@ -101,6 +102,7 @@ const Trip = () => {
       console.log('=========>', error);
     }
   };
+ 
   useEffect(() => {
     getListBookingCurrent();
   }, [isFocused]);

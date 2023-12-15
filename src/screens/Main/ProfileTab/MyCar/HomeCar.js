@@ -1,5 +1,5 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {appStyle} from '../../../../constants/AppStyle';
 import {COLOR, ICON} from '../../../../constants/Theme';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -9,17 +9,39 @@ import {AppContext} from '../../../../utils/AppContext';
 import numeral from 'numeral';
 import {useNavigation} from '@react-navigation/native';
 import AppHeader from '../../../../components/AppHeader';
+import AxiosInstance from '../../../../constants/AxiosInstance';
+import {useIsFocused} from '@react-navigation/native';
 
 const HomeCar = props => {
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
   const {infoUser, idUser} = useContext(AppContext);
   const [hideSurplus, setHideSurplus] = useState(true);
+  const [data, setData] = useState([]);
   const handleButtonPress = () => {
     setHideSurplus(!hideSurplus);
   };
   const goBack = () => {
     navigation.goBack();
   };
+  const getCarByIdUser = async () => {
+    try {
+      const response = await AxiosInstance().get(
+        `/car/api/list-by-id-user?idUser=${idUser}`,
+      );
+      console.log(response);
+      if (response.result) {
+        setData(response.listCar);
+      } else {
+        console.log('Failed to get car');
+      }
+    } catch (error) {
+      console.log('=========>', error);
+    }
+  };
+  useEffect(() => {
+    getCarByIdUser();
+  }, [isFocused]);
   return (
     <SafeAreaView style={appStyle.container}>
       <FastImage
@@ -27,10 +49,10 @@ const HomeCar = props => {
         source={require('../../../../assets/image/background.png')}
       />
       <AppHeader
-        title='Xe của tôi' 
-        //backgroundColor='#92D1FA' 
+        title="Xe của tôi"
+        //backgroundColor='#92D1FA'
       />
-      <View style={{ padding: 14, marginTop: 100 }}>
+      <View style={{padding: 14, marginTop: 100}}>
         <View style={styles.line1}>
           <Text style={[appStyle.text16Bold, {textAlign: 'center'}]}>
             Số dư:{' '}
@@ -72,12 +94,14 @@ const HomeCar = props => {
           text="Lịch sử và trạng thái các chuyến"
           onPress={() => navigation.navigate('TripOfCar')}
         />
-        <AppHomeCar
-          icon={ICON.Address}
-          title="Bản đồ xe"
-          text="Bản đồ vị trí của tất cả xe của bạn"
-          onPress={() => navigation.navigate('MapCars')}
-        />
+        {data.length == 0 ? null : (
+          <AppHomeCar
+            icon={ICON.Address}
+            title="Bản đồ xe"
+            text="Bản đồ vị trí của tất cả xe của bạn"
+            onPress={() => navigation.navigate('MapCars')}
+          />
+        )}
       </View>
     </SafeAreaView>
   );

@@ -33,6 +33,9 @@ const CancleTrip = () => {
       console.log('=========>', error);
     }
   };
+  // setInterval(() => {
+  //   getCarByIdUser();
+  // }, 10000);
   useEffect(() => {
     getCarByIdUser();
   }, [isFocused]);

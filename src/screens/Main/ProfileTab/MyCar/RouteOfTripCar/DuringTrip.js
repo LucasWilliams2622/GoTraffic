@@ -23,6 +23,7 @@ const DuringTrip = () => {
       );
       if (response.result) {
         setData(response.booking);
+        console.log(response.booking.status);
         setTimeout(() => {
           setLoading(false);
         }, 2000);
@@ -48,6 +49,9 @@ const DuringTrip = () => {
       console.log('=========>', error);
     }
   };
+  // setInterval(() => {
+  //   getCarByIdUser();
+  // }, 10000);
   useEffect(() => {
     getCarByIdUser();
   }, [isFocused]);
