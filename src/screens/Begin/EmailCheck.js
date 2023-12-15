@@ -1,23 +1,31 @@
-import { Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import React, { useState, useEffect } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { appStyle, windowHeight, windowWidth } from '../../constants/AppStyle';
-import { Svg, Path, Rect } from 'react-native-svg';
+import {
+  Keyboard,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {appStyle, windowHeight, windowWidth} from '../../constants/AppStyle';
+import {Svg, Path, Rect} from 'react-native-svg';
 import AppInput from '../../components/AppInput';
 import AppButton from '../../components/AppButton';
-import { COLOR, ICON } from '../../constants/Theme';
+import {COLOR, ICON} from '../../constants/Theme';
 import FastImage from 'react-native-fast-image';
 import * as Yup from 'yup';
-import { Formik } from 'formik';
-import { KeyboardAvoidingView } from 'native-base';
+import {Formik} from 'formik';
+import {KeyboardAvoidingView} from 'native-base';
 import AxiosInstance from '../../constants/AxiosInstance';
-import { showToastMessage } from '../../utils/utils';
+import {showToastMessage} from '../../utils/utils';
 import axios from 'axios';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
+import DismissKeyboard from '../../components/DismissKeyboard';
 
 const EmailCheck = props => {
-  const { phoneNumber, nameUser, password } = props.route.params;
+  const {phoneNumber, nameUser, password} = props.route.params;
   console.log(phoneNumber, nameUser, password);
   const navigation = useNavigation();
   const validationSchema = Yup.object().shape({
@@ -78,47 +86,50 @@ const EmailCheck = props => {
 
   return (
     <SafeAreaView style={appStyle.container}>
-      <Formik
-        initialValues={{
-          email: '',
-        }}
-        validationSchema={validationSchema}
-        onSubmit={values => {
-          console.log(values);
-          onRegister(nameUser, phoneNumber, values.email, password);
-        }}>
-        {({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          values,
-          errors,
-          touched,
-        }) => (
-          <View style={[styles.main]}>
-            <KeyboardAvoidingView behavior="padding" style={{ height: '100%' }}>
-              <TouchableOpacity
-                style={{ marginVertical: 20, marginLeft: 8 }}
-                onPress={() => navigation.goBack()}>
-                <FastImage source={ICON.Back} style={appStyle.iconBig} />
-              </TouchableOpacity>
+      <DismissKeyboard>
+        <Formik
+          initialValues={{
+            email: '',
+          }}
+          validationSchema={validationSchema}
+          onSubmit={values => {
+            console.log(values);
+            onRegister(nameUser, phoneNumber, values.email, password);
+          }}>
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            errors,
+            touched,
+          }) => (
+            <View style={[styles.main]}>
+              <KeyboardAvoidingView behavior="padding" style={{height: '100%'}}>
+                <TouchableOpacity
+                  style={{marginVertical: 20, marginLeft: 8}}
+                  onPress={() => navigation.goBack()}>
+                  <FastImage source={ICON.Back} style={appStyle.iconBig} />
+                </TouchableOpacity>
 
-              <View style={{ paddingHorizontal: 14 }}>
-                <Text style={[appStyle.text24Bold, { color: COLOR.fifth }]}>Xác thực email để bảo vệ tài khoản của bạn</Text>
-                <View style={styles.viewItem}>
-                  {/* <Text style={styles.text2}>Email</Text> */}
-                  <AppInput
-                    returnKeyType={'next'}
-                    placeholder={'Nhập email của bạn'}
-                    onChangeText={handleChange('email')}
-                    onBlur={handleBlur('email')}
-                    value={values.email}
-                  />
-                </View>
-                {touched.email && errors.email && (
-                  <Text style={styles.textError}>{errors.email}</Text>
-                )}
-                {/* <View>
+                <View style={{paddingHorizontal: 14}}>
+                  <Text style={[appStyle.text24Bold, {color: COLOR.fifth}]}>
+                    Xác thực email để bảo vệ tài khoản của bạn
+                  </Text>
+                  <View style={styles.viewItem}>
+                    {/* <Text style={styles.text2}>Email</Text> */}
+                    <AppInput
+                      returnKeyType={'next'}
+                      placeholder={'Nhập email của bạn'}
+                      onChangeText={handleChange('email')}
+                      onBlur={handleBlur('email')}
+                      value={values.email}
+                    />
+                  </View>
+                  {touched.email && errors.email && (
+                    <Text style={styles.textError}>{errors.email}</Text>
+                  )}
+                  {/* <View>
                 <Text
                   style={[appStyle.text14, { marginTop: 20, lineHeight: 16 }]}>
                   Bạn có thể bỏ qua bước xác thực email và sau này có thể vào
@@ -136,7 +147,7 @@ const EmailCheck = props => {
                   </Text>
                 </Text>
               </View> */}
-                {/* {checkEnable == true ? (
+                  {/* {checkEnable == true ? (
                   <OTPInputView
                     style={{ width: '80%', height: 200, alignSelf: 'center' }}
                     pinCount={4}
@@ -149,34 +160,61 @@ const EmailCheck = props => {
                   />
                 ) : null} */}
 
-                <AppButton
-                  title="Nhận mã"
-                  color={COLOR.secondary}
-                  fontSize={16}
-                  onPress={handleSubmit}
-                  marginTop={5}
-                />
-                <View style={styles.inputCode}>
-                  <TextInput placeholder='Nhập mã' style={styles.code}>
-
-                  </TextInput>
-                  <TouchableOpacity style={styles.btnCode}>
-                    <Text style={[appStyle.text165, { alignSelf: 'center', color: 'white' }]}>Xác nhận</Text>
-                  </TouchableOpacity>
+                  <AppButton
+                    title="Nhận mã"
+                    color={COLOR.secondary}
+                    fontSize={16}
+                    onPress={handleSubmit}
+                    marginTop={5}
+                  />
+                  <View style={styles.inputCode}>
+                    <TextInput
+                      placeholder="Nhập mã"
+                      style={styles.code}></TextInput>
+                    <TouchableOpacity style={styles.btnCode}>
+                      <Text
+                        style={[
+                          appStyle.text165,
+                          {alignSelf: 'center', color: 'white'},
+                        ]}>
+                        Xác nhận
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
-              </View>
 
-              {showBottom && (
-                <Svg style={{ flex: 1, position: 'absolute', bottom: 0, zIndex: -1 }} xmlns="http://www.w3.org/2000/svg" width="420" height="186" viewBox="0 0 393 186" fill="none">
-                  <Path d="M35.5544 0L-15 98.7526V186H450V68.0722L396.442 20.134L307.347 68.0722L256.792 0L218.251 52.732L171.2 20.134L124.65 41.2268L35.5544 0Z" fill="#90C9E6" />
-                  <Path d="M-27.0323 44L-79 114.613V177H399V92.6753L343.945 58.3969L252.358 92.6753L200.391 44L160.772 81.7062L112.406 58.3969L64.5544 73.4794L-27.0323 44Z" fill="#219EBC" />
-                  <Path d="M54.5985 89L-27.5 157L-34 186H494V124.5L437.217 99.5L342.757 124.5L289.158 89L248.296 116.5L198.412 99.5L149.059 110.5L54.5985 89Z" fill="#023047" />
-                </Svg>
-              )}
-            </KeyboardAvoidingView>
-          </View>
-        )}
-      </Formik>
+                {showBottom && (
+                  <Svg
+                    style={{
+                      flex: 1,
+                      position: 'absolute',
+                      bottom: 0,
+                      zIndex: -1,
+                    }}
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="420"
+                    height="186"
+                    viewBox="0 0 393 186"
+                    fill="none">
+                    <Path
+                      d="M35.5544 0L-15 98.7526V186H450V68.0722L396.442 20.134L307.347 68.0722L256.792 0L218.251 52.732L171.2 20.134L124.65 41.2268L35.5544 0Z"
+                      fill="#90C9E6"
+                    />
+                    <Path
+                      d="M-27.0323 44L-79 114.613V177H399V92.6753L343.945 58.3969L252.358 92.6753L200.391 44L160.772 81.7062L112.406 58.3969L64.5544 73.4794L-27.0323 44Z"
+                      fill="#219EBC"
+                    />
+                    <Path
+                      d="M54.5985 89L-27.5 157L-34 186H494V124.5L437.217 99.5L342.757 124.5L289.158 89L248.296 116.5L198.412 99.5L149.059 110.5L54.5985 89Z"
+                      fill="#023047"
+                    />
+                  </Svg>
+                )}
+              </KeyboardAvoidingView>
+            </View>
+          )}
+        </Formik>
+      </DismissKeyboard>
     </SafeAreaView>
   );
 };
@@ -251,18 +289,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 8
+    paddingHorizontal: 8,
   },
   code: {
     width: windowWidth * 0.5,
     height: windowHeight * 0.06,
-    fontSize: 16
+    fontSize: 16,
   },
   btnCode: {
     width: windowWidth * 0.22,
     height: windowHeight * 0.05,
     justifyContent: 'center',
     backgroundColor: COLOR.fifth,
-    borderRadius: 8
-  }
+    borderRadius: 8,
+  },
 });

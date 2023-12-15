@@ -7,6 +7,7 @@ import {appStyle, windowWidth} from '../../constants/AppStyle';
 import {COLOR, ICON} from '../../constants/Theme';
 import {useNavigation} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
+import DismissKeyboard from '../../components/DismissKeyboard';
 
 const Verified = props => {
   const navigation = useNavigation();
@@ -33,45 +34,49 @@ const Verified = props => {
 
   return (
     <SafeAreaView style={appStyle.main}>
-      <View
-        style={{
-          flexDirection: 'row',
-          width: windowWidth * 0.85,
-          marginTop: 10,
-          marginBottom: 10,
-        }}>
-        <TouchableOpacity
-          style={{marginTop: 10, marginRight: 14}}
-          onPress={() => navigation.goBack()}>
-          <FastImage source={ICON.Back} style={appStyle.icon} />
-        </TouchableOpacity>
-        <View style={{flex: 1, alignItems: 'center'}}>
-          <Text style={styles.text1}>Xác thực số điện thoại</Text>
-        </View>
-      </View>
-      <Text style={styles.text2}>
-        Bạn sẽ nhận được mã OTP vào số điện thoại{' '}
-        <Text style={appStyle.text16Bold}>{phoneNumber}</Text>. Hãy xác thực
-        ngay!
-      </Text>
+      <DismissKeyboard>
+        <>
+          <View
+            style={{
+              flexDirection: 'row',
+              width: windowWidth * 0.85,
+              marginTop: 10,
+              marginBottom: 10,
+            }}>
+            <TouchableOpacity
+              style={{marginTop: 10, marginRight: 14}}
+              onPress={() => navigation.goBack()}>
+              <FastImage source={ICON.Back} style={appStyle.icon} />
+            </TouchableOpacity>
+            <View style={{flex: 1, alignItems: 'center'}}>
+              <Text style={styles.text1}>Xác thực số điện thoại</Text>
+            </View>
+          </View>
+          <Text style={styles.text2}>
+            Bạn sẽ nhận được mã OTP vào số điện thoại{' '}
+            <Text style={appStyle.text16Bold}>{phoneNumber}</Text>. Hãy xác thực
+            ngay!
+          </Text>
 
-      <Text style={styles.text3}>
-        Gửi lại mã sau <Text style={{fontWeight: 'bold'}}>(56s)</Text>{' '}
-      </Text>
+          <Text style={styles.text3}>
+            Gửi lại mã sau <Text style={{fontWeight: 'bold'}}>(56s)</Text>{' '}
+          </Text>
 
-      <OTPInputView
-        style={{width: '80%', height: 200, alignSelf: 'center'}}
-        pinCount={4}
-        // code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
-        // onCodeChanged = {code => { this.setState({code})}}
-        autoFocusOnLoad
-        codeInputFieldStyle={styles.underlineStyleBase}
-        codeInputHighlightStyle={styles.underlineStyleHighLighted}
-        onCodeFilled={code => {
-          console.log(`Code is ${code}, you are good to go!`);
-        }}
-      />
-      <AppButton title="Xác thực số điện thoại" onPress={handleNext} />
+          <OTPInputView
+            style={{width: '80%', height: 200, alignSelf: 'center'}}
+            pinCount={4}
+            // code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
+            // onCodeChanged = {code => { this.setState({code})}}
+            autoFocusOnLoad
+            codeInputFieldStyle={styles.underlineStyleBase}
+            codeInputHighlightStyle={styles.underlineStyleHighLighted}
+            onCodeFilled={code => {
+              console.log(`Code is ${code}, you are good to go!`);
+            }}
+          />
+          <AppButton title="Xác thực số điện thoại" onPress={handleNext} />
+        </>
+      </DismissKeyboard>
     </SafeAreaView>
   );
 };
