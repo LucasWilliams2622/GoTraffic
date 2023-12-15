@@ -26,6 +26,11 @@ const MyWallet = () => {
   const [data, setData] = useState([]);
   const isFocused = useIsFocused();
   const {infoUser, idUser} = useContext(AppContext);
+  const [hideSurplus, setHideSurplus] = useState(true);
+  const handleButtonPress = () => {
+    setHideSurplus(!hideSurplus);
+  };
+
   const getHistoryMoney = async () => {
     try {
       const response = await AxiosInstance().get(
@@ -44,7 +49,7 @@ const MyWallet = () => {
   useEffect(() => {
     getHistoryMoney();
   }, [isFocused]);
-  
+
   return (
     <SafeAreaView style={appStyle.container}>
       <AppHeader title="Ví của tôi" />
@@ -53,11 +58,29 @@ const MyWallet = () => {
           style={styles.imageWallet}
           resizeMode="stretch"
           source={require('../../../../assets/image/bg_wallet.png')}>
-          <TouchableOpacity style={[appStyle.boxCenter, styles.boxSurplus]}>
-            <Text style={appStyle.text14Bold}>TÀI KHOẢN GỐC</Text>
-            <Text style={[appStyle.text18Bold, {marginTop: 6}]}>
-              {numeral(infoUser.surplus).format('0,0')} đ
-            </Text>
+          <TouchableOpacity
+            style={[appStyle.boxCenter, styles.boxSurplus]}
+            onPress={() => handleButtonPress()}>
+            <View style={{width: '8%'}} />
+            <View style={appStyle.boxCenter}>
+              <Text style={appStyle.text14Bold}>TÀI KHOẢN GỐC</Text>
+              <Text style={[appStyle.text18Bold, {marginTop: 6}]}>
+                {hideSurplus
+                  ? '*******'
+                  : numeral(infoUser.surplus).format('0,0')}{' '}
+                đ
+              </Text>
+            </View>
+
+            <Image
+              style={[appStyle.icon, {marginLeft: 10}]}
+              source={
+                !hideSurplus
+                  ? require('../../../../assets/icon/ic_visible.png')
+                  : require('../../../../assets/icon/ic_invisible.png')
+              }
+              resizeMode="stretch"
+            />
           </TouchableOpacity>
           <View
             style={[appStyle.rowBetween, {width: '94%', alignSelf: 'center'}]}>
@@ -103,13 +126,14 @@ const MyWallet = () => {
           </View>
         </ImageBackground>
         <FlatList
-        style={{marginBottom:80}}
+          style={{marginBottom: 80}}
           data={data}
           renderItem={({item}) => <ItemHistoryMoney data={item} />}
           keyExtractor={(item, index) => index.toString()}
           showsVerticalScrollIndicator={false}
           ListFooterComponent={
-            <View style={[appStyle.boxCenter, appStyle.rowCenter,{marginTop:24}]}>
+            <View
+              style={[appStyle.boxCenter, appStyle.rowCenter, {marginTop: 24}]}>
               <Image
                 style={appStyle.logo}
                 source={require('../../../../assets/image/logo_go_traffic.png')}
@@ -130,6 +154,8 @@ export default MyWallet;
 const styles = StyleSheet.create({
   boxSurplus: {
     backgroundColor: 'white',
+    justifyContent: 'space-around',
+    flexDirection: 'row',
     width: '94%',
     alignSelf: 'center',
     paddingVertical: 16,
