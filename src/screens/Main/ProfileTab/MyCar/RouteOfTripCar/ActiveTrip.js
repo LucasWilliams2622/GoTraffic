@@ -26,7 +26,7 @@ const ActiveTrip = () => {
         setData(response.booking);
         setTimeout(() => {
           setLoading(false);
-        }, 2000);
+        }, 1500);
       } else {
         console.log('Failed to get car complete');
       }

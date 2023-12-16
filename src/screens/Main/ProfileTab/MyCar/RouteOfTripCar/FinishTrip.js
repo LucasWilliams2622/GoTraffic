@@ -28,7 +28,7 @@ const FinishTrip = () => {
         setPrice(response.booking.totalRevenue);
         setTimeout(() => {
           setLoading(false);
-        }, 2000);
+        }, 1500);
       } else {
         console.log('Failed to get car complete');
       }

@@ -26,7 +26,7 @@ const DuringTrip = () => {
         console.log(response.booking.status);
         setTimeout(() => {
           setLoading(false);
-        }, 2000);
+        },1500);
       } else {
         console.log('Failed to get car complete');
       }
