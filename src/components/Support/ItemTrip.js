@@ -427,6 +427,7 @@ const ItemTrip = props => {
                   onPress={() => {
                     handleReceived(data.id);
                   }}
+                  icon={ICON.car}
                   title="Đã nhận xe"
                   paddingVertical={10}
                   width="48%"
