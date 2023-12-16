@@ -29,7 +29,7 @@ const Notification = () => {
         setData(response.notification);
         setTimeout(() => {
           setLoading(false);
-        }, 2000);
+        }, 1500);
       } else {
         console.log('NETWORK ERROR');
       }

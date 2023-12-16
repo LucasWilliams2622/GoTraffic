@@ -23,12 +23,14 @@ import {useIsFocused} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import {Dropdown} from 'react-native-element-dropdown';
 import {ScrollView} from 'native-base';
+import SkeletonItemCar from '../../../../components/SkeletonItemCar';
 const ListCar = props => {
   const {navigation, route} = props;
   const updatedCarInfo = route.params?.updatedCarInfo;
   const [carData, setCarData] = useState([]);
   const {setIsLogin, infoUser, idUser} = useContext(AppContext);
   const isFocused = useIsFocused();
+  const [loading, setLoading] = useState(true);
 
   const getCarByIdUser = async () => {
     try {
@@ -37,6 +39,9 @@ const ListCar = props => {
       );
       if (response.result) {
         setCarData(response.listCar);
+        setTimeout(() => {
+          setLoading(false);
+        }, 1500);
       } else {
         console.log('Failed to get car');
       }
@@ -113,30 +118,42 @@ const ListCar = props => {
             getCarByIdUserByStatus(item.value);
           }}
         />
-
-        <FlatList
-          style={{marginBottom: 72}}
-          data={carData}
-          renderItem={({item}) => <ItemCar data={item} />}
-          keyExtractor={(item, index) => index.toString()}
-          showsVerticalScrollIndicator={false}
-          ListEmptyComponent={
-            <View style={{marginTop: 20}}>
-              <FastImage
-                style={styles.imageInvisible}
-                resizeMode={'stretch'}
-                source={require('../../../../assets/image/NoTrip.png')}
-              />
-              <Text
-                style={[
-                  appStyle.text16,
-                  {textAlign: 'center', marginBottom: 10, fontStyle: 'italic'},
-                ]}>
-                Bạn chưa có xe nào !
-              </Text>
-            </View>
-          }
-        />
+        {loading == true ? (
+          <View>
+            <SkeletonItemCar />
+            <SkeletonItemCar />
+            <SkeletonItemCar />
+            <SkeletonItemCar />
+          </View>
+        ) : (
+          <FlatList
+            style={{marginBottom: 72}}
+            data={carData}
+            renderItem={({item}) => <ItemCar data={item} />}
+            keyExtractor={(item, index) => index.toString()}
+            showsVerticalScrollIndicator={false}
+            ListEmptyComponent={
+              <View style={{marginTop: 20}}>
+                <FastImage
+                  style={styles.imageInvisible}
+                  resizeMode={'stretch'}
+                  source={require('../../../../assets/image/NoTrip.png')}
+                />
+                <Text
+                  style={[
+                    appStyle.text16,
+                    {
+                      textAlign: 'center',
+                      marginBottom: 10,
+                      fontStyle: 'italic',
+                    },
+                  ]}>
+                  Bạn chưa có xe nào !
+                </Text>
+              </View>
+            }
+          />
+        )}
       </ScrollView>
     </SafeAreaView>
   );

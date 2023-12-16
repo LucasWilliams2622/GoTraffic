@@ -26,7 +26,7 @@ const HistoryTrip = () => {
         setListBooking(response.booking);
         setTimeout(() => {
           setLoading(false);
-        }, 2000);
+        }, 1500);
       } else {
         console.log('NETWORK ERROR');
       }
