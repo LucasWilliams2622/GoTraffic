@@ -25,8 +25,8 @@ import OTPInputView from '@twotalltotems/react-native-otp-input';
 import DismissKeyboard from '../../components/DismissKeyboard';
 
 const EmailCheck = props => {
-  const {phoneNumber, nameUser, password} = props.route.params;
-  console.log(phoneNumber, nameUser, password);
+  const { name, password, phone } = props.route.params;
+  console.log(name, password, phone);
   const navigation = useNavigation();
   const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -35,22 +35,93 @@ const EmailCheck = props => {
       .required('Email không được để trống'),
   });
   const [checkEnable, setCheckEnable] = useState(false);
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [forgotEmail, setForgotEmail] = useState('');
+  const [verifyCode, setVerifyCode] = useState('');
+
+  //API VERIFIED EMAIL
+  const handleEmailChange = (email) => {
+    setForgotEmail(email);
+    const formatEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (!formatEmail.test(email)) {
+      setEmailError('Email không hợp lệ');
+    } else {
+      setEmailError('');
+    }
+  };
+  const handleVerifyEmail = async () => {
+    try {
+      console.log('>>>>>>>>>>>>>>>', forgotEmail);
+      const checkEmail = await axios.post(
+        'http://103.57.129.166:3000/user/api/check-email',
+        {
+          email: forgotEmail,
+        },
+      );
+      if (checkEmail.status === 200) {
+        showToastMessage('error', 'Email đã tồn tại')
+      } else if (checkEmail.status === 201) {
+        onRegister(name, phone, forgotEmail, password);
+        console.log(">>>>>>>>>Email chưa tồn tại");
+        const responseCode = await axios.post(`http://103.57.129.166:3000/user/api/send-verification-code?email=${forgotEmail}`)
+        console.log('>>>>>>>>>', responseCode.data.message);
+       
+      } else {
+        showToastMessage('error', 'Lỗi gửi mã!')
+      }
+
+    } catch (error) {
+      console.log(e);
+    }
+  }
+  const handleEmailCheck = () => {
+    if (!emailError && forgotEmail.trim() !== '') {
+      handleVerifyEmail();
+    } else {
+      setEmailError('Email không được để trống');
+    }
+  };
+
+  //API VERIFIED CODE
+  const handleVerifyCode = async () => {
+    try {
+      const response = await axios.post(
+        'http://103.57.129.166:3000/user/api/verify-email',
+        {
+          email: forgotEmail,
+          verifyCode: verifyCode,
+        },
+      );
+  
+      if (response.data.result) {
+        showToastMessage('', 'Xác thực thành công');
+        navigation.navigate('Login');
+      } else {
+        showToastMessage('error', 'Xác thực thất bại');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
+
   //API REGISTER
-  const onRegister = async (nameUser, phoneNumber, email, password) => {
+  const onRegister = async (name, phone, forgotEmail, password) => {
     try {
       const response = await axios.post(
         'http://103.57.129.166:3000/user/api/register',
         {
-          email: email,
-          phone: phoneNumber.toString(),
+          name: name,
+          phone: phone,
+          email: forgotEmail,
           password: password,
-          name: nameUser,
         },
       );
       console.log(response.data);
       if (response.data.result) {
         showToastMessage('', 'Đăng kí thành công');
-        navigation.navigate('Login');
+        //navigation.navigate('Login');
       } else {
         showToastMessage('error', 'Đăng kí thất bại');
       }
@@ -86,135 +157,60 @@ const EmailCheck = props => {
 
   return (
     <SafeAreaView style={appStyle.container}>
-      <DismissKeyboard>
-        <Formik
-          initialValues={{
-            email: '',
-          }}
-          validationSchema={validationSchema}
-          onSubmit={values => {
-            console.log(values);
-            onRegister(nameUser, phoneNumber, values.email, password);
-          }}>
-          {({
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            values,
-            errors,
-            touched,
-          }) => (
-            <View style={[styles.main]}>
-              <KeyboardAvoidingView behavior="padding" style={{height: '100%'}}>
-                <TouchableOpacity
-                  style={{marginVertical: 20, marginLeft: 8}}
-                  onPress={() => navigation.goBack()}>
-                  <FastImage source={ICON.Back} style={appStyle.iconBig} />
-                </TouchableOpacity>
 
-                <View style={{paddingHorizontal: 14}}>
-                  <Text style={[appStyle.text24Bold, {color: COLOR.fifth}]}>
-                    Xác thực email để bảo vệ tài khoản của bạn
-                  </Text>
-                  <View style={styles.viewItem}>
-                    {/* <Text style={styles.text2}>Email</Text> */}
-                    <AppInput
-                      returnKeyType={'next'}
-                      placeholder={'Nhập email của bạn'}
-                      onChangeText={handleChange('email')}
-                      onBlur={handleBlur('email')}
-                      value={values.email}
-                    />
-                  </View>
-                  {touched.email && errors.email && (
-                    <Text style={styles.textError}>{errors.email}</Text>
-                  )}
-                  {/* <View>
-                <Text
-                  style={[appStyle.text14, { marginTop: 20, lineHeight: 16 }]}>
-                  Bạn có thể bỏ qua bước xác thực email và sau này có thể vào
-                  mục cá nhân để xác thực sau! Còn nếu bạn muốn xác thực email
-                  ngay vui lòng bấm{' '}
-                  <Text
-                    onPress={() => {
-                      setCheckEnable(true);
-                    }}
-                    style={[
-                      appStyle.text14Bold,
-                      { color: COLOR.fifth, lineHeight: 20 },
-                    ]}>
-                    Gửi mã ngay
-                  </Text>
-                </Text>
-              </View> */}
-                  {/* {checkEnable == true ? (
-                  <OTPInputView
-                    style={{ width: '80%', height: 200, alignSelf: 'center' }}
-                    pinCount={4}
-                    autoFocusOnLoad
-                    codeInputFieldStyle={styles.underlineStyleBase}
-                    codeInputHighlightStyle={styles.underlineStyleHighLighted}
-                    onCodeFilled={code => {
-                      console.log(`Code is ${code}, you are good to go!`);
-                    }}
-                  />
-                ) : null} */}
+      <View style={[styles.main]}>
+        <TouchableOpacity
+          style={{ marginVertical: 20, marginLeft: 8 }}
+          onPress={() => navigation.goBack()}>
+          <FastImage source={ICON.Back} style={appStyle.iconBig} />
+        </TouchableOpacity>
 
-                  <AppButton
-                    title="Nhận mã"
-                    color={COLOR.secondary}
-                    fontSize={16}
-                    onPress={handleSubmit}
-                    marginTop={5}
-                  />
-                  <View style={styles.inputCode}>
-                    <TextInput
-                      placeholder="Nhập mã"
-                      style={styles.code}></TextInput>
-                    <TouchableOpacity style={styles.btnCode}>
-                      <Text
-                        style={[
-                          appStyle.text165,
-                          {alignSelf: 'center', color: 'white'},
-                        ]}>
-                        Xác nhận
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
+        <KeyboardAvoidingView behavior="padding" >
+          <View style={{ paddingHorizontal: 14 }}>
+            <Text style={[appStyle.text24Bold, { color: COLOR.fifth }]}>Xác thực email để bảo vệ tài khoản của bạn</Text>
+            <View style={styles.viewItem}>
 
-                {showBottom && (
-                  <Svg
-                    style={{
-                      flex: 1,
-                      position: 'absolute',
-                      bottom: 0,
-                      zIndex: -1,
-                    }}
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="420"
-                    height="186"
-                    viewBox="0 0 393 186"
-                    fill="none">
-                    <Path
-                      d="M35.5544 0L-15 98.7526V186H450V68.0722L396.442 20.134L307.347 68.0722L256.792 0L218.251 52.732L171.2 20.134L124.65 41.2268L35.5544 0Z"
-                      fill="#90C9E6"
-                    />
-                    <Path
-                      d="M-27.0323 44L-79 114.613V177H399V92.6753L343.945 58.3969L252.358 92.6753L200.391 44L160.772 81.7062L112.406 58.3969L64.5544 73.4794L-27.0323 44Z"
-                      fill="#219EBC"
-                    />
-                    <Path
-                      d="M54.5985 89L-27.5 157L-34 186H494V124.5L437.217 99.5L342.757 124.5L289.158 89L248.296 116.5L198.412 99.5L149.059 110.5L54.5985 89Z"
-                      fill="#023047"
-                    />
-                  </Svg>
-                )}
-              </KeyboardAvoidingView>
+              <AppInput
+                placeholder={'Nhập email của tài khoản'}
+                onChangeText={handleEmailChange}
+                value={forgotEmail}
+              />
+              {emailError ? (
+                <Text style={[styles.textError, { marginTop: 10 }]}>{emailError}</Text>
+              ) : null}
             </View>
-          )}
-        </Formik>
-      </DismissKeyboard>
+
+            <AppButton
+              title="Nhận mã"
+              color={COLOR.secondary}
+              fontSize={16}
+              onPress={handleEmailCheck}
+              marginTop={5}
+            />
+          </View>
+        </KeyboardAvoidingView>
+
+        <View style={styles.inputCode}>
+          <TextInput
+            placeholder='Nhập mã'
+            style={styles.code}
+            onChangeText={(code) => setVerifyCode(code)}
+          >
+
+          </TextInput>
+          <TouchableOpacity style={styles.btnCode} onPress={()=>handleVerifyCode()}>
+            <Text style={[appStyle.text165, { alignSelf: 'center', color: 'white' }]}>Xác nhận</Text>
+          </TouchableOpacity>
+        </View>
+        {showBottom && (
+          <Svg style={{ flex: 1, position: 'absolute', bottom: 0, zIndex: -1 }} xmlns="http://www.w3.org/2000/svg" width="420" height="186" viewBox="0 0 393 186" fill="none">
+            <Path d="M35.5544 0L-15 98.7526V186H450V68.0722L396.442 20.134L307.347 68.0722L256.792 0L218.251 52.732L171.2 20.134L124.65 41.2268L35.5544 0Z" fill="#90C9E6" />
+            <Path d="M-27.0323 44L-79 114.613V177H399V92.6753L343.945 58.3969L252.358 92.6753L200.391 44L160.772 81.7062L112.406 58.3969L64.5544 73.4794L-27.0323 44Z" fill="#219EBC" />
+            <Path d="M54.5985 89L-27.5 157L-34 186H494V124.5L437.217 99.5L342.757 124.5L289.158 89L248.296 116.5L198.412 99.5L149.059 110.5L54.5985 89Z" fill="#023047" />
+          </Svg>
+        )}
+      </View>
+
     </SafeAreaView>
   );
 };
@@ -280,10 +276,11 @@ const styles = StyleSheet.create({
     // paddingHorizontal: 14,
   },
   inputCode: {
-    width: '100%',
+    width: '93%',
     height: windowHeight * 0.07,
     borderRadius: 6,
     marginTop: 15,
+    marginHorizontal: 14,
     borderWidth: 0.8,
     borderColor: COLOR.borderColor,
     flexDirection: 'row',

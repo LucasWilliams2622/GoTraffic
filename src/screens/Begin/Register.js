@@ -1,18 +1,18 @@
-import {Keyboard, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useState, useEffect} from 'react';
-import {Svg, Path, Rect} from 'react-native-svg';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {appStyle, windowWidth} from '../../constants/AppStyle';
+import { Keyboard, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Svg, Path, Rect } from 'react-native-svg';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { appStyle, windowWidth } from '../../constants/AppStyle';
 import AppInput from '../../components/AppInput';
 import AppButton from '../../components/AppButton';
-import {COLOR, ICON} from '../../constants/Theme';
+import { COLOR, ICON } from '../../constants/Theme';
 import FastImage from 'react-native-fast-image';
 import * as Yup from 'yup';
-import {Formik} from 'formik';
-import {KeyboardAvoidingView} from 'native-base';
-import {useNavigation} from '@react-navigation/native';
-import {showToastMessage} from '../../utils/utils';
-import {MotiView, MotiText} from 'moti';
+import { Formik } from 'formik';
+import { KeyboardAvoidingView } from 'native-base';
+import { useNavigation } from '@react-navigation/native';
+import { showToastMessage } from '../../utils/utils';
+import { MotiView, MotiText } from 'moti';
 import axios from 'axios';
 import DismissKeyboard from '../../components/DismissKeyboard';
 
@@ -49,9 +49,14 @@ const Register = props => {
         showToastMessage('error', 'Số điện thoại đã tồn tại');
       } else {
         if (values.password === values.rePassword) {
+          console.log({
+            phone: values.phoneNumber,
+            name: values.name,
+            password: values.password
+          });
           navigation.navigate('EmailCheck', {
-            phoneNumber: values.phoneNumber,
-            nameUser: values.name,
+            phone: values.phoneNumber,
+            name: values.name,
             password: values.password,
           });
         } else {
@@ -130,7 +135,7 @@ const Register = props => {
             <View
               style={[
                 appStyle.main,
-                {flex: 1, backgroundColor: '#023047', paddingHorizontal: 0},
+                { flex: 1, backgroundColor: '#023047', paddingHorizontal: 0 },
               ]}>
               <Svg
                 style={{
@@ -158,8 +163,8 @@ const Register = props => {
               </Svg>
               <KeyboardAvoidingView
                 behavior="padding"
-                style={{height: '100%', marginTop: 20}}>
-                <View style={{paddingHorizontal: 14}}>
+                style={{ height: '100%', marginTop: 20 }}>
+                <View style={{ paddingHorizontal: 14 }}>
                   <View
                     style={{
                       flexDirection: 'row',
@@ -167,7 +172,7 @@ const Register = props => {
                       marginBottom: 20,
                     }}>
                     <TouchableOpacity
-                      style={{marginTop: 10, marginRight: 14}}
+                      style={{ marginTop: 10, marginRight: 14 }}
                       onPress={() => navigation.goBack()}>
                       <FastImage
                         source={ICON.Back}
@@ -175,7 +180,7 @@ const Register = props => {
                         style={appStyle.icon}
                       />
                     </TouchableOpacity>
-                    <View style={{flex: 1, alignItems: 'center'}}>
+                    <View style={{ flex: 1, alignItems: 'center' }}>
                       <FastImage
                         source={require('../../assets/image/logo_go_traffic.png')}
                         style={styles.image}
@@ -185,7 +190,7 @@ const Register = props => {
                     </View>
                   </View>
 
-                  <View style={{marginTop: 30}}>
+                  <View style={{ marginTop: 30 }}>
                     <View style={styles.viewItem}>
                       {/* <Text style={styles.text2}>Tên hiện thị</Text> */}
                       <AppInput
@@ -271,7 +276,7 @@ const Register = props => {
                 </View>
                 {showBottom && (
                   <Svg
-                    style={{position: 'absolute', bottom: 20, flex: 1}}
+                    style={{ position: 'absolute', bottom: 20, flex: 1 }}
                     xmlns="http://www.w3.org/2000/svg"
                     width="420"
                     height="186"
