@@ -10,14 +10,17 @@ const AppButton = ({
   backgroundColor = COLOR.bgButton,
   textColor = 'white',
   borderColor,
+  borderWidth = 1,
   width = '100%',
   onPress,
   alignSelf = 'center',
   disabled,
-  fontSize = 16,
+  fontSize = 14,
   noShadow,
   iconColor,
   icon,
+  paddingVertical = 12,
+  marginTop,
   iconSize = 16,
 }: AppButtonProps) => {
   return (
@@ -27,9 +30,12 @@ const AppButton = ({
         {
           backgroundColor: backgroundColor,
           width: width,
-          alignSelf: alignSelf,
           borderColor: borderColor == null ? COLOR.primary : borderColor,
           elevation: noShadow == null ? 3 : 0,
+          alignSelf: alignSelf,
+          paddingVertical: paddingVertical,
+          borderWidth: borderWidth,
+          marginTop: marginTop,
         },
         containerStyle,
       ]}
@@ -44,6 +50,7 @@ const AppButton = ({
             height: 16,
             marginRight: 8,
           }}
+          resizeMode="stretch"
           source={icon}
           tintColor={iconColor == null ? 'white' : iconColor}
         />
@@ -70,6 +77,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLOR.bgButton,
     borderRadius: 8,
     paddingVertical: 14,
+    justifyContent: 'center',
+    flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
 
@@ -84,7 +93,8 @@ const styles = StyleSheet.create({
   titleButton: {
     fontSize: 14,
     color: COLOR.titleButton,
-    fontWeight: '500',
+    fontWeight: '600',
     alignSelf: 'center',
+    marginLeft: 4,
   },
 });

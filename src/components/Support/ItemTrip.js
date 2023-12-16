@@ -414,6 +414,7 @@ const ItemTrip = props => {
                     handleCancle(data.id);
                   }}
                   title="Hủy chuyến"
+                  icon={ICON.closecircle}
                   backgroundColor={COLOR.red}
                   width="48%"
                   paddingVertical={10}
@@ -452,6 +453,8 @@ const ItemTrip = props => {
                   paddingVertical={10}
                   width="48%"
                   borderRadius={20}
+                  tintColor={'white'}
+                  icon={ICON.like1}
                   noShadow
                   backgroundColor={COLOR.lightGreen}
                   borderColor={COLOR.lightGreen}

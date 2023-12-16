@@ -230,6 +230,8 @@ const ItemActiveTrip = props => {
           {checkBtn == false ? (
             <AppButton
               title="Giao xe"
+              icon={ICON.car}
+
               onPress={() => handleDeliveryCar(data.id)}
             />
           ) : null}

@@ -90,7 +90,7 @@ const ItemDuringTrip = props => {
               }}
             />
             <Text style={[appStyle.text12, {}]}>
-              SĐT: 
+              SĐT:
               <Text style={[appStyle.text12, {fontWeight: 500}]}>
                 {' '}
                 {data.User.phone}
@@ -225,6 +225,7 @@ const ItemDuringTrip = props => {
           </Text>
           {data.status == 5 ? (
             <AppButton
+              icon={ICON.car2}
               title="Đã nhận xe"
               onPress={() => handleCompelete(data.id)}
             />

@@ -7,8 +7,11 @@ export type AppButtonProps = {
   backgroundColor?: string;
   textColor?: string;
   borderColor?: string;
+  borderWidth?: any;
   width?: string;
   fontSize?: number;
+  paddingVertical?: any;
+  marginTop?: number;
   alignSelf?:
     | 'center'
     | 'flex-end'

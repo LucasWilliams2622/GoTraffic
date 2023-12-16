@@ -23,7 +23,6 @@ import Account from '../screens/Main/ProfileTab/Account/Account';
 import Register from '../screens/Begin/Register';
 import Verified from '../screens/Begin/Verified';
 import EmailCheck from '../screens/Begin/EmailCheck';
-import MyCard from '../screens/Main/ProfileTab/Payment/MyCard';
 import LocationPicking from '../screens/Main/HomeTab/LocationPicking';
 import NewCard from '../screens/Main/ProfileTab/Payment/NewCard';
 import CarDetail from '../screens/Main/HomeTab/CarDetail';
@@ -181,7 +180,6 @@ const StackProfile = () => {
       <Stack.Screen name="ChangePassword" component={ChangePassword} />
       <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
       <Stack.Screen name="NewAddress" component={NewAddress} />
-      <Stack.Screen name="MyCard" component={MyCard} />
       <Stack.Screen name="NewCard" component={NewCard} />
       <Stack.Screen name="BasicInfor" component={BasicInfor} />
       <Stack.Screen name="DetailsInfor" component={DetailsInfor} />

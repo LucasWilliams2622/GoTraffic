@@ -89,7 +89,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    marginTop: 25,
+    marginBottom: 14,
+    marginTop: 4,
   },
   carContainer: {
     width: '90%',

@@ -129,5 +129,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderWidth: 2,
     borderColor: COLOR.primary,
+    marginBottom:16,
+    marginTop:8
   },
 });

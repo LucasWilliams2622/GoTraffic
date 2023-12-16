@@ -1,11 +1,4 @@
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  FlatList,
-} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, View, FlatList} from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import {COLOR, ICON} from '../../../../constants/Theme';
 import {
@@ -13,8 +6,7 @@ import {
   windowHeight,
   windowWidth,
 } from '../../../../constants/AppStyle';
-import TopNav from '../../../../components/TopNav';
-import {Car} from '../../../../components/Profile/data/DataCar';
+
 import ItemCar from '../../../../components/Profile/ItemCar';
 import AxiosInstance from '../../../../constants/AxiosInstance';
 import {AppContext} from '../../../../utils/AppContext';
@@ -24,11 +16,18 @@ import FastImage from 'react-native-fast-image';
 import {Dropdown} from 'react-native-element-dropdown';
 import {ScrollView} from 'native-base';
 import SkeletonItemCar from '../../../../components/SkeletonItemCar';
+const data = [
+  {label: 'Tất cả', value: '0'},
+  {label: 'Chưa duyệt', value: '1'},
+  {label: 'Đã duyệt', value: '2'},
+  {label: 'Từ chối', value: '3'},
+];
+
 const ListCar = props => {
   const {navigation, route} = props;
   const updatedCarInfo = route.params?.updatedCarInfo;
   const [carData, setCarData] = useState([]);
-  const {setIsLogin, infoUser, idUser} = useContext(AppContext);
+  const {idUser} = useContext(AppContext);
   const isFocused = useIsFocused();
   const [loading, setLoading] = useState(true);
 
@@ -66,23 +65,9 @@ const ListCar = props => {
       setCarData([]);
     }
   };
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState(data[0].value);
   const [isFocus, setIsFocus] = useState(false);
-  const data = [
-    {label: 'Chưa duyệt', value: '1'},
-    {label: 'Đã duyệt', value: '2'},
-    {label: 'Từ chối', value: '3'},
-  ];
-  const renderLabel = () => {
-    if (value || isFocus) {
-      return (
-        <Text style={[styles.label, isFocus && {color: 'blue'}]}>
-          Dropdown label
-        </Text>
-      );
-    }
-    return null;
-  };
+
   useEffect(() => {
     getCarByIdUser();
   }, [isFocused]);
@@ -94,7 +79,7 @@ const ListCar = props => {
         icon={ICON.Add}
         onPressRight={() => navigation.navigate('BasicInfor')}
       />
-      <ScrollView>
+      <ScrollView style={{}}>
         <Dropdown
           style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
           placeholderStyle={appStyle.text165}
@@ -103,7 +88,16 @@ const ListCar = props => {
           iconStyle={styles.iconStyle}
           data={data}
           search
-          maxHeight={300}
+          mode="modal"
+          containerStyle={{
+            width: windowWidth,
+            marginTop: windowHeight * 0.5,
+            height: windowHeight * 0.5,
+            borderTopRightRadius: 20,
+            borderTopLeftRadius: 20,
+            paddingTop: 16,
+            paddingHorizontal: 8,
+          }}
           labelField="label"
           valueField="value"
           placeholder={!isFocus ? 'Tìm xe' : '...'}
@@ -118,6 +112,20 @@ const ListCar = props => {
             getCarByIdUserByStatus(item.value);
           }}
         />
+        <Text
+          style={[
+            appStyle.text145,
+            {paddingHorizontal: 20, paddingVertical: 8},
+          ]}>
+          Số lượng xe: {carData.length}{' '}
+          {/* {value == 1
+            ? 'chưa duyệt'
+            : value == 2
+            ? 'đã duyệt'
+            : value == 3
+            ? 'từ chối'
+            : ''} */}
+        </Text>
         {loading == true ? (
           <View>
             <SkeletonItemCar />
@@ -126,33 +134,35 @@ const ListCar = props => {
             <SkeletonItemCar />
           </View>
         ) : (
-          <FlatList
-            style={{marginBottom: 72}}
-            data={carData}
-            renderItem={({item}) => <ItemCar data={item} />}
-            keyExtractor={(item, index) => index.toString()}
-            showsVerticalScrollIndicator={false}
-            ListEmptyComponent={
-              <View style={{marginTop: 20}}>
-                <FastImage
-                  style={styles.imageInvisible}
-                  resizeMode={'stretch'}
-                  source={require('../../../../assets/image/NoTrip.png')}
-                />
-                <Text
-                  style={[
-                    appStyle.text16,
-                    {
-                      textAlign: 'center',
-                      marginBottom: 10,
-                      fontStyle: 'italic',
-                    },
-                  ]}>
-                  Bạn chưa có xe nào !
-                </Text>
-              </View>
-            }
-          />
+          <>
+            <FlatList
+              style={{marginBottom: 72, }}
+              data={carData}
+              renderItem={({item}) => <ItemCar data={item} />}
+              keyExtractor={(item, index) => index.toString()}
+              showsVerticalScrollIndicator={false}
+              ListEmptyComponent={
+                <View style={{marginTop: 20}}>
+                  <FastImage
+                    style={styles.imageInvisible}
+                    resizeMode={'stretch'}
+                    source={require('../../../../assets/image/NoTrip.png')}
+                  />
+                  <Text
+                    style={[
+                      appStyle.text16,
+                      {
+                        textAlign: 'center',
+                        marginBottom: 10,
+                        fontStyle: 'italic',
+                      },
+                    ]}>
+                    Bạn chưa có xe nào !
+                  </Text>
+                </View>
+              }
+            />
+          </>
         )}
       </ScrollView>
     </SafeAreaView>
@@ -176,7 +186,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     backgroundColor: COLOR.white,
     marginTop: 10,
-    marginHorizontal: 20,
+    marginHorizontal: 14,
   },
   icon: {
     marginRight: 5,

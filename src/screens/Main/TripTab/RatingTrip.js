@@ -14,6 +14,7 @@ import {AppContext} from '../../../utils/AppContext';
 import Toast from 'react-native-toast-message';
 import {showToastMessage} from '../../../utils/utils';
 import axios from 'axios';
+import moment from 'moment';
 
 const RatingTrip = props => {
   const {id} = props?.route?.params;
@@ -24,14 +25,16 @@ const RatingTrip = props => {
 
   const sendFeedback = async () => {
     try {
-      if  (selectedStars < 1) {
-        showToastMessage('error', 'Số sao thấp nhất là 1');
+      if (selectedStars < 1) {
+        showToastMessage('error', 'Vui lòng chọn số sao');
       } else {
+        console.log(comment);
         const response = await axios.post(
           'http://103.57.129.166:3000/review/api/add',
           {
             idBooking: id,
-            content: comment,
+            timeReview: moment().format('YYYY/MM/DD:hh:mm:ss'),
+            content: comment ? comment : '',
             rating: selectedStars,
           },
         );
@@ -73,67 +76,79 @@ const RatingTrip = props => {
   }, []);
 
   return (
-    <SafeAreaView style={appStyle.container}>
+    <SafeAreaView style={[appStyle.container, {marginBottom: 72}]}>
       <Header
         text="Đánh giá chuyến đi"
         icon={ICON.Close}
         onPress={() => navigation.goBack()}
       />
-      <KeyboardAwareScrollView behavior="padding">
-        <View style={{flex: 1, paddingHorizontal: 15}}>
-          <FastImage
-            source={require('../../../assets/image/guide/img_friends.png')}
-            style={[appStyle.avatar, {marginVertical: 15}]}
-          />
+      <KeyboardAwareScrollView
+        style={appStyle.main}
+        shouldRasterizeIOS
+        showsVerticalScrollIndicator={false}>
+        <FastImage
+          source={require('../../../assets/image/guide/img_friends.png')}
+          style={[appStyle.avatar, {marginVertical: 15}]}
+        />
 
-          <View
-            style={{
-              alignItems: 'center',
-              height: windowHeight * 0.15,
-              justifyContent: 'space-evenly',
-            }}>
-            <Text style={[appStyle.text18Bold]}>Tên chủ xe</Text>
-            <Text style={[appStyle.text20Bold]}>
-              Đánh giá dịch vụ cho thuê của chủ xe
-            </Text>
-            <Text style={[appStyle.text16]}>
-              Bạn thấy dịch vụ này như thế nào?
-            </Text>
-          </View>
+        <View
+          style={{
+            alignItems: 'center',
+            height: windowHeight * 0.15,
+            justifyContent: 'space-evenly',
+          }}>
+          <Text style={[appStyle.text18Bold]}>Tên chủ xe</Text>
+          <Text style={[appStyle.text20Bold]}>
+            Đánh giá dịch vụ cho thuê của chủ xe
+          </Text>
+          <Text style={[appStyle.text16]}>
+            Bạn thấy dịch vụ này như thế nào?
+          </Text>
+        </View>
 
-          <View
-            style={{
-              width: windowWidth * 0.7,
-              alignSelf: 'center',
-              marginTop: 20,
-            }}>
-            <StarRating
-              disabled={false}
-              maxStars={5}
-              rating={selectedStars}
-              fullStar={ICON.Star}
-              emptyStar={ICON.UnStar}
-              starSize={34}
-              selectedStar={rating => {
-                setSelectedStars(rating);
-                console.log(rating);
-              }}
-            />
-          </View>
-
-          <TextInput
-            onChangeText={text => setComment(text)}
-            value={comment}
-            style={[styles.input, {height: 130, textAlignVertical: 'top'}]}
-            placeholder="Viết đánh giá"></TextInput>
-
-          <AppButton
-            title="Đánh giá"
-            marginTop={30}
-            onPress={() => sendFeedback()}
+        <View
+          style={{
+            width: windowWidth * 0.7,
+            alignSelf: 'center',
+            marginTop: 20,
+          }}>
+          <StarRating
+            disabled={false}
+            maxStars={5}
+            rating={selectedStars}
+            // fullStar={ICON.Star}
+            // emptyStar={ICON.UnStar}
+            fullStar={ICON.star}
+            emptyStar={ICON.staro}
+            starSize={34}
+            selectedStar={rating => {
+              setSelectedStars(rating);
+              console.log(rating);
+            }}
+            animation="bounce"
           />
         </View>
+
+        <TextInput
+          onChangeText={text => setComment(text)}
+          multiline
+          value={comment}
+          style={[
+            styles.input,
+            {
+              height: windowHeight * 0.25,
+              textAlignVertical: 'top',
+              width: '100%',
+            },
+          ]}
+          placeholder="Viết đánh giá"></TextInput>
       </KeyboardAwareScrollView>
+      <AppButton
+        title="Đánh giá"
+        width="94%"
+        onPress={() => sendFeedback()}
+        icon={ICON.star}
+      />
     </SafeAreaView>
   );
 };

@@ -210,7 +210,7 @@ const UpdateProfile = props => {
                   />
                 </View>
 
-                <AppButton marginTop={30} title="Lưu" onPress={handleSubmit} />
+                <AppButton marginTop={30} title="Lưu" onPress={handleSubmit}/>
               </>
             )}
           </Formik>
