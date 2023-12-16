@@ -55,28 +55,24 @@ const FinishTrip = () => {
         </View>
       ) : (
         <ScrollView style={appStyle.container}>
-          <View
-            style={{
-              margin: 20,
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-              marginBottom: 10,
-            }}>
-            <Text style={[appStyle.text14]}>Tổng số chuyến hoàn thành: </Text>
-            <Text style={[appStyle.text14Bold, {color: COLOR.primary}]}>
-              {data.length} chuyến
+          <View style={[appStyle.boxCenter, styles.boxTotal]}>
+            <Text style={[appStyle.text12Bold, {textTransform: 'uppercase'}]}>
+              Tổng doanh thu
             </Text>
-          </View>
-          <View
-            style={{
-              margin: 20,
-              marginTop: 0,
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-            }}>
-            <Text style={[appStyle.text14]}>Tổng doanh thu: </Text>
-            <Text style={[appStyle.text14Bold, {color: COLOR.primary}]}>
-              {formatPrice(price)}
+            <Text
+              style={[
+                appStyle.text16Bold,
+                {color: COLOR.primary, marginTop: 4},
+              ]}>
+              {formatPrice(price)} / {data.length}{' '}
+              <Text
+                style={[
+                  appStyle.text12Medium,
+                  {color: COLOR.primary, fontStyle: 'italic'},
+                ]}>
+                {' '}
+                chuyến
+              </Text>
             </Text>
           </View>
 
@@ -123,5 +119,15 @@ const styles = StyleSheet.create({
     height: 138,
     alignSelf: 'center',
     marginBottom: 20,
+  },
+  boxTotal: {
+    width: '100%',
+    alignSelf: 'center',
+    backgroundColor: COLOR.sixth,
+    opacity: 0.8,
+    borderRadius: 16,
+    paddingVertical: 8,
+    borderWidth: 2,
+    borderColor: COLOR.primary,
   },
 });

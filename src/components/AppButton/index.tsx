@@ -14,7 +14,7 @@ const AppButton = ({
   onPress,
   alignSelf = 'center',
   disabled,
-  fontSize = 14,
+  fontSize = 16,
   noShadow,
   iconColor,
   icon,
@@ -28,7 +28,7 @@ const AppButton = ({
           backgroundColor: backgroundColor,
           width: width,
           alignSelf: alignSelf,
-          borderColor: borderColor == null ? '#2F6C8D' : borderColor,
+          borderColor: borderColor == null ? COLOR.primary : borderColor,
           elevation: noShadow == null ? 3 : 0,
         },
         containerStyle,
@@ -84,6 +84,7 @@ const styles = StyleSheet.create({
   titleButton: {
     fontSize: 14,
     color: COLOR.titleButton,
+    fontWeight: '500',
     alignSelf: 'center',
   },
 });

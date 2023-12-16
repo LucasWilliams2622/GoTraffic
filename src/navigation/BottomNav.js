@@ -118,7 +118,6 @@ const StackHome = () => {
 };
 
 const StackNotification = () => {
-  
   return (
     <Stack.Navigator
       initialRouteName="Notification"
@@ -225,10 +224,7 @@ const Main = () => {
           } else if (route.name === 'StackNotification') {
             // ... Các thiết lập khác
             return (
-              <Animatable.View
-                animation="zoomIn"
-                duration={2000}
-                style={[{flex: 1, alignItems: 'center', marginTop: 10}]}>
+              <View style={[{flex: 1, alignItems: 'center', marginTop: 10}]}>
                 <Image
                   source={
                     (iconName = focused
@@ -264,7 +260,7 @@ const Main = () => {
                   ]}>
                   Thông báo
                 </Text>
-              </Animatable.View>
+              </View>
             );
           } else if (route.name === 'StackTrip') {
             iconName = focused ? ICON.TripFocus : ICON.Trip;
@@ -284,9 +280,7 @@ const Main = () => {
                 alignItems: 'center',
                 marginTop: 10,
               }}>
-              <Animatable.View animation="zoomIn" duration={2000}>
-                {}
-
+              <View>
                 <Image
                   source={iconName}
                   style={{
@@ -297,7 +291,7 @@ const Main = () => {
                     tintColor: focused ? COLOR.focus : COLOR.notFocus,
                   }}
                 />
-              </Animatable.View>
+              </View>
               <Text
                 style={{
                   fontSize: 10,

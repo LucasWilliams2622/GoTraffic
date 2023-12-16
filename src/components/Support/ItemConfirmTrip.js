@@ -3,11 +3,13 @@ import React, {useState} from 'react';
 import FastImage from 'react-native-fast-image';
 import {COLOR, ICON} from '../../constants/Theme';
 import {Code} from 'native-base';
-import {appStyle} from '../../constants/AppStyle';
+import {appStyle, windowHeight} from '../../constants/AppStyle';
 import AxiosInstance from '../../constants/AxiosInstance';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Moment from 'moment';
-import {formatPrice} from '../../utils/utils';
+import {formatPrice, squareImageSize} from '../../utils/utils';
+import AppButton from '../AppButton';
+import {color} from 'react-native-elements/dist/helpers';
 const ItemConfirmTrip = props => {
   const {data, handleDelete, handleConfirm} = props;
   const isImageUrlValid = /^https?:\/\/.*\.(png|jpg)$/i.test(
@@ -18,57 +20,58 @@ const ItemConfirmTrip = props => {
     setOpenDetail(!openDetail);
   };
   return (
-    <TouchableOpacity onPress={() => checkStatus()}>
+    <>
       {openDetail == false ? (
-        <View style={styles.container}>
-          <View style={[{justifyContent: 'center'}]}>
-            {!isImageUrlValid ? (
-              <FastImage
-                style={styles.image}
-                resizeMode="stretch"
-                source={require('../../assets/image/bgCar.jpg')}
-              />
-            ) : (
-              <FastImage
-                style={styles.image}
-                resizeMode={'stretch'}
-                source={{uri: data.Car.imageThumbnail}}
-              />
-            )}
-          </View>
+        <TouchableOpacity
+          onPress={() => checkStatus()}
+          style={[styles.container, {}]}>
+          {!isImageUrlValid ? (
+            <FastImage
+              style={styles.image}
+              resizeMode="stretch"
+              source={require('../../assets/image/bgCar.jpg')}
+            />
+          ) : (
+            <FastImage
+              style={styles.image}
+              resizeMode={'stretch'}
+              source={{uri: data.Car.imageThumbnail}}
+            />
+          )}
+
           <View style={[styles.statusContainer, {backgroundColor: '#FFB703'}]}>
             <Text style={styles.statusText}>Chờ duyệt</Text>
           </View>
+
           <View
             style={{
               justifyContent: 'space-between',
               marginLeft: 10,
+              flex: 1,
             }}>
-            <View style={{flexDirection: 'row'}}>
-              <Text
-                style={[appStyle.text16Bold, {width: '60%'}]}
-                numberOfLines={1}>
+            <View style={appStyle.rowBetween}>
+              <Text style={[appStyle.text16Bold, {width:'65%'}]} numberOfLines={1}>
                 {data.Car.name}
               </Text>
-              <View style={{flexDirection: 'row', margin: 5}}>
+              <View style={appStyle.rowCenter}>
                 <FastImage
                   style={appStyle.iconSmall}
                   source={ICON.SteeringWheel}
                   tintColor={COLOR.primary}
                 />
-                <Text style={[appStyle.text10, {marginLeft: 5, marginTop: -2}]}>
+                <Text style={[appStyle.text10, {marginLeft: 4, }]}>
                   {data.Car.isDelivery ? 'Tự lái' : 'Xe có tài'}
                 </Text>
               </View>
             </View>
 
-            <Text style={[appStyle.text12, {marginTop: 5}]}>
+            <Text style={[appStyle.text12, {}]}>
               Bắt đầu:{' '}
               <Text style={{fontWeight: '500'}}>
                 {Moment(data.timeFrom).format('HH:mm, DD/MM/YYYY ')}
               </Text>
             </Text>
-            <Text style={[appStyle.text12, {marginTop: 5}]}>
+            <Text style={[appStyle.text12, {}]}>
               Kết thúc:{' '}
               <Text style={{fontWeight: '500'}}>
                 {Moment(data.timeTo).format('HH:mm, DD/MM/YYYY ')}
@@ -86,193 +89,169 @@ const ItemConfirmTrip = props => {
               </Text>
               {formatPrice(data.totalMoney)}
             </Text>
-            <View
-              style={{
-                justifyContent: 'space-between',
-                flexDirection: 'row',
-                width: '74%',
-                marginTop: 5,
-              }}>
-              <TouchableOpacity
+
+            <View style={[appStyle.rowBetween, {}]}>
+              <AppButton
+                title="Từ chối"
+                backgroundColor="white"
+                borderColor={COLOR.red}
+                width="48%"
+                textColor={COLOR.red}
+                noShadow
+                fontSize={12}
+                paddingVertical={6}
+                borderWidth={1.5}
                 onPress={() => handleDelete(data.id)}
-                style={{
-                  width: 100,
-                  height: 26,
-                  borderRadius: 10,
-                  borderColor: COLOR.red,
-                  borderWidth: 1,
-                  justifyContent: 'center',
-                }}>
-                <Text
-                  style={[
-                    appStyle.text14,
-                    {color: COLOR.red, textAlign: 'center', fontWeight: 'bold'},
-                  ]}>
-                  Hủy
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
+              />
+              <AppButton
+                title="Đồng ý"
+                backgroundColor="white"
+                borderColor={COLOR.green}
+                fontSize={12}
+                paddingVertical={6}
+                width="48%"
+                noShadow
+                borderWidth={1.5}
+                textColor={COLOR.green}
                 onPress={() => handleConfirm(data.id)}
-                style={{
-                  width: 100,
-                  height: 26,
-                  borderRadius: 10,
-                  borderColor: COLOR.green,
-                  borderWidth: 1,
-                  justifyContent: 'center',
-                }}>
-                <Text
-                  style={[
-                    appStyle.text14,
-                    {
-                      color: COLOR.green,
-                      textAlign: 'center',
-                      fontWeight: 'bold',
-                    },
-                  ]}>
-                  Đồng ý
-                </Text>
-              </TouchableOpacity>
+              />
             </View>
           </View>
-        </View>
+        </TouchableOpacity>
       ) : (
-        <View style={styles.containerDetail}>
+        <TouchableOpacity
+          onPress={() => checkStatus()}
+          style={styles.containerDetail}>
           {!isImageUrlValid ? (
             <FastImage
               style={styles.imageDetail}
               resizeMode="stretch"
-              source={require('../../assets/image/bgCar.jpg')}
-            />
+              source={require('../../assets/image/bgCar.jpg')}>
+              <View
+                style={{
+                  backgroundColor: 'black',
+                  justifyContent: 'center',
+                  paddingVertical: 6,
+                  opacity: 0.8,
+                }}>
+                <Text
+                  style={[
+                    appStyle.text16Bold,
+                    {color: COLOR.white, textAlign: 'center'},
+                  ]}>
+                  {data.Car.name}
+                </Text>
+              </View>
+            </FastImage>
           ) : (
             <FastImage
-              style={styles.imageDetail}
+              style={[styles.imageDetail, {justifyContent: 'flex-end'}]}
               resizeMode={'stretch'}
-              source={{uri: data.Car.imageThumbnail}}
-            />
+              source={{uri: data.Car.imageThumbnail}}>
+              <View
+                style={{
+                  backgroundColor: 'black',
+                  justifyContent: 'center',
+                  paddingVertical: 6,
+                  opacity: 0.8,
+                }}>
+                <Text
+                  style={[
+                    appStyle.text16Bold,
+                    {color: COLOR.white, textAlign: 'center'},
+                  ]}>
+                  {data.Car.name}
+                </Text>
+              </View>
+            </FastImage>
           )}
           <View style={[styles.statusContainer, {backgroundColor: '#FFB703'}]}>
             <Text style={styles.statusText}>Chờ duyệt</Text>
           </View>
-          <View
-            style={{
-              backgroundColor: '#3d3d3d',
-              justifyContent: 'center',
-              height: 25,
-            }}>
-            <Text
-              style={[
-                appStyle.text16Bold,
-                {color: COLOR.white, textAlign: 'center'},
-              ]}>
-              {data.Car.name}
-            </Text>
-          </View>
 
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginTop: 10,
-            }}>
-            <View>
-              <Text style={[appStyle.text12, {marginTop: 5}]}>
+          <View style={[appStyle.rowCenter, {marginTop: 8}]}>
+            <View
+              style={{
+                width: '50%',
+                borderRightWidth: 0.5,
+                borderColor: '#787878',
+              }}>
+              <Text style={[appStyle.text12, {}]}>
                 Bắt đầu:{' '}
                 <Text style={{fontWeight: '500'}}>
                   {Moment(data.timeFrom).format('HH:mm, DD/MM/YYYY ')}
                 </Text>
               </Text>
-              <Text style={[appStyle.text12, {marginTop: 5}]}>
+              <Text style={[appStyle.text12, {marginTop: 4}]}>
                 Kết thúc:{' '}
                 <Text style={{fontWeight: '500'}}>
                   {Moment(data.timeTo).format('HH:mm, DD/MM/YYYY ')}
                 </Text>
               </Text>
-              <Text style={[appStyle.text12, {marginTop: 5}]}>
+              <Text style={[appStyle.text12, {marginTop: 4}]}>
                 Loại thuê: <Text style={{fontWeight: 500}}>Tự lái</Text>
               </Text>
             </View>
-            <View
-              style={{
-                height: '100%',
-                width: 1,
-                backgroundColor: COLOR.borderColor,
-              }}
-            />
-            <View>
-              <Text style={[appStyle.text12, {marginTop: 5}]}>
+
+            <View style={{paddingLeft: 12}}>
+              <Text style={[appStyle.text12, {}]}>
                 Người thuê:{' '}
                 <Text style={{fontWeight: '500'}}>{data.User.name}</Text>
               </Text>
-              <Text style={[appStyle.text12, {marginTop: 5}]}>
+              <Text style={[appStyle.text12, {marginTop: 4}]}>
                 SĐT: <Text style={{fontWeight: '500'}}>{data.User.phone}</Text>
               </Text>
-              <Text style={[appStyle.text12, {marginTop: 5}]}>
+              <Text style={[appStyle.text12, {marginTop: 4}]}>
                 Loại nhận: <Text style={{fontWeight: 500}}>Tự tới lấy</Text>
               </Text>
             </View>
           </View>
-          <Text style={[appStyle.text14, {marginTop: 10}]}>
-            Địa điểm:
+
+          <Text style={[appStyle.text12, {paddingVertical: 10}]}>
+            Vị trí xe:
             <Text style={{fontWeight: '500'}}> {data.Car.locationCar}</Text>
           </Text>
           <Text
             style={{
-              color: COLOR.primary,
               fontWeight: '500',
               fontSize: 16,
-              marginTop: 10,
+              color: COLOR.black,
             }}>
-            <Text style={{color: COLOR.black}}>Tổng giá tiền : </Text>
-            {formatPrice(data.totalMoney)}
+            Tổng tiền:
+            <Text style={{color: COLOR.primary, fontWeight: '600'}}>
+              {' '}
+              {formatPrice(data.totalMoney)}
+            </Text>
           </Text>
-          <View
-            style={{
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-              width: '100%',
-              marginTop: 5,
-            }}>
-            <TouchableOpacity
+          <View style={[appStyle.rowBetween, {paddingVertical: 12}]}>
+            <AppButton
+              title="Từ chối"
+              backgroundColor="white"
+              borderColor={COLOR.red}
+              width="48%"
+              textColor={COLOR.red}
+              noShadow
+              fontSize={16}
+              paddingVertical={10}
+              borderWidth={1.5}
               onPress={() => handleDelete(data.id)}
-              style={{
-                width: 150,
-                height: 40,
-                borderRadius: 10,
-                borderColor: COLOR.red,
-                borderWidth: 1,
-                justifyContent: 'center',
-              }}>
-              <Text
-                style={[
-                  appStyle.text14,
-                  {color: COLOR.red, textAlign: 'center', fontWeight: 'bold'},
-                ]}>
-                Hủy
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
+            />
+            <AppButton
+              paddingVertical={10}
+              title="Đồng ý"
+              backgroundColor="white"
+              borderColor={COLOR.green}
+              fontSize={16}
+              width="48%"
+              noShadow
+              borderWidth={1.5}
+              textColor={COLOR.green}
               onPress={() => handleConfirm(data.id)}
-              style={{
-                width: 150,
-                height: 40,
-                borderRadius: 10,
-                borderColor: COLOR.green,
-                borderWidth: 1,
-                justifyContent: 'center',
-              }}>
-              <Text
-                style={[
-                  appStyle.text14,
-                  {color: COLOR.green, textAlign: 'center', fontWeight: 'bold'},
-                ]}>
-                Đồng ý
-              </Text>
-            </TouchableOpacity>
+            />
           </View>
-        </View>
+        </TouchableOpacity>
       )}
-    </TouchableOpacity>
+    </>
   );
 };
 
@@ -282,8 +261,9 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FFFFFF',
     flexDirection: 'row',
+    justifyContent: 'flex-start',
     marginHorizontal: 4,
-    borderRadius: 14,
+    borderRadius: 12,
     borderColor: COLOR.borderColor,
     shadowColor: '#000',
     shadowOffset: {
@@ -293,16 +273,19 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    marginBottom: 20,
+    marginBottom: 14,
+    marginTop: 3,
     padding: 10,
+    borderWidth: 1,
+    borderColor: '#CFCFCF',
   },
   containerDetail: {
     backgroundColor: '#FFFFFF',
     flexDirection: 'column',
     justifyContent: 'space-around',
     marginHorizontal: 4,
-    padding: 14,
-    borderRadius: 14,
+    padding: 10,
+    borderRadius: 12,
     borderColor: COLOR.borderColor,
     shadowColor: '#000',
     shadowOffset: {
@@ -313,19 +296,20 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     marginBottom: 10,
+    marginTop: 2,
   },
-  image: {
-    width: 110,
-    height: 110,
-    alignSelf: 'center',
 
-    borderRadius: 10,
+  image: {
+    width: squareImageSize(0.3),
+    height: squareImageSize(0.3),
+    alignSelf: 'center',
+    borderRadius: 20,
   },
   imageDetail: {
     width: '100%',
-    height: 182,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    height: windowHeight * 0.22,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
   logoMap: {
     width: 14,
