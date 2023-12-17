@@ -14,7 +14,9 @@ import {Row, Column} from 'native-base';
 import Booking from '../../../components/Home/Home/Booking';
 import {useNavigation} from '@react-navigation/native';
 import Promotion from '../../../components/Home/Home/Promotion';
-import CarCardItem from '../../../components/Home/Home/CarCardItem';
+import CarCardItem, {
+  CarCardItemPlaceholder,
+} from '../../../components/Home/Home/CarCardItem';
 import FeaturedLocation from '../../../components/Home/Home/FeaturedLocation';
 import AirportPicking from '../../../components/Home/Home/AirportPicking';
 import {
@@ -42,18 +44,24 @@ import {
   returnTimeString,
   tomorrow,
 } from '../../../utils/utils';
+import {
+  ViewedCarsContext,
+  ViewedCarsContextProps,
+} from '../../../utils/ViewedCarContext';
 
 const RenderList: React.FC<RenderListProps<any>> = ({
   data,
   renderItem,
   snapToInterval,
   reverse,
+  emptyComponent,
 }) => (
   <FlatList
     showsHorizontalScrollIndicator={false}
     data={data}
     keyExtractor={item => item.id.toString()}
     horizontal={true}
+    ListEmptyComponent={emptyComponent}
     renderItem={renderItem}
     snapToAlignment="start"
     decelerationRate={'fast'}
@@ -77,6 +85,7 @@ const Section: React.FC<SectionProps> = ({
     <RenderList
       data={data}
       renderItem={renderItem}
+      emptyComponent={<CarCardItemPlaceholder />}
       snapToInterval={snapToInterval}
       reverse={reverse}
     />
@@ -102,7 +111,11 @@ const Home: React.FC = () => {
     endDate: tomorrow,
   });
 
-  const [viewedCars, setViewedCars] = useState<Car[]>([]);
+  const {viewedCars, setViewedCars} = useContext(
+    ViewedCarsContext,
+  ) as ViewedCarsContextProps;
+
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const handleCarPress = (id: number) => {
     setSelectedCarId(id);
@@ -119,6 +132,24 @@ const Home: React.FC = () => {
         `/car/api/list?idUser=${idUser}`,
       );
       if (response.result) {
+        // Add isFavorite to listCar
+        const listCar = response.listCar;
+        const responseFavorite = await AxiosInstance().get(
+          `/favorite-car/api/list-by-user?idUser=${idUser}`,
+        );
+        if (responseFavorite.result) {
+          const listFavorite = responseFavorite.data;
+          const listFavoriteId = listFavorite.map((item: any) => item.idCar);
+          const listCarWithFavorite = listCar.map((item: any) => {
+            return {
+              ...item,
+              isFavorite: listFavoriteId.includes(item.id),
+            };
+          });
+          setIsLoading(false);
+          setListCar(listCarWithFavorite);
+        }
+        setIsLoading(false);
         setListCar(response.listCar);
       } else {
         console.log('Error');
@@ -137,7 +168,7 @@ const Home: React.FC = () => {
     <ScrollView style={[appStyle.container]}>
       <View style={[styles.headBg]}>
         <Row style={styles.nameAndPointWrapper}>
-          <Column style={[styles.iconBG, styles.iconMarginRight,]}>
+          <Column style={[styles.iconBG, styles.iconMarginRight]}>
             <FastImage
               style={{width: 50, height: 50, borderRadius: 99}}
               source={

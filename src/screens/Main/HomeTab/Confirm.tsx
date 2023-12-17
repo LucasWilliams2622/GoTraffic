@@ -6,17 +6,17 @@ import {
   StyleSheet,
   ScrollView,
 } from 'react-native';
-import React, {useContext, useMemo, useState} from 'react';
+import React, {useContext, useEffect, useMemo, useState} from 'react';
 import {COLOR} from '../../../constants/Theme';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import {Car} from '../../../types';
-import {Row, TextArea} from 'native-base';
+import {HStack, Heading, Row, Spinner, TextArea} from 'native-base';
 import FastImage from 'react-native-fast-image';
 import {CarCardItemStyles} from '../../../components/Home/Home/CarCardItem';
 import ShieldIcon from '../../../assets/icon/ic_shield_verified';
 import {OwnerInfo} from '../../../components/Home/Detail/OwnerInfo';
 import {formatDate, formatPriceWithUnit} from '../../../utils/utils';
-import Modal from 'react-native-modal';
+import Modal, {ReactNativeModal} from 'react-native-modal';
 import {
   Collateral,
   Documents,
@@ -28,6 +28,7 @@ import {AppContext} from '../../../utils/AppContext';
 import axios from 'axios';
 import FailModal from '../../../components/Profile/Modal/FailModal';
 import SuccessModal from '../../../components/Profile/Modal/SuccessModal';
+import {CarLocationContext} from '../../../utils/CarLocationContext';
 
 const PriceRow: React.FC<{
   title: string;
@@ -136,22 +137,51 @@ const BottomBar: React.FC<{
     useState<boolean>(false);
   const [isSuccessModalVisible, setIsSuccessModalVisible] =
     useState<boolean>(false);
-  const [isFailModalVisible, setIsFailModalVisible] = useState<boolean>(false);
 
   const {infoUser} = useContext(AppContext);
 
   const closeModals = () => {
     setIsCancelModalVisible(false);
     setIsLicenseModalVisible(false);
-    setIsSuccessModalVisible(false);
-    setIsFailModalVisible(false);
+    hideModal();
     closeModal();
     if (closeCarDetail) {
       closeCarDetail();
     }
   };
 
+  const [modalContent, setModalContent] = useState<React.ReactElement<
+    any,
+    string | React.JSXElementConstructor<any>
+  > | null>(null);
+
+  const showModal = (
+    content: React.ReactElement<any, string | React.JSXElementConstructor<any>>,
+  ) => {
+    setModalContent(content);
+  };
+
+  const hideModal = () => {
+    setModalContent(null);
+  };
+
   const handleConfirm = async () => {
+    showModal(
+      <ReactNativeModal
+        isVisible={true}
+        animationIn={'fadeIn'}
+        animationOut={'fadeOut'}>
+        <HStack
+          space={2}
+          justifyContent="center"
+          style={{backgroundColor: 'white', padding: 20, width: 'auto'}}>
+          <Spinner accessibilityLabel="Loading posts" />
+          <Heading color="primary.500" fontSize="md">
+            Loading
+          </Heading>
+        </HStack>
+      </ReactNativeModal>,
+    );
     if (infoUser['isVerifiedDriverLicense']) {
       let data = JSON.stringify({
         idUser: infoUser['id'],
@@ -176,23 +206,53 @@ const BottomBar: React.FC<{
       axios
         .request(config)
         .then(response => {
-          console.log(JSON.stringify(response.data));
-          if (response.data['result'] === true) {
-            setIsSuccessModalVisible(true);
+          console.log(JSON.stringify(response));
+          if (response.data.result === true) {
+            hideModal();
+            showModal(
+              <SuccessModal
+                isVisible={true}
+                onNavigate={closeModals}
+                title="Thành công!"
+                text="Bạn đã thuê được xe"
+              />,
+            );
           } else {
-            setIsFailModalVisible(true);
+            hideModal();
+            showModal(
+              <FailModal
+                isVisible={true}
+                onCancel={hideModal}
+                title={response.data['message']}
+                text={response.data['message']}
+                nextStep={'Trở về'}
+                onNextStep={closeModals}
+              />,
+            );
           }
         })
         .catch(error => {
-          setIsFailModalVisible(true);
-          console.log('Error: ' + JSON.stringify(error.response));
-          console.log('Error: ' + error);
+          console.log('Error happened');
+          hideModal();
+          showModal(
+            <FailModal
+              isVisible={true}
+              onCancel={hideModal}
+              title={'Đã có lỗi xảy ra. Vui lòng thử lại sau'}
+              text={error.response.data.message}
+              nextStep={'Trở về'}
+              onNextStep={closeModals}
+            />,
+          );
+          console.log('Error: ' + JSON.stringify(error.response.data));
+          console.log('Error: ' + JSON.stringify(error));
         });
     } else {
       console.log('Test');
       setIsLicenseModalVisible(true);
     }
   };
+
   return (
     <View
       style={{
@@ -206,6 +266,7 @@ const BottomBar: React.FC<{
         borderTopWidth: StyleSheet.hairlineWidth,
         paddingBottom: 30,
       }}>
+      <Modal isVisible={!!modalContent}>{modalContent}</Modal>
       <Pressable onPress={() => setIsCancelModalVisible(!isCancelModalVisible)}>
         <Row style={{alignItems: 'center'}}>
           <Icon name="circle-check" size={20} color={COLOR.fifth} solid />
@@ -227,13 +288,6 @@ const BottomBar: React.FC<{
         toggle={() => {
           setIsCancelModalVisible(!isCancelModalVisible);
         }}
-      />
-      <FailModal isVisible={isFailModalVisible} onCancel={closeModals} />
-      <SuccessModal
-        isVisible={isSuccessModalVisible}
-        onNavigate={closeModals}
-        title="Thành công!"
-        text="Bạn đã thuê được xe"
       />
       <Pressable
         style={{
@@ -267,7 +321,21 @@ const Confirm: React.FC<{
   totalCost: number;
   closeCarDetail?: () => void;
 }> = ({closeModal, car, selectedTime, totalCost, closeCarDetail}) => {
+  const carLocationContext = useContext(CarLocationContext);
+  if (!carLocationContext) {
+    throw new Error(
+      'TimeAndPlacePickup must be used within a CarLocationProvider',
+    );
+  }
+  const {receiveCarLocation} = carLocationContext;
+
   const deposit: number = 0.3 * totalCost;
+
+  const deliveryFee: number =
+    receiveCarLocation === 'atUserLocation' ? car.deliveryFee : 0;
+
+  const totalFee: number = car.price + 0.266 * car.price + deliveryFee;
+
   return (
     <View style={{backgroundColor: COLOR.white, flex: 1}}>
       <SafeAreaView>
@@ -282,7 +350,7 @@ const Confirm: React.FC<{
         <ScrollView style={{paddingHorizontal: 15, marginTop: 30}}>
           <Row>
             <FastImage
-              source={{uri: car.image}}
+              source={{uri: car.imageThumbnail}}
               style={{height: 80, width: 120, borderRadius: 10}}
             />
             <View
@@ -302,7 +370,7 @@ const Confirm: React.FC<{
                     color: COLOR.placeholder,
                     marginTop: 10,
                   }}>
-                  Biển số xe: {car.licensePlate}
+                  Biển số xe: {car.numberPlate}
                 </Text>
               </View>
 
@@ -353,7 +421,7 @@ const Confirm: React.FC<{
                   style={{
                     marginLeft: 25,
                     fontWeight: 'bold',
-                    fontSize: 15,
+                    fontSize: 14,
                     marginTop: 5,
                   }}>
                   {`${selectedTime.startDate?.getHours()}h ${selectedTime.startDate?.getMinutes()}`}
@@ -369,7 +437,7 @@ const Confirm: React.FC<{
                   style={{
                     marginLeft: 25,
                     fontWeight: 'bold',
-                    fontSize: 15,
+                    fontSize: 14,
                     marginTop: 5,
                   }}>
                   {`${selectedTime.endDate?.getHours()}h ${selectedTime.endDate?.getMinutes()}`}
@@ -457,6 +525,7 @@ const Confirm: React.FC<{
                 padding: 10,
               }}
               autoCompleteType={'off'}
+              maxLength={200}
             />
           </View>
           <View
@@ -504,13 +573,19 @@ const Confirm: React.FC<{
                 modalTitle="Phí bảo hiểm thuê xe"
                 modalContent="Chuyến đi của bạn được mua gói bảo hiểm vật chất xe ô tô. Trường hợp có sự cố ngoài ý muốn (trong phạm vi bảo hiểm), khách thuê bồi thường tối đa 2.000.000VND/vụ"
               />
+              {receiveCarLocation === 'atUserLocation' && (
+                <PriceRow
+                  title="Phí giao xe"
+                  price={car.deliveryFee}
+                  icon={true}
+                  showDay={true}
+                  modalTitle="Phí giao xe"
+                  modalContent="Phí giao xe được tính theo km, khoảng cách từ địa điểm nhận xe đến địa điểm trả xe."
+                />
+              )}
               <View style={[CarCardItemStyles.separator, {marginTop: 20}]} />
-              <PriceRow
-                title="Tổng phí"
-                price={car.price + 0.266 * car.price}
-                showDay={true}
-              />
-              <Pressable>
+              <PriceRow title="Tổng phí" price={totalFee} showDay={true} />
+              {/* <Pressable>
                 <Row
                   style={{
                     alignItems: 'center',
@@ -532,11 +607,11 @@ const Confirm: React.FC<{
                     color={COLOR.placeholder}
                   />
                 </Row>
-              </Pressable>
+              </Pressable> */}
               <View style={[CarCardItemStyles.separator, {marginTop: 20}]} />
               <PriceRow
                 title="Tổng cộng"
-                price={totalCost + 0.266 * totalCost}
+                price={totalCost + 0.266 * totalCost + deliveryFee}
                 style1stRow={{fontWeight: 'bold'}}
                 style2ndRow={{color: COLOR.black}}
               />

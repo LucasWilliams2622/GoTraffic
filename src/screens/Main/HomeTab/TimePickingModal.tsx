@@ -19,7 +19,6 @@ import {Picker} from '@react-native-picker/picker';
 import Modal from 'react-native-modal';
 import moment from 'moment';
 
-
 const TimePickingModal: React.FC<{
   price?: number;
   toggle: any;
@@ -30,8 +29,8 @@ const TimePickingModal: React.FC<{
   const tomorrowDate = new Date();
   tomorrowDate.setDate(tomorrowDate.getDate() + 1);
 
-  const [startDate, setStartDate] = useState<Date | null>(currentDate);
-  const [endDate, setEndDate] = useState<Date | null>(tomorrowDate);
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
   const [markedDates, setMarkedDates] = useState<{[key: string]: MarkedDate}>(
     {},
   );
@@ -75,9 +74,8 @@ const TimePickingModal: React.FC<{
             selectedEndDate >= bookingEndDate)
         ) {
           return true; // Overlapping dates found
-        }else{
-          console.log("ERRROR");
-          
+        } else {
+          console.log('ERRROR');
         }
       }
     }
@@ -250,11 +248,11 @@ const TimePickingModal: React.FC<{
   };
 
   useEffect(() => {
-    console.log('startDate', startDate);
+    // console.log('startDate', startDate);
   }, [startDate]);
 
   useEffect(() => {
-    console.log('endDate', endDate);
+    // console.log('endDate', endDate);
   }, [endDate]);
 
   LocaleConfig.locales['vn'] = {
@@ -355,14 +353,24 @@ const TimePickingModal: React.FC<{
   const DayComponent = (props: any) => renderDay({...props, bookedDates});
 
   const handleNextPress = () => {
+    console.log('startDate', startDate);
+    console.log('endDate', endDate);
     if (startDate && endDate) {
       if (isDateRangeOverlap(startDate, endDate)) {
-        alert("Ngày này đã được dặt, Vui lòng chọn ngày khác")
-        showToastMessage('error','Ngày này đã được dặt, Vui lòng chọn ngày khác');
+        console.log('test');
+        Alert.alert('Ngày này đã được dặt, Vui lòng chọn ngày khác');
+        showToastMessage(
+          'error',
+          'Ngày này đã được dặt, Vui lòng chọn ngày khác',
+        );
       } else {
         setSelectedTime({startTime, endTime, startDate, endDate});
         toggle();
       }
+    } else {
+      console.log('test2');
+      Alert.alert('Vui lòng chọn ngày và giờ');
+      showToastMessage('Vui lòng chọn ngày và giờ');
     }
   };
   return (
@@ -485,76 +493,76 @@ const TimePickingModal: React.FC<{
         </Pressable>
       </Row>
       <View
-      style={{
-        backgroundColor: COLOR.white,
-        width: '100%',
-        position: 'absolute',
-        bottom: 0,
-        paddingHorizontal: 20,
-        paddingVertical: 20,
-        borderTopColor: COLOR.borderColor,
-        borderTopWidth: StyleSheet.hairlineWidth,
-        paddingBottom: 30,
-      }}>
-      <Row style={{justifyContent: 'space-between', alignItems: 'center'}}>
-        <View>
-          <Text style={{fontWeight: 'bold'}}>
-            {startDate &&
-              endDate &&
-              `${
-                startDate.getHours() < 10
-                  ? '0' + startDate.getHours()
-                  : startDate.getHours()
-              }h ${
-                startDate.getMinutes() < 10
-                  ? '0' + startDate.getMinutes()
-                  : startDate.getMinutes()
-              }, ${
-                startDate.getDate() < 10
-                  ? '0' + startDate.getDate()
-                  : startDate.getDate()
-              }/${
-                startDate.getMonth() + 1 < 10
-                  ? '0' + (startDate.getMonth() + 1)
-                  : startDate.getMonth() + 1
-              } - ${
-                endDate.getHours() < 10
-                  ? '0' + endDate.getHours()
-                  : endDate.getHours()
-              }h ${
-                endDate.getMinutes() < 10
-                  ? '0' + endDate.getMinutes()
-                  : endDate.getMinutes()
-              }, ${
-                endDate.getDate() < 10
-                  ? '0' + endDate.getDate()
-                  : endDate.getDate()
-              }/${
-                endDate.getMonth() + 1 < 10
-                  ? '0' + (endDate.getMonth() + 1)
-                  : endDate.getMonth() + 1
-              }`}
-          </Text>
-          <Text>
-            Số ngày thuê:{' '}
-            {startDate && endDate && endDate.getDate() - startDate.getDate()}{' '}
-            ngày
-          </Text>
-        </View>
+        style={{
+          backgroundColor: COLOR.white,
+          width: '100%',
+          position: 'absolute',
+          bottom: 0,
+          paddingHorizontal: 20,
+          paddingVertical: 20,
+          borderTopColor: COLOR.borderColor,
+          borderTopWidth: StyleSheet.hairlineWidth,
+          paddingBottom: 30,
+        }}>
+        <Row style={{justifyContent: 'space-between', alignItems: 'center'}}>
+          <View>
+            <Text style={{fontWeight: 'bold'}}>
+              {startDate &&
+                endDate &&
+                `${
+                  startDate.getHours() < 10
+                    ? '0' + startDate.getHours()
+                    : startDate.getHours()
+                }h ${
+                  startDate.getMinutes() < 10
+                    ? '0' + startDate.getMinutes()
+                    : startDate.getMinutes()
+                }, ${
+                  startDate.getDate() < 10
+                    ? '0' + startDate.getDate()
+                    : startDate.getDate()
+                }/${
+                  startDate.getMonth() + 1 < 10
+                    ? '0' + (startDate.getMonth() + 1)
+                    : startDate.getMonth() + 1
+                } - ${
+                  endDate.getHours() < 10
+                    ? '0' + endDate.getHours()
+                    : endDate.getHours()
+                }h ${
+                  endDate.getMinutes() < 10
+                    ? '0' + endDate.getMinutes()
+                    : endDate.getMinutes()
+                }, ${
+                  endDate.getDate() < 10
+                    ? '0' + endDate.getDate()
+                    : endDate.getDate()
+                }/${
+                  endDate.getMonth() + 1 < 10
+                    ? '0' + (endDate.getMonth() + 1)
+                    : endDate.getMonth() + 1
+                }`}
+            </Text>
+            <Text>
+              Số ngày thuê:{' '}
+              {startDate && endDate && endDate.getDate() - startDate.getDate()}{' '}
+              ngày
+            </Text>
+          </View>
 
-        <Pressable
-          style={{backgroundColor: COLOR.fifth, padding: 15, borderRadius: 8}}
-          // onPress={() => {
-          //   // setSelectedTime({startTime, endTime, startDate, endDate});
-          //   // toggle();
-          // }}
-          onPress={handleNextPress}>
-          <Text style={{color: COLOR.white, fontWeight: 'bold'}}>
-            Tiếp theo
-          </Text>
-        </Pressable>
-      </Row>
-    </View>
+          <Pressable
+            style={{backgroundColor: COLOR.fifth, padding: 15, borderRadius: 8}}
+            // onPress={() => {
+            //   // setSelectedTime({startTime, endTime, startDate, endDate});
+            //   // toggle();
+            // }}
+            onPress={handleNextPress}>
+            <Text style={{color: COLOR.white, fontWeight: 'bold'}}>
+              Tiếp theo
+            </Text>
+          </Pressable>
+        </Row>
+      </View>
     </SafeAreaView>
   );
 };

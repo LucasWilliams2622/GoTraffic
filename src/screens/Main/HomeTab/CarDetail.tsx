@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useMemo} from 'react';
+import React, {useState, useEffect, useMemo, useContext} from 'react';
 import {
   ImageStyle,
   StyleProp,
@@ -10,10 +10,10 @@ import {
   Animated,
   ScrollView,
   Share,
-  Alert,
   Pressable,
+  Platform,
+  Alert,
 } from 'react-native';
-import {carDetailData} from './data/data';
 import {Row} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import {COLOR} from '../../../constants/Theme';
@@ -37,11 +37,8 @@ import {Amenities} from '../../../components/Home/Detail/Amenities';
 import {CarLocation} from '../../../components/Home/Detail/CarLocation';
 import {OwnerInfo} from '../../../components/Home/Detail/OwnerInfo';
 import {Rating} from '../../../components/Home/Detail/Rating';
-import {RatingModal} from '../../../components/Home/Detail/RatingModal';
 import {Car, CarDetailProps, PressableIconProps} from '../../../types';
 import {
-  calculateAvgRating,
-  currentDateString,
   currentDay,
   currentTimeString,
   formatPrice,
@@ -54,6 +51,10 @@ import Confirm from './Confirm';
 import Modal from 'react-native-modal';
 import axios from 'axios';
 import {LogBox} from 'react-native';
+import {AppContext} from '../../../utils/AppContext';
+import AxiosInstance from '../../../constants/AxiosInstance';
+import {CarLocationContext} from '../../../utils/CarLocationContext';
+import {ViewedCarsContext} from '../../../utils/ViewedCarContext';
 
 Geocoder.init(REACT_APP_GOOGLE_MAPS_API_KEY || '');
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
@@ -106,9 +107,19 @@ const BottomBar: React.FC<{
     }
   }
 
+  const {receiveCarLocation} = useContext(CarLocationContext);
+
   const formattedPrice = useMemo(() => formatPrice(total), [total]);
 
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const handleNextStep = () => {
+    if (receiveCarLocation === '') {
+      showToastMessage('error', 'Bạn chưa chọn địa điểm nhận xe');
+      Alert.alert('Bạn chưa chọn địa điểm nhận xe');
+      return;
+    }
+    setIsModalVisible(true);
+  };
   return (
     <View
       style={{
@@ -147,7 +158,7 @@ const BottomBar: React.FC<{
         </Modal>
         <Pressable
           style={{backgroundColor: COLOR.fifth, padding: 10, borderRadius: 8}}
-          onPress={() => setIsModalVisible(true)}>
+          onPress={handleNextStep}>
           <Row style={{alignItems: 'center'}}>
             <Icon name={'bolt'} color={COLOR.white} size={20} solid />
             <Text
@@ -160,12 +171,7 @@ const BottomBar: React.FC<{
     </View>
   );
 };
-const CarDetail: React.FC<CarDetailProps> = ({
-  car_id,
-  close,
-  viewedCars,
-  setViewedCars,
-}) => {
+const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
   const [carCoordinates, setCarCoordinates] = useState<Geocoder.LatLng | null>(
     null,
   );
@@ -174,6 +180,7 @@ const CarDetail: React.FC<CarDetailProps> = ({
 
   const [dateStart, setDateStart] = useState<Date>(new Date());
   const [dateEnd, setDateEnd] = useState<Date>(new Date());
+  const {viewedCars, setViewedCars} = useContext(ViewedCarsContext);
 
   const [selectedTime, setSelectedTime] = useState<{
     startTime: string | null;
@@ -190,9 +197,19 @@ const CarDetail: React.FC<CarDetailProps> = ({
   const [images, setImages] = useState<string[]>([]);
   const [amenities, setAmenities] = useState<string[]>([]);
 
+  const {idUser} = useContext(AppContext);
+
   const toggleModal = () => {
     setRatingModalVisible(!isRatingModalVisible);
   };
+
+  const carLocationContext = useContext(CarLocationContext);
+  if (!carLocationContext) {
+    throw new Error(
+      'TimeAndPlacePickup must be used within a CarLocationProvider',
+    );
+  }
+  const {setReceiveCarLocation} = carLocationContext;
 
   const [isFavorite, setIsFavorite] = React.useState<boolean>(false);
 
@@ -203,7 +220,6 @@ const CarDetail: React.FC<CarDetailProps> = ({
     const response = await axios.get(
       `http://103.57.129.166:3000/car/api/get-by-id-car?idCar=${car_id}`,
     );
-    // console.log(response.data);
     const responseData = response.data;
     const car = responseData.car;
     setCar(car);
@@ -212,15 +228,51 @@ const CarDetail: React.FC<CarDetailProps> = ({
     }
     if (car.utilities) {
       try {
-        setAmenities(JSON.parse(car.utilities));
+        setAmenities(JSON.parse(car.utilities.trim().slice(1, -1)));
       } catch (error) {
         console.log(error);
       }
     }
   };
 
+  const getFavorite = async () => {
+    const favouriteResponse = await axios.get(
+      `http://103.57.129.166:3000/favorite-car/api/list-by-user?idUser=${idUser}`,
+    );
+    if (favouriteResponse.data.result) {
+      const favouriteData = favouriteResponse.data.data;
+      const carIndex = favouriteData.findIndex(x => x.idCar === car_id);
+      if (carIndex !== -1) {
+        console.log('Car is favourite');
+        setIsFavorite(true);
+      }
+    }
+  };
+
+  const addOrRemoveFavorite = async () => {
+    try {
+      if (isFavorite) {
+        const response = await AxiosInstance().delete(
+          `/favorite-car/api/delete?idUser=${idUser}&idCar=${car_id}`,
+        );
+        showToastMessage('', 'Đã gỡ yêu thích');
+        console.log(response, 'Xe đã bị xóa khỏi danh sách yêu thích');
+      } else {
+        const response = await AxiosInstance().post(
+          `/favorite-car/api/add?idUser=${idUser}&idCar=${car_id}`,
+        );
+        showToastMessage('', 'Xe được thêm vào yêu thích');
+        console.log(response, 'Xe được thêm vào danh sách yêu thích');
+      }
+      setIsFavorite(!isFavorite);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getCar();
+    getFavorite();
   }, []);
 
   useEffect(() => {
@@ -265,7 +317,7 @@ const CarDetail: React.FC<CarDetailProps> = ({
       viewedCars.unshift(car as Car);
       setViewedCars(viewedCars);
     }
-
+    setReceiveCarLocation('');
     close();
   };
 
@@ -324,7 +376,7 @@ const CarDetail: React.FC<CarDetailProps> = ({
               color={isFavorite ? COLOR.fifth : COLOR.black}
               size={20}
               solid={isFavorite}
-              onPress={() => setIsFavorite(!isFavorite)}
+              onPress={() => addOrRemoveFavorite()}
             />
           </Row>
         </Row>
@@ -341,7 +393,11 @@ const CarDetail: React.FC<CarDetailProps> = ({
   if (car) {
     return (
       <View style={{flex: 1}}>
-        <Animated.View style={[styles.topContainer, {opacity: topViewOpacity}]}>
+        <Animated.View
+          style={[
+            styles.topContainer,
+            {opacity: topViewOpacity, top: Platform.OS === 'ios' ? 50 : 30},
+          ]}>
           <PressableIcon
             name="x"
             color={COLOR.white}
@@ -361,7 +417,7 @@ const CarDetail: React.FC<CarDetailProps> = ({
               color={isFavorite ? COLOR.fifth : COLOR.white}
               size={20}
               solid={isFavorite}
-              onPress={() => setIsFavorite(!isFavorite)}
+              onPress={() => addOrRemoveFavorite()}
             />
           </View>
         </Animated.View>
@@ -509,7 +565,6 @@ const styles = StyleSheet.create({
   topContainer: {
     width: '100%',
     position: 'absolute',
-    top: 50,
     left: 20,
     zIndex: 1,
     flexDirection: 'row',

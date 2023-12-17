@@ -19,6 +19,7 @@ import {formatTimeApi, timeDateFormat} from '../../../utils/utils';
 import {REACT_APP_VIETMAP_API_KEY} from '@env';
 import axios from 'axios';
 import CarDetail from './CarDetail';
+import {HStack, Heading, Spinner} from 'native-base';
 
 const FindingCar = ({
   location,
@@ -37,6 +38,8 @@ const FindingCar = ({
   const [key, setKey] = useState(Math.random().toString());
 
   const [listCar, setListCar] = useState([]);
+  const [originalListCar, setOriginalListCar] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setKey(Math.random().toString());
@@ -96,6 +99,7 @@ const FindingCar = ({
           }
         } catch (error) {
           console.warn(`Error ${i + 1}: ` + JSON.stringify(error));
+          setIsLoading(false);
         }
       }
 
@@ -107,6 +111,8 @@ const FindingCar = ({
       }, []);
 
       setListCar(availableCars);
+      setIsLoading(false);
+      setOriginalListCar(availableCars);
     } catch (e) {
       console.log('Error in getAllCar: ' + e);
     }
@@ -156,8 +162,9 @@ const FindingCar = ({
   const sortByBrand = () => {
     setIsSelected('Hãng xe');
   };
-  const sortByPrice = () => {
+  const sortByPriceIncrease = () => {
     setIsSelected('Giá tăng dần');
+    sortListCarIncreaseByPrice();
   };
   const sortByRating = () => {
     setIsSelected('Đánh giá');
@@ -165,6 +172,7 @@ const FindingCar = ({
 
   const resetOptions = () => {
     setIsSelected(null);
+    setListCar(originalListCar);
   };
 
   const handleCarPress = id => {
@@ -173,8 +181,38 @@ const FindingCar = ({
     setCarModalVisible(true);
   };
 
+  const sortListCarIncreaseByPrice = () => {
+    const newListCar = [...listCar];
+    newListCar.sort((a, b) => {
+      return a.price - b.price;
+    });
+    setListCar(newListCar);
+  };
+
+  const sortListCarDecreaseByPrice = () => {
+    const newListCar = [...listCar];
+    newListCar.sort((a, b) => {
+      return b.price - a.price;
+    });
+    setListCar(newListCar);
+  };
+
   return (
     <SafeAreaView style={appStyle.container}>
+      <ReactNativeModal
+        isVisible={isLoading}
+        animationIn={'fadeIn'}
+        animationOut={'fadeOut'}>
+        <HStack
+          space={2}
+          justifyContent="center"
+          style={{backgroundColor: 'white', padding: 20, width: 'auto'}}>
+          <Spinner accessibilityLabel="Loading posts" />
+          <Heading color="primary.500" fontSize="md">
+            Loading
+          </Heading>
+        </HStack>
+      </ReactNativeModal>
       <View style={styles.viewTop}>
         <TouchableOpacity onPress={close}>
           <FastImage
@@ -226,30 +264,42 @@ const FindingCar = ({
             isSelected={isSelected === 'Xóa'}
             onPress={() => resetOptions()}
           />
-          <ButtonSelected
+          {/* <ButtonSelected
             text="Hãng Xe"
             icon={ICON.TripFocus}
             isSelected={isSelected === 'Hãng xe'}
             onPress={() => sortByBrand()}
-          />
+          /> */}
           <ButtonSelected
             text="Giá tăng dần"
             icon={ICON.Promotion}
             isSelected={isSelected === 'Giá tăng dần'}
-            onPress={() => sortByPrice()}
+            onPress={() => {
+              setIsSelected('Giá tăng dần');
+              sortListCarIncreaseByPrice();
+            }}
           />
           <ButtonSelected
-            text="Đánh giá"
+            text="Giá giảm dần"
             icon={ICON.Star}
-            isSelected={isSelected === 'Đánh giá'}
-            onPress={() => sortByRating()}
+            isSelected={isSelected === 'Giá giảm dần'}
+            onPress={() => {
+              setIsSelected('Giá giảm dần');
+              sortListCarDecreaseByPrice();
+            }}
           />
         </ScrollView>
       </View>
 
-      <ScrollView style={{paddingHorizontal: 15}}>
+      <ScrollView>
         <FlatList
           key={key}
+          style={{
+            marginBottom: 44,
+            width: '100%',
+            paddingHorizontal: 15,
+            alignSelf: 'center',
+          }}
           data={listCar}
           shouldRasterizeIOS
           showsVerticalScrollIndicator={false}
@@ -261,16 +311,11 @@ const FindingCar = ({
             </View>
           }
           renderItem={({item}) => (
-            <View
-              style={{
-                flex: 1,
-                flexDirection: 'column',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-                paddingLeft: 20,
-              }}>
-              <CarCardItem {...item} onPress={() => handleCarPress(item.id)} />
-            </View>
+            <CarCardItem
+              {...item}
+              onPress={() => handleCarPress(item.id)}
+              width={360}
+            />
           )}
           keyExtractor={item => item.id}
         />

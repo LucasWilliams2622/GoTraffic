@@ -117,8 +117,12 @@ export const ICON = {
   Promotion: require('../assets/icon/ic_promotion.png'),
   cancelWhite: require('../assets/icon/ic_cancel_white.png'),
   checkWhite: require('../assets/icon/ic_check_white.png'),
-  star: IconAntDesign.getImageSourceSync('star', 20, '#FFE814'),
-  staro: IconAntDesign.getImageSourceSync('staro', 20, 'gray'),
+
+  /**
+   * Chỉ dùng getImageSource, không dùng getImageSourceSync sẽ gây lỗi trên iOS
+   */
+  star: IconAntDesign.getImageSource('star', 20, '#FFE814'),
+  staro: IconAntDesign.getImageSource('staro', 20, 'gray'),
   review: MaterialIcons.getImageSource('rate-review', 20, 'black'),
   like1: IconAntDesign.getImageSourceSync('like1', 20, 'black'),
   car: IconIonicons.getImageSourceSync('car-sport', 20, 'black'),

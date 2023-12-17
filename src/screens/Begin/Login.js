@@ -9,7 +9,7 @@ import {COLOR, ICON} from '../../constants/Theme';
 import FastImage from 'react-native-fast-image';
 import {BottomSheet} from 'react-native-btr';
 import * as Yup from 'yup';
-import {Formik, useFormik} from 'formik';
+import {Formik} from 'formik';
 import {AppContext} from '../../utils/AppContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';

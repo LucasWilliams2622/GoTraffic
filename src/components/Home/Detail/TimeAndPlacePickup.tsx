@@ -1,5 +1,5 @@
 import {Radio, Row} from 'native-base';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {appStyle} from '../../../constants/AppStyle';
 import {COLOR} from '../../../constants/Theme';
@@ -11,6 +11,7 @@ import {
 import {Car} from '../../../types';
 import TimePickingModal from '../../../screens/Main/HomeTab/TimePickingModal';
 import ReactNativeModal from 'react-native-modal';
+import {CarLocationContext} from '../../../utils/CarLocationContext';
 
 export const TimeAndPlacePickup = ({
   car,
@@ -26,8 +27,13 @@ export const TimeAndPlacePickup = ({
   };
   setSelectedTime: any;
 }) => {
-  const [receiveCarLocation, setReceiveCarLocation] =
-    useState<string>('atCarLocation');
+  const carLocationContext = useContext(CarLocationContext);
+  if (!carLocationContext) {
+    throw new Error(
+      'TimeAndPlacePickup must be used within a CarLocationProvider',
+    );
+  }
+  const {receiveCarLocation, setReceiveCarLocation} = carLocationContext;
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
   return (
     <View>
@@ -137,7 +143,7 @@ export const TimeAndPlacePickup = ({
               </View>
             </Row>
           </Pressable>
-          {/* {car.isDelivery && (
+          {car.isDelivery && (
             <Pressable
               onPress={() => setReceiveCarLocation('atUserLocation')}
               style={styles.timeAndPlacePickupPressable}>
@@ -164,7 +170,7 @@ export const TimeAndPlacePickup = ({
                 </View>
               </Row>
             </Pressable>
-          )} */}
+          )}
         </Radio.Group>
       </View>
     </View>
