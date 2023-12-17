@@ -2,7 +2,6 @@ import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 import IconFontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import IconFontAwesome6 from 'react-native-vector-icons/FontAwesome6Pro';
 
-
 import IconEntypo from 'react-native-vector-icons/Entypo';
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import IconIonicons from 'react-native-vector-icons/Ionicons';
@@ -120,18 +119,20 @@ export const ICON = {
   Promotion: require('../assets/icon/ic_promotion.png'),
   cancelWhite: require('../assets/icon/ic_cancel_white.png'),
   checkWhite: require('../assets/icon/ic_check_white.png'),
-  star: IconAntDesign.getImageSourceSync('star', 20, '#FFE814'),
-  staro: IconAntDesign.getImageSourceSync('staro', 20, 'gray'),
+
+  /**
+   * Chỉ dùng getImageSource, không dùng getImageSourceSync sẽ gây lỗi trên iOS
+   */
+  star: IconAntDesign.getImageSource('star', 20, '#FFE814'),
+  staro: IconAntDesign.getImageSource('staro', 20, 'gray'),
   review: MaterialIcons.getImageSource('rate-review', 20, 'black'),
-  like1:IconAntDesign.getImageSourceSync('like1', 20, 'black'),
-  car:IconIonicons.getImageSourceSync('car-sport', 20, 'black'),
-  car2:IconIonicons.getImageSourceSync('car', 20, 'black'),
+  like1: IconAntDesign.getImageSource('like1', 20, 'black'),
+  car: IconIonicons.getImageSource('car-sport', 20, 'black'),
+  car2: IconIonicons.getImageSource('car', 20, 'black'),
 
-  closecircle:IconAntDesign.getImageSourceSync('closecircle', 20, 'black'),
-  save:IconEntypo.getImageSourceSync('save', 20, 'black'),
+  closecircle: IconAntDesign.getImageSource('closecircle', 20, 'black'),
+  save: IconEntypo.getImageSource('save', 20, 'black'),
 
-  
-  
   dislike1: IconAntDesign.getImageSource('dislike1', 20, 'black'),
   Download: MaterialIcons.getImageSource('file-download', 20, 'black')
 

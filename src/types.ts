@@ -29,6 +29,7 @@ export type Car = {
   description: string;
   amenities?: string[];
   owner: Owner;
+  isFavorite: boolean;
 };
 
 export interface CarLocationProps {
@@ -191,8 +192,9 @@ export interface CarCardItemProps {
   rating: number;
   numberOfBooked: number;
   isFavorite: boolean;
-  width?: any;
+  width?: number;
   onPress: () => void;
+  removeFromFavorites?: () => void;
 }
 
 export interface FeaturedLocationProps {
@@ -233,6 +235,7 @@ export interface RenderListProps<T> {
   data: T[];
   renderItem: ({item}: {item: T}) => JSX.Element;
   snapToInterval: number;
+  emptyComponent?: JSX.Element;
   reverse?: boolean;
 }
 

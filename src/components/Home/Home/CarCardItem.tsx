@@ -23,6 +23,7 @@ import AxiosInstance from '../../../constants/AxiosInstance';
 import {AppContext} from '../../../utils/AppContext';
 import {showToastMessage} from '../../../utils/utils';
 import axios from 'axios';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 const CarCardItem = ({
   id,
@@ -35,17 +36,19 @@ const CarCardItem = ({
   originalPrice,
   price,
   rating,
-  // isFavorite,
+  isFavorite,
+  removeFromFavorites,
   numberOfBooked,
-  width = 330,
+  width,
   onPress,
 }: CarCardItemProps) => {
+  width = width ?? 330;
   const {idUser} = useContext(AppContext);
-  const [isFavorite, setIsFavorite] = useState(false);
+  const [isFavourite, setIsFavourite] = useState(isFavorite);
   const [thumbnail, setThumbnail] = useState('');
   const addOrRemoveFavorite = async () => {
     try {
-      if (isFavorite) {
+      if (isFavourite) {
         const response = await AxiosInstance().delete(
           `/favorite-car/api/delete?idUser=${idUser}&idCar=${id}`,
         );
@@ -58,7 +61,7 @@ const CarCardItem = ({
         showToastMessage('', 'Xe được thêm vào yêu thích');
         console.log(response, 'Xe được thêm vào danh sách yêu thích');
       }
-      setIsFavorite(!isFavorite);
+      setIsFavourite(!isFavourite);
     } catch (error) {
       console.log(error);
     }
@@ -76,14 +79,15 @@ const CarCardItem = ({
   );
   useEffect(() => {
     try {
-      let images = JSON.parse(image.slice(1, -1));
-      if (images.length > 0) {
-        setThumbnail(images[0]);
-      } else {
-        setThumbnail(
-          'https://2.bp.blogspot.com/-muVbmju-gkA/Vir94NirTeI/AAAAAAAAT9c/VoHzHZzQmR4/s1600/placeholder-image.jpg',
-        );
-      }
+      // let images = JSON.parse(image.slice(1, -1));
+      // if (images.length > 0) {
+      //   setThumbnail(images[0]);
+      // } else {
+      //   setThumbnail(
+      //     'https://2.bp.blogspot.com/-muVbmju-gkA/Vir94NirTeI/AAAAAAAAT9c/VoHzHZzQmR4/s1600/placeholder-image.jpg',
+      //   );
+      // }
+      setThumbnail(imageThumbnail);
     } catch (error) {
       console.log('Image error:  ' + error);
       setThumbnail(
@@ -110,9 +114,9 @@ const CarCardItem = ({
         style={CarCardItemStyles.pressable}>
         <Icon
           name="heart"
-          color={isFavorite ? COLOR.fifth : COLOR.white}
+          color={isFavourite ? COLOR.fifth : COLOR.white}
           size={20}
-          solid={isFavorite}
+          solid={isFavourite}
         />
       </Pressable>
 
@@ -188,6 +192,19 @@ const CarCardItem = ({
 };
 
 export default CarCardItem;
+
+export const CarCardItemPlaceholder = () => {
+  return (
+    <SkeletonPlaceholder>
+      <SkeletonPlaceholder.Item
+        flexDirection="row"
+        alignItems="center"
+        marginRight={20}>
+        <SkeletonPlaceholder.Item width={330} height={100} borderRadius={20} />
+      </SkeletonPlaceholder.Item>
+    </SkeletonPlaceholder>
+  );
+};
 
 export const CarCardItemStyles = StyleSheet.create({
   container: {

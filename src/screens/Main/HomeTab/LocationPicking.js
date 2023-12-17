@@ -178,65 +178,64 @@ const LocationPicking = props => {
           </Text>
         </TouchableOpacity>
 
-        {/* Navigate qua sổ địa chỉ của user  */}
-        <TouchableOpacity style={[appStyle.rowBetween, {marginTop: 10}]}>
-          <Text style={appStyle.text14}>Địa chỉ của tôi </Text>
-          <FastImage
-            source={ICON.Next}
-            resizeMode="stretch"
-            style={appStyle.iconMedium}
-          />
-        </TouchableOpacity>
-
-        {/* Địa chỉ mặc định của user */}
         {defaultAddress && defaultAddress.data && (
-          <TouchableOpacity
-            onPress={() => {
-              const {address, ward, district, city} = defaultAddress.data;
-              const fullAddress = `${address}, ${ward}, ${district}, ${city}`;
-              props.setInputAddress(fullAddress);
-              props.close();
-            }}>
-            <View style={styles.container}>
-              <View style={styles.content}>
-                <FastImage
-                  style={[appStyle.iconBig, {alignSelf: 'center'}]}
-                  source={ICON.Home}
-                />
-                <View style={{marginLeft: 16}}>
-                  <View
-                    style={{
-                      width: windowWidth * 0.35,
-                      justifyContent: 'flex-start',
-                      alignItems: 'center',
-                      flexDirection: 'row',
-                    }}>
-                    <Text style={[appStyle.text16, {fontWeight: '600'}]}>
-                      {defaultAddress.data.note}
-                    </Text>
-                    <View>
-                      <Text
-                        style={[
-                          appStyle.text14,
-                          {
-                            backgroundColor: COLOR.bgHeader,
-                            marginLeft: 10,
-                            borderRadius: 15,
-                            padding: 8,
-                          },
-                        ]}>
-                        Mặc định
+          <View>
+            <TouchableOpacity style={[appStyle.rowBetween, {marginTop: 10}]}>
+              <Text style={appStyle.text14}>Địa chỉ của tôi </Text>
+              <FastImage
+                source={ICON.Next}
+                resizeMode="stretch"
+                style={appStyle.iconMedium}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                const {address, ward, district, city} = defaultAddress.data;
+                const fullAddress = `${address}, ${ward}, ${district}, ${city}`;
+                props.setInputAddress(fullAddress);
+                props.close();
+              }}>
+              <View style={styles.container}>
+                <View style={styles.content}>
+                  <FastImage
+                    style={[appStyle.iconBig, {alignSelf: 'center'}]}
+                    source={ICON.Home}
+                  />
+                  <View style={{marginLeft: 16}}>
+                    <View
+                      style={{
+                        width: windowWidth * 0.35,
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                      }}>
+                      <Text style={[appStyle.text16, {fontWeight: '600'}]}>
+                        {defaultAddress.data.note}
                       </Text>
+                      <View>
+                        <Text
+                          style={[
+                            appStyle.text14,
+                            {
+                              backgroundColor: COLOR.bgHeader,
+                              marginLeft: 10,
+                              borderRadius: 15,
+                              padding: 8,
+                            },
+                          ]}>
+                          Mặc định
+                        </Text>
+                      </View>
                     </View>
+                    <Text style={[appStyle.text14]}>
+                      {defaultAddress.data.address}, {defaultAddress.data.ward},{' '}
+                      {defaultAddress.data.district}, {defaultAddress.data.city}
+                    </Text>
                   </View>
-                  <Text style={[appStyle.text14]}>
-                    {defaultAddress.data.address}, {defaultAddress.data.ward},{' '}
-                    {defaultAddress.data.district}, {defaultAddress.data.city}
-                  </Text>
                 </View>
               </View>
-            </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
+          </View>
         )}
 
         <View

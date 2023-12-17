@@ -1,4 +1,4 @@
-import {Text, View,Dimensions} from 'react-native';
+import {Text, View, Dimensions} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {appStyle, windowHeight, windowWidth} from '../constants/AppStyle';
 import Toast from 'react-native-toast-message';
@@ -9,6 +9,8 @@ import axios from 'axios';
 import {Location} from '../types';
 import {REACT_APP_VIETMAP_API_KEY} from '@env';
 import numeral from 'numeral';
+import {useContext} from 'react';
+import {CarLocationContext} from './CarLocationContext';
 
 export const formatPrice = (price: number) => {
   price = Math.round(price);
