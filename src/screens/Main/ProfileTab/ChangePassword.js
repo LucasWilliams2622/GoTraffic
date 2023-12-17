@@ -31,9 +31,9 @@ const ChangePassword = props => {
       .required('Phải nhập xác nhận mật khẩu'),
   });
 
-  const handleChangePassword = async (oldPassword,newPassword) => {
+  const handleChangePassword = async (oldPassword, newPassword) => {
     try {
-      console.log("=========================",oldPassword, newPassword);
+      console.log('=========================', oldPassword, newPassword);
       const response = await axios.put(
         'http://103.57.129.166:3000/user/api/change-password',
         {
@@ -74,8 +74,7 @@ const ChangePassword = props => {
               // Xử lý khi không có lỗi
               setOldPassword(values.currentPassword);
               setNewPassword(values.newPassword);
-
-              handleChangePassword(values.currentPassword,values.newPassword);
+              handleChangePassword(values.currentPassword, values.newPassword);
             })
             .catch(errors => {
               // Có lỗi--> hiển thị lỗi

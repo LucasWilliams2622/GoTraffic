@@ -1,11 +1,4 @@
-import {
-  KeyboardAvoidingView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {KeyboardAvoidingView, StyleSheet, Text, View} from 'react-native';
 import {Svg, Path, Rect} from 'react-native-svg';
 import React, {useState, useContext, useEffect} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -14,26 +7,22 @@ import {appStyle, windowHeight} from '../../constants/AppStyle';
 import AppButton from '../../components/AppButton';
 import {COLOR, ICON} from '../../constants/Theme';
 import FastImage from 'react-native-fast-image';
-import {Center} from 'native-base';
 import {BottomSheet} from 'react-native-btr';
 import * as Yup from 'yup';
 import {Formik, useFormik} from 'formik';
 import {AppContext} from '../../utils/AppContext';
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
-import AxiosInstance from '../../constants/AxiosInstance';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {showToastMessage} from '../../utils/utils';
 import DismissKeyboard from '../../components/DismissKeyboard';
-
+import {useNavigation} from '@react-navigation/native';
 const Login = props => {
   const {isLogin, setIsLogin, setInfoUser, setIdUser, idUser} =
     useContext(AppContext);
-  const {navigation} = props;
+  const [phoneRegist, setphoneRegist] = useState(
+    props.route.params ? props.route.params : '',
+  );
+  const navigation = useNavigation();
 
   const goRegister = () => {
     navigation.navigate('Register');
@@ -225,7 +214,10 @@ const Login = props => {
               Đăng nhập ngay!
             </Text>
             <Formik
-              initialValues={{phoneNumber: '', password: ''}}
+              initialValues={{
+                phoneNumber: phoneRegist,
+                password: '',
+              }}
               validationSchema={validationSchema}
               onSubmit={values => {
                 onLogin(values.phoneNumber, values.password);

@@ -15,33 +15,21 @@ import AppButton from '../../components/AppButton';
 import {COLOR, ICON} from '../../constants/Theme';
 import FastImage from 'react-native-fast-image';
 import * as Yup from 'yup';
-import {Formik} from 'formik';
 import {KeyboardAvoidingView} from 'native-base';
-import AxiosInstance from '../../constants/AxiosInstance';
 import {showToastMessage} from '../../utils/utils';
 import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
-import OTPInputView from '@twotalltotems/react-native-otp-input';
 import DismissKeyboard from '../../components/DismissKeyboard';
 
 const EmailCheck = props => {
-  const { name, password, phone } = props.route.params;
-  console.log(name, password, phone);
+  const {name, password, phone} = props.route.params;
   const navigation = useNavigation();
-  const validationSchema = Yup.object().shape({
-    email: Yup.string()
-      .email('Vui lòng nhập email hợp lệ ')
-      .max(255)
-      .required('Email không được để trống'),
-  });
-  const [checkEnable, setCheckEnable] = useState(false);
-  const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const [forgotEmail, setForgotEmail] = useState('');
   const [verifyCode, setVerifyCode] = useState('');
 
   //API VERIFIED EMAIL
-  const handleEmailChange = (email) => {
+  const handleEmailChange = email => {
     setForgotEmail(email);
     const formatEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     if (!formatEmail.test(email)) {
@@ -52,29 +40,19 @@ const EmailCheck = props => {
   };
   const handleVerifyEmail = async () => {
     try {
-      console.log('>>>>>>>>>>>>>>>', forgotEmail);
       const checkEmail = await axios.post(
-        'http://103.57.129.166:3000/user/api/check-email',
-        {
-          email: forgotEmail,
-        },
+        'http://103.57.129.166:3000/user/api/check-email?email=' + forgotEmail,
       );
-      if (checkEmail.status === 200) {
-        showToastMessage('error', 'Email đã tồn tại')
-      } else if (checkEmail.status === 201) {
-        onRegister(name, phone, forgotEmail, password);
-        console.log(">>>>>>>>>Email chưa tồn tại");
-        const responseCode = await axios.post(`http://103.57.129.166:3000/user/api/send-verification-code?email=${forgotEmail}`)
-        console.log('>>>>>>>>>', responseCode.data.message);
-       
+      console.log(checkEmail.data);
+      if (checkEmail.data.result) {
+        showToastMessage('error', 'Email đã tồn tại');
       } else {
-        showToastMessage('error', 'Lỗi gửi mã!')
+        onRegister(name, phone, forgotEmail, password);
       }
-
     } catch (error) {
       console.log(e);
     }
-  }
+  };
   const handleEmailCheck = () => {
     if (!emailError && forgotEmail.trim() !== '') {
       handleVerifyEmail();
@@ -86,25 +64,28 @@ const EmailCheck = props => {
   //API VERIFIED CODE
   const handleVerifyCode = async () => {
     try {
-      const response = await axios.post(
-        'http://103.57.129.166:3000/user/api/verify-email',
-        {
-          email: forgotEmail,
-          verifyCode: verifyCode,
-        },
-      );
-  
-      if (response.data.result) {
-        showToastMessage('', 'Xác thực thành công');
-        navigation.navigate('Login');
+      if (verifyCode.length == 0) {
+        showToastMessage('error',"Vui lòng nhập mã xác thực")
       } else {
-        showToastMessage('error', 'Xác thực thất bại');
+        const response = await axios.post(
+          'http://103.57.129.166:3000/user/api/verify-email',
+          {
+            email: forgotEmail,
+            verifyCode: verifyCode,
+          },
+        );
+        if (response.data.result) {
+          // showToastMessage('', 'Xác thực thành công');
+          showToastMessage('', 'Đăng kí thành công');
+          navigation.navigate('Login', {phoneRegist: phone});
+        } else {
+          showToastMessage('error', 'Mã xác thực không chính xác');
+        }
       }
     } catch (error) {
       console.log(error);
     }
   };
-  
 
   //API REGISTER
   const onRegister = async (name, phone, forgotEmail, password) => {
@@ -120,8 +101,16 @@ const EmailCheck = props => {
       );
       console.log(response.data);
       if (response.data.result) {
-        showToastMessage('', 'Đăng kí thành công');
-        //navigation.navigate('Login');
+        const responseCode = await axios.post(
+          `http://103.57.129.166:3000/user/api/send-verification-code?email=${forgotEmail}`,
+        );
+
+        console.log(responseCode.data);
+        if (responseCode.data.result) {
+          showToastMessage('', 'Đã gửi mã xác thực');
+        } else {
+          console.log('123123aaaaaaaaaaaaa');
+        }
       } else {
         showToastMessage('error', 'Đăng kí thất bại');
       }
@@ -157,60 +146,83 @@ const EmailCheck = props => {
 
   return (
     <SafeAreaView style={appStyle.container}>
-
-      <View style={[styles.main]}>
-        <TouchableOpacity
-          style={{ marginVertical: 20, marginLeft: 8 }}
-          onPress={() => navigation.goBack()}>
-          <FastImage source={ICON.Back} style={appStyle.iconBig} />
-        </TouchableOpacity>
-
-        <KeyboardAvoidingView behavior="padding" >
-          <View style={{ paddingHorizontal: 14 }}>
-            <Text style={[appStyle.text24Bold, { color: COLOR.fifth }]}>Xác thực email để bảo vệ tài khoản của bạn</Text>
-            <View style={styles.viewItem}>
-
-              <AppInput
-                placeholder={'Nhập email của tài khoản'}
-                onChangeText={handleEmailChange}
-                value={forgotEmail}
-              />
-              {emailError ? (
-                <Text style={[styles.textError, { marginTop: 10 }]}>{emailError}</Text>
-              ) : null}
-            </View>
-
-            <AppButton
-              title="Nhận mã"
-              color={COLOR.secondary}
-              fontSize={16}
-              onPress={handleEmailCheck}
-              marginTop={5}
-            />
-          </View>
-        </KeyboardAvoidingView>
-
-        <View style={styles.inputCode}>
-          <TextInput
-            placeholder='Nhập mã'
-            style={styles.code}
-            onChangeText={(code) => setVerifyCode(code)}
-          >
-
-          </TextInput>
-          <TouchableOpacity style={styles.btnCode} onPress={()=>handleVerifyCode()}>
-            <Text style={[appStyle.text165, { alignSelf: 'center', color: 'white' }]}>Xác nhận</Text>
+      <DismissKeyboard>
+        <View style={[styles.main]}>
+          <TouchableOpacity
+            style={{marginVertical: 20, marginLeft: 8}}
+            onPress={() => navigation.goBack()}>
+            <FastImage source={ICON.Back} style={appStyle.iconBig} />
           </TouchableOpacity>
-        </View>
-        {showBottom && (
-          <Svg style={{ flex: 1, position: 'absolute', bottom: 0, zIndex: -1 }} xmlns="http://www.w3.org/2000/svg" width="420" height="186" viewBox="0 0 393 186" fill="none">
-            <Path d="M35.5544 0L-15 98.7526V186H450V68.0722L396.442 20.134L307.347 68.0722L256.792 0L218.251 52.732L171.2 20.134L124.65 41.2268L35.5544 0Z" fill="#90C9E6" />
-            <Path d="M-27.0323 44L-79 114.613V177H399V92.6753L343.945 58.3969L252.358 92.6753L200.391 44L160.772 81.7062L112.406 58.3969L64.5544 73.4794L-27.0323 44Z" fill="#219EBC" />
-            <Path d="M54.5985 89L-27.5 157L-34 186H494V124.5L437.217 99.5L342.757 124.5L289.158 89L248.296 116.5L198.412 99.5L149.059 110.5L54.5985 89Z" fill="#023047" />
-          </Svg>
-        )}
-      </View>
 
+          <KeyboardAvoidingView behavior="padding">
+            <View style={{paddingHorizontal: 14}}>
+              <Text style={[appStyle.text24Bold, {color: COLOR.fifth}]}>
+                Xác thực email để bảo vệ tài khoản của bạn
+              </Text>
+              <View style={styles.viewItem}>
+                <AppInput
+                  placeholder={'Nhập email của tài khoản'}
+                  onChangeText={handleEmailChange}
+                  value={forgotEmail}
+                />
+                {emailError ? (
+                  <Text style={[styles.textError, {marginTop: 10}]}>
+                    {emailError}
+                  </Text>
+                ) : null}
+              </View>
+
+              <AppButton
+                title="Nhận mã"
+                color={COLOR.secondary}
+                fontSize={16}
+                onPress={handleEmailCheck}
+                marginTop={5}
+              />
+            </View>
+          </KeyboardAvoidingView>
+
+          <View style={styles.inputCode}>
+            <TextInput
+              placeholder="Nhập mã"
+              style={styles.code}
+              onChangeText={code => setVerifyCode(code)}></TextInput>
+            <TouchableOpacity
+              style={styles.btnCode}
+              onPress={() => handleVerifyCode()}>
+              <Text
+                style={[
+                  appStyle.text165,
+                  {alignSelf: 'center', color: 'white'},
+                ]}>
+                Xác nhận
+              </Text>
+            </TouchableOpacity>
+          </View>
+          {showBottom && (
+            <Svg
+              style={{flex: 1, position: 'absolute', bottom: 0, zIndex: -1}}
+              xmlns="http://www.w3.org/2000/svg"
+              width="420"
+              height="186"
+              viewBox="0 0 393 186"
+              fill="none">
+              <Path
+                d="M35.5544 0L-15 98.7526V186H450V68.0722L396.442 20.134L307.347 68.0722L256.792 0L218.251 52.732L171.2 20.134L124.65 41.2268L35.5544 0Z"
+                fill="#90C9E6"
+              />
+              <Path
+                d="M-27.0323 44L-79 114.613V177H399V92.6753L343.945 58.3969L252.358 92.6753L200.391 44L160.772 81.7062L112.406 58.3969L64.5544 73.4794L-27.0323 44Z"
+                fill="#219EBC"
+              />
+              <Path
+                d="M54.5985 89L-27.5 157L-34 186H494V124.5L437.217 99.5L342.757 124.5L289.158 89L248.296 116.5L198.412 99.5L149.059 110.5L54.5985 89Z"
+                fill="#023047"
+              />
+            </Svg>
+          )}
+        </View>
+      </DismissKeyboard>
     </SafeAreaView>
   );
 };
@@ -297,7 +309,7 @@ const styles = StyleSheet.create({
     width: windowWidth * 0.22,
     height: windowHeight * 0.05,
     justifyContent: 'center',
-    backgroundColor: COLOR.fifth,
+    backgroundColor: COLOR.primary,
     borderRadius: 8,
   },
 });
