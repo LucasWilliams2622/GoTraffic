@@ -29,7 +29,7 @@ const Recharge = () => {
   const [amount, setAmount] = useState(0);
   const [blockInput, setBlockInput] = useState(true);
   const [checkoutUrl, setCheckoutUrl] = useState('');
-  const {idUser} = useContext(AppContext);
+  const {idUser, setInfoUser} = useContext(AppContext);
   const [currentUrl, setCurrentUrl] = useState('');
 
   const handleNavigationStateChange = navState => {
@@ -42,6 +42,7 @@ const Recharge = () => {
   const checkLink = async url => {
     if (url.includes('success')) {
       console.log('Thanh toan rồi nha');
+      console.log(idUser, amount);
       const response = await axios.post(
         'http://103.57.129.166:3000/user/api/recharge-by-id-user',
         {
@@ -49,13 +50,20 @@ const Recharge = () => {
           amount: parseInt(amount),
         },
       );
-      setBlockInput(true);
+
       setAmount(0);
+      const responseUser = await axios.get(
+        `http://103.57.129.166:3000/user/api/get-by-id/?id=${idUser}`,
+      );
+      setInfoUser(responseUser.data.user);
+      setBlockInput(true);
+
       showToastMessage('', 'Thanh toán thành công');
     } else {
       console.log('Chưa thanh toán');
     }
   };
+
   const formik = useFormik({
     initialValues: {
       amount: '',
@@ -83,9 +91,11 @@ const Recharge = () => {
           cancelUrl: 'http://103.57.129.166:3000/cancel.html',
         },
       );
+
       if (response.data.data.checkoutUrl) {
         setCheckoutUrl(response.data.data.checkoutUrl);
         setBlockInput(false);
+        setAmount(values.amount);
       } else {
         console.log('==============>ERROR');
       }
@@ -112,7 +122,11 @@ const Recharge = () => {
           ) : null}
         </View>
 
-        <AppButton title={'Nạp'} onPress={formik.handleSubmit}  />
+        <AppButton
+          title={'Nạp'}
+          onPress={formik.handleSubmit}
+          disabled={!blockInput}
+        />
 
         <View style={{flex: 1, marginBottom: 70}}>
           {checkoutUrl != '' ? (
@@ -138,25 +152,4 @@ const Recharge = () => {
 
 export default Recharge;
 
-const styles = StyleSheet.create({
-  viewTitle: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderBottomWidth: 0.5,
-  },
-  image: {
-    width: '100%',
-    height: '30%',
-    position: 'absolute',
-    borderBottomRightRadius: 10,
-    borderBottomLeftRadius: 10,
-  },
-  title: {
-    fontSize: 24,
-    textAlign: 'center',
-    color: COLOR.black,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    marginTop: 14,
-  },
-});
+const styles = StyleSheet.create({});
