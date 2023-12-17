@@ -11,6 +11,7 @@ const FailModal = ({
   title,
   text,
   nextStep,
+  onNextStep,
 }) => {
   return (
     <Modal animationType="fade" transparent={true} visible={isVisible}>
@@ -63,7 +64,7 @@ const FailModal = ({
                 alignItems: 'center',
                 marginTop: 20,
               }}
-              onPress={onCheckBalance}>
+              onPress={onNextStep}>
               <Text style={[appStyle.text16Bold, {color: COLOR.blue}]}>
                 {nextStep}
               </Text>
