@@ -124,7 +124,7 @@ const Trip = () => {
         />
         <View style={[appStyle.main]}>
           {listBookingCurrent.length > 0 && (
-            <Text style={styles.text1}>Hiện tại</Text>
+            <Text style={styles.text1}>Hiện tại ({listBookingCurrent.length})</Text>
           )}
 
           {loading == true ? (

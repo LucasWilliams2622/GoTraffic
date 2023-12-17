@@ -57,6 +57,7 @@ import {Badge} from 'react-native-elements';
 import {useIsFocused} from '@react-navigation/native';
 import WithdrawRequest from '../screens/Main/ProfileTab/MyCar/WithdrawRequest';
 import MapCars from '../screens/Main/ProfileTab/MyCar/MapCars';
+import ChartCar from '../screens/Main/ProfileTab/MyCar/ChartCar';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -197,6 +198,8 @@ const StackProfile = () => {
       <Stack.Screen name="WithdrawRequest" component={WithdrawRequest} />
       <Stack.Screen name="PickLocation" component={PickLocation} />
       <Stack.Screen name="MapCars" component={MapCars} />
+      <Stack.Screen name="ChartCar" component={ChartCar} />
+
     </Stack.Navigator>
   );
 };

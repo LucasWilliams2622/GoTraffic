@@ -132,9 +132,10 @@ export const ICON = {
     20,
     'black',
   ),
+  piechart: IconAntDesign.getImageSourceSync('piechart', 20, 'black'),
+  areachart: IconAntDesign.getImageSourceSync('areachart', 20, 'black'),
   wallet: IconEntypo.getImageSourceSync('wallet', 20, 'black'),
   location: IconEntypo.getImageSourceSync('location', 20, 'black'),
-
 
   closecircle: IconAntDesign.getImageSourceSync('closecircle', 20, 'black'),
   save: IconEntypo.getImageSourceSync('save', 20, 'black'),

@@ -104,6 +104,12 @@ const HomeCar = props => {
           text="Lịch sử và trạng thái các chuyến"
           onPress={() => navigation.navigate('TripOfCar')}
         />
+        <AppHomeCar
+          icon={ICON.areachart}
+          title="Thống kê"
+          text="Thống kê xe và chuyến"
+          onPress={() => navigation.navigate('ChartCar')}
+        />
       </View>
     </SafeAreaView>
   );
