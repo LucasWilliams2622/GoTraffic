@@ -34,11 +34,12 @@ const MyWallet = () => {
   const getHistoryMoney = async () => {
     try {
       const response = await AxiosInstance().get(
-        '/request/api/list-request-by-user?idUser=' + idUser,
+        'http://103.57.129.166:3000/transaction/api/get-by-id-user?idUser=' +
+          idUser,
       );
       if (response) {
-        setData(response);
-        console.log(response);
+        setData(response.transactions);
+        // console.log(response.transactions);
       } else {
         console.log('NETWORK ERROR');
       }

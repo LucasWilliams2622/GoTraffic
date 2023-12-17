@@ -7,6 +7,7 @@ import {
   TextInput,
   FlatList,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import {
   appStyle,
@@ -194,7 +195,7 @@ const WithdrawRequest = () => {
       <AppHeader title="Rút tiền" />
 
       <DismissKeyboard>
-        <>
+        <ScrollView>
           <FastImage
             resizeMode="stretch"
             source={require('../../../../assets/image/banner_transfer.png')}
@@ -335,13 +336,13 @@ const WithdrawRequest = () => {
               )}
 
               <AppButton
-                title="Rút"
+                title="Gửi yêu cầu"
                 containerStyle={{}}
                 onPress={() => handleWithdraw()}
               />
             </View>
           </View>
-        </>
+        </ScrollView>
       </DismissKeyboard>
 
       <BottomSheet

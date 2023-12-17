@@ -10,7 +10,7 @@ import Moment from 'moment';
 const ItemCar = props => {
   const navigation = useNavigation();
   const {data} = props;
-
+  console.log(data);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.carContainer}>
@@ -27,7 +27,7 @@ const ItemCar = props => {
             }}
           />
           <View style={{marginLeft: 24, width: '60%'}}>
-            {data.status == 1 ? (
+            {data.transactionType == 'recharge' ? (
               <Text style={[appStyle.text16Bold, {marginBottom: 5}]}>
                 Nạp tiền
               </Text>
@@ -36,16 +36,19 @@ const ItemCar = props => {
                 Rút tiền
               </Text>
             )}
-            <Text style={[appStyle.text14, {marginBottom: 5,}]}>
-              Đến {data.bankName} {data.bankNumber}
-            </Text>
+            {data.transactionType != 'recharge' && (
+              <Text style={[appStyle.text14, {marginBottom: 5}]}>
+                Đến {data.bankName} {data.bankNumber}
+              </Text>
+            )}
+
             <Text style={[appStyle.text14]}>
               {Moment(data.createdAt).format('HH:mm, DD/MM/YYYY ')}
             </Text>
           </View>
         </View>
 
-        {data.status == 1 ? (
+        {data.transactionType == 'recharge' ? (
           <Text style={[appStyle.text16Bold, {color: COLOR.green}]}>
             +{MoneyText(data.amount)}đ
           </Text>

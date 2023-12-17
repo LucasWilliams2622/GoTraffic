@@ -12,7 +12,7 @@ import Toast from 'react-native-toast-message';
 import {AppContext} from '../../../utils/AppContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {showToastMessage} from '../../../utils/utils';
-import AppHeader from '../../../components/AppHeader'
+import AppHeader from '../../../components/AppHeader';
 import axios from 'axios';
 
 const ChangePassword = props => {
@@ -31,20 +31,25 @@ const ChangePassword = props => {
       .required('Phải nhập xác nhận mật khẩu'),
   });
 
-  const handleChangePassword = async () => {
+  const handleChangePassword = async (oldPassword,newPassword) => {
     try {
-      console.log(infoUser.phone);
-      const response = await axios.put('http://103.57.129.166:3000/user/api/change-password', {
-        phone: infoUser.phone,
-        oldPassword: oldPassword,
-        newPassword: newPassword,
-      });
-      console.log();
-      if (response.status == 200) {
+      console.log("=========================",oldPassword, newPassword);
+      const response = await axios.put(
+        'http://103.57.129.166:3000/user/api/change-password',
+        {
+          phone: infoUser.phone,
+          oldPassword: oldPassword,
+          newPassword: newPassword,
+        },
+      );
+      console.log(response.data);
+      if (response.data.result) {
         await AsyncStorage.removeItem('userInfo');
         setIsLogin(false);
-
-        showToastMessage('', 'Đổi mật khẩu thành công, vui lòng đăng nhập lạis');
+        showToastMessage(
+          '',
+          'Đổi mật khẩu thành công, vui lòng đăng nhập lại!',
+        );
       } else {
         showToastMessage('error', 'Đổi mật khẩu thất bại');
       }
@@ -54,7 +59,7 @@ const ChangePassword = props => {
   };
   return (
     <SafeAreaView style={appStyle.container}>
-      <AppHeader title='Đổi mật khẩu'/>
+      <AppHeader title="Đổi mật khẩu" />
       <Formik
         initialValues={{
           currentPassword: '',
@@ -70,7 +75,7 @@ const ChangePassword = props => {
               setOldPassword(values.currentPassword);
               setNewPassword(values.newPassword);
 
-              handleChangePassword();
+              handleChangePassword(values.currentPassword,values.newPassword);
             })
             .catch(errors => {
               // Có lỗi--> hiển thị lỗi

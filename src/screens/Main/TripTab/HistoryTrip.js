@@ -1,7 +1,7 @@
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import React, {useState, useEffect, useContext} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {appStyle} from '../../../constants/AppStyle';
+import {appStyle, windowHeight} from '../../../constants/AppStyle';
 import {FlatList, ScrollView} from 'native-base';
 import {COLOR} from '../../../constants/Theme';
 import ItemTrip from '../../../components/Support/ItemTrip';
@@ -28,6 +28,10 @@ const HistoryTrip = () => {
           setLoading(false);
         }, 1500);
       } else {
+        setListBooking([]);
+        setTimeout(() => {
+          setLoading(false);
+        }, 1500);
         console.log('NETWORK ERROR');
       }
     } catch (e) {
@@ -43,14 +47,12 @@ const HistoryTrip = () => {
       <AppHeader title="Lịch sử chuyến" />
       {/* <View style={{backgroundColor:COLOR.borderColor2,height:1,width:'100%'}}/> */}
       <ScrollView style={appStyle.main}>
-        <Text style={styles.text1}>Đã thuê</Text>
         {loading == true ? (
           <View>
             <SkeletonTrip />
             <SkeletonTrip />
             <SkeletonTrip />
             <SkeletonTrip />
-         
           </View>
         ) : (
           <FlatList
@@ -60,7 +62,7 @@ const HistoryTrip = () => {
             keyExtractor={item => item.id}
             showsVerticalScrollIndicator={false}
             ListEmptyComponent={
-              <View>
+              <View style={{marginTop: windowHeight * 0.1}}>
                 <FastImage
                   style={styles.imageInvisible}
                   resizeMode={'stretch'}

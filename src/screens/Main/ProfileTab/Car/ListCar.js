@@ -36,12 +36,15 @@ const ListCar = props => {
       const response = await AxiosInstance().get(
         `/car/api/list-by-id-user?idUser=${idUser}`,
       );
+      console.log(response);
       if (response.result) {
         setCarData(response.listCar);
         setTimeout(() => {
           setLoading(false);
-        }, 1500);
+        }, 1100);
       } else {
+        setCarData([]);
+        setLoading(false)
         console.log('Failed to get car');
       }
     } catch (error) {
