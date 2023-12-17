@@ -30,12 +30,10 @@ const MyAddress = props => {
       const response = await AxiosInstance().get(
         `/address/api/get-address-by-id-user?idUser=${idUser}`,
       );
-      console.log(response.data);
       if (response.data != null) {
         setAddresses(response.data);
       } else {
         setAddresses([]);
-        console.log('dsads');
       }
     } catch (error) {
       console.log(error);

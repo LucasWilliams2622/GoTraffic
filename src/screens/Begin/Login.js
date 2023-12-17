@@ -66,7 +66,7 @@ const Login = props => {
           password: password,
         },
       );
-      console.log('LOGIN INFO', response.status);
+      // console.log('LOGIN INFO', response.status);
       if (response.status === 202) {
         showToastMessage('error', 'Tài khoản bị vô hiệu hóa');
       } else if (response.status === 203) {
@@ -95,7 +95,6 @@ const Login = props => {
   };
   const onForgotPassword = async () => {
     try {
-      console.log('>>>>>>>>>>>>>>>', forgotEmail);
       const checkEmail = await axios.post(
         'http://103.57.129.166:3000/user/api/check-email',
         {
@@ -109,7 +108,6 @@ const Login = props => {
             email: forgotEmail,
           },
         );
-        console.log(response.data.massage);
         if (response.data.result) {
           showToastMessage('', 'Gửi mật khẩu mới thành công');
           setVisible(false);
@@ -119,8 +117,6 @@ const Login = props => {
       } else {
         showToastMessage('error', 'Email không tồn tại');
         setVisible(false);
-        console.log('>>>>>>>>>Email không tồn tại');
-        console.log(checkEmail.message);
       }
     } catch (error) {
       console.log(e);
@@ -152,7 +148,7 @@ const Login = props => {
   const checkLoginInfo = async () => {
     try {
       const userInfo = await AsyncStorage.getItem('userInfo');
-      console.log('Start checkLoginInfo');
+      console.log('=================| Start checkLoginInfo |================');
 
       if (userInfo !== null) {
         const parsedUserInfo = JSON.parse(userInfo);

@@ -29,7 +29,7 @@ const HomeCar = props => {
       const response = await AxiosInstance().get(
         `/car/api/list-by-id-user?idUser=${idUser}`,
       );
-      console.log(response);
+      // console.log(response);
       if (response.result) {
         setData(response.listCar);
       } else {

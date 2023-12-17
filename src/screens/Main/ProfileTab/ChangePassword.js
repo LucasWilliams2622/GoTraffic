@@ -33,7 +33,6 @@ const ChangePassword = props => {
 
   const handleChangePassword = async (oldPassword, newPassword) => {
     try {
-      console.log('=========================', oldPassword, newPassword);
       const response = await axios.put(
         'http://103.57.129.166:3000/user/api/change-password',
         {
@@ -42,7 +41,6 @@ const ChangePassword = props => {
           newPassword: newPassword,
         },
       );
-      console.log(response.data);
       if (response.data.result) {
         await AsyncStorage.removeItem('userInfo');
         setIsLogin(false);

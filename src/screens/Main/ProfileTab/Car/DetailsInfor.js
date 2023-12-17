@@ -32,7 +32,7 @@ const DetailsInfor = props => {
   const navigation = useNavigation();
   const {carInfo, addressCar, markerPosition} = props.route.params;
   const {infoUser} = useContext(AppContext);
-  console.log('markerPosition', markerPosition);
+  // console.log('markerPosition', markerPosition);
   const [description, setDescription] = useState(null);
   const [fuelConsumption, setFuelConsumption] = useState(null);
   const [price, setPrice] = useState(null);
@@ -126,7 +126,7 @@ const DetailsInfor = props => {
 
   // feature
   const handleFeatureSelection = featureName => {
-    console.log(featureName);
+    // console.log(featureName);
     if (selectedFeatures.includes(featureName)) {
       setSelectedFeatures(prevSelectedFeatures =>
         prevSelectedFeatures.filter(feature => feature !== featureName),

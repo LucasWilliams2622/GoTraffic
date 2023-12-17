@@ -125,11 +125,12 @@ const UpdateAddress = ({ route }) => {
           `http://103.57.129.166:3000/address/api/delete-address-by-id?id=${addressInfo.id}`,
         );
         if (response.status === 200) {
-          console.log('>>>>>>>>>>>>> Xóa rồi');
           setSuccessModalVisible(true);
+          showToastMessage('','Xóa địa chỉ thành công')
           navigation.goBack();
         } else {
-          console.log('Lỗi xóa địa chỉ');
+          showToastMessage('error','Xóa địa chỉ thất bại')
+
         }
       }
     } catch (error) {

@@ -22,7 +22,6 @@ const FavouriteCar = (props) => {
     try {
       const response = await AxiosInstance().get(`/favorite-car/api/list-by-user?idUser=${idUser}`);
       setListCar(response.data);
-      console.log(response.data);
     } catch (error) {
       console.log(error);
     }

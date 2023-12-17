@@ -84,7 +84,7 @@ const FinalStep = props => {
       if (response.data.result) {
         const jsonString = JSON.stringify(response.data.links);
         const jsonStringWithQuotes = `\'${jsonString}\'`;
-        console.log('jsonStringWithQuotes', jsonStringWithQuotes);
+        // console.log('jsonStringWithQuotes', jsonStringWithQuotes);
         setImages(jsonStringWithQuotes);
         await addCarStep2(jsonStringWithQuotes, thumbnail);
       } else {
@@ -145,18 +145,11 @@ const FinalStep = props => {
         utilities: carInfo.selectedFeatures,
         image: carImages,
         imageThumbnail: thumbnail,
-        withDriver:carInfo.withDriver
+        withDriver: carInfo.withDriver,
       };
-console.log("datadatadata",data);
       const response = await axios.post(
         'http://103.57.129.166:3000/car/api/add',
         data,
-      );
-      console.log('=========================', response.data);
-      console.log('=========================aaa', response.data.result);
-      console.log(
-        '=========================aaaaaaaaaaaa',
-        response.data.message,
       );
 
       if (response.data.result) {

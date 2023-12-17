@@ -23,7 +23,7 @@ const DuringTrip = () => {
       );
       if (response.result) {
         setData(response.booking);
-        console.log(response.booking.status);
+        // console.log(response.booking.status);
         setTimeout(() => {
           setLoading(false);
         }, 1500);

@@ -39,8 +39,8 @@ const DetailInListCar = props => {
         '/car/api/get-by-id-car?idCar=' + id,
       );
       if (response.result) {
-        console.log(response.car);
-        console.log(response.car.Booking[0] == null);
+        // console.log(response.car);
+        // console.log(response.car.Booking[0] == null);
 
         setData(response.car);
       } else {

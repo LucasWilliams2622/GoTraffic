@@ -203,7 +203,7 @@ const CarDetail: React.FC<CarDetailProps> = ({
     const response = await axios.get(
       `http://103.57.129.166:3000/car/api/get-by-id-car?idCar=${car_id}`,
     );
-    console.log(response.data);
+    // console.log(response.data);
     const responseData = response.data;
     const car = responseData.car;
     setCar(car);

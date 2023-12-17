@@ -49,11 +49,11 @@ const Register = props => {
         showToastMessage('error', 'Số điện thoại đã tồn tại');
       } else {
         if (values.password === values.rePassword) {
-          console.log({
-            phone: values.phoneNumber,
-            name: values.name,
-            password: values.password
-          });
+          // console.log({
+          //   phone: values.phoneNumber,
+          //   name: values.name,
+          //   password: values.password
+          // });
           navigation.navigate('EmailCheck', {
             phone: values.phoneNumber,
             name: values.name,
@@ -86,14 +86,14 @@ const Register = props => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
       () => {
-        console.log('Keyboard is open');
+        // console.log('Keyboard is open');
         setShowBottom(false);
       },
     );
     const keyboardDidHideListener = Keyboard.addListener(
       'keyboardDidHide',
       () => {
-        console.log('Keyboard is closed');
+        // console.log('Keyboard is closed');
         setShowBottom(true);
       },
     );

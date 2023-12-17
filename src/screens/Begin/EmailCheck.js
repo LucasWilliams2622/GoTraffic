@@ -43,7 +43,6 @@ const EmailCheck = props => {
       const checkEmail = await axios.post(
         'http://103.57.129.166:3000/user/api/check-email?email=' + forgotEmail,
       );
-      console.log(checkEmail.data);
       if (checkEmail.data.result) {
         showToastMessage('error', 'Email đã tồn tại');
       } else {
@@ -65,7 +64,7 @@ const EmailCheck = props => {
   const handleVerifyCode = async () => {
     try {
       if (verifyCode.length == 0) {
-        showToastMessage('error',"Vui lòng nhập mã xác thực")
+        showToastMessage('error', 'Vui lòng nhập mã xác thực');
       } else {
         const response = await axios.post(
           'http://103.57.129.166:3000/user/api/verify-email',
@@ -99,17 +98,15 @@ const EmailCheck = props => {
           password: password,
         },
       );
-      console.log(response.data);
       if (response.data.result) {
         const responseCode = await axios.post(
           `http://103.57.129.166:3000/user/api/send-verification-code?email=${forgotEmail}`,
         );
 
-        console.log(responseCode.data);
         if (responseCode.data.result) {
           showToastMessage('', 'Đã gửi mã xác thực');
         } else {
-          console.log('123123aaaaaaaaaaaaa');
+          showToastMessage('', 'Gửi mã xác thực thất bại');
         }
       } else {
         showToastMessage('error', 'Đăng kí thất bại');
@@ -125,14 +122,14 @@ const EmailCheck = props => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
       () => {
-        console.log('Keyboard is open');
+        // console.log('Keyboard is open');
         setShowBottom(false);
       },
     );
     const keyboardDidHideListener = Keyboard.addListener(
       'keyboardDidHide',
       () => {
-        console.log('Keyboard is closed');
+        // console.log('Keyboard is closed');
         setShowBottom(true);
       },
     );

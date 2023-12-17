@@ -58,7 +58,7 @@ const UpdateProfile = props => {
     return randomNum;
   };
   const handleUpdate = async values => {
-    console.log(values);
+    // console.log(values);
     try {
       const formData = new FormData();
       formData.append('image', {
@@ -75,7 +75,7 @@ const UpdateProfile = props => {
           },
         },
       );
-      console.log(responseAvatar.data.link);
+      // console.log(responseAvatar.data.link);
       const response = await axios.put(
         'http://103.57.129.166:3000/user/api/update?idUser=' + idUser,
         {
@@ -88,7 +88,7 @@ const UpdateProfile = props => {
           avatar: responseAvatar.data.link,
         },
       );
-      console.log(response.data);
+      // console.log(response.data);
       if (response.data.result) {
         await updateUserInfo({newInfo: response.data.user});
         await setAppState(generateRandomNumber());

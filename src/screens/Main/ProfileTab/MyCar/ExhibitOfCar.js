@@ -114,7 +114,7 @@ const ExhibitOfCar = props => {
       if (response.data.result) {
         const jsonString = JSON.stringify(response.data.links);
         const jsonStringWithQuotes = `\'${jsonString}\'`;
-        console.log('jsonStringWithQuotes', jsonStringWithQuotes);
+        // console.log('jsonStringWithQuotes', jsonStringWithQuotes);
         setImages(jsonStringWithQuotes);
         await updateImage(jsonStringWithQuotes, imageRegister, imageInsurance);
       } else {

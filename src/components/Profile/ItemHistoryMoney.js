@@ -10,7 +10,6 @@ import Moment from 'moment';
 const ItemCar = props => {
   const navigation = useNavigation();
   const {data} = props;
-  console.log(data);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.carContainer}>

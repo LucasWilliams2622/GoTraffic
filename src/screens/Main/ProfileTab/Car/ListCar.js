@@ -36,7 +36,7 @@ const ListCar = props => {
       const response = await AxiosInstance().get(
         `/car/api/list-by-id-user?idUser=${idUser}`,
       );
-      console.log(response);
+      // console.log(response);
       if (response.result) {
         setCarData(response.listCar);
         setTimeout(() => {
@@ -58,7 +58,7 @@ const ListCar = props => {
           parseInt(status),
       );
       if (response.result) {
-        console.log(response);
+        // console.log(response);
         setCarData(response.car);
       } else {
         setCarData([]);

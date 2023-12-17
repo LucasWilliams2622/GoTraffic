@@ -25,7 +25,7 @@ const Notification = () => {
     try {
       const response = await AxiosInstance().get('/notification/api');
       if (response.result) {
-        console.log(response.notification);
+        // console.log(response.notification);
         setData(response.notification);
         setTimeout(() => {
           setLoading(false);
