@@ -12,6 +12,7 @@ import {
   Share,
   Pressable,
   Platform,
+  Alert,
 } from 'react-native';
 import {Row} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome6';
@@ -36,12 +37,8 @@ import {Amenities} from '../../../components/Home/Detail/Amenities';
 import {CarLocation} from '../../../components/Home/Detail/CarLocation';
 import {OwnerInfo} from '../../../components/Home/Detail/OwnerInfo';
 import {Rating} from '../../../components/Home/Detail/Rating';
-import {RatingModal} from '../../../components/Home/Detail/RatingModal';
 import {Car, CarDetailProps, PressableIconProps} from '../../../types';
 import {
-  calculateAvgRating,
-  clearCarLocationContext,
-  currentDateString,
   currentDay,
   currentTimeString,
   formatPrice,
@@ -57,6 +54,7 @@ import {LogBox} from 'react-native';
 import {AppContext} from '../../../utils/AppContext';
 import AxiosInstance from '../../../constants/AxiosInstance';
 import {CarLocationContext} from '../../../utils/CarLocationContext';
+import {ViewedCarsContext} from '../../../utils/ViewedCarContext';
 
 Geocoder.init(REACT_APP_GOOGLE_MAPS_API_KEY || '');
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
@@ -109,9 +107,19 @@ const BottomBar: React.FC<{
     }
   }
 
+  const {receiveCarLocation} = useContext(CarLocationContext);
+
   const formattedPrice = useMemo(() => formatPrice(total), [total]);
 
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const handleNextStep = () => {
+    if (receiveCarLocation === '') {
+      showToastMessage('error', 'Bạn chưa chọn địa điểm nhận xe');
+      Alert.alert('Bạn chưa chọn địa điểm nhận xe');
+      return;
+    }
+    setIsModalVisible(true);
+  };
   return (
     <View
       style={{
@@ -150,7 +158,7 @@ const BottomBar: React.FC<{
         </Modal>
         <Pressable
           style={{backgroundColor: COLOR.fifth, padding: 10, borderRadius: 8}}
-          onPress={() => setIsModalVisible(true)}>
+          onPress={handleNextStep}>
           <Row style={{alignItems: 'center'}}>
             <Icon name={'bolt'} color={COLOR.white} size={20} solid />
             <Text
@@ -163,12 +171,7 @@ const BottomBar: React.FC<{
     </View>
   );
 };
-const CarDetail: React.FC<CarDetailProps> = ({
-  car_id,
-  close,
-  viewedCars,
-  setViewedCars,
-}) => {
+const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
   const [carCoordinates, setCarCoordinates] = useState<Geocoder.LatLng | null>(
     null,
   );
@@ -177,6 +180,7 @@ const CarDetail: React.FC<CarDetailProps> = ({
 
   const [dateStart, setDateStart] = useState<Date>(new Date());
   const [dateEnd, setDateEnd] = useState<Date>(new Date());
+  const {viewedCars, setViewedCars} = useContext(ViewedCarsContext);
 
   const [selectedTime, setSelectedTime] = useState<{
     startTime: string | null;

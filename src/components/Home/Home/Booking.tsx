@@ -132,10 +132,7 @@ const Booking = ({
             />
           )}
 
-          <AppButton
-            title="Tìm xe"
-            onPress={handleFindCar}
-          />
+          <AppButton title="Tìm xe" onPress={handleFindCar} />
           <ReactNativeModal
             isVisible={isModalVisible}
             style={{margin: 0, display: 'flex'}}>
@@ -417,6 +414,9 @@ const styles = StyleSheet.create({
     borderTopRightRadius: BUTTON_RADIUS,
     paddingVertical: BUTTON_PADDING_VERTICAL,
     paddingHorizontal: BUTTON_PADDING_HORIZONTAL,
+    width: '45%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   activeButton: {
     backgroundColor: COLOR.primary,

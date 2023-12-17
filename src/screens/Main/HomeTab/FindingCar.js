@@ -206,7 +206,7 @@ const FindingCar = ({
         <HStack
           space={2}
           justifyContent="center"
-          style={{backgroundColor: 'white', padding: 10, width: 'auto'}}>
+          style={{backgroundColor: 'white', padding: 20, width: 'auto'}}>
           <Spinner accessibilityLabel="Loading posts" />
           <Heading color="primary.500" fontSize="md">
             Loading
