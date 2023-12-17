@@ -1,6 +1,6 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
-import {appStyle} from '../../../../../constants/AppStyle';
+import {appStyle, windowHeight} from '../../../../../constants/AppStyle';
 import ItemTrip from '../../../../../components/Support/ItemTrip';
 import ItemCancleTrip from '../../../../../components/Support/ItemCancleTrip';
 import {FlatList} from 'native-base';
@@ -58,7 +58,7 @@ const CancleTrip = () => {
           ListEmptyComponent={
             <View
               style={{
-                marginTop: 50,
+                marginTop: windowHeight * 0.2,
               }}>
               <FastImage
                 style={styles.imageInvisible}
@@ -70,7 +70,7 @@ const CancleTrip = () => {
                   appStyle.text16,
                   {textAlign: 'center', marginBottom: 10, fontStyle: 'italic'},
                 ]}>
-                Bạn chưa có lịch sử chuyến
+                Bạn chưa có chuyến hủy nào !
               </Text>
             </View>
           }

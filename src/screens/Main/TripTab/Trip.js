@@ -40,7 +40,7 @@ const Trip = () => {
           setLoading(false);
         }, 1500);
         setListBookingCurrent(response.booking);
-        console.log('=============================>', response.booking);
+        // console.log('=============================>', response.booking);
         if (response.booking[0] == null) {
           setIsLoading(true);
         } else {
@@ -102,7 +102,7 @@ const Trip = () => {
       console.log('=========>', error);
     }
   };
- 
+
   useEffect(() => {
     getListBookingCurrent();
   }, [isFocused]);
@@ -123,7 +123,10 @@ const Trip = () => {
           style={{width: '100%', height: 200}}
         />
         <View style={[appStyle.main]}>
-          <Text style={styles.text1}>Hiện tại</Text>
+          {listBookingCurrent.length > 0 && (
+            <Text style={styles.text1}>Hiện tại</Text>
+          )}
+
           {loading == true ? (
             <View>
               <SkeletonTrip />
@@ -134,7 +137,9 @@ const Trip = () => {
           ) : (
             <View>
               {isLoading == true ? (
-                <View style={appStyle.ma}>
+                <TouchableOpacity
+                  style={{marginTop: windowHeight * 0.1}}
+                  onPress={() => navigation.navigate('Home')}>
                   <FastImage
                     style={styles.imageInvisible}
                     resizeMode={'stretch'}
@@ -142,16 +147,16 @@ const Trip = () => {
                   />
                   <Text
                     style={[
-                      appStyle.text16,
+                      appStyle.text165,
                       {
                         textAlign: 'center',
                         marginBottom: 10,
                         fontStyle: 'italic',
                       },
                     ]}>
-                    Bạn chưa có lịch sử chuyến
+                    Bạn chưa có chuyến nào! {'\n'} Hãy đặt xe ngay
                   </Text>
-                </View>
+                </TouchableOpacity>
               ) : (
                 <Swipelist
                   style={{width: '100%', marginBottom: 65}}

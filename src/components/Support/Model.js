@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import AppDropdown from '../AppDropdown';
-import { listModal } from './data/DataCar';
+import { listModal } from '../Profile/data/DataCar';
 import { appStyle, windowHeight, windowWidth } from '../../constants/AppStyle';
 
 const Model = ({ selectedBrand, selectedModel, setSelectedModel }) => {

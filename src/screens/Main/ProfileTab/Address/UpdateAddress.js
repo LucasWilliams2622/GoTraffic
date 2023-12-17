@@ -77,7 +77,7 @@ const UpdateAddress = ({ route }) => {
         ward: selectedWard?.name,
         street: isSelected, // Lựa chọn của loại địa chỉ
         
-        number: null,
+        number: " ",
 
         note: nickName,
         address: address,

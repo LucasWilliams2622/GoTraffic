@@ -1,6 +1,6 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
-import {appStyle} from '../../../../../constants/AppStyle';
+import {appStyle, windowHeight} from '../../../../../constants/AppStyle';
 import ItemDuringTrip from '../../../../../components/Support/ItemDuringTrip';
 import {FlatList} from 'native-base';
 import AxiosInstance from '../../../../../constants/AxiosInstance';
@@ -26,7 +26,7 @@ const DuringTrip = () => {
         console.log(response.booking.status);
         setTimeout(() => {
           setLoading(false);
-        },1500);
+        }, 1500);
       } else {
         console.log('Failed to get car complete');
       }
@@ -76,7 +76,7 @@ const DuringTrip = () => {
           ListEmptyComponent={
             <View
               style={{
-                marginTop: 50,
+                marginTop: windowHeight * 0.2,
               }}>
               <FastImage
                 style={styles.imageInvisible}
@@ -88,7 +88,7 @@ const DuringTrip = () => {
                   appStyle.text16,
                   {textAlign: 'center', marginBottom: 10, fontStyle: 'italic'},
                 ]}>
-                Bạn chưa có lịch sử chuyến
+                Bạn chưa có chuyến nào đang hoạt động!
               </Text>
             </View>
           }></FlatList>

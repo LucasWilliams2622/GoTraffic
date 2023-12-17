@@ -73,7 +73,7 @@ const HomeCar = props => {
         <AppHomeCar
           icon={ICON.Trip}
           title="Danh sách xe"
-          text="Quản lí các xe đang cho thuê"
+          text="Quản lý tất cả xe của bạn"
           onPress={() => navigation.navigate('ListCar')}
         />
 
@@ -89,17 +89,17 @@ const HomeCar = props => {
           icon={ICON.Wallet}
           title="Ví của tôi"
           borderBottomWidth={0}
-          text="Theo dõi số dư và lịch sử cho thuê"
+          text="Theo dõi số dư và lịch sử ví"
           onPress={() => navigation.navigate('MyWallet')}
         />
         <AppHomeCar
-          icon={ICON.Wallet}
+          icon={ICON.contacts}
           title="Hợp đồng mẫu"
           text="Mẫu hợp đồng cho thuê xe"
           onPress={() => navigation.navigate('SampleContract')}
         />
         <AppHomeCar
-          icon={ICON.Heart}
+          icon={ICON.tag}
           title="Danh sách chuyến"
           text="Lịch sử và trạng thái các chuyến"
           onPress={() => navigation.navigate('TripOfCar')}

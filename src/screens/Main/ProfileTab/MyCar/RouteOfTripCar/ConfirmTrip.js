@@ -1,6 +1,6 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
-import {appStyle} from '../../../../../constants/AppStyle';
+import {appStyle, windowHeight} from '../../../../../constants/AppStyle';
 import ItemConfirmTrip from '../../../../../components/Support/ItemConfirmTrip';
 import {FlatList} from 'native-base';
 import AxiosInstance from '../../../../../constants/AxiosInstance';
@@ -37,7 +37,7 @@ const ConfirmTrip = () => {
       console.log('=========>', error);
     }
   };
-   
+
   const cancelBooking = async id => {
     try {
       const response = await AxiosInstance().post(
@@ -100,7 +100,7 @@ const ConfirmTrip = () => {
           ListEmptyComponent={
             <View
               style={{
-                marginTop: 50,
+                marginTop: windowHeight*0.2,
               }}>
               <FastImage
                 style={styles.imageInvisible}
@@ -112,7 +112,7 @@ const ConfirmTrip = () => {
                   appStyle.text16,
                   {textAlign: 'center', marginBottom: 10, fontStyle: 'italic'},
                 ]}>
-                Bạn chưa có lịch sử chuyến
+                Bạn chưa có chuyến chờ duyệt nào !
               </Text>
             </View>
           }></FlatList>

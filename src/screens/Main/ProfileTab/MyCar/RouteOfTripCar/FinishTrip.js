@@ -1,6 +1,6 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
-import {appStyle} from '../../../../../constants/AppStyle';
+import {appStyle, windowHeight} from '../../../../../constants/AppStyle';
 import ItemTrip from '../../../../../components/Support/ItemTrip';
 import ItemComplete from '../../../../../components/Support/ItemComplete';
 import {FlatList, ScrollView} from 'native-base';
@@ -85,7 +85,7 @@ const FinishTrip = () => {
             ListEmptyComponent={
               <View
                 style={{
-                  marginTop: 50,
+                  marginTop: windowHeight * 0.2,
                 }}>
                 <FastImage
                   style={styles.imageInvisible}
@@ -101,7 +101,7 @@ const FinishTrip = () => {
                       fontStyle: 'italic',
                     },
                   ]}>
-                  Bạn chưa có lịch sử chuyến
+                  Bạn chưa có chuyến hoàn thành nào !
                 </Text>
               </View>
             }></FlatList>
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderWidth: 2,
     borderColor: COLOR.primary,
-    marginBottom:16,
-    marginTop:8
+    marginBottom: 16,
+    marginTop: 8,
   },
 });

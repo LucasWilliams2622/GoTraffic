@@ -11,7 +11,7 @@ import { ScrollView } from 'native-base';
 import AppButton from '../../../../components/AppButton';
 import AppDropdown from '../../../../components/AppDropdown';
 import Brand from '../../../../components/Profile/Brand';
-import Model from '../../../../components/Profile/Model';
+import Model from '../../../../components/Support/Model';
 import Year from '../../../../components/Profile/Year';
 import OptionDropdown from '../../../../components/Profile/OptionDropdown';
 import { useNavigation } from '@react-navigation/native';

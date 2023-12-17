@@ -70,7 +70,7 @@ const NewAddress = (props) => {
                 note: nickName,
                 address: address,
                 isDefault: onSwitch
-
+             
             });
             // console.log("======>",response.data);
             console.log('Địa chỉ mới:', response.data);

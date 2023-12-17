@@ -1,9 +1,6 @@
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
-import IconFontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import IconFontAwesome6 from 'react-native-vector-icons/FontAwesome6Pro';
-
-
 import IconEntypo from 'react-native-vector-icons/Entypo';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import IconIonicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -123,15 +120,26 @@ export const ICON = {
   star: IconAntDesign.getImageSourceSync('star', 20, '#FFE814'),
   staro: IconAntDesign.getImageSourceSync('staro', 20, 'gray'),
   review: MaterialIcons.getImageSource('rate-review', 20, 'black'),
-  like1:IconAntDesign.getImageSourceSync('like1', 20, 'black'),
-  car:IconIonicons.getImageSourceSync('car-sport', 20, 'black'),
-  car2:IconIonicons.getImageSourceSync('car', 20, 'black'),
+  like1: IconAntDesign.getImageSourceSync('like1', 20, 'black'),
+  car: IconIonicons.getImageSourceSync('car-sport', 20, 'black'),
+  car2: IconIonicons.getImageSourceSync('car', 20, 'black'),
 
-  closecircle:IconAntDesign.getImageSourceSync('closecircle', 20, 'black'),
-  save:IconEntypo.getImageSourceSync('save', 20, 'black'),
+  contacts: MaterialCommunityIcons.getImageSourceSync('contacts', 20, 'black'),
+  tag: IconAntDesign.getImageSourceSync('tag', 20, 'black'),
+  infocirlce: IconAntDesign.getImageSourceSync('infocirlce', 20, 'black'),
+  document: IconEntypo.getImageSourceSync(
+    'text-document-inverted',
+    20,
+    'black',
+  ),
+  wallet: IconEntypo.getImageSourceSync('wallet', 20, 'black'),
+  location: IconEntypo.getImageSourceSync('location', 20, 'black'),
 
-  
-  
+
+  closecircle: IconAntDesign.getImageSourceSync('closecircle', 20, 'black'),
+  save: IconEntypo.getImageSourceSync('save', 20, 'black'),
+  archive: IconEntypo.getImageSource('archive', 20, 'black'),
+
   dislike1: IconAntDesign.getImageSource('dislike1', 20, 'black'),
   Download: MaterialIcons.getImageSource('file-download', 20, 'black')
 
