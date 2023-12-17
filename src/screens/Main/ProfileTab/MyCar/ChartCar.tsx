@@ -63,7 +63,9 @@ const ChartCar = () => {
   const filteredData = filterData(data, 1);
 
   // Tạo mảng chú thích
-  const legendData ;
+  const legendData = data.map(
+    item => `${item.numberOfBooked} chuyến | ${item.numberPlate}`,
+  );
   return (
     <SafeAreaView style={appStyle.container}>
       <AppHeader title="Thống kê" />
