@@ -1,14 +1,17 @@
-import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
+import {View, Text, SafeAreaView, ScrollView, StyleSheet} from 'react-native';
+import {PieChart} from 'react-native-gifted-charts'; // Import the PieChart from react-native-gifted-charts
+import axios from 'axios';
 import {appStyle, windowWidth} from '../../../../constants/AppStyle';
 import AppHeader from '../../../../components/AppHeader';
-import {PieChart} from 'react-native-chart-kit';
-import axios from 'axios';
-import {COLOR} from '../../../../constants/Theme';
+import {COLOR, ICON} from '../../../../constants/Theme';
+import {useNavigation} from '@react-navigation/native';
 const numColumns = 2;
 
 const ChartCar = () => {
   const [data, setData] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const navigation = useNavigation();
   useEffect(() => {
     init();
   }, []);
@@ -19,6 +22,7 @@ const ChartCar = () => {
         `http://103.57.129.166:3000/car/api/get-most-booked-car-by-user?idUser=1&isMostBooked=false`,
       );
       setData(response.data.car);
+      console.log('=============', response.data.car);
     } catch (error) {
       console.log(error);
     }
@@ -29,22 +33,26 @@ const ChartCar = () => {
       console.error('Data is not an array');
       return [];
     }
-  
+
     const colors = [
       '#FFE3BB',
       '#FF9800',
       '#C5FFF8',
-      '#F9F9E0',
-      '#3559E0',
-      '#820300',
+      '#E5D4FF',
+      '#FAEED1  ',
+      '#D2DE32',
       '#FFD1E3',
-      '#FF5733',
+      '#F6FDC3',
       '#4CB9E7',
-      '#33FF57',
+      '#F875AA',
       '#E26EE5',
       '#FFB534',
+      '#D2E0FB',
+      '#B2533E',
+      '#F4E869',
+      '#5CD2E6',
     ];
-  
+
     const filteredData = data
       .filter(
         (item, index) =>
@@ -53,61 +61,70 @@ const ChartCar = () => {
       )
       .map((item, index) => ({
         ...item,
-        color: item.numberOfBooked > 0 ? colors[index] : '#008000', // Màu xanh nếu số chuyến = 0
+        color: item.numberOfBooked > 0 ? colors[index] : COLOR.primary,
       }))
-      .reverse(); // Đảo ngược lại mảng để giữ nguyên thứ tự của mảng màu sắc
-  
+      .reverse();
+
     return filteredData;
+  };
+
+  const handleChartPress = (data, index) => {
+    const selectedItemInfo = data[index];
+    console.log(data);
+
+    setSelectedItem(selectedItemInfo);
   };
 
   const filteredData = filterData(data, 1);
 
   // Tạo mảng chú thích
-  const legendData = data.map(
-    item => `${item.numberOfBooked} chuyến | ${item.numberPlate}`,
-  );
+  const legendData = data
+    .map(item => `${item.numberOfBooked} chuyến | ${item.numberPlate}`)
+    .reverse();
+
   return (
     <SafeAreaView style={appStyle.container}>
-      <AppHeader title="Thống kê" />
-      <View style={[appStyle.main, {marginBottom: 70}]}>
-        <View
-          style={{
-            alignSelf: 'center',
-            // borderWidth: 2,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: 'gray',
-          }}>
+      <AppHeader
+        title="Thống kê"
+        icon={ICON.location}
+        onPressRight={() => navigation.navigate('MapCars')}
+      />
+      <View style={[appStyle.main,{marginBottom:70}]}>
+        <View style={styles.chartContainer}>
           <PieChart
-            data={filteredData}
-            width={windowWidth}
-            height={windowWidth * 0.6}
-            chartConfig={{
-              backgroundGradientFrom: COLOR.primary,
-              backgroundGradientTo: COLOR.third,
-              color: (opacity = 1, index) =>
-                filteredData[index]?.color || `rgba(65, 207, 242, 1)`,
-            }}
-            accessor="numberOfBooked"
-            backgroundColor="transparent"
-            paddingLeft={windowWidth * 0.25}
-            absolute
-            hasLegend={false}
-            // Hiển thị số phần trăm
-            fromZero
-            formatValues={(value, index) =>
-              `${Math.round(
-                (value /
-                  filteredData.reduce(
-                    (acc, cur) => acc + cur.numberOfBooked,
-                    0,
-                  )) *
-                  100,
-              )}%`
-            }
+            strokeWidth={2}
+            strokeColor="white"
+            data={filteredData.map(item => ({
+              value: item.numberOfBooked,
+              color: item.color,
+              text: `${Math.round(
+                (item.numberOfBooked / filteredData.length) * 100,
+              )}%`,
+            }))}
+            showText
+            fontStyle="normal"
+            textBackgroundColor="white"
+            textBackgroundRadius={20}
+            donut
+            innerRadius={30}
+            shadow
+            shadowWidth={20}
+            shadowColor="black"
+            textColor="black"
+            fontWeight="bold"
+            labelsPosition="outward"
+            textSize={14}
+            onPress={(event, index) => handleChartPress(filteredData, index)}
           />
         </View>
-        <ScrollView>
+        <ScrollView >
+          {selectedItem && (
+            <View style={styles.selectedItemContainer}>
+              <Text style={styles.selectedItemText}>
+                {`${selectedItem.numberOfBooked} chuyến | ${selectedItem.numberPlate}`}
+              </Text>
+            </View>
+          )}
           <View style={styles.legendContainer}>
             {legendData.map((item, index) => (
               <View key={index} style={styles.legendItem}>
@@ -118,7 +135,7 @@ const ChartCar = () => {
                     width: 10,
                     height: 10,
                     marginRight: 5,
-                    borderRadius:99 
+                    borderRadius: 99,
                   }}
                 />
                 <Text style={appStyle.text14}>{item}</Text>
@@ -131,20 +148,42 @@ const ChartCar = () => {
   );
 };
 
-export default ChartCar;
-
 const styles = StyleSheet.create({
+  chartContainer: {
+    width: '100%',
+    borderWidth: 2,
+    alignItems: 'center',
+    paddingVertical: 8,
+    backgroundColor: '#f6f8fa',
+    borderColor: '#e3e3e3',
+    borderRadius: 8,
+  },
   legendContainer: {
-    flexDirection: 'row', // Chia chú thích thành 2 cột
-    justifyContent: 'space-between', // Canh giữa giữa các cột
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: 10,
-    flexWrap: 'wrap', // Cho phép các phần tử chuyển sang dòng mới khi không đủ không gian
+    flexWrap: 'wrap',
   },
   legendItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10, // Khoảng cách giữa các hàng
-    width: `${100 / numColumns}%`, // Chiếm 50% chiều rộng của mỗi cột
+    marginBottom: 10,
+    width: `${100 / numColumns}%`,
+    padding: 4,
+  },
+
+  selectedItemContainer: {
+    backgroundColor: '#fff',
+    padding: 10,
+    marginTop: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  selectedItemText: {
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
+
+export default ChartCar;

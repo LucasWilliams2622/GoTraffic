@@ -147,7 +147,7 @@ const UpdateProfile = props => {
             validationSchema={AccountSchema}
             onSubmit={values => {
               console.log(values);
-              // handleUpdate(values);
+              handleUpdate(values);
              
             }}>
             {({

@@ -105,7 +105,7 @@ const HomeCar = props => {
           onPress={() => navigation.navigate('TripOfCar')}
         />
         <AppHomeCar
-          icon={ICON.areachart}
+          icon={ICON.piechart}
           title="Thống kê"
           text="Thống kê xe và chuyến"
           onPress={() => navigation.navigate('ChartCar')}

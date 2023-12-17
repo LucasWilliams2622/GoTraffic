@@ -8320,7 +8320,7 @@ lodash.uniqueid@^4.0.1:
   resolved "https://registry.npmjs.org/lodash.uniqueid/-/lodash.uniqueid-4.0.1.tgz"
   integrity sha512-GQQWaIeGlL6DIIr06kj1j6sSmBxyNMwI8kaX9aKpHR/XsMTiaXDVPNPAkiboOTK9OJpTJF/dXT3xYoFQnj386Q==
 
-lodash@^4.0.0, lodash@^4.17.13, lodash@^4.17.15, lodash@^4.17.21:
+lodash@^4.0.0, lodash@^4.17.15, lodash@^4.17.21:
   version "4.17.21"
   resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -10058,11 +10058,6 @@ path-type@^4.0.0:
   resolved "https://registry.npmjs.org/path-type/-/path-type-4.0.0.tgz"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
-paths-js@^0.4.10:
-  version "0.4.11"
-  resolved "https://registry.npmjs.org/paths-js/-/paths-js-0.4.11.tgz"
-  integrity sha512-3mqcLomDBXOo7Fo+UlaenG6f71bk1ZezPQy2JCmYHy2W2k5VKpP+Jbin9H0bjXynelTbglCqdFhSEkeIkKTYUA==
-
 pause-stream@^0.0.11:
   version "0.0.11"
   resolved "https://registry.npmjs.org/pause-stream/-/pause-stream-0.0.11.tgz"
@@ -10125,11 +10120,6 @@ pngjs@^5.0.0:
   version "5.0.0"
   resolved "https://registry.npmjs.org/pngjs/-/pngjs-5.0.0.tgz"
   integrity sha512-40QW5YalBNfQo5yRYmiw7Yz6TKKVr3h6970B2YE+3fQpsWcrbj1PzJgxeJ19DRQjhMbKPIuMY8rFaXc8moolVw==
-
-point-in-polygon@^1.0.1:
-  version "1.1.0"
-  resolved "https://registry.npmjs.org/point-in-polygon/-/point-in-polygon-1.1.0.tgz"
-  integrity sha512-3ojrFwjnnw8Q9242TzgXuTD+eKiutbzyslcq1ydfu82Db2y+Ogbmyrkpv0Hgj31qwT3lbS9+QAAO/pIQM35XRw==
 
 popmotion@11.0.3:
   version "11.0.3"
@@ -10562,15 +10552,6 @@ react-native-camera@>=1.0.2:
   dependencies:
     prop-types "^15.6.2"
 
-react-native-chart-kit@^6.12.0:
-  version "6.12.0"
-  resolved "https://registry.npmjs.org/react-native-chart-kit/-/react-native-chart-kit-6.12.0.tgz"
-  integrity sha512-nZLGyCFzZ7zmX0KjYeeSV1HKuPhl1wOMlTAqa0JhlyW62qV/1ZPXHgT8o9s8mkFaGxdqbspOeuaa6I9jUQDgnA==
-  dependencies:
-    lodash "^4.17.13"
-    paths-js "^0.4.10"
-    point-in-polygon "^1.0.1"
-
 react-native-communications@2.2.1:
   version "2.2.1"
   resolved "https://registry.npmjs.org/react-native-communications/-/react-native-communications-2.2.1.tgz"
@@ -10699,6 +10680,11 @@ react-native-get-location@^4.0.0:
   resolved "https://registry.npmjs.org/react-native-get-location/-/react-native-get-location-4.0.0.tgz"
   integrity sha512-Fco8h+uF6ZhBFw2JrwnWJV+yh05wJNJjsjdomG62sk4HrjWbpoYkFJt6W2wuazreMaft/ynTLxKHDWLc4XPx6g==
 
+react-native-gifted-charts@^1.3.27:
+  version "1.3.27"
+  resolved "https://registry.npmjs.org/react-native-gifted-charts/-/react-native-gifted-charts-1.3.27.tgz"
+  integrity sha512-7VgApaR8z28DVc/lQ7Rx4uTfYh1kjFZyAfVdldUU4nAIic0Hbi+4iaC3f17KMX1j/DY7C3iC/u6L0cT/sQeKEQ==
+
 react-native-gifted-chat@^2.4.0:
   version "2.4.0"
   resolved "https://registry.npmjs.org/react-native-gifted-chat/-/react-native-gifted-chat-2.4.0.tgz"
@@ -10795,7 +10781,7 @@ react-native-lightbox@^0.8.1:
   dependencies:
     prop-types "^15.7.2"
 
-react-native-linear-gradient@^2.5.6, react-native-linear-gradient@^2.8.3:
+react-native-linear-gradient@*, react-native-linear-gradient@^2.5.6, react-native-linear-gradient@^2.8.3:
   version "2.8.3"
   resolved "https://registry.npmjs.org/react-native-linear-gradient/-/react-native-linear-gradient-2.8.3.tgz"
   integrity sha512-KflAXZcEg54PXkLyflaSZQ3PJp4uC4whM7nT/Uot9m0e/qxFV3p6uor1983D1YOBJbJN7rrWdqIjq0T42jOJyA==
@@ -11020,7 +11006,7 @@ react-native-stock-star-rating@^1.0.6:
   resolved "https://registry.npmjs.org/react-native-stock-star-rating/-/react-native-stock-star-rating-1.0.6.tgz"
   integrity sha512-YQMGVYX03kq9cW0Of0y+fad9A1RpyM/ZOKMb2o15DfITcceLlrz5x83B6kBOl6SxM/YzdXpMvphWNZehilJ46g==
 
-react-native-svg@*, react-native-svg@^13.14.0, react-native-svg@^13.2.0, "react-native-svg@> 6.4.1":
+react-native-svg@*, react-native-svg@^13.14.0, react-native-svg@^13.2.0:
   version "13.14.0"
   resolved "https://registry.npmjs.org/react-native-svg/-/react-native-svg-13.14.0.tgz"
   integrity sha512-27ZnxUkHgWICimhuj6MuqBkISN53lVvgWJB7pIypjXysAyM+nqgQBPh4vXg+7MbqLBoYvR4PiBgKfwwGAqVxHg==
@@ -11084,10 +11070,10 @@ react-native-typing-animation@0.1.7:
   resolved "https://registry.npmjs.org/react-native-typing-animation/-/react-native-typing-animation-0.1.7.tgz"
   integrity sha512-4H3rF9M+I2yAZpYJcY0Mb29TXkn98QK12rrKSY6LZj1BQD9NNmRZuNXzwX4XHapsIz+N/J8M3p27FOQPbfzqeg==
 
-react-native-vector-icons@*, react-native-vector-icons@^10.0.0, "react-native-vector-icons@>= 6.x.x", react-native-vector-icons@>7.0.0:
-  version "10.0.0"
-  resolved "https://registry.npmjs.org/react-native-vector-icons/-/react-native-vector-icons-10.0.0.tgz"
-  integrity sha512-efMOVbZIebY8RszZPzPBoXi9pvD/NFYmjIDYxRoc9LYSzV8rMJtT8FfcO2hPu85Rn2x9xktha0+qn0B7EqMAcQ==
+react-native-vector-icons@*, react-native-vector-icons@^10.0.3, "react-native-vector-icons@>= 6.x.x", react-native-vector-icons@>7.0.0:
+  version "10.0.3"
+  resolved "https://registry.npmjs.org/react-native-vector-icons/-/react-native-vector-icons-10.0.3.tgz"
+  integrity sha512-ZgVlV5AdQgnPHHvBEihGf2xwyziT1acpXV1U+WfCgCv3lcEeCRsmwAsBU+kUSNsU+8TcWVsX04kdI6qUaS8D7w==
   dependencies:
     prop-types "^15.7.2"
     yargs "^16.1.1"
@@ -11129,7 +11115,7 @@ react-native-webview@^13.6.2, react-native-webview@>=13:
     escape-string-regexp "2.0.0"
     invariant "2.2.4"
 
-react-native@*, "react-native@^0.0.0-0 || 0.60 - 0.72 || 1000.0.0", react-native@^0.72.4, "react-native@>= 0.30.0", "react-native@>= 0.50.0", "react-native@>= 0.59", "react-native@>= 0.60.2", "react-native@>= 0.62", "react-native@>= 0.64.3", react-native@>=0.23.1, react-native@>=0.40.0, react-native@>=0.42.0, react-native@>=0.46, react-native@>=0.47, react-native@>=0.47.1, react-native@>=0.48.4, react-native@>=0.50.1, react-native@>=0.57, react-native@>=0.57.0, react-native@>=0.58, react-native@>=0.59, react-native@>=0.60, react-native@>=0.60.0, react-native@>=0.61.0, react-native@>=0.61.3, react-native@>=0.63.3, react-native@>=0.63.4, react-native@>=0.64.0, react-native@>=0.65.0, "react-native@>=0.66.0-rc.0 <1.0.x", react-native@0.72.4:
+react-native@*, "react-native@^0.0.0-0 || 0.60 - 0.72 || 1000.0.0", react-native@^0.72.4, "react-native@>= 0.30.0", "react-native@>= 0.59", "react-native@>= 0.60.2", "react-native@>= 0.62", "react-native@>= 0.64.3", react-native@>=0.23.1, react-native@>=0.40.0, react-native@>=0.42.0, react-native@>=0.46, react-native@>=0.47, react-native@>=0.47.1, react-native@>=0.48.4, react-native@>=0.50.1, react-native@>=0.57, react-native@>=0.57.0, react-native@>=0.58, react-native@>=0.59, react-native@>=0.60, react-native@>=0.60.0, react-native@>=0.61.0, react-native@>=0.61.3, react-native@>=0.63.3, react-native@>=0.63.4, react-native@>=0.64.0, react-native@>=0.65.0, "react-native@>=0.66.0-rc.0 <1.0.x", react-native@0.72.4:
   version "0.72.4"
   resolved "https://registry.npmjs.org/react-native/-/react-native-0.72.4.tgz"
   integrity sha512-+vrObi0wZR+NeqL09KihAAdVlQ9IdplwznJWtYrjnQ4UbCW6rkzZJebRsugwUneSOKNFaHFEo1uKU89HsgtYBg==
@@ -11210,7 +11196,7 @@ react-timer-mixin@^0.13.4:
   resolved "https://registry.npmjs.org/react-timer-mixin/-/react-timer-mixin-0.13.4.tgz"
   integrity sha512-4+ow23tp/Tv7hBM5Az5/Be/eKKF7DIvJ09voz5LyHGQaqqz9WV8YMs31eFvcYQs7d451LSg7kDJV70XYN/Ug/Q==
 
-react@*, "react@^16.0.0 || ^17.0.0 || ^18.0.0", react@^16.13.1, react@^16.3.0, "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17.0.0-rc.1", "react@^16.8.0 || ^17.0.0-rc.1 || ^18.0.0", "react@^17 || ^18", react@^18.0.0, react@^18.2.0, "react@> 16.7.0", "react@>= 15.2.1", "react@>= 17.0.1", react@>=0.14.8, react@>=15.0.0, react@>=16, react@>=16.0, react@>=16.11.0, react@>=16.13.1, react@>=16.3.0, react@>=16.8, "react@>=16.8 || ^17.0.0 || ^18.0.0", react@>=16.8.0, react@>=16.8.1, react@>=16.8.6, react@>=16.9, react@>=17.0.0, react@16.x.x, react@18.2.0:
+react@*, "react@^16.0.0 || ^17.0.0 || ^18.0.0", react@^16.13.1, react@^16.3.0, "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17.0.0-rc.1", "react@^16.8.0 || ^17.0.0-rc.1 || ^18.0.0", "react@^17 || ^18", react@^18.0.0, react@^18.2.0, "react@>= 15.2.1", "react@>= 17.0.1", react@>=0.14.8, react@>=15.0.0, react@>=16, react@>=16.0, react@>=16.11.0, react@>=16.13.1, react@>=16.3.0, react@>=16.8, "react@>=16.8 || ^17.0.0 || ^18.0.0", react@>=16.8.0, react@>=16.8.1, react@>=16.8.6, react@>=16.9, react@>=17.0.0, react@16.x.x, react@18.2.0:
   version "18.2.0"
   resolved "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   integrity sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==
