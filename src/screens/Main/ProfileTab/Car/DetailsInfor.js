@@ -198,7 +198,6 @@ const DetailsInfor = props => {
 
       latitude: markerPosition?.latitude ? markerPosition?.latitude : 10.853747,
       selectedFeatures: jsonStringWithQuotes,
-
       isDelivery: isEnabled,
       deliveryWithin: Math.floor(first * 100),
       deliveryFee: Math.floor(second * 10 * 5),
@@ -207,6 +206,8 @@ const DetailsInfor = props => {
       limitKmStatus: isEnabledLimitKm,
       maxKm: Math.floor(fourth * 100 * 8),
       exceededFee: Math.floor(fifth * 10),
+
+      withDriver: onSwitch2,
     };
     // navigation.navigate('FinalStep', {
     //   carInfo: carInfo,
@@ -243,7 +244,7 @@ const DetailsInfor = props => {
   return (
     <SafeAreaView style={appStyle.container}>
       <AppHeader title="Thông tin chi tiết" />
-      <View style={{flex: 1, paddingHorizontal: 10}}>
+      <View style={{flex: 1, paddingHorizontal: 10, marginBottom: 74}}>
         <ScrollView
           style={{flex: 1, width: '100%', marginBottom: 10}}
           showsVerticalScrollIndicator={false}>
@@ -628,11 +629,7 @@ const DetailsInfor = props => {
           </View>
         </ScrollView>
 
-        <AppButton
-          title="Tiếp theo"
-          marginBottom={80}
-          onPress={() => handleNext()}
-        />
+        <AppButton title="Tiếp theo" onPress={() => handleNext()} />
       </View>
 
       <Modal animationType="fade" transparent={true} visible={isModalVisible}>

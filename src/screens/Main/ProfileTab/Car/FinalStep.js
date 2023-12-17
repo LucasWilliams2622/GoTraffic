@@ -1,11 +1,4 @@
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import {SafeAreaView, StyleSheet, View, ScrollView} from 'react-native';
 import React, {useState, useEffect, useRef, useContext} from 'react';
 import {
   appStyle,
@@ -14,17 +7,16 @@ import {
 } from '../../../../constants/AppStyle';
 import {COLOR, ICON} from '../../../../constants/Theme';
 import AppButton from '../../../../components/AppButton';
-import FastImage from 'react-native-fast-image';
 import axios from 'axios';
 import {showToastMessage} from '../../../../utils/utils';
 import AppHeader from '../../../../components/AppHeader';
 import ImagePickerComponent from '../../../../components/ImagePickerComponent';
 import {AppContext} from '../../../../utils/AppContext';
 import MultipleImagePicker from '../../../../components/MultiImagePicker';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const FinalStep = props => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const {carInfo} = props.route.params;
 
   const {idUser} = useContext(AppContext);
@@ -153,8 +145,9 @@ const FinalStep = props => {
         utilities: carInfo.selectedFeatures,
         image: carImages,
         imageThumbnail: thumbnail,
+        withDriver:carInfo.withDriver
       };
-
+console.log("datadatadata",data);
       const response = await axios.post(
         'http://103.57.129.166:3000/car/api/add',
         data,
@@ -180,7 +173,7 @@ const FinalStep = props => {
     <SafeAreaView style={appStyle.container}>
       <AppHeader title="Ảnh xe" />
       <ScrollView
-        style={appStyle.main}
+        style={[appStyle.main, {marginBottom: 72}]}
         shouldRasterizeIOS
         showsVerticalScrollIndicator={false}>
         <ImagePickerComponent
@@ -196,15 +189,9 @@ const FinalStep = props => {
           numberImage={9}
           space={14}
         />
+
+        <AppButton title="Hoàn tất" width="96%" onPress={() => addNewCar()} />
       </ScrollView>
-      <View style={appStyle.boxCenter}>
-        <AppButton
-          title="Hoàn tất"
-          marginBottom={90}
-          width="96%"
-          onPress={() => addNewCar()}
-        />
-      </View>
     </SafeAreaView>
   );
 };

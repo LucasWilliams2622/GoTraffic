@@ -18,7 +18,7 @@ import {ScrollView} from 'native-base';
 import SkeletonItemCar from '../../../../components/SkeletonItemCar';
 const data = [
   {label: 'Tất cả', value: '0'},
-  {label: 'Chưa duyệt', value: '1'},
+  {label: 'Chờ duyệt', value: '1'},
   {label: 'Đã duyệt', value: '2'},
   {label: 'Từ chối', value: '3'},
 ];
