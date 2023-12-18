@@ -119,29 +119,29 @@ export const ICON = {
   checkWhite: require('../assets/icon/ic_check_white.png'),
 
   /**
-   * Chỉ dùng getImageSource, không dùng getImageSourceSync sẽ gây lỗi trên iOS
+   * Chỉ dùng getImageSourceSync, không dùng getImageSourceSync sẽ gây lỗi trên iOS
    */
-  star: IconAntDesign.getImageSource('star', 20, '#FFE814'),
-  staro: IconAntDesign.getImageSource('staro', 20, 'gray'),
-  review: MaterialIcons.getImageSource('rate-review', 20, 'black'),
-  like1: IconAntDesign.getImageSource('like1', 20, 'black'),
-  car: IconIonicons.getImageSource('car-sport', 20, 'black'),
-  car2: IconIonicons.getImageSource('car', 20, 'black'),
+  star: IconAntDesign.getImageSourceSync('star', 20, '#FFE814'),
+  staro: IconAntDesign.getImageSourceSync('staro', 20, 'black'),
+  review: MaterialIcons.getImageSourceSync('rate-review', 20, 'black'),
+  like1: IconAntDesign.getImageSourceSync('like1', 20, 'black'),
+  car: IconIonicons.getImageSourceSync('car-sport', 20, 'black'),
+  car2: IconIonicons.getImageSourceSync('car', 20, 'black'),
 
-  contacts: MaterialCommunityIcons.getImageSource('contacts', 20, 'black'),
-  tag: IconAntDesign.getImageSource('tag', 20, 'black'),
-  infocirlce: IconAntDesign.getImageSource('infocirlce', 20, 'black'),
-  document: IconEntypo.getImageSource('text-document-inverted', 20, 'black'),
-  piechart: IconAntDesign.getImageSource('piechart', 20, 'black'),
-  areachart: IconAntDesign.getImageSource('areachart', 20, 'black'),
-  wallet: IconEntypo.getImageSource('wallet', 20, 'black'),
-  location: IconEntypo.getImageSource('location', 20, 'black'),
+  contacts: MaterialCommunityIcons.getImageSourceSync('contacts', 20, 'black'),
+  tag: IconAntDesign.getImageSourceSync('tag', 20, 'black'),
+  infocirlce: IconAntDesign.getImageSourceSync('infocirlce', 20, 'black'),
+  document: IconEntypo.getImageSourceSync('text-document-inverted', 20, 'black'),
+  piechart: IconAntDesign.getImageSourceSync('piechart', 20, 'black'),
+  areachart: IconAntDesign.getImageSourceSync('areachart', 20, 'black'),
+  wallet: IconEntypo.getImageSourceSync('wallet', 20, 'black'),
+  location: IconEntypo.getImageSourceSync('location', 20, 'black'),
 
-  closecircle: IconAntDesign.getImageSource('closecircle', 20, 'black'),
-  save: IconEntypo.getImageSource('save', 20, 'black'),
-  archive: IconEntypo.getImageSource('archive', 20, 'black'),
+  closecircle: IconAntDesign.getImageSourceSync('closecircle', 20, 'black'),
+  save: IconEntypo.getImageSourceSync('save', 20, 'black'),
+  archive: IconEntypo.getImageSourceSync('archive', 20, 'black'),
 
-  dislike1: IconAntDesign.getImageSource('dislike1', 20, 'black'),
+  dislike1: IconAntDesign.getImageSourceSync('dislike1', 20, 'black'),
   Download: MaterialIcons.getImageSource('file-download', 20, 'black')
 
     .then(source => {
