@@ -39,7 +39,7 @@ const ChartCar = () => {
       '#FF9800',
       '#C5FFF8',
       '#E5D4FF',
-      '#FFB534  ',
+      '#FFB534',
       '#D2DE32',
       '#FFD1E3',
       '#F6FDC3',
