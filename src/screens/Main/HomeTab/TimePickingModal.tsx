@@ -353,15 +353,38 @@ const TimePickingModal: React.FC<{
   const DayComponent = (props: any) => renderDay({...props, bookedDates});
 
   const handleNextPress = () => {
+    const currentDate = new Date(); // Get the current date
+
     console.log('startDate', startDate);
     console.log('endDate', endDate);
+
     if (startDate && endDate) {
+      // Convert startDate and endDate to Date objects for comparison
+      const startDateObj = new Date(startDate);
+      const endDateObj = new Date(endDate);
+
+      // Check if startDate is earlier than the current date
+      if (startDateObj < currentDate) {
+        console.log('test');
+        Alert.alert('Ngày bắt đầu phải từ ngày hiện tại trở đi');
+        showToastMessage('error', 'Ngày bắt đầu phải từ ngày hiện tại trở đi');
+        return; // Stop further processing
+      }
+
+      // Check if endDate is earlier than the current date
+      if (endDateObj < currentDate) {
+        console.log('test');
+        Alert.alert('Ngày kết thúc phải từ ngày hiện tại trở đi');
+        showToastMessage('error', 'Ngày kết thúc phải từ ngày hiện tại trở đi');
+        return; // Stop further processing
+      }
+
       if (isDateRangeOverlap(startDate, endDate)) {
         console.log('test');
-        Alert.alert('Ngày này đã được dặt, Vui lòng chọn ngày khác');
+        Alert.alert('Ngày này đã được đặt, Vui lòng chọn ngày khác');
         showToastMessage(
           'error',
-          'Ngày này đã được dặt, Vui lòng chọn ngày khác',
+          'Ngày này đã được đặt, Vui lòng chọn ngày khác',
         );
       } else {
         setSelectedTime({startTime, endTime, startDate, endDate});

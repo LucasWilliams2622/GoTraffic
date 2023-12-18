@@ -108,9 +108,9 @@ const RatingTrip = props => {
 
         <View
           style={{
-            width: windowWidth * 0.7,
             alignSelf: 'center',
             marginTop: 20,
+            width: '70%',
           }}>
           <StarRating
             disabled={false}

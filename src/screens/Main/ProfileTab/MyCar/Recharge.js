@@ -31,18 +31,30 @@ const Recharge = () => {
   const [checkoutUrl, setCheckoutUrl] = useState('');
   const {idUser, setInfoUser} = useContext(AppContext);
   const [currentUrl, setCurrentUrl] = useState('');
-
-  const handleNavigationStateChange = navState => {
-    // Lấy đường dẫn hiện tại từ trạng thái dẫn hướng
+  const [isPaymentChecked, setIsPaymentChecked] = useState(false);
+  const handleNavigationStateChange = async navState => {
     const url = navState.url;
     setCurrentUrl(url);
     console.log('Đã chuyển đến trang có chứa ' + url);
-    checkLink(url);
+
+    // Check if payment has already been checked
+    await checkLink(url);
   };
   const checkLink = async url => {
     if (url.includes('success')) {
       console.log('Thanh toan rồi nha');
       console.log(idUser, amount);
+      setIsPaymentChecked(true);
+      if (isPaymentChecked) {
+        Recharge();
+      }
+    } else {
+      setIsPaymentChecked(false);
+      console.log('Chưa thanh toán');
+    }
+  };
+  const Recharge = async () => {
+    try {
       const response = await axios.post(
         'http://103.57.129.166:3000/user/api/recharge-by-id-user',
         {
@@ -50,17 +62,22 @@ const Recharge = () => {
           amount: parseInt(amount),
         },
       );
+      console.log('responseresponse', response.data);
+      if (response.data.data) {
+        setAmount(0);
+        const responseUser = await axios.get(
+          `http://103.57.129.166:3000/user/api/get-by-id/?id=${idUser}`,
+        );
+        setInfoUser(responseUser.data.user);
+        setBlockInput(true);
 
-      setAmount(0);
-      const responseUser = await axios.get(
-        `http://103.57.129.166:3000/user/api/get-by-id/?id=${idUser}`,
-      );
-      setInfoUser(responseUser.data.user);
-      setBlockInput(true);
-
-      showToastMessage('', 'Thanh toán thành công');
-    } else {
-      console.log('Chưa thanh toán');
+        showToastMessage('', 'Thanh toán thành công');
+        navigation.goBack();
+      } else {
+        showToastMessage('error', 'Thanh toán thất bại');
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -97,7 +114,7 @@ const Recharge = () => {
         setBlockInput(false);
         setAmount(values.amount);
       } else {
-        console.log('==============>ERROR');
+        console.log('=========1=====>ERROR');
       }
     },
   });
