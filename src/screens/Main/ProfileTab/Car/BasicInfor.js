@@ -1,38 +1,38 @@
-import { StyleSheet, SafeAreaView, Text, View, TextInput } from 'react-native';
-import React, { useState, useMemo, useEffect } from 'react';
-import { COLOR, ICON } from '../../../../constants/Theme';
+import {StyleSheet, SafeAreaView, Text, View, TextInput} from 'react-native';
+import React, {useState, useMemo, useEffect} from 'react';
+import {COLOR, ICON} from '../../../../constants/Theme';
 import {
   appStyle,
   windowWidth,
   windowHeight,
 } from '../../../../constants/AppStyle';
 import AppInput from '../../../../components/AppInput';
-import { ScrollView } from 'native-base';
+import {ScrollView} from 'native-base';
 import AppButton from '../../../../components/AppButton';
 import AppDropdown from '../../../../components/AppDropdown';
 import Brand from '../../../../components/Profile/Brand';
 import Model from '../../../../components/Support/Model';
 import Year from '../../../../components/Profile/Year';
 import OptionDropdown from '../../../../components/Profile/OptionDropdown';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import AppHeader from '../../../../components/AppHeader';
-import { showToastMessage } from '../../../../utils/utils';
+import {showToastMessage} from '../../../../utils/utils';
 import axios from 'axios';
 
 const seatNumbers = [];
 for (let i = 4; i <= 16; i++) {
-  seatNumbers.push({ label: i.toString(), value: i.toString() });
+  seatNumbers.push({label: i.toString(), value: i.toString()});
 }
 
 const transmissionOptions = [
-  { label: 'Số sàn', value: 'manual' },
-  { label: 'Số tự động', value: 'automatic' },
+  {label: 'Số sàn', value: 'manual'},
+  {label: 'Số tự động', value: 'automatic'},
 ];
 
 const fuelOptions = [
-  { label: 'Xăng', value: 'Xăng' },
-  { label: 'Dầu Diesel', value: 'Dầu Diesel' },
-  { label: 'Điện', value: 'Điện' },
+  {label: 'Xăng', value: 'Xăng'},
+  {label: 'Dầu Diesel', value: 'Dầu Diesel'},
+  {label: 'Điện', value: 'Điện'},
 ];
 
 const BasicInfor = props => {
@@ -49,7 +49,7 @@ const BasicInfor = props => {
   const seatNumbers = useMemo(() => {
     const numbers = [];
     for (let i = 4; i <= 16; i++) {
-      numbers.push({ label: i.toString(), value: i.toString() });
+      numbers.push({label: i.toString(), value: i.toString()});
     }
     return numbers;
   }, []);
@@ -65,7 +65,7 @@ const BasicInfor = props => {
       selectedFuel,
     };
     // Cập nhật giá trị carInfo khi có sự thay đổi
-    navigation.setParams({ carInfo });
+    navigation.setParams({carInfo});
   }, [
     carNumber,
     selectedBrand,
@@ -101,14 +101,16 @@ const BasicInfor = props => {
           selectedTransmission,
           selectedFuel,
         };
-        navigation.navigate('DetailsInfor', { carInfo: carInfo });
+        navigation.navigate('DetailsInfor', {carInfo: carInfo});
       }
     }
   };
 
-  const checkCarNumberExists = async (carNumber) => {
+  const checkCarNumberExists = async carNumber => {
     try {
-      const response = await axios.get(`http://103.57.129.166:3000/car/api/check-car-exist?numberPlate=${carNumber}`);
+      const response = await axios.get(
+        `http://103.57.129.166:3000/car/api/check-car-exist?numberPlate=${carNumber}`,
+      );
       const result = await response.data.result;
       return result;
     } catch (error) {
@@ -121,7 +123,7 @@ const BasicInfor = props => {
     <SafeAreaView style={appStyle.container}>
       <AppHeader title="Thông tin cơ bản" />
       <ScrollView
-        style={[appStyle.main, { marginBottom: 20 }]}
+        style={[appStyle.main, {}]}
         showsVerticalScrollIndicator={false}>
         <View style={{}}>
           <Text style={styles.textWarn}>
@@ -130,20 +132,20 @@ const BasicInfor = props => {
             dựa trên giấy tờ xe.
           </Text>
 
-          <View style={[appStyle.cardInfo, { marginTop: 24 }]}>
+          <View style={[appStyle.cardInfo, {marginTop: 24}]}>
             <View style={appStyle.rowContent}>
               <Text style={appStyle.text165}>Biển số xe</Text>
               <TextInput
                 placeholder="Nhập biển số xe"
                 placeholderTextColor={'gray'}
                 value={carNumber}
-                style={{ width: '50%' }}
+                style={{width: '50%'}}
                 textAlign="right"
                 onChangeText={text => setCarNumber(text)}
               />
             </View>
 
-            <Text style={{ marginTop: 8 }}>
+            <Text style={{marginTop: 8}}>
               Bạn cần điền chính xác biển số xe theo đăng kiểm. Không dùng biển
               số giả hoặc biển số không có thực.
             </Text>
@@ -190,7 +192,7 @@ const BasicInfor = props => {
             </View>
           </View>
 
-          <View style={[appStyle.cardInfo, { borderBottomWidth: 0 }]}>
+          <View style={[appStyle.cardInfo, {borderBottomWidth: 0}]}>
             <View style={[appStyle.rowContent]}>
               <Text style={appStyle.text165}>Nhiên liệu</Text>
               <OptionDropdown
@@ -201,14 +203,13 @@ const BasicInfor = props => {
             </View>
           </View>
         </View>
-
-        <AppButton
-          title="Tiếp theo"
-          marginBottom={70}
-          marginTop={24}
-          onPress={() => handleNext()}
-        />
       </ScrollView>
+      <AppButton
+        title="Tiếp theo"
+        onPress={() => handleNext()}
+        width='94%'
+        containerStyle={{marginBottom: 70}}
+      />
     </SafeAreaView>
   );
 };

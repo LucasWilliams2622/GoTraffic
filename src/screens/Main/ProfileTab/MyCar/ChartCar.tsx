@@ -39,7 +39,7 @@ const ChartCar = () => {
       '#FF9800',
       '#C5FFF8',
       '#E5D4FF',
-      '#FAEED1  ',
+      '#FFB534  ',
       '#D2DE32',
       '#FFD1E3',
       '#F6FDC3',
@@ -89,7 +89,10 @@ const ChartCar = () => {
         icon={ICON.location}
         onPressRight={() => navigation.navigate('MapCars')}
       />
-      <View style={[appStyle.main,{marginBottom:70}]}>
+      <ScrollView
+        style={[appStyle.main, {marginBottom: 70}]}
+        shouldRasterizeIOS
+        showsVerticalScrollIndicator={false}>
         <View style={styles.chartContainer}>
           <PieChart
             strokeWidth={2}
@@ -117,7 +120,7 @@ const ChartCar = () => {
             onPress={(event, index) => handleChartPress(filteredData, index)}
           />
         </View>
-        <ScrollView >
+        <ScrollView>
           {selectedItem && (
             <View style={styles.selectedItemContainer}>
               <Text style={styles.selectedItemText}>
@@ -143,7 +146,7 @@ const ChartCar = () => {
             ))}
           </View>
         </ScrollView>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
