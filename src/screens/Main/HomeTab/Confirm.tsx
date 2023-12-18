@@ -138,7 +138,7 @@ const BottomBar: React.FC<{
   const [isSuccessModalVisible, setIsSuccessModalVisible] =
     useState<boolean>(false);
 
-  const {infoUser} = useContext(AppContext);
+  const {infoUser, setInfoUser, idUser} = useContext(AppContext);
 
   const closeModals = () => {
     setIsCancelModalVisible(false);
@@ -205,10 +205,16 @@ const BottomBar: React.FC<{
 
       axios
         .request(config)
-        .then(response => {
+        .then(async response => {
           console.log(JSON.stringify(response));
           if (response.data.result === true) {
             hideModal();
+
+            const responseUser = await axios.get(
+              `http://103.57.129.166:3000/user/api/get-by-id/?id=` + idUser,
+            );
+            console.log(responseUser.data.user);
+            setInfoUser(responseUser.data.user);
             showModal(
               <SuccessModal
                 isVisible={true}
