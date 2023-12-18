@@ -20,6 +20,7 @@ import {showToastMessage} from '../../utils/utils';
 import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
 import DismissKeyboard from '../../components/DismissKeyboard';
+import {HStack, Heading, Spinner} from 'native-base';
 
 const EmailCheck = props => {
   const {name, password, phone} = props.route.params;
@@ -27,6 +28,7 @@ const EmailCheck = props => {
   const [emailError, setEmailError] = useState('');
   const [forgotEmail, setForgotEmail] = useState('');
   const [verifyCode, setVerifyCode] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   //API VERIFIED EMAIL
   const handleEmailChange = email => {
@@ -45,6 +47,7 @@ const EmailCheck = props => {
       );
       if (checkEmail.data.result) {
         showToastMessage('error', 'Email đã tồn tại');
+        setIsLoading(false);
       } else {
         onRegister(name, phone, forgotEmail, password);
       }
@@ -54,9 +57,13 @@ const EmailCheck = props => {
   };
   const handleEmailCheck = () => {
     if (!emailError && forgotEmail.trim() !== '') {
-      handleVerifyEmail();
+      setIsLoading(true);
+      setTimeout(() => {
+        handleVerifyEmail();
+      }, 1000);
     } else {
       setEmailError('Email không được để trống');
+      setIsLoading(false);
     }
   };
 
@@ -105,6 +112,7 @@ const EmailCheck = props => {
 
         if (responseCode.data.result) {
           showToastMessage('', 'Đã gửi mã xác thực');
+          setIsLoading(null);
         } else {
           showToastMessage('', 'Gửi mã xác thực thất bại');
         }
@@ -168,14 +176,33 @@ const EmailCheck = props => {
                   </Text>
                 ) : null}
               </View>
-
-              <AppButton
-                title="Nhận mã"
-                color={COLOR.secondary}
-                fontSize={16}
-                onPress={handleEmailCheck}
-                marginTop={5}
-              />
+              {isLoading == false ? (
+                <AppButton
+                  title="Nhận mã"
+                  color={COLOR.secondary}
+                  fontSize={16}
+                  onPress={handleEmailCheck}
+                  marginTop={5}
+                />
+              ) : isLoading == true ? (
+                <View>
+                  <HStack
+                    space={2}
+                    justifyContent="center"
+                    style={{
+                      backgroundColor: 'white',
+                      padding: 20,
+                      width: 'auto',
+                      borderWidth: 1,
+                      borderColor: COLOR.primary,
+                    }}>
+                    <Spinner accessibilityLabel="Loading posts" />
+                    <Heading color="primary.500" fontSize="md">
+                      Loading
+                    </Heading>
+                  </HStack>
+                </View>
+              ) : null}
             </View>
           </KeyboardAvoidingView>
 
