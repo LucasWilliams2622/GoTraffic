@@ -22,7 +22,6 @@ import AppInput from '../../../../components/AppInput';
 import AppDropdown from '../../../../components/AppDropdown';
 import AppButton from '../../../../components/AppButton';
 import ItemFeature from '../../../../components/Profile/ItemFeature';
-import {features} from '../../../../components/Profile/data/DataCar';
 import AxiosInstance from '../../../../constants/AxiosInstance';
 import {showToastMessage} from '../../../../utils/utils';
 import AppHeader from '../../../../components/AppHeader';
@@ -129,13 +128,15 @@ const InforOfCar = props => {
 
   const handleUpdateCar = async () => {
     try {
+      const jsonString = JSON.stringify(selectedFeatures);
+      const jsonStringWithQuotes = `\'${jsonString}\'`;
       const response = await AxiosInstance().put(
         '/car/api/update-info-car?idCar=' + data.id,
         {
           numberPlate: carNumber,
           locationCar: location,
           description: description,
-          utilities: selectedFeatures.toString(),
+          utilities: jsonStringWithQuotes,
         },
       );
       if (response.result) {
@@ -155,13 +156,13 @@ const InforOfCar = props => {
       setonSwitch(!onSwitch);
     }
   };
-   const toggleModal = () => {
-     setModalVisible(!isModalVisible);
-   };
-    const handleConfirm = () => {
-      setonSwitch(true);
-      toggleModal();
-    };
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+  const handleConfirm = () => {
+    setonSwitch(true);
+    toggleModal();
+  };
 
   return (
     <SafeAreaView style={appStyle.container}>
@@ -171,7 +172,7 @@ const InforOfCar = props => {
           navigation.goBack('GeneralInformation', {data: data})
         }
       />
-      <ScrollView style={appStyle.main}>
+      <ScrollView style={[appStyle.main, {marginBottom: 70}]}>
         <View style={[appStyle.cardInfo, {marginTop: 10}]}>
           <View style={appStyle.rowContent}>
             <Text style={appStyle.text165}>Biển số xe</Text>
@@ -324,8 +325,9 @@ const InforOfCar = props => {
             {features.map(feature => (
               <ItemFeature
                 key={feature}
-                featureName={feature}
+                featureName={feature.name}
                 isSelected={selectedFeatures.includes(feature)}
+                featureType={feature.type}
                 onPress={handleFeatureSelection}
               />
             ))}
@@ -400,3 +402,65 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+const features = [
+  {
+    key: 'backup-tire',
+    name: 'Lốp dự phòng',
+    type: 'tire',
+  },
+  {
+    key: 'speed-warning',
+    name: 'Cảnh báo tốc độ',
+    type: 'speedometer',
+  },
+  {
+    key: '360-camera',
+    name: 'Camera hành trình',
+    type: 'camera',
+  },
+  {
+    key: 'airbag',
+    name: 'Túi khi an toàn',
+    type: 'airbag',
+  },
+  {
+    key: 'usb',
+    name: 'Khe cắm USB',
+    type: 'usb',
+  },
+  {
+    key: 'bluetooth',
+    name: 'BlueTooth',
+    type: 'bluetooth',
+  },
+  {
+    key: 'back-camera',
+    name: 'Camera lùi',
+    type: 'camera',
+  },
+  {
+    key: 'etc',
+    name: 'ETC',
+    type: 'ticket',
+  },
+  {
+    key: 'sunroof',
+    name: 'Cửa sổ trời',
+    type: 'car',
+  },
+  {
+    key: 'tire-sensor',
+    name: 'Cảm biến lốp',
+    type: 'tire',
+  },
+  {
+    key: 'map',
+    name: 'Bản đồ',
+    type: 'map',
+  },
+  {
+    key: 'gps',
+    name: 'Định vị GPS',
+    type: 'crosshairs-gps',
+  },
+];
