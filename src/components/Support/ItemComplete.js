@@ -97,7 +97,7 @@ const ItemComplete = props => {
               }}
             />
             <Text style={[appStyle.text12, {}]}>
-              SĐT: 
+              SĐT:
               <Text style={[appStyle.text12, {fontWeight: 500}]}>
                 {' '}
                 {data.User.phone}
@@ -105,17 +105,116 @@ const ItemComplete = props => {
             </Text>
 
             <View style={appStyle.rowBetween}>
-              <View style={styles.tripContainer}>
-                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
-                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
-                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
-                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
-                <FastImage
-                  source={ICON.Star}
-                  style={appStyle.iconMedium}
-                  tintColor={COLOR.borderColor3}
-                />
-              </View>
+              {data.Car.rating < 1 ? (
+                <View style={styles.tripContainer}>
+                  <FastImage
+                    source={ICON.Star}
+                    style={appStyle.iconMedium}
+                    tintColor={COLOR.borderColor3}
+                  />
+                  <FastImage
+                    source={ICON.Star}
+                    style={appStyle.iconMedium}
+                    tintColor={COLOR.borderColor3}
+                  />
+                  <FastImage
+                    source={ICON.Star}
+                    style={appStyle.iconMedium}
+                    tintColor={COLOR.borderColor3}
+                  />
+                  <FastImage
+                    source={ICON.Star}
+                    style={appStyle.iconMedium}
+                    tintColor={COLOR.borderColor3}
+                  />
+                  <FastImage
+                    source={ICON.Star}
+                    style={appStyle.iconMedium}
+                    tintColor={COLOR.borderColor3}
+                  />
+                </View>
+              ) : data.Car.rating >= 1 && data.Car.rating < 2 ? (
+                <View style={styles.tripContainer}>
+                  <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                  <FastImage
+                    source={ICON.Star}
+                    style={appStyle.iconMedium}
+                    tintColor={COLOR.borderColor3}
+                  />
+                  <FastImage
+                    source={ICON.Star}
+                    style={appStyle.iconMedium}
+                    tintColor={COLOR.borderColor3}
+                  />
+                  <FastImage
+                    source={ICON.Star}
+                    style={appStyle.iconMedium}
+                    tintColor={COLOR.borderColor3}
+                  />
+                  <FastImage
+                    source={ICON.Star}
+                    style={appStyle.iconMedium}
+                    tintColor={COLOR.borderColor3}
+                  />
+                </View>
+              ) : data.Car.rating >= 2 && data.Car.rating < 3 ? (
+                <View style={styles.tripContainer}>
+                  <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                  <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                  <FastImage
+                    source={ICON.Star}
+                    style={appStyle.iconMedium}
+                    tintColor={COLOR.borderColor3}
+                  />
+                  <FastImage
+                    source={ICON.Star}
+                    style={appStyle.iconMedium}
+                    tintColor={COLOR.borderColor3}
+                  />
+                  <FastImage
+                    source={ICON.Star}
+                    style={appStyle.iconMedium}
+                    tintColor={COLOR.borderColor3}
+                  />
+                </View>
+              ) : data.Car.rating >= 3 && data.Car.rating < 4 ? (
+                <View style={styles.tripContainer}>
+                  <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                  <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                  <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                  <FastImage
+                    source={ICON.Star}
+                    style={appStyle.iconMedium}
+                    tintColor={COLOR.borderColor3}
+                  />
+                  <FastImage
+                    source={ICON.Star}
+                    style={appStyle.iconMedium}
+                    tintColor={COLOR.borderColor3}
+                  />
+                </View>
+              ) : data.Car.rating >= 4 && data.Car.rating < 5 ? (
+                <View style={styles.tripContainer}>
+                  <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                  <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                  <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                  <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                  <FastImage
+                    source={ICON.Star}
+                    style={appStyle.iconMedium}
+                    tintColor={COLOR.borderColor3}
+                  />
+                </View>
+              ) : (
+                <View style={styles.tripContainer}>
+                  <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                  <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                  <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                  <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                  <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                </View>
+              )}
+
               <Text
                 style={{
                   fontWeight: '500',
@@ -229,17 +328,115 @@ const ItemComplete = props => {
             <Text style={{fontWeight: '500'}}> {data.Car.locationCar}</Text>
           </Text>
           <View style={appStyle.rowBetween}>
-            <View style={styles.tripContainer}>
-              <FastImage source={ICON.Star} style={appStyle.iconMedium} />
-              <FastImage source={ICON.Star} style={appStyle.iconMedium} />
-              <FastImage source={ICON.Star} style={appStyle.iconMedium} />
-              <FastImage source={ICON.Star} style={appStyle.iconMedium} />
-              <FastImage
-                source={ICON.Star}
-                style={appStyle.iconMedium}
-                tintColor={COLOR.borderColor3}
-              />
-            </View>
+            {data.Car.rating < 1 ? (
+              <View style={styles.tripContainer}>
+                <FastImage
+                  source={ICON.Star}
+                  style={appStyle.iconMedium}
+                  tintColor={COLOR.borderColor3}
+                />
+                <FastImage
+                  source={ICON.Star}
+                  style={appStyle.iconMedium}
+                  tintColor={COLOR.borderColor3}
+                />
+                <FastImage
+                  source={ICON.Star}
+                  style={appStyle.iconMedium}
+                  tintColor={COLOR.borderColor3}
+                />
+                <FastImage
+                  source={ICON.Star}
+                  style={appStyle.iconMedium}
+                  tintColor={COLOR.borderColor3}
+                />
+                <FastImage
+                  source={ICON.Star}
+                  style={appStyle.iconMedium}
+                  tintColor={COLOR.borderColor3}
+                />
+              </View>
+            ) : data.Car.rating >= 1 && data.Car.rating < 2 ? (
+              <View style={styles.tripContainer}>
+                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                <FastImage
+                  source={ICON.Star}
+                  style={appStyle.iconMedium}
+                  tintColor={COLOR.borderColor3}
+                />
+                <FastImage
+                  source={ICON.Star}
+                  style={appStyle.iconMedium}
+                  tintColor={COLOR.borderColor3}
+                />
+                <FastImage
+                  source={ICON.Star}
+                  style={appStyle.iconMedium}
+                  tintColor={COLOR.borderColor3}
+                />
+                <FastImage
+                  source={ICON.Star}
+                  style={appStyle.iconMedium}
+                  tintColor={COLOR.borderColor3}
+                />
+              </View>
+            ) : data.Car.rating >= 2 && data.Car.rating < 3 ? (
+              <View style={styles.tripContainer}>
+                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                <FastImage
+                  source={ICON.Star}
+                  style={appStyle.iconMedium}
+                  tintColor={COLOR.borderColor3}
+                />
+                <FastImage
+                  source={ICON.Star}
+                  style={appStyle.iconMedium}
+                  tintColor={COLOR.borderColor3}
+                />
+                <FastImage
+                  source={ICON.Star}
+                  style={appStyle.iconMedium}
+                  tintColor={COLOR.borderColor3}
+                />
+              </View>
+            ) : data.Car.rating >= 3 && data.Car.rating < 4 ? (
+              <View style={styles.tripContainer}>
+                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                <FastImage
+                  source={ICON.Star}
+                  style={appStyle.iconMedium}
+                  tintColor={COLOR.borderColor3}
+                />
+                <FastImage
+                  source={ICON.Star}
+                  style={appStyle.iconMedium}
+                  tintColor={COLOR.borderColor3}
+                />
+              </View>
+            ) : data.Car.rating >= 4 && data.Car.rating < 5 ? (
+              <View style={styles.tripContainer}>
+                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                <FastImage
+                  source={ICON.Star}
+                  style={appStyle.iconMedium}
+                  tintColor={COLOR.borderColor3}
+                />
+              </View>
+            ) : (
+              <View style={styles.tripContainer}>
+                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+              </View>
+            )}
             <Text
               style={{
                 fontWeight: '500',
