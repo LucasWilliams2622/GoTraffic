@@ -14,6 +14,8 @@ import ImagePickerComponent from '../../../../components/ImagePickerComponent';
 import {AppContext} from '../../../../utils/AppContext';
 import MultipleImagePicker from '../../../../components/MultiImagePicker';
 import {useNavigation} from '@react-navigation/native';
+import {HStack, Heading, Spinner} from 'native-base';
+import Modal, {ReactNativeModal} from 'react-native-modal';
 
 const FinalStep = props => {
   const navigation = useNavigation();
@@ -21,6 +23,8 @@ const FinalStep = props => {
 
   const {idUser} = useContext(AppContext);
   const [imageThumbnail, setImageThumbnail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleImageThumbnailSelected = path => {
     setImageThumbnail(path);
   };
@@ -105,6 +109,7 @@ const FinalStep = props => {
         showToastMessage('error', 'Vui lòng chọn nhiều hơn 4 tấm ảnh');
         return;
       } else {
+        setIsLoading(true);
         await uploadImage();
       }
     } catch (error) {
@@ -153,13 +158,16 @@ const FinalStep = props => {
       );
 
       if (response.data.result) {
+        setIsLoading(false);
         showToastMessage('', 'Đăng xe thành công');
         navigation.navigate('ListCar');
       } else {
         showToastMessage('error', 'Đăng xe thất bại');
+        setIsLoading(true);
       }
     } catch (error) {
       showToastMessage('error', 'Đăng xe thất bại !!!');
+      setIsLoading(true);
     }
   };
   return (
@@ -183,13 +191,36 @@ const FinalStep = props => {
           space={14}
         />
       </ScrollView>
-
-      <AppButton
-        title="Hoàn tất"
-        width="94%"
-        onPress={() => addNewCar()}
-        containerStyle={{marginBottom: 70}}
-      />
+      {isLoading == false ? (
+        <AppButton
+          title="Hoàn tất"
+          width="94%"
+          onPress={() => addNewCar()}
+          containerStyle={{marginBottom: 70}}
+        />
+      ) : (
+        <View>
+          <HStack
+            space={2}
+            justifyContent="center"
+            style={{
+              backgroundColor: 'white',
+              padding: 20,
+              width: 'auto',
+              borderWidth: 1,
+              borderColor: COLOR.primary,
+              marginTop: 0,
+              marginLeft: 10,
+              marginRight: 10,
+              marginBottom: 70,
+            }}>
+            <Spinner accessibilityLabel="Loading posts" />
+            <Heading color="primary.500" fontSize="md">
+              Loading
+            </Heading>
+          </HStack>
+        </View>
+      )}
     </SafeAreaView>
   );
 };
