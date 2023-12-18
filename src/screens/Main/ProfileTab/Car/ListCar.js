@@ -44,7 +44,7 @@ const ListCar = props => {
         }, 1100);
       } else {
         setCarData([]);
-        setLoading(false)
+        setLoading(false);
         console.log('Failed to get car');
       }
     } catch (error) {
@@ -112,7 +112,11 @@ const ListCar = props => {
             setValue(item.value);
             setIsFocus(false);
             console.log(item.value);
-            getCarByIdUserByStatus(item.value);
+            if (item.value == 0) {
+              getCarByIdUser();
+            } else {
+              getCarByIdUserByStatus(item.value);
+            }
           }}
         />
         <Text
@@ -139,7 +143,7 @@ const ListCar = props => {
         ) : (
           <>
             <FlatList
-              style={{marginBottom: 72, }}
+              style={{marginBottom: 72}}
               data={carData}
               renderItem={({item}) => <ItemCar data={item} />}
               keyExtractor={(item, index) => index.toString()}

@@ -43,8 +43,9 @@ const ItemTrip = props => {
           )}
 
           {data.status == 1 ? (
-            <View style={styles.statusContainer}>
-              <Text style={styles.statusText}>Chờ xác nhận</Text>
+            <View
+              style={[styles.statusContainer, {backgroundColor: '#DDDC05'}]}>
+              <Text style={[styles.statusText]}>Chờ xác nhận</Text>
             </View>
           ) : data.status == 2 ? (
             <View
@@ -212,8 +213,9 @@ const ItemTrip = props => {
             </FastImage>
           )}
           {data.status == 1 ? (
-            <View style={styles.statusContainer}>
-              <Text style={styles.statusText}>Chờ xác nhận</Text>
+            <View
+              style={[styles.statusContainer, {backgroundColor: '#DDDC05'}]}>
+              <Text style={[styles.statusText]}>Chờ xác nhận</Text>
             </View>
           ) : data.status == 2 ? (
             <View

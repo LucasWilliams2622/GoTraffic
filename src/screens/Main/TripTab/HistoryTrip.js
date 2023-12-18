@@ -56,7 +56,7 @@ const HistoryTrip = () => {
           </View>
         ) : (
           <FlatList
-            style={{width: '100%', marginBottom: 65}}
+            style={{width: '100%', marginBottom: 65,marginTop:20}}
             data={listBooked}
             renderItem={({item}) => <ItemTrip data={item} />}
             keyExtractor={item => item.id}
