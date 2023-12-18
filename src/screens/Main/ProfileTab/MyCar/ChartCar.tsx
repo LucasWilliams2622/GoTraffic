@@ -39,7 +39,7 @@ const ChartCar = () => {
       '#FF9800',
       '#C5FFF8',
       '#E5D4FF',
-      '#FFB534  ',
+      '#FFB534',
       '#D2DE32',
       '#FFD1E3',
       '#F6FDC3',
@@ -81,7 +81,10 @@ const ChartCar = () => {
   const legendData = data
     .map(item => `${item.numberOfBooked} chuyến | ${item.numberPlate}`)
     .reverse();
-
+  const totalBookedTrips = filteredData.reduce(
+    (total, item) => total + item.numberOfBooked,
+    0,
+  );
   return (
     <SafeAreaView style={appStyle.container}>
       <AppHeader
@@ -101,7 +104,7 @@ const ChartCar = () => {
               value: item.numberOfBooked,
               color: item.color,
               text: `${Math.round(
-                (item.numberOfBooked / filteredData.length) * 100,
+                (item.numberOfBooked / totalBookedTrips) * 100,
               )}%`,
             }))}
             showText

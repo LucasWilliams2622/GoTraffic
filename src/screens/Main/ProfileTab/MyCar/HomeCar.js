@@ -95,29 +95,29 @@ const HomeCar = props => {
           />
         )}
         <AppHomeCar
-          icon={ICON.Wallet}
-          title="Ví của tôi"
-          borderBottomWidth={0}
-          text="Theo dõi số dư và lịch sử ví"
-          onPress={() => navigation.navigate('MyWallet')}
-        />
-        <AppHomeCar
-          icon={ICON.contacts}
-          title="Hợp đồng mẫu"
-          text="Mẫu hợp đồng cho thuê xe"
-          onPress={() => navigation.navigate('SampleContract')}
-        />
-        <AppHomeCar
           icon={ICON.tag}
           title="Danh sách chuyến"
           text="Lịch sử và trạng thái các chuyến"
           onPress={() => navigation.navigate('TripOfCar')}
         />
         <AppHomeCar
+          icon={ICON.wallet}
+          title="Ví của tôi"
+          borderBottomWidth={0}
+          text="Theo dõi số dư và lịch sử ví"
+          onPress={() => navigation.navigate('MyWallet')}
+        />
+        <AppHomeCar
           icon={ICON.piechart}
           title="Thống kê"
           text="Thống kê xe và chuyến"
           onPress={() => navigation.navigate('ChartCar')}
+        />
+        <AppHomeCar
+          icon={ICON.contacts}
+          title="Hợp đồng mẫu"
+          text="Mẫu hợp đồng cho thuê xe"
+          onPress={() => navigation.navigate('SampleContract')}
         />
       </ScrollView>
     </SafeAreaView>

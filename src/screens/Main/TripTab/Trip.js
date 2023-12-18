@@ -22,8 +22,9 @@ import Swipelist from 'react-native-swipeable-list-view';
 import SkeletonTrip from '../../../components/SkeletonTrip';
 import {showToastMessage} from '../../../utils/utils';
 import data from '../../data';
+import axios from 'axios';
 const Trip = () => {
-  const {infoUser, idUser} = useContext(AppContext);
+  const {infoUser, setInfoUser, idUser} = useContext(AppContext);
   const [listBookingCurrent, setListBookingCurrent] = useState([]);
   const navigation = useNavigation();
   const isFocused = useIsFocused();
@@ -62,6 +63,12 @@ const Trip = () => {
       if (response.result) {
         showToastMessage('', 'Hủy chuyến thành công');
         getListBookingCurrent();
+
+        const responseUser = await axios.get(
+          `http://103.57.129.166:3000/user/api/get-by-id/?id=` + idUser,
+        );
+        console.log(responseUser.data.user);
+        setInfoUser(responseUser.data.user);
       } else {
         showToastMessage('', 'Hủy chuyến thất bại');
       }
@@ -124,7 +131,9 @@ const Trip = () => {
         />
         <View style={[appStyle.main]}>
           {listBookingCurrent.length > 0 && (
-            <Text style={styles.text1}>Hiện tại ({listBookingCurrent.length})</Text>
+            <Text style={styles.text1}>
+              Hiện tại ({listBookingCurrent.length})
+            </Text>
           )}
 
           {loading == true ? (

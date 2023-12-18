@@ -24,6 +24,7 @@ import {AppContext} from '../../../utils/AppContext';
 import {showToastMessage} from '../../../utils/utils';
 import axios from 'axios';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import SkeletonItemCard from '../../SkeletonItemCard';
 
 const CarCardItem = ({
   id,
@@ -195,14 +196,7 @@ export default CarCardItem;
 
 export const CarCardItemPlaceholder = () => {
   return (
-    <SkeletonPlaceholder>
-      <SkeletonPlaceholder.Item
-        flexDirection="row"
-        alignItems="center"
-        marginRight={20}>
-        <SkeletonPlaceholder.Item width={330} height={100} borderRadius={20} />
-      </SkeletonPlaceholder.Item>
-    </SkeletonPlaceholder>
+    <SkeletonItemCard/>
   );
 };
 

@@ -10,6 +10,7 @@ import {showToastMessage} from '../../../../../utils/utils';
 import {ICON} from '../../../../../constants/Theme';
 import {AppContext} from '../../../../../utils/AppContext';
 import SkeletonTrip from '../../../../../components/SkeletonTrip';
+import axios from 'axios';
 
 const ActiveTrip = () => {
   const isFocused = useIsFocused();
@@ -49,6 +50,22 @@ const ActiveTrip = () => {
       console.log('=========>', error);
     }
   };
+  const cancelBookingByOwner = async id => {
+    try {
+      const response = await axios.post(
+        `http://103.57.129.166:3000/booking/api/cancel-by-owner?id=` + id,
+      );
+      console.log('=================', response.data);
+      if (response.data.result) {
+        showToastMessage('', 'Hủy chuyến thành công');
+        getCarByIdUser();
+      } else {
+        showToastMessage('error', 'Hủy chuyến thất bại');
+      }
+    } catch (error) {
+      console.log('=========>', error);
+    }
+  };
   // setInterval(() => {
   //   getCarByIdUser();
   // }, 10000);
@@ -69,7 +86,11 @@ const ActiveTrip = () => {
           style={[appStyle.container, {marginBottom: 70}]}
           data={data}
           renderItem={({item}) => (
-            <ItemActiveTrip data={item} handleCompelete={completeBooking} />
+            <ItemActiveTrip
+              data={item}
+              handleCompelete={completeBooking}
+              cancelBookingByOwner={cancelBookingByOwner}
+            />
           )}
           keyExtractor={item => item._id}
           showsVerticalScrollIndicator={false}
