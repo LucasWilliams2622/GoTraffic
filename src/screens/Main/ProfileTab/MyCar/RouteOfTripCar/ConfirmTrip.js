@@ -41,13 +41,13 @@ const ConfirmTrip = () => {
   const cancelBooking = async id => {
     try {
       const response = await AxiosInstance().post(
-        '/booking/api/cancel-by-owner?id=' + id,
+        '/booking/api/reject?id=' + id,
       );
       if (response.result) {
-        showToastMessage('', 'Hủy yêu càu đặt xe thành công');
+        showToastMessage('', 'Hủy yêu cầu đặt xe thành công');
         getCarByIdUser();
       } else {
-        showToastMessage('', 'Hủy yêu càu đặt xe thất bại', ICON.cancelWhite);
+        showToastMessage('', 'Hủy yêu cầu đặt xe thất bại', ICON.cancelWhite);
       }
     } catch (error) {
       console.log('=========>', error);

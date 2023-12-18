@@ -9,13 +9,17 @@ import Moment from 'moment';
 import {formatPrice, squareImageSize} from '../../utils/utils';
 import AppButton from '../AppButton';
 const ItemActiveTrip = props => {
-  const {data, handleCompelete} = props;
+  const {data, handleCompelete, cancelBookingByOwner} = props;
   const isImageUrlValid = /^https?:\/\/.*\.(png|jpg)$/i.test(
     data.Car.imageThumbnail,
   );
   const confirmComplete = () => {
     handleCompelete(data.id);
   };
+  const confirmCancel = () => {
+    cancelBookingByOwner(data.id);
+  };
+
   const [openDetail, setOpenDetail] = useState(false);
   const checkStatus = () => {
     setOpenDetail(!openDetail);
@@ -94,7 +98,7 @@ const ItemActiveTrip = props => {
               }}
             />
             <Text style={[appStyle.text12, {}]}>
-              SĐT: 
+              SĐT:
               <Text style={[appStyle.text12, {fontWeight: 500}]}>
                 {' '}
                 {data.User.phone}
@@ -227,14 +231,28 @@ const ItemActiveTrip = props => {
               {formatPrice(data.totalMoney)}
             </Text>
           </Text>
-          {checkBtn == false ? (
-            <AppButton
-              title="Giao xe"
-              icon={ICON.car}
-
-              onPress={() => handleDeliveryCar(data.id)}
-            />
-          ) : null}
+          <View style={appStyle.rowBetween}>
+            {checkBtn == false ? (
+              <>
+                <AppButton
+                  title="Hủy chuyến"
+                  borderColor={COLOR.red}
+                  noShadow
+                  icon={ICON.closecircle}
+                  backgroundColor={COLOR.red}
+                  width={'48%'}
+                  onPress={() => confirmCancel(data.id)}
+                />
+                <AppButton
+                  width="48%"
+                  title="Giao xe"
+                  noShadow
+                  icon={ICON.car}
+                  onPress={() => handleDeliveryCar(data.id)}
+                />
+              </>
+            ) : null}
+          </View>
         </TouchableOpacity>
       )}
     </>
