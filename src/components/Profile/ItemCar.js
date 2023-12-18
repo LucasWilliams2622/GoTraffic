@@ -61,13 +61,154 @@ const ItemCar = props => {
         ) : null}
         <View style={styles.detailsContainer}>
           <Text style={appStyle.text14Bold}>{data.name}</Text>
-          <View style={styles.tripContainer}>
+          {/* <View style={styles.tripContainer}>
             <FastImage source={ICON.Star} style={appStyle.iconSmall} />
             <FastImage source={ICON.Star} style={appStyle.iconSmall} />
             <FastImage source={ICON.Star} style={appStyle.iconSmall} />
             <FastImage source={ICON.Star} style={appStyle.iconSmall} />
             <FastImage source={ICON.Star} style={appStyle.iconSmall} />
             <Text style={styles.tripText}>0 chuyến</Text>
+          </View> */}
+          <View style={appStyle.rowBetween}>
+            {data.rating < 1 ? (
+              <View style={styles.tripContainer}>
+                <FastImage
+                  source={ICON.Star}
+                  style={appStyle.iconMedium}
+                  tintColor={COLOR.borderColor3}
+                />
+                <FastImage
+                  source={ICON.Star}
+                  style={appStyle.iconMedium}
+                  tintColor={COLOR.borderColor3}
+                />
+                <FastImage
+                  source={ICON.Star}
+                  style={appStyle.iconMedium}
+                  tintColor={COLOR.borderColor3}
+                />
+                <FastImage
+                  source={ICON.Star}
+                  style={appStyle.iconMedium}
+                  tintColor={COLOR.borderColor3}
+                />
+                <FastImage
+                  source={ICON.Star}
+                  style={appStyle.iconMedium}
+                  tintColor={COLOR.borderColor3}
+                />
+                <Text style={styles.tripText}>
+                  {data.numberOfBooked} chuyến
+                </Text>
+              </View>
+            ) : data.rating >= 1 && data.rating < 2 ? (
+              <View style={styles.tripContainer}>
+                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                <FastImage
+                  source={ICON.Star}
+                  style={appStyle.iconMedium}
+                  tintColor={COLOR.borderColor3}
+                />
+                <FastImage
+                  source={ICON.Star}
+                  style={appStyle.iconMedium}
+                  tintColor={COLOR.borderColor3}
+                />
+                <FastImage
+                  source={ICON.Star}
+                  style={appStyle.iconMedium}
+                  tintColor={COLOR.borderColor3}
+                />
+                <FastImage
+                  source={ICON.Star}
+                  style={appStyle.iconMedium}
+                  tintColor={COLOR.borderColor3}
+                />
+                <Text style={styles.tripText}>
+                  {data.numberOfBooked} chuyến
+                </Text>
+              </View>
+            ) : data.rating >= 2 && data.rating < 3 ? (
+              <View style={styles.tripContainer}>
+                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                <FastImage
+                  source={ICON.Star}
+                  style={appStyle.iconMedium}
+                  tintColor={COLOR.borderColor3}
+                />
+                <FastImage
+                  source={ICON.Star}
+                  style={appStyle.iconMedium}
+                  tintColor={COLOR.borderColor3}
+                />
+                <FastImage
+                  source={ICON.Star}
+                  style={appStyle.iconMedium}
+                  tintColor={COLOR.borderColor3}
+                />
+                <Text style={styles.tripText}>
+                  {data.numberOfBooked} chuyến
+                </Text>
+              </View>
+            ) : data.rating >= 3 && data.rating < 4 ? (
+              <View style={styles.tripContainer}>
+                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                <FastImage
+                  source={ICON.Star}
+                  style={appStyle.iconMedium}
+                  tintColor={COLOR.borderColor3}
+                />
+                <FastImage
+                  source={ICON.Star}
+                  style={appStyle.iconMedium}
+                  tintColor={COLOR.borderColor3}
+                />
+                <Text style={styles.tripText}>
+                  {data.numberOfBooked} chuyến
+                </Text>
+              </View>
+            ) : data.rating >= 4 && data.rating < 5 ? (
+              <View style={styles.tripContainer}>
+                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                <FastImage
+                  source={ICON.Star}
+                  style={appStyle.iconMedium}
+                  tintColor={COLOR.borderColor3}
+                />
+                <Text style={styles.tripText}>
+                  {data.numberOfBooked} chuyến
+                </Text>
+              </View>
+            ) : (
+              <View style={styles.tripContainer}>
+                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                <FastImage source={ICON.Star} style={appStyle.iconMedium} />
+                <Text style={styles.tripText}>
+                  {data.numberOfBooked} chuyến
+                </Text>
+              </View>
+            )}
+            <Text
+              style={{
+                fontWeight: '500',
+                fontSize: 14,
+                color: COLOR.black,
+              }}>
+              Tổng tiền:
+              <Text style={{color: COLOR.primary, fontWeight: '600'}}>
+                {' '}
+                {formatPrice(data.totalMoney)}
+              </Text>
+            </Text>
           </View>
           <View style={styles.priceContainer}>
             <Text style={styles.priceLabel}>Giá tự lái: </Text>
