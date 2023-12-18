@@ -17,7 +17,7 @@ import axios from 'axios';
 import moment from 'moment';
 
 const RatingTrip = props => {
-  const {id} = props?.route?.params;
+  const {id, name} = props?.route?.params;
   const navigation = useNavigation();
   const {infoUser, idUser} = useContext(AppContext);
   const [selectedStars, setSelectedStars] = useState(0);
@@ -97,7 +97,7 @@ const RatingTrip = props => {
             height: windowHeight * 0.15,
             justifyContent: 'space-evenly',
           }}>
-          <Text style={[appStyle.text18Bold]}>Tên chủ xe</Text>
+          <Text style={[appStyle.text18Bold]}>{name}</Text>
           <Text style={[appStyle.text20Bold]}>
             Đánh giá dịch vụ cho thuê của chủ xe
           </Text>

@@ -450,7 +450,10 @@ const ItemTrip = props => {
               ) : data.status == 6 ? (
                 <AppButton
                   onPress={() => {
-                    navigation.navigate('RatingTrip', {id: data.id});
+                    navigation.navigate('RatingTrip', {
+                      id: data.id,
+                      name: data.Car.User.name,
+                    });
                   }}
                   title="Đánh giá"
                   paddingVertical={10}
