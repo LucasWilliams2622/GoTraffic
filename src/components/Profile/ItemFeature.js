@@ -3,8 +3,15 @@ import React, {useState} from 'react';
 import FastImage from 'react-native-fast-image';
 import {appStyle, windowWidth} from '../../constants/AppStyle';
 import {COLOR, ICON} from '../../constants/Theme';
+import Icon, {IconType} from 'react-native-dynamic-vector-icons';
 
-const ItemFeature = ({featureName, isSelected, onPress, featureKey}) => {
+const ItemFeature = ({
+  featureName,
+  isSelected,
+  onPress,
+  featureKey,
+  featureType,
+}) => {
   return (
     <TouchableOpacity
       style={[
@@ -18,7 +25,14 @@ const ItemFeature = ({featureName, isSelected, onPress, featureKey}) => {
         onPress(featureKey);
       }}>
       <Text style={styles.featureText}>{featureName}</Text>
-      <FastImage style={appStyle.iconBig} source={ICON.TripFocus} />
+      <Icon
+        name={featureType}
+        type={IconType.MaterialCommunityIcons}
+        size={24}
+        color={COLOR.black}
+        onPress={() => {}}
+        style={{alignSelf: 'center',marginTop:4}}
+      />
     </TouchableOpacity>
   );
 };
@@ -35,6 +49,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 4,
     marginBottom: 8,
+    justifyContent: 'center',
   },
   featureText: {
     ...appStyle.text105,

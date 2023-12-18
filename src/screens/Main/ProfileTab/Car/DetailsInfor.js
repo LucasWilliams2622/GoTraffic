@@ -599,6 +599,7 @@ const DetailsInfor = props => {
                   featureName={feature.name}
                   isSelected={selectedFeatures.includes(feature.key)}
                   featureKey={feature.key}
+                  featureType={feature.type}
                   onPress={handleFeatureSelection}
                 />
               ))}
@@ -755,49 +756,61 @@ const features = [
   {
     key: 'backup-tire',
     name: 'Lốp dự phòng',
+    type: 'tire',
   },
   {
     key: 'speed-warning',
     name: 'Cảnh báo tốc độ',
+    type: 'speedometer',
   },
   {
     key: '360-camera',
     name: 'Camera hành trình',
+    type: 'camera',
   },
   {
     key: 'airbag',
     name: 'Túi khi an toàn',
+    type: 'airbag',
   },
   {
     key: 'usb',
     name: 'Khe cắm USB',
+    type: 'usb',
   },
   {
     key: 'bluetooth',
     name: 'BlueTooth',
+    type: 'bluetooth',
   },
   {
     key: 'back-camera',
     name: 'Camera lùi',
+    type: 'camera',
   },
   {
     key: 'etc',
     name: 'ETC',
+    type: 'ticket',
   },
   {
     key: 'sunroof',
     name: 'Cửa sổ trời',
+    type: 'car',
   },
   {
     key: 'tire-sensor',
     name: 'Cảm biến lốp',
+    type: 'tire',
   },
   {
     key: 'map',
     name: 'Bản đồ',
+    type: 'map',
   },
   {
     key: 'gps',
     name: 'Định vị GPS',
+    type: 'crosshairs-gps',
   },
 ];

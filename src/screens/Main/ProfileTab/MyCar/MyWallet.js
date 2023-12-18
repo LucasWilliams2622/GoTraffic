@@ -20,6 +20,7 @@ import {FlatList} from 'react-native';
 import ItemHistoryMoney from '../../../../components/Profile/ItemHistoryMoney';
 import {useIsFocused} from '@react-navigation/native';
 import AxiosInstance from '../../../../constants/AxiosInstance';
+import SkeletonItemMoney from '../../../../components/SkeletonItemMoney';
 
 const MyWallet = () => {
   const navigation = useNavigation();
@@ -27,6 +28,7 @@ const MyWallet = () => {
   const isFocused = useIsFocused();
   const {infoUser, idUser} = useContext(AppContext);
   const [hideSurplus, setHideSurplus] = useState(true);
+  const [loading, setLoading] = useState(true);
   const handleButtonPress = () => {
     setHideSurplus(!hideSurplus);
   };
@@ -40,6 +42,9 @@ const MyWallet = () => {
       if (response) {
         setData(response.transactions);
         // console.log(response.transactions);
+        setTimeout(() => {
+          setLoading(false);
+        }, 1100);
       } else {
         console.log('NETWORK ERROR');
       }
@@ -126,25 +131,41 @@ const MyWallet = () => {
             </TouchableOpacity>
           </View>
         </ImageBackground>
-        <FlatList
-          style={{marginBottom: 80}}
-          data={data}
-          renderItem={({item}) => <ItemHistoryMoney data={item} />}
-          keyExtractor={(item, index) => index.toString()}
-          showsVerticalScrollIndicator={false}
-          ListFooterComponent={
-            <View
-              style={[appStyle.boxCenter, appStyle.rowCenter, {marginTop: 24}]}>
-              <Image
-                style={appStyle.logo}
-                source={require('../../../../assets/image/logo_go_traffic.png')}
-              />
-              <Text style={[appStyle.text14, {paddingHorizontal: 8}]}>
-                Phiên bản 1.0.0
-              </Text>
-            </View>
-          }
-        />
+        {loading == true ? (
+          <View>
+            <SkeletonItemMoney />
+            <SkeletonItemMoney />
+            <SkeletonItemMoney />
+            <SkeletonItemMoney />
+            <SkeletonItemMoney />
+            <SkeletonItemMoney />
+            <SkeletonItemMoney />
+          </View>
+        ) : (
+          <FlatList
+            style={{marginBottom: 80}}
+            data={data}
+            renderItem={({item}) => <ItemHistoryMoney data={item} />}
+            keyExtractor={(item, index) => index.toString()}
+            showsVerticalScrollIndicator={false}
+            ListFooterComponent={
+              <View
+                style={[
+                  appStyle.boxCenter,
+                  appStyle.rowCenter,
+                  {marginTop: 24},
+                ]}>
+                <Image
+                  style={appStyle.logo}
+                  source={require('../../../../assets/image/logo_go_traffic.png')}
+                />
+                <Text style={[appStyle.text14, {paddingHorizontal: 8}]}>
+                  Phiên bản 1.0.0
+                </Text>
+              </View>
+            }
+          />
+        )}
       </ScrollView>
     </SafeAreaView>
   );

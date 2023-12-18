@@ -10,6 +10,7 @@ import {AppContext} from '../../../utils/AppContext';
 import {useIsFocused} from '@react-navigation/native';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import AppHeader from '../../../components/AppHeader';
+import SkeletonItemNoti from '../../../components/SkeletonItemNoti';
 import {showToastMessage} from '../../../utils/utils';
 const Notification = () => {
   const [data, setData] = useState('');
@@ -49,7 +50,7 @@ const Notification = () => {
           setCheckLength(true);
           if (response.notifications.length < 5) {
             setHeightList(windowHeight * 0.106 * response.notifications.length);
-          }else{
+          } else {
             setHeightList(windowHeight * 0.5);
           }
         } else {
@@ -106,67 +107,12 @@ const Notification = () => {
           </View>
         )}
         {loading == true ? (
-          <SkeletonPlaceholder>
-            <View style={{flexDirection: 'column', alignItems: 'flex-start'}}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  marginTop: 20,
-                  paddingHorizontal: 14,
-                }}>
-                <View style={{width: 50, height: 50, borderRadius: 50}} />
-                <View style={{marginLeft: 20}}>
-                  <View style={{width: 180, height: 20, borderRadius: 4}} />
-                  <View
-                    style={{
-                      marginTop: 6,
-                      width: 300,
-                      height: 20,
-                      borderRadius: 4,
-                    }}
-                  />
-                </View>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  marginTop: 20,
-                  paddingHorizontal: 14,
-                }}>
-                <View style={{width: 50, height: 50, borderRadius: 50}} />
-                <View style={{marginLeft: 20}}>
-                  <View style={{width: 180, height: 20, borderRadius: 4}} />
-                  <View
-                    style={{
-                      marginTop: 6,
-                      width: 300,
-                      height: 20,
-                      borderRadius: 4,
-                    }}
-                  />
-                </View>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  marginTop: 20,
-                  paddingHorizontal: 14,
-                }}>
-                <View style={{width: 50, height: 50, borderRadius: 50}} />
-                <View style={{marginLeft: 20}}>
-                  <View style={{width: 180, height: 20, borderRadius: 4}} />
-                  <View
-                    style={{
-                      marginTop: 6,
-                      width: 300,
-                      height: 20,
-                      borderRadius: 4,
-                    }}
-                  />
-                </View>
-              </View>
-            </View>
-          </SkeletonPlaceholder>
+          <View>
+            <SkeletonItemNoti />
+            <SkeletonItemNoti />
+            <SkeletonItemNoti />
+            <SkeletonItemNoti />
+          </View>
         ) : (
           checkLength && (
             <FlatList
@@ -189,50 +135,15 @@ const Notification = () => {
             <Text style={styles.text1}>Thông báo ứng dụng</Text>
           </View>
         )}
-        
+
         {loading == true ? (
-          <SkeletonPlaceholder>
-            <View style={{flexDirection: 'column', alignItems: 'flex-start'}}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  marginTop: 20,
-                  paddingHorizontal: 14,
-                }}>
-                <View style={{width: 50, height: 50, borderRadius: 50}} />
-                <View style={{marginLeft: 20}}>
-                  <View style={{width: 180, height: 20, borderRadius: 4}} />
-                  <View
-                    style={{
-                      marginTop: 6,
-                      width: 300,
-                      height: 20,
-                      borderRadius: 4,
-                    }}
-                  />
-                </View>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  marginTop: 20,
-                  paddingHorizontal: 14,
-                }}>
-                <View style={{width: 50, height: 50, borderRadius: 50}} />
-                <View style={{marginLeft: 20}}>
-                  <View style={{width: 180, height: 20, borderRadius: 4}} />
-                  <View
-                    style={{
-                      marginTop: 6,
-                      width: 300,
-                      height: 20,
-                      borderRadius: 4,
-                    }}
-                  />
-                </View>
-              </View>
-            </View>
-          </SkeletonPlaceholder>
+          <View>
+            <SkeletonItemNoti />
+            <SkeletonItemNoti />
+            <SkeletonItemNoti />
+            <SkeletonItemNoti />
+            <SkeletonItemNoti />
+          </View>
         ) : (
           <FlatList
             style={{width: '100%', marginBottom: 65}}

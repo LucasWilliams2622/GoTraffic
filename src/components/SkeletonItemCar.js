@@ -2,8 +2,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import {COLOR, ICON} from '../constants/Theme';
-import FastImage from 'react-native-fast-image';
-import {appStyle} from '../constants/AppStyle';
+
 
 const SkeletonItemCar = () => {
   return (
