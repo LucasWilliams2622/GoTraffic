@@ -29,7 +29,7 @@ const MapCars = () => {
   const [dataLocation, setDataLocation] = useState([]);
   const [selectedMarker, setSelectedMarker] = useState(null);
   const mapRef = useRef(null);
-  const [showList, setShowList] = useState(true);
+  const [showList, setShowList] = useState(false);
 
   const init = async () => {
     try {

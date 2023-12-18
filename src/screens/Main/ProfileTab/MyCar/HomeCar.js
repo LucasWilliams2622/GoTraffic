@@ -1,4 +1,10 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import {appStyle} from '../../../../constants/AppStyle';
 import {COLOR, ICON} from '../../../../constants/Theme';
@@ -52,7 +58,10 @@ const HomeCar = props => {
         title="Xe của tôi"
         //backgroundColor='#92D1FA'
       />
-      <View style={{padding: 14, marginTop: 100}}>
+      <ScrollView
+        style={{padding: 14, marginTop: 100, marginBottom: 70}}
+        shouldRasterizeIOS
+        showsVerticalScrollIndicator={false}>
         <View style={styles.line1}>
           <Text style={[appStyle.text16Bold, {textAlign: 'center'}]}>
             Số dư:{' '}
@@ -110,7 +119,7 @@ const HomeCar = props => {
           text="Thống kê xe và chuyến"
           onPress={() => navigation.navigate('ChartCar')}
         />
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

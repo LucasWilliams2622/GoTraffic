@@ -182,9 +182,14 @@ const FinalStep = props => {
           numberImage={9}
           space={14}
         />
-
-        <AppButton title="Hoàn tất" width="96%" onPress={() => addNewCar()} />
       </ScrollView>
+
+      <AppButton
+        title="Hoàn tất"
+        width="94%"
+        onPress={() => addNewCar()}
+        containerStyle={{marginBottom: 70}}
+      />
     </SafeAreaView>
   );
 };
