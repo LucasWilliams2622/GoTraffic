@@ -16,6 +16,7 @@ import axios from 'axios';
 import {showToastMessage} from '../../utils/utils';
 import DismissKeyboard from '../../components/DismissKeyboard';
 import {useNavigation} from '@react-navigation/native';
+import {HStack, Heading, Spinner} from 'native-base';
 const Login = props => {
   const {isLogin, setIsLogin, setInfoUser, setIdUser, idUser} =
     useContext(AppContext);
@@ -34,6 +35,7 @@ const Login = props => {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const [forgotEmail, setForgotEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const toggleBottomNavigationView = () => {
     setVisible(!visible);
@@ -69,10 +71,13 @@ const Login = props => {
       // console.log('LOGIN INFO', response.status);
       if (response.status === 202) {
         showToastMessage('error', 'Tài khoản bị vô hiệu hóa');
+        setIsLoading(false);
       } else if (response.status === 203) {
         showToastMessage('error', 'Tài khoản sai mật khẩu');
+        setIsLoading(false);
       } else if (response.status === 204) {
         showToastMessage('error', 'Tài khoản không tồn tại');
+        setIsLoading(false);
       } else {
         setIdUser(response['data'].user.id);
         setInfoUser(response['data'].user);
@@ -216,7 +221,10 @@ const Login = props => {
               }}
               validationSchema={validationSchema}
               onSubmit={values => {
-                onLogin(values.phoneNumber, values.password);
+                setIsLoading(true);
+                setTimeout(() => {
+                  onLogin(values.phoneNumber, values.password);
+                }, 1000);
               }}>
               {({
                 handleChange,
@@ -272,12 +280,34 @@ const Login = props => {
                       }}>
                       Quên mật khẩu
                     </Text>
-                    <AppButton
-                      title="Đăng nhập"
-                      color={COLOR.secondary}
-                      fontSize={18}
-                      onPress={handleSubmit}
-                    />
+
+                    {isLoading == false ? (
+                      <AppButton
+                        title="Đăng nhập"
+                        color={COLOR.secondary}
+                        fontSize={18}
+                        onPress={handleSubmit}
+                      />
+                    ) : (
+                      <View>
+                        <HStack
+                          space={2}
+                          justifyContent="center"
+                          style={{
+                            backgroundColor: 'white',
+                            padding: 20,
+                            width: 'auto',
+                            borderWidth: 1,
+                            borderColor: COLOR.primary,
+                          }}>
+                          <Spinner accessibilityLabel="Loading posts" />
+                          <Heading color="primary.500" fontSize="md">
+                            Loading
+                          </Heading>
+                        </HStack>
+                      </View>
+                    )}
+
                     <View style={{marginTop: 20, alignItems: 'center'}}>
                       <Text style={appStyle.text14}>
                         Bạn chưa là thành viên?
