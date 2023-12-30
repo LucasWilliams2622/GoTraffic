@@ -9,22 +9,25 @@ const AxiosInstance = (
   const axiosInstance = axios.create({
     baseURL: 'http://103.57.129.166:3000/',
   });
+
   axiosInstance.interceptors.request.use(
     async config => {
       const token = await AsyncStorage.getItem('token');
       config.headers = {
-        Authorizaztion: `Bearer ${token}`,
-        Accept: 'application/json',
+        Authorization: `Bearer ${token}`,
+        Accept: contentType,
         'Content-Type': contentType,
       };
       return config;
     },
     err => Promise.reject(err),
   );
+
   axiosInstance.interceptors.response.use(
-    res => res.data,
+    res => res,
     err => Promise.reject(err),
-  ); // callback
+  );
+
   return axiosInstance;
 };
 

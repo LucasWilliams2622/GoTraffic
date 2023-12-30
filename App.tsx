@@ -13,6 +13,7 @@ import Toast from 'react-native-toast-message';
 import {toastConfig} from './src/configs/ToastConfig';
 import {CarLocationProvider} from './src/utils/CarLocationContext';
 import {ViewedCarsProvider} from './src/utils/ViewedCarContext';
+import TestList from './src/test/TestList'
 // Tạo store Redux
 const store = legacy_createStore(rootReducer, applyMiddleware(thunk));
 
@@ -36,8 +37,8 @@ const App = () => {
                 {isLoading ? (
                   <Splash setIsLoading={setIsLoading} />
                 ) : (
-                  <BottomTabs />
-                  // <TestVoice/>
+                  // <BottomTabs />
+                  <TestList/>
                 )}
                 <Toast
                   ref={ref => Toast.setRef(ref)}
