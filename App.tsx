@@ -13,9 +13,15 @@ import Toast from 'react-native-toast-message';
 import {toastConfig} from './src/configs/ToastConfig';
 import {CarLocationProvider} from './src/utils/CarLocationContext';
 import {ViewedCarsProvider} from './src/utils/ViewedCarContext';
-import TestList from './src/test/TestList'
+import TestList from './src/test/testGuide'
 // Tạo store Redux
 const store = legacy_createStore(rootReducer, applyMiddleware(thunk));
+import {
+  TourGuideProvider, // Main provider
+  TourGuideZone, // Main wrapper of highlight component
+  TourGuideZoneByPosition, // Component to use mask on overlay (ie, position absolute)
+  useTourGuideController, // hook to start, etc.
+} from 'rn-tourguide'
 
 LogBox.ignoreAllLogs(true);
 // Ignore all warning notifications
@@ -24,9 +30,11 @@ LogBox.ignoreLogs(['Require cycle:']);
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
 
-  // return (
-
-  // )
+  return (
+    <TourGuideProvider {...{ borderRadius: 16 }}>
+    <TestList />
+  </TourGuideProvider>
+  )
   return (
     <Provider store={store}>
       <AppContextProvider>
