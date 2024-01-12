@@ -1,40 +1,102 @@
 import {Radio, Row} from 'native-base';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {appStyle} from '../../../constants/AppStyle';
 import {COLOR} from '../../../constants/Theme';
-import {currentDateString, returnDateString} from '../../../utils/utils';
-import {TimeAndPlacePickupProps} from '../../../types';
+import {
+  currentDateString,
+  formatDate,
+  returnDateString,
+} from '../../../utils/utils';
+import {Car} from '../../../types';
+import TimePickingModal from '../../../screens/Main/HomeTab/TimePickingModal';
+import ReactNativeModal from 'react-native-modal';
+import {CarLocationContext} from '../../../utils/CarLocationContext';
 
-export const TimeAndPlacePickup = ({location}: TimeAndPlacePickupProps) => {
-  const [receiveCarLocation, setReceiveCarLocation] =
-    useState<string>('atCarLocation');
+export const TimeAndPlacePickup = ({
+  car,
+  selectedTime,
+  setSelectedTime,
+}: {
+  car: Car;
+  selectedTime: {
+    startTime: Date | null;
+    endTime: Date | null;
+    startDate: Date | null;
+    endDate: Date | null;
+  };
+  setSelectedTime: any;
+}) => {
+  const carLocationContext = useContext(CarLocationContext);
+  if (!carLocationContext) {
+    throw new Error(
+      'TimeAndPlacePickup must be used within a CarLocationProvider',
+    );
+  }
+  const {receiveCarLocation, setReceiveCarLocation} = carLocationContext;
+  const [isModalVisible, setModalVisible] = useState<boolean>(false);
   return (
     <View>
       <View style={styles.timeAndPlacePickupContainer}>
         <Text style={[appStyle.text16Bold, {marginBottom: 10}]}>
           Thời gian thuê xe
         </Text>
-        <Pressable style={styles.timeAndPlacePickupPressable}>
+        <Pressable
+          style={styles.timeAndPlacePickupPressable}
+          onPress={() => setModalVisible(true)}>
           <Row style={{justifyContent: 'space-evenly'}}>
             <View>
               <Text style={{color: COLOR.borderColor, marginBottom: 5}}>
                 Nhận xe
               </Text>
-              <Text style={{fontSize: 13.5, fontWeight: 'bold'}}>
-                {currentDateString}
-              </Text>
+              <View>
+                <Text style={{fontSize: 13.5, fontWeight: 'bold'}}>
+                  {selectedTime.startTime === null &&
+                  selectedTime.endTime === null
+                    ? currentDateString
+                    : selectedTime.startDate
+                    ? `${selectedTime.startDate.getHours()}h ${
+                        selectedTime.startDate.getMinutes() < 10
+                          ? '0' + selectedTime.startDate.getMinutes()
+                          : selectedTime.startDate.getMinutes()
+                      }, ${formatDate(selectedTime.startDate)}`
+                    : ''}
+                </Text>
+              </View>
             </View>
             <View>
               <Text style={{color: COLOR.borderColor, marginBottom: 5}}>
                 Trả xe
               </Text>
-              <Text style={{fontSize: 13.5, fontWeight: 'bold'}}>
-                {returnDateString}
-              </Text>
+              <Pressable>
+                <Text style={{fontSize: 13.5, fontWeight: 'bold'}}>
+                  {selectedTime.startTime === null &&
+                  selectedTime.endTime === null
+                    ? returnDateString
+                    : selectedTime.endDate
+                    ? `${selectedTime.endDate.getHours()}h ${
+                        selectedTime.endDate.getMinutes() < 10
+                          ? '0' + selectedTime.endDate.getMinutes()
+                          : selectedTime.endDate.getMinutes()
+                      }, ${formatDate(selectedTime.endDate)}`
+                    : ''}
+                </Text>
+              </Pressable>
             </View>
           </Row>
         </Pressable>
+        <ReactNativeModal
+          isVisible={isModalVisible}
+          style={{margin: 0}}
+          onBackdropPress={() => setModalVisible(!isModalVisible)}>
+          <TimePickingModal
+            price={car.price}
+            toggle={() => setModalVisible(!isModalVisible)}
+            setSelectedTime={setSelectedTime}
+            car={car}
+          />
+        </ReactNativeModal>
+
         <Text style={[appStyle.text16Bold, {marginTop: 15, marginBottom: 10}]}>
           Địa điểm giao nhận xe
         </Text>
@@ -72,7 +134,7 @@ export const TimeAndPlacePickup = ({location}: TimeAndPlacePickupProps) => {
                   </Text>
                 </Row>
                 <Text style={[appStyle.text14Bold, {marginTop: 10}]}>
-                  {location}
+                  {car.locationCar}
                 </Text>
                 <Text style={{color: COLOR.placeholder, marginTop: 10}}>
                   Địa chỉ xe cụ thể sẽ được hiển thị sau khi đặt cọc thành công
@@ -81,31 +143,34 @@ export const TimeAndPlacePickup = ({location}: TimeAndPlacePickupProps) => {
               </View>
             </Row>
           </Pressable>
-          <Pressable
-            onPress={() => setReceiveCarLocation('atUserLocation')}
-            style={styles.timeAndPlacePickupPressable}>
-            <Row style={{alignItems: 'flex-start'}}>
-              <Radio
-                value={'atUserLocation'}
-                my="1"
-                size="sm"
-                style={{marginRight: 10}}
-              />
-              <View style={{flex: 1}}>
-                <Row
-                  style={{
-                    marginTop: 3,
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                  }}>
-                  <Text>Tôi muốn được giao xe tận nơi</Text>
-                </Row>
-                <Text style={{color: COLOR.placeholder, marginTop: 10}}>
-                  Chủ xe sẽ giao và nhận xe đến địa chỉ cụ thể mà bạn lựa chọn
-                </Text>
-              </View>
-            </Row>
-          </Pressable>
+          {car.isDelivery && (
+            <Pressable
+              onPress={() => setReceiveCarLocation('atUserLocation')}
+              style={styles.timeAndPlacePickupPressable}>
+              <Row style={{alignItems: 'flex-start'}}>
+                <Radio
+                  value={'atUserLocation'}
+                  my="1"
+                  size="sm"
+                  style={{marginRight: 10}}
+                  aria-label="atUserLocation"
+                />
+                <View style={{flex: 1}}>
+                  <Row
+                    style={{
+                      marginTop: 3,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}>
+                    <Text>Tôi muốn được giao xe tận nơi</Text>
+                  </Row>
+                  <Text style={{color: COLOR.placeholder, marginTop: 10}}>
+                    Chủ xe sẽ giao và nhận xe đến địa chỉ cụ thể mà bạn lựa chọn
+                  </Text>
+                </View>
+              </Row>
+            </Pressable>
+          )}
         </Radio.Group>
       </View>
     </View>

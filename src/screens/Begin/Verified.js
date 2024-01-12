@@ -1,39 +1,22 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React, { useEffect, useState } from 'react';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import AppButton from '../../components/AppButton';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
-import { appStyle } from '../../constants/AppStyle';
-import { COLOR } from '../../constants/Theme';
-import auth from '@react-native-firebase/auth';
+import {appStyle, windowWidth} from '../../constants/AppStyle';
+import {COLOR, ICON} from '../../constants/Theme';
+import {useNavigation} from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
+import DismissKeyboard from '../../components/DismissKeyboard';
 
-const Verified = () => {
-  const [confirm, setConfirm] = useState(null);
+const Verified = props => {
+  const navigation = useNavigation();
+  const {phoneNumber, nameUser, password} = props.route.params;
 
   // verification code (OTP - One-Time-Passcode)
   const [code, setCode] = useState('');
 
   // Handle login
-  function onAuthStateChanged(user) {
-    if (user) {
-      // Some Android devices can automatically process the verification code (OTP) message, and the user would NOT need to enter the code.
-      // Actually, if he/she tries to enter it, he/she will get an error message because the code was already used in the background.
-      // In this function, make sure you hide the component(s) for entering the code and/or navigate away from this screen.
-      // It is also recommended to display a message to the user informing him/her that he/she has successfully logged in.
-    }
-  }
-
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
-
-  // Handle the button press
-  async function signInWithPhoneNumber(phoneNumber) {
-    const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
-    setConfirm(confirmation);
-  }
-
   async function confirmCode() {
     try {
       await confirm.confirm(code);
@@ -41,34 +24,59 @@ const Verified = () => {
       console.log('Invalid code.');
     }
   }
-
+  const handleNext = () => {
+    navigation.navigate('EmailCheck', {
+      phoneNumber: phoneNumber,
+      nameUser: nameUser,
+      password: password,
+    });
+  };
 
   return (
     <SafeAreaView style={appStyle.main}>
-      <Text style={styles.text1}>Xác thực số điện thoại</Text>
-      <Text style={styles.text2}>
-        Bạn sẽ nhận được mã OTP vào số điện thoại này. Hãy xác thực ngay!
-      </Text>
-      <Text style={styles.text3}>
-        Gửi lại mã sau <Text style={{fontWeight: 'bold'}}>(56s)</Text>{' '}
-      </Text>
+      <DismissKeyboard>
+        <>
+          <View
+            style={{
+              flexDirection: 'row',
+              width: windowWidth * 0.85,
+              marginTop: 10,
+              marginBottom: 10,
+            }}>
+            <TouchableOpacity
+              style={{marginTop: 10, marginRight: 14}}
+              onPress={() => navigation.goBack()}>
+              <FastImage source={ICON.Back} style={appStyle.icon} />
+            </TouchableOpacity>
+            <View style={{flex: 1, alignItems: 'center'}}>
+              <Text style={styles.text1}>Xác thực số điện thoại</Text>
+            </View>
+          </View>
+          <Text style={styles.text2}>
+            Bạn sẽ nhận được mã OTP vào số điện thoại{' '}
+            <Text style={appStyle.text16Bold}>{phoneNumber}</Text>. Hãy xác thực
+            ngay!
+          </Text>
 
-      <OTPInputView
-        style={{width: '80%', height: 200, alignSelf: 'center'}}
-        pinCount={4}
-        // code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
-        // onCodeChanged = {code => { this.setState({code})}}
-        autoFocusOnLoad
-        codeInputFieldStyle={styles.underlineStyleBase}
-        codeInputHighlightStyle={styles.underlineStyleHighLighted}
-        onCodeFilled={code => {
-          console.log(`Code is ${code}, you are good to go!`);
-        }}
-      />
-      <AppButton
-        title="Phone Number Sign In"
-        onPress={() => signInWithPhoneNumber('+1 650-555-3434')}
-      />
+          <Text style={styles.text3}>
+            Gửi lại mã sau <Text style={{fontWeight: 'bold'}}>(56s)</Text>{' '}
+          </Text>
+
+          <OTPInputView
+            style={{width: '80%', height: 200, alignSelf: 'center'}}
+            pinCount={4}
+            // code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
+            // onCodeChanged = {code => { this.setState({code})}}
+            autoFocusOnLoad
+            codeInputFieldStyle={styles.underlineStyleBase}
+            codeInputHighlightStyle={styles.underlineStyleHighLighted}
+            onCodeFilled={code => {
+              console.log(`Code is ${code}, you are good to go!`);
+            }}
+          />
+          <AppButton title="Xác thực số điện thoại" onPress={handleNext} />
+        </>
+      </DismissKeyboard>
     </SafeAreaView>
   );
 };
@@ -103,7 +111,7 @@ const styles = StyleSheet.create({
     borderColor: '#03DAC6',
   },
   underlineStyleBase: {
-    borderColor:COLOR.black
+    borderColor: COLOR.black,
   },
 
   underlineStyleHighLighted: {

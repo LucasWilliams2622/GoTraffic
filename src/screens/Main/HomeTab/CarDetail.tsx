@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useMemo} from 'react';
+import React, {useState, useEffect, useMemo, useContext} from 'react';
 import {
   ImageStyle,
   StyleProp,
@@ -10,10 +10,10 @@ import {
   Animated,
   ScrollView,
   Share,
-  Alert,
   Pressable,
+  Platform,
+  Alert,
 } from 'react-native';
-import {carDetailData} from './data/data';
 import {Row} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import {COLOR} from '../../../constants/Theme';
@@ -37,14 +37,28 @@ import {Amenities} from '../../../components/Home/Detail/Amenities';
 import {CarLocation} from '../../../components/Home/Detail/CarLocation';
 import {OwnerInfo} from '../../../components/Home/Detail/OwnerInfo';
 import {Rating} from '../../../components/Home/Detail/Rating';
-import {RatingModal} from '../../../components/Home/Detail/RatingModal';
 import {Car, CarDetailProps, PressableIconProps} from '../../../types';
-import {calculateAvgRating, formatPrice} from '../../../utils/utils';
+import {
+  currentDay,
+  currentTimeString,
+  formatPrice,
+  returnTimeString,
+  showToastMessage,
+  tomorrow,
+} from '../../../utils/utils';
 import OtherDetails from '../../../components/Home/Detail/OtherDetails';
 import Confirm from './Confirm';
 import Modal from 'react-native-modal';
+import axios from 'axios';
+import {LogBox} from 'react-native';
+import {AppContext} from '../../../utils/AppContext';
+import AxiosInstance from '../../../constants/AxiosInstance';
+import {CarLocationContext} from '../../../utils/CarLocationContext';
+import {ViewedCarsContext} from '../../../utils/ViewedCarContext';
 
 Geocoder.init(REACT_APP_GOOGLE_MAPS_API_KEY || '');
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs(); //Ignore all log notifications
 
 export const SectionTitle: React.FC<{
   title: string;
@@ -61,15 +75,51 @@ const PressableIconCarDetail = ({
   size = ICON_SIZE,
   solid,
   onPress,
+  style,
 }: PressableIconProps) => (
-  <Pressable onPress={onPress}>
+  <Pressable onPress={onPress} style={style}>
     <Icon name={name} color={color} size={size} solid={solid} />
   </Pressable>
 );
 
-const BottomBar: React.FC<{price: number; car: Car}> = ({price, car}) => {
-  const formattedPrice = useMemo(() => formatPrice(price), [price]);
+const BottomBar: React.FC<{
+  price: number;
+  car: Car;
+  selectedTime: {
+    startTime: string;
+    endTime: string;
+    startDate: Date;
+    endDate: Date;
+  };
+  closeCarDetail: () => void;
+}> = ({price, car, selectedTime, closeCarDetail}) => {
+  let total = 0;
+  for (
+    let d = new Date(selectedTime.startDate);
+    d < selectedTime.endDate;
+    d.setDate(d.getDate() + 1)
+  ) {
+    if (d.getDay() === 0 || d.getDay() === 6) {
+      // 0: Sunday, 6: Saturday
+      total += price * 1.1; // 10% increase for weekends
+    } else {
+      total += price;
+    }
+  }
+
+  const {receiveCarLocation} = useContext(CarLocationContext);
+
+  const formattedPrice = useMemo(() => formatPrice(total), [total]);
+
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const handleNextStep = () => {
+    if (receiveCarLocation === '') {
+      showToastMessage('error', 'Bạn chưa chọn địa điểm nhận xe');
+      Alert.alert('Bạn chưa chọn địa điểm nhận xe');
+      return;
+    }
+    setIsModalVisible(true);
+  };
   return (
     <View
       style={{
@@ -85,7 +135,11 @@ const BottomBar: React.FC<{price: number; car: Car}> = ({price, car}) => {
       }}>
       <Row style={{display: 'flex', justifyContent: 'space-between'}}>
         <View>
-          <Text>Số ngày thuê: 1 ngày</Text>
+          <Text>
+            Số ngày thuê:{' '}
+            {selectedTime.endDate.getDate() - selectedTime.startDate.getDate()}{' '}
+            ngày
+          </Text>
           <Pressable>
             <Text
               style={{color: COLOR.fifth, fontSize: 18, fontWeight: 'bold'}}>
@@ -94,11 +148,17 @@ const BottomBar: React.FC<{price: number; car: Car}> = ({price, car}) => {
           </Pressable>
         </View>
         <Modal isVisible={isModalVisible} style={{margin: 0}}>
-          <Confirm closeModal={() => setIsModalVisible(false)} car={car} />
+          <Confirm
+            closeModal={() => setIsModalVisible(false)}
+            car={car}
+            selectedTime={selectedTime}
+            totalCost={total}
+            closeCarDetail={closeCarDetail}
+          />
         </Modal>
         <Pressable
           style={{backgroundColor: COLOR.fifth, padding: 10, borderRadius: 8}}
-          onPress={() => setIsModalVisible(true)}>
+          onPress={handleNextStep}>
           <Row style={{alignItems: 'center'}}>
             <Icon name={'bolt'} color={COLOR.white} size={20} solid />
             <Text
@@ -118,13 +178,102 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
   const [isRatingModalVisible, setRatingModalVisible] =
     useState<boolean>(false);
 
+  const [dateStart, setDateStart] = useState<Date>(new Date());
+  const [dateEnd, setDateEnd] = useState<Date>(new Date());
+  const {viewedCars, setViewedCars} = useContext(ViewedCarsContext);
+
+  const [selectedTime, setSelectedTime] = useState<{
+    startTime: string | null;
+    endTime: string | null;
+    startDate: Date | null;
+    endDate: Date | null;
+  }>({
+    startTime: currentTimeString,
+    endTime: returnTimeString,
+    startDate: currentDay,
+    endDate: tomorrow,
+  });
+
+  const [images, setImages] = useState<string[]>([]);
+  const [amenities, setAmenities] = useState<string[]>([]);
+
+  const {idUser} = useContext(AppContext);
+
   const toggleModal = () => {
     setRatingModalVisible(!isRatingModalVisible);
   };
 
+  const carLocationContext = useContext(CarLocationContext);
+  if (!carLocationContext) {
+    throw new Error(
+      'TimeAndPlacePickup must be used within a CarLocationProvider',
+    );
+  }
+  const {setReceiveCarLocation} = carLocationContext;
+
   const [isFavorite, setIsFavorite] = React.useState<boolean>(false);
 
-  const car: Car | undefined = carDetailData.find(x => x.id == car_id);
+  // const car: Car | undefined = carDetailData.find(x => x.id == car_id);
+  const [car, setCar] = useState<Car | undefined>(undefined);
+
+  const getCar = async () => {
+    const response = await axios.get(
+      `http://103.57.129.166:3000/car/api/get-by-id-car?idCar=${car_id}`,
+    );
+    const responseData = response.data;
+    const car = responseData.car;
+    setCar(car);
+    if (car.image) {
+      setImages(JSON.parse(car.image.trim().slice(1, -1)));
+    }
+    if (car.utilities) {
+      try {
+        setAmenities(JSON.parse(car.utilities.trim().slice(1, -1)));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const getFavorite = async () => {
+    const favouriteResponse = await axios.get(
+      `http://103.57.129.166:3000/favorite-car/api/list-by-user?idUser=${idUser}`,
+    );
+    if (favouriteResponse.data.result) {
+      const favouriteData = favouriteResponse.data.data;
+      const carIndex = favouriteData.findIndex(x => x.idCar === car_id);
+      if (carIndex !== -1) {
+        console.log('Car is favourite');
+        setIsFavorite(true);
+      }
+    }
+  };
+
+  const addOrRemoveFavorite = async () => {
+    try {
+      if (isFavorite) {
+        const response = await AxiosInstance().delete(
+          `/favorite-car/api/delete?idUser=${idUser}&idCar=${car_id}`,
+        );
+        showToastMessage('', 'Đã gỡ yêu thích');
+        console.log(response, 'Xe đã bị xóa khỏi danh sách yêu thích');
+      } else {
+        const response = await AxiosInstance().post(
+          `/favorite-car/api/add?idUser=${idUser}&idCar=${car_id}`,
+        );
+        showToastMessage('', 'Xe được thêm vào yêu thích');
+        console.log(response, 'Xe được thêm vào danh sách yêu thích');
+      }
+      setIsFavorite(!isFavorite);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getCar();
+    getFavorite();
+  }, []);
 
   useEffect(() => {
     if (car) {
@@ -155,8 +304,21 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
       });
     } catch (error) {
       const message = (error as Error).message;
-      Alert.alert(message);
+      showToastMessage('Error', message);
     }
+  };
+
+  const handleClose = () => {
+    if (viewedCars && setViewedCars) {
+      const carIndex = viewedCars.findIndex(x => x.id === car_id);
+      if (carIndex !== -1) {
+        viewedCars.splice(carIndex, 1);
+      }
+      viewedCars.unshift(car as Car);
+      setViewedCars(viewedCars);
+    }
+    setReceiveCarLocation('');
+    close();
   };
 
   const StickyHeader: React.FC<{name: string}> = ({name}) => {
@@ -171,11 +333,12 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
           borderBottomColor: COLOR.borderColor,
           borderBottomWidth: StyleSheet.hairlineWidth,
           paddingTop: 20,
+          paddingHorizontal: 30,
         }}>
         <Row
           style={{
             display: 'flex',
-            justifyContent: 'space-evenly',
+            justifyContent: 'space-between',
             alignItems: 'center',
             paddingVertical: 30,
           }}>
@@ -187,7 +350,7 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
               name="x"
               color={COLOR.black}
               size={20}
-              onPress={close}
+              onPress={handleClose}
             />
             <Text
               style={{
@@ -200,19 +363,22 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
             </Text>
           </Row>
 
-          <PressableIconCarDetail
-            name="share-nodes"
-            color={COLOR.black}
-            size={24}
-            onPress={handleShare}
-          />
-          <PressableIconCarDetail
-            name="heart"
-            color={isFavorite ? COLOR.fifth : COLOR.black}
-            size={20}
-            solid={isFavorite}
-            onPress={() => setIsFavorite(!isFavorite)}
-          />
+          <Row style={{alignItems: 'center'}}>
+            {/* <PressableIconCarDetail
+              name="share-nodes"
+              color={COLOR.black}
+              size={24}
+              onPress={handleShare}
+              style={{marginRight: 20}}
+            /> */}
+            <PressableIconCarDetail
+              name="heart"
+              color={isFavorite ? COLOR.fifth : COLOR.black}
+              size={20}
+              solid={isFavorite}
+              onPress={() => addOrRemoveFavorite()}
+            />
+          </Row>
         </Row>
       </Animated.View>
     );
@@ -227,27 +393,31 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
   if (car) {
     return (
       <View style={{flex: 1}}>
-        <Animated.View style={[styles.topContainer, {opacity: topViewOpacity}]}>
+        <Animated.View
+          style={[
+            styles.topContainer,
+            {opacity: topViewOpacity, top: Platform.OS === 'ios' ? 50 : 30},
+          ]}>
           <PressableIcon
             name="x"
             color={COLOR.white}
             size={20}
-            onPress={close}
+            onPress={handleClose}
           />
           <View style={styles.row}>
-            <PressableIcon
+            {/* <PressableIcon
               name="share-nodes"
               color={COLOR.white}
               size={24}
               onPress={handleShare}
               style={{marginRight: 10}}
-            />
+            /> */}
             <PressableIcon
               name="heart"
               color={isFavorite ? COLOR.fifth : COLOR.white}
               size={20}
               solid={isFavorite}
-              onPress={() => setIsFavorite(!isFavorite)}
+              onPress={() => addOrRemoveFavorite()}
             />
           </View>
         </Animated.View>
@@ -260,20 +430,22 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
             [{nativeEvent: {contentOffset: {y: scrollY}}}],
             {useNativeDriver: false},
           )}>
-          <SlideShow images={car.images} close={close} scrollY={scrollY} />
+          {images.length > 0 && (
+            <SlideShow images={images} close={handleClose} scrollY={scrollY} />
+          )}
 
           <View style={{paddingHorizontal: 10, paddingVertical: 20}}>
             {/* Car title and rating info */}
             <Row style={{alignItems: 'center'}}>
               <Text style={[appStyle.text16Bold, {marginRight: 10}]}>
-                {car.title.toUpperCase()}
+                {car.name.toUpperCase()}
               </Text>
               <ShieldIcon color={COLOR.fifth} />
             </Row>
             <Row style={{alignItems: 'center'}}>
               <Icon name="star" color={COLOR.third} size={12} solid />
               <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
-                {calculateAvgRating(car.rating)}
+                {car.rating}
               </Text>
               <Text
                 style={[
@@ -288,31 +460,42 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
               </Text>
             </Row>
 
-            <TimeAndPlacePickup location={car.location} />
+            <TimeAndPlacePickup
+              car={car}
+              selectedTime={selectedTime}
+              setSelectedTime={setSelectedTime}
+            />
+            {car.features && (
+              <View>
+                <SectionTitle title="Đặc điểm" style={{marginTop: 10}} />
+                <Row
+                  style={{
+                    marginTop: 20,
+                    flex: 1,
+                    flexDirection: 'row',
+                    width: '100%',
+                    justifyContent: 'space-evenly',
+                  }}>
+                  {car.features.map((feature, index) => {
+                    const icons = [
+                      StickIcon,
+                      SeatIcon,
+                      GasolineIcon,
+                      EngineIcon,
+                    ];
+                    return (
+                      <FeatureItem
+                        key={index}
+                        icon={icons[index]}
+                        color={COLOR.fifth}
+                        feature={feature}
+                      />
+                    );
+                  })}
+                </Row>
+              </View>
+            )}
 
-            <View>
-              <SectionTitle title="Đặc điểm" style={{marginTop: 10}} />
-              <Row
-                style={{
-                  marginTop: 20,
-                  flex: 1,
-                  flexDirection: 'row',
-                  width: '100%',
-                  justifyContent: 'space-evenly',
-                }}>
-                {car.features.map((feature, index) => {
-                  const icons = [StickIcon, SeatIcon, GasolineIcon, EngineIcon];
-                  return (
-                    <FeatureItem
-                      key={index}
-                      icon={icons[index]}
-                      color={COLOR.fifth}
-                      feature={feature}
-                    />
-                  );
-                })}
-              </Row>
-            </View>
             <View style={[CarCardItemStyles.separator, {marginTop: 20}]} />
             <View>
               <SectionTitle title="Mô tả" style={{marginTop: 10}} />
@@ -323,7 +506,7 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
               title="Các tiện nghi trên xe"
               style={{marginTop: 10}}
             />
-            {car.amenities && <Amenities amenities={car.amenities} />}
+            {amenities && <Amenities amenities={amenities} />}
             <View style={[CarCardItemStyles.separator, {marginTop: 20}]} />
             {carCoordinates && (
               <View>
@@ -334,14 +517,17 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
                 />
               </View>
             )}
-            <View>
-              <SectionTitle title="Chủ xe" style={{marginTop: 10}} />
-              <OwnerInfo
-                owner={car.owner}
-                rating={car.owner.rating}
-                totalRide={car.totalRide}
-              />
-            </View>
+            {car.owner && (
+              <View>
+                <SectionTitle title="Chủ xe" style={{marginTop: 10}} />
+                <OwnerInfo
+                  owner={car.owner}
+                  rating={car.owner.rating}
+                  totalRide={car.totalRide}
+                />
+              </View>
+            )}
+
             <View style={[CarCardItemStyles.separator, {marginTop: 20}]} />
             {car.rating.length > 0 && (
               <View>
@@ -354,14 +540,21 @@ const CarDetail: React.FC<CarDetailProps> = ({car_id, close}) => {
           </View>
 
           <View style={{width: '100%', height: 70}}></View>
-          <RatingModal
+          {/* <RatingModal
             isRatingModalVisible={isRatingModalVisible}
             toggleModal={toggleModal}
             rating={car.rating}
-          />
+          /> */}
         </ScrollView>
-        <StickyHeader name={car.title} />
-        <BottomBar price={car.price} car={car} />
+        <StickyHeader name={car.name} />
+        <BottomBar
+          price={car.price}
+          car={car}
+          dateStart={dateStart}
+          dateEnd={dateEnd}
+          selectedTime={selectedTime}
+          closeCarDetail={handleClose}
+        />
       </View>
     );
   }
@@ -372,7 +565,6 @@ const styles = StyleSheet.create({
   topContainer: {
     width: '100%',
     position: 'absolute',
-    top: 50,
     left: 20,
     zIndex: 1,
     flexDirection: 'row',

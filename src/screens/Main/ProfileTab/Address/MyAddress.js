@@ -1,75 +1,108 @@
-import { SafeAreaView, StyleSheet, Text, View, FlatList } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import Header from '../../../../components/Header'
-import { appStyle } from '../../../../constants/AppStyle'
-import { COLOR, ICON } from '../../../../constants/Theme'
-import FastImage from 'react-native-fast-image'
-import AppButton from '../../../../components/AppButton'
-import Address from '../../../../components/Profile/Address'
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  RefreshControl,
+} from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
+import Header from '../../../../components/Header';
+import {appStyle, windowHeight} from '../../../../constants/AppStyle';
+import {COLOR, ICON} from '../../../../constants/Theme';
+import FastImage from 'react-native-fast-image';
+import AppButton from '../../../../components/AppButton';
+import Address from '../../../../components/Profile/Address';
+import AxiosInstance from '../../../../constants/AxiosInstance';
+import {AppContext} from '../../../../utils/AppContext';
+import {useNavigation} from '@react-navigation/native';
+import AppHeader from '../../../../components/AppHeader';
+import { squareImageSize } from '../../../../utils/utils';
 
-const MyAddress = (props) => {
-  const { navigation, route } = props;
-  const [address, setAddress] = useState('');
+const MyAddress = props => {
+  const navigation = useNavigation();
+  const {route} = props;
+  const {idUser} = useContext(AppContext);
   const [addresses, setAddresses] = useState([]);
-  const [hasAddress, setHasAddress] = useState(false);
+
+  const getAddress = async () => {
+    try {
+      const response = await AxiosInstance().get(
+        `/address/api/get-address-by-id-user?idUser=${idUser}`,
+      );
+      if (response.data != null) {
+        setAddresses(response.data);
+      } else {
+        setAddresses([]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const updateAddress = async () => {
+    await getAddress();
+  };
 
   useEffect(() => {
-    const updatedAddresses = props.route.params?.updatedAddresses || [];
-    if (updatedAddresses.length > 0) {
-      setAddresses([...addresses, ...updatedAddresses]);
-      setHasAddress(true); 
-    }
-  }, [props.route.params]);
+    const unsubscribe = navigation.addListener('focus', () => {
+      updateAddress();
+    });
 
+    return unsubscribe;
+  }, [navigation]);
+
+  useEffect(() => {
+    if (route.params && route.params.newAddressData) {
+      const newAddressData = route.params.newAddressData;
+      setAddresses(prevAddresses => [...prevAddresses, newAddressData]);
+    }
+  }, [route.params]);
+
+  useEffect(() => {
+    getAddress();
+  }, [idUser]);
 
   return (
     <SafeAreaView style={[appStyle.container]}>
-      <Header
-        icon={ICON.Back}
-        text="Địa chỉ của tôi"
-        onPress={() => navigation.navigate('Profile')}
-        marginLeft={86}
-      />
+      <AppHeader title="Địa chỉ của tôi" />
 
-      <View style={{ padding: 15, width: '100%', alignItems: 'center' }}>
-        <View style={{ height: '80%' }}>
-          {hasAddress ? (
-            <FlatList
-              style={styles.styleFlat}
-              data={addresses}
-              renderItem={({ item }) => <Address dulieu={item} />}
-              keyExtractor={(item, index) => index.toString()}
-              showsVerticalScrollIndicator={false}
-            />
-
-          ) : (
+      <View style={{height: '77%'}}>
+        <FlatList
+          style={styles.styleFlat}
+          data={addresses}
+          renderItem={({item}) => <Address dulieu={item} />}
+          keyExtractor={(item, index) => index.toString()}
+          showsVerticalScrollIndicator={false}
+          ListEmptyComponent={
             <FastImage
               source={require('../../../../assets/image/guide/img_address.png')}
               onLoad={() => console.log('Hình ảnh đã được tải thành công')}
-              onError={(error) => console.error('Lỗi khi tải hình ảnh:', error)}
-              style={{ width: '80%', height: '80%', alignSelf: 'center', justifyContent: 'center' }}
+              onError={error => console.error('Lỗi khi tải hình ảnh:', error)}
+              style={{
+                width: squareImageSize(0.8),
+                height:squareImageSize(0.8),
+                alignSelf: 'center',
+                justifyContent: 'center',
+              }}
+              resizeMode='stretch'
             />
-          )}
-        </View>
-        
-        <AppButton
-          title="+ Thêm địa chỉ"
-          marginTop={45}
-          onPress={() => navigation.navigate('NewAddress')}
+          }
         />
       </View>
 
+      <AppButton
+        title="+ Thêm địa chỉ"
+        width='94%'
+        onPress={() => navigation.navigate('NewAddress')}
+      />
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default MyAddress
+export default MyAddress;
 
 const styles = StyleSheet.create({
   styleFlat: {
-    marginTop: 20,
-    height: '100%',
-
+    flex: 1,
   },
-
-})
+});

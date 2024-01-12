@@ -1,67 +1,213 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import {
+  Alert,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {useState, useEffect, useContext} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {appStyle} from '../../../constants/AppStyle';
+import {appStyle, windowHeight} from '../../../constants/AppStyle';
 import {FlatList, ScrollView} from 'native-base';
-import {COLOR} from '../../../constants/Theme';
+import {COLOR, ICON} from '../../../constants/Theme';
 import ItemTrip from '../../../components/Support/ItemTrip';
 import FastImage from 'react-native-fast-image';
-
+import AxiosInstance from '../../../constants/AxiosInstance';
+import {AppContext} from '../../../utils/AppContext';
+import {useNavigation} from '@react-navigation/native';
+import AppHeader from '../../../components/AppHeader';
+import {useIsFocused} from '@react-navigation/native';
+import Swipelist from 'react-native-swipeable-list-view';
+import SkeletonTrip from '../../../components/SkeletonTrip';
+import {showToastMessage} from '../../../utils/utils';
+import data from '../../data';
+import axios from 'axios';
 const Trip = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const {infoUser, setInfoUser, idUser} = useContext(AppContext);
+  const [listBookingCurrent, setListBookingCurrent] = useState([]);
+  const navigation = useNavigation();
+  const isFocused = useIsFocused();
+  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
+
+  const getListBookingCurrent = async () => {
+    try {
+      const response = await AxiosInstance().get(
+        '/booking/api/get-list-current-booking-of-user?idUser=' + idUser,
+      );
+      if (response.result) {
+        setTimeout(() => {
+          setLoading(false);
+        }, 1500);
+        setListBookingCurrent(response.booking);
+        // console.log('=============================>', response.booking);
+        if (response.booking[0] == null) {
+          setIsLoading(true);
+        } else {
+          setIsLoading(false);
+        }
+      } else {
+        console.log('NETWORK ERROR');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const cancelBooking = async id => {
+    try {
+      console.log(id);
+      const response = await AxiosInstance().post(
+        '/booking/api/cancel?id=' + id,
+      );
+      if (response.result) {
+        showToastMessage('', 'Hủy chuyến thành công');
+        getListBookingCurrent();
+
+        const responseUser = await axios.get(
+          `http://103.57.129.166:3000/user/api/get-by-id/?id=` + idUser,
+        );
+        console.log(responseUser.data.user);
+        setInfoUser(responseUser.data.user);
+      } else {
+        showToastMessage('', 'Hủy chuyến thất bại');
+      }
+    } catch (error) {
+      console.log('=========>', error);
+    }
+  };
+  const receivedBooking = async id => {
+    try {
+      console.log(id);
+      const response = await AxiosInstance().post(
+        '/booking/api/receive?id=' + id,
+      );
+      if (response.result) {
+        showToastMessage('', 'Nhận xe thành công');
+        getListBookingCurrent();
+      } else {
+        showToastMessage('', 'Nhận xe thất bại');
+      }
+    } catch (error) {
+      console.log('=========>', error);
+    }
+  };
+
+  const returnCar = async id => {
+    try {
+      console.log(id);
+      const response = await AxiosInstance().post(
+        '/booking/api/return-car?id=' + id,
+      );
+      if (response.result) {
+        showToastMessage('', 'Trả xe thành công');
+        getListBookingCurrent();
+      } else {
+        showToastMessage('', 'Trả xe thất bại');
+      }
+    } catch (error) {
+      console.log('=========>', error);
+    }
+  };
+
+  useEffect(() => {
+    getListBookingCurrent();
+  }, [isFocused]);
   return (
     <SafeAreaView style={appStyle.container}>
-      <View style={styles.viewTitle}>
-        <Text style={styles.title}>Chuyến của tôi</Text>
+      <AppHeader
+        title="Chuyến của tôi"
+        icon={require('../../../assets/icon/ic_luggage.png')}
+        onPressRight={() => navigation.navigate('HistoryTrip')}
+        notLeft
+      />
+
+      <ScrollView style={[appStyle.container, {marginBottom: 70}]}>
         <FastImage
-          style={styles.logo}
-          resizeMode={'stretch'}
-          source={require('../../../assets/image/logoTrip.png')}
+          source={{
+            uri: 'https://i.pinimg.com/originals/4a/24/2b/4a242b1af58a55c62deaf5a972622909.gif',
+          }}
+          style={{width: '100%', height: 200}}
         />
-      </View>
-
-      <ScrollView style={appStyle.main}>
-        <Text style={styles.text1}>Hiện tại</Text>
-        {isLoading ? (
-          <View>
-            <FastImage
-              style={styles.imageInvisible}
-              resizeMode={'stretch'}
-              source={require('../../../assets/image/NoTrip.png')}
-            />
-            <Text
-              style={[
-                appStyle.text16,
-                {textAlign: 'center', marginBottom: 10, fontStyle: 'italic'},
-              ]}>
-              Hiện tại chưa trong chuyến
+        <View style={[appStyle.main]}>
+          {listBookingCurrent.length > 0 && (
+            <Text style={styles.text1}>
+              Hiện tại ({listBookingCurrent.length})
             </Text>
-          </View>
-        ) : (
-          <View>
-            <FastImage
-              style={styles.imageInvisible}
-              resizeMode={'stretch'}
-              source={require('../../../assets/image/NoTrip.png')}
-            />
-            <Text
-              style={[
-                appStyle.text16,
-                {textAlign: 'center', marginBottom: 10, fontStyle: 'italic'},
-              ]}>
-              Hiện tại chưa trong chuyến
-            </Text>
-          </View>
-        )}
+          )}
 
-        <Text style={styles.text1}>Đã thuê</Text>
-        <FlatList
-          style={{width: '100%', marginBottom: 65}}
-          data={DATA}
-          renderItem={({item}) => <ItemTrip data={item} />}
-          keyExtractor={item => item._id}
-          showsVerticalScrollIndicator={false}
-        />
+          {loading == true ? (
+            <View>
+              <SkeletonTrip />
+              <SkeletonTrip />
+              <SkeletonTrip />
+              <SkeletonTrip />
+            </View>
+          ) : (
+            <View>
+              {isLoading == true ? (
+                <TouchableOpacity
+                  style={{marginTop: windowHeight * 0.1}}
+                  onPress={() => navigation.navigate('Home')}>
+                  <FastImage
+                    style={styles.imageInvisible}
+                    resizeMode={'stretch'}
+                    source={require('../../../assets/image/NoTrip.png')}
+                  />
+                  <Text
+                    style={[
+                      appStyle.text165,
+                      {
+                        textAlign: 'center',
+                        marginBottom: 10,
+                        fontStyle: 'italic',
+                      },
+                    ]}>
+                    Bạn chưa có chuyến nào! {'\n'} Hãy đặt xe ngay
+                  </Text>
+                </TouchableOpacity>
+              ) : (
+                <Swipelist
+                  style={{width: '100%', marginBottom: 65}}
+                  data={listBookingCurrent}
+                  renderRightItem={(data, index) => (
+                    <View key={index}>
+                      <ItemTrip
+                        data={data}
+                        car={listBookingCurrent}
+                        handleCancle={cancelBooking}
+                        handleReceived={receivedBooking}
+                        handleReturn={returnCar}
+                      />
+                    </View>
+                  )}
+                  renderHiddenItem={(data, index) => (
+                    <View>
+                      {data.status == 1 ? (
+                        <TouchableOpacity
+                          style={[
+                            styles.rightAction,
+                            {backgroundColor: COLOR.red},
+                          ]}
+                          onPress={() => {
+                            console.log(data.id);
+                            cancelBooking(data.id);
+                          }}>
+                          <FastImage
+                            source={ICON.Delete}
+                            style={appStyle.iconBig}
+                            tintColor={COLOR.white}
+                          />
+                        </TouchableOpacity>
+                      ) : null}
+                    </View>
+                  )}
+                  rightOpenValue={100}
+                />
+              )}
+            </View>
+          )}
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -70,11 +216,6 @@ const Trip = () => {
 export default Trip;
 
 const styles = StyleSheet.create({
-  viewTitle: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    borderBottomWidth:0.5
-  },
   imageInvisible: {
     width: 192,
     height: 138,
@@ -94,6 +235,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
     marginBottom: 20,
+    marginTop: 20,
   },
   line1: {
     width: '100%',
@@ -108,34 +250,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     right: 10,
   },
+  rightAction: {
+    width: '100%',
+    marginVertical: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '88%',
+    marginTop: 8,
+    marginLeft: -5,
+  },
 });
-
-const DATA = [
-  {
-    id: 1,
-    image: require('../../../assets/image/car.jpg'),
-    time: '21/09/2023 | 20:30',
-    name: 'KIA MORNING 2022',
-    timeStart: '21h00,17/10/2023',
-    timeEnd: '21h00,18/10/2023',
-    price: '1.600.666đ',
-  },
-  {
-    id: 2,
-    image: require('../../../assets/image/car.jpg'),
-    time: '21/09/2023 | 20:30',
-    name: 'KIA MORNING 2022',
-    timeStart: '21h00,17/10/2023',
-    timeEnd: '21h00,18/10/2023',
-    price: '1.600.666đ',
-  },
-  {
-    id: 3,
-    image: require('../../../assets/image/car.jpg'),
-    time: '21/09/2023 | 20:30',
-    name: 'KIA MORNING 2022',
-    timeStart: '21h00,17/10/2023',
-    timeEnd: '21h00,18/10/2023',
-    price: '1.600.666đ',
-  },
-];

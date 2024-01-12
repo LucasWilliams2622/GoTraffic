@@ -1,38 +1,71 @@
 import React, {createContext, useState, useEffect, useMemo} from 'react';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import AxiosInstance from '../constants/AxiosInstance';
 
 export const AppContext = createContext();
 
 export const AppContextProvider = props => {
+  const currentDay = moment().format('DD-MM-YYYY');
   const {children} = props;
   const [isLogin, setIsLogin] = useState(false);
-  const [infoUser, setInfoUser] = useState({});
+  const [infoUser, setInfoUser] = useState(null);
   const [idUser, setIdUser] = useState('');
   const [appState, setAppState] = useState(0);
+  const [notificationCount, setNotificationCount] = useState(0);
 
+  const generateRandomNumber = () => {
+    const timestamp = Date.now();
+    const randomNum = Math.floor(Math.random() * timestamp);
+    return randomNum;
+  };
   useEffect(() => {
     getInfoUser();
-
+    getListNotificationsByIDUser();
     return () => {};
-  }, [isLogin]);
+  }, [isLogin, appState]);
 
   const getInfoUser = async () => {
     try {
       const userInfoString = await AsyncStorage.getItem('userInfo');
       if (userInfoString !== null) {
-        const userInfo = JSON.parse(userInfoString);
-        setInfoUser(userInfo);
-        setIdUser(userInfo._id);
+        // const userInfo = JSON.parse(userInfoString);
+        // setIdUser(userInfo.id);
+        // setInfoUser(userInfo)
+        const response = await AxiosInstance().get(
+          '/user/api/get-by-id?id=' + idUser,
+        );
+        if (response.result) {
+          setInfoUser(response.user);
+          await AsyncStorage.setItem('userInfo', JSON.stringify(response.user));
+        }
+      } else {
+        setIsLogin(false);
+        await AsyncStorage.removeItem('userInfo');
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  const currentDay = moment().format('YYYY-MM-DD');
-
+  const getListNotificationsByIDUser = async () => {
+    try {
+      const response = await AxiosInstance().get(
+        '/notification-booking/api/get-by-user?idUser=' + idUser,
+      );
+      if (response.result) {
+        setNotificationCount(response.notifications.length);
+      } else {
+        console.log('NETWORK ERROR');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const updateUserInfo = newInfo => {
+    // Logic cập nhật thông tin user
+    setInfoUser(prevUser => ({...prevUser, ...newInfo}));
+  };
   const contextValue = useMemo(() => {
     return {
       isLogin,
@@ -44,6 +77,10 @@ export const AppContextProvider = props => {
       currentDay,
       appState,
       setAppState,
+      notificationCount,
+      setNotificationCount,
+      updateUserInfo,
+      generateRandomNumber,
     };
   }, [
     isLogin,
@@ -55,6 +92,10 @@ export const AppContextProvider = props => {
     currentDay,
     appState,
     setAppState,
+    notificationCount,
+    setNotificationCount,
+    updateUserInfo,
+    generateRandomNumber,
   ]);
   return (
     <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>

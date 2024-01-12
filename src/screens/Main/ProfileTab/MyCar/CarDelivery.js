@@ -8,16 +8,21 @@ import {
 import React, {useState} from 'react';
 import {appStyle} from '../../../../constants/AppStyle';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {COLOR} from '../../../../constants/Theme';
+import {COLOR, ICON} from '../../../../constants/Theme';
 import FastImage from 'react-native-fast-image';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
 import {CalendarList} from 'react-native-calendars';
 import ToggleSwitch from 'toggle-switch-react-native';
 import {Switch} from 'native-base';
 import Slider from '@react-native-community/slider';
+import AppHeader from '../../../../components/AppHeader';
+import axios from 'axios';
+import {showToastMessage} from '../../../../utils/utils';
 
 const CarDelivery = props => {
   const {navigation} = props;
+  const {id} = props.route.params;
+  console.log(id);
   const goBack = () => {
     navigation.goBack('DetailInListCar');
   };
@@ -25,30 +30,36 @@ const CarDelivery = props => {
   const [first, setfirst] = useState(0);
   const [second, setsecond] = useState(0);
   const [third, setthird] = useState(0);
-  const [howFar, sethowFar] = useState(0);
   const logCat = () => {
-    console.log("Trong vong: ",Math.floor(first * 100));
+    console.log('Trong vong: ', Math.floor(first * 100));
     console.log('Phi: ', Math.floor(second * 10 * 5));
     console.log('Mien phi trong vong: ', Math.floor(third * 10));
   };
+  const handleUpdateDelivery = async () => {
+    try {
+      const response = await axios.put(
+        'http://103.57.129.166:3000/car/api/update-delivered-on-site?idCar=' +
+          id,
+        {
+          isDelivery: isEnabled,
+          deliveryWithin: Math.floor(first * 100),
+          deliveryFee: Math.floor(second * 10 * 5),
+          freeDeliveryWithin: Math.floor(third * 10),
+        },
+      );
+      if (response.data.result) {
+        goBack();
+        showToastMessage('', 'Cập nhật thành công');
+      } else {
+        showToastMessage('', 'Cập nhật thất bại');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <SafeAreaView style={appStyle.container}>
-      <View style={styles.viewTitle}>
-        <TouchableOpacity onPress={goBack}>
-          <FastImage
-            source={require('../../../../assets/icon/ic_left.png')}
-            style={{
-              position: 'absolute',
-              left: 10,
-              top: 20,
-              width: 20,
-              height: 20,
-            }}
-          />
-        </TouchableOpacity>
-        <Text style={styles.title}>GIAO NHẬN XE TẬN NƠI</Text>
-        <View />
-      </View>
+      <AppHeader title="Giao nhận xe tận nơi" />
       <View style={[appStyle.main, {marginTop: 20}]}>
         <View
           style={{
@@ -77,6 +88,7 @@ const CarDelivery = props => {
               minimumTrackTintColor="#41cff2"
               maximumTrackTintColor="#000000"
               onValueChange={value => setfirst(value)}
+              thumbTintColor="#219EBC"
             />
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -90,6 +102,7 @@ const CarDelivery = props => {
               minimumTrackTintColor="#41cff2"
               maximumTrackTintColor="#000000"
               onValueChange={value => setsecond(value)}
+              thumbTintColor="#219EBC"
             />
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -100,13 +113,17 @@ const CarDelivery = props => {
               style={{width: '100%', height: 40}}
               minimumValue={0}
               maximumValue={1}
+              thumbTintColor='#219EBC'
               minimumTrackTintColor="#41cff2"
               maximumTrackTintColor="#000000"
               onValueChange={value => setthird(value)}
+              thumbTintColor="#219EBC"
             />
           </View>
         ) : null}
-        <TouchableOpacity style={styles.btn} onPress={logCat}>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => handleUpdateDelivery()}>
           <Text
             style={[
               appStyle.text16Bold,

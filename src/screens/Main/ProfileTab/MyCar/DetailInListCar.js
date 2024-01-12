@@ -6,200 +6,199 @@ import {
   SafeAreaView,
   useWindowDimensions,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import FastImage from 'react-native-fast-image';
-import { appStyle } from '../../../../constants/AppStyle';
-import { COLOR, ICON } from '../../../../constants/Theme';
+import {appStyle} from '../../../../constants/AppStyle';
+import {COLOR, ICON} from '../../../../constants/Theme';
 import AppProfile from '../../../../components/AppProfile';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import AppInput from '../../../../components/AppInput';
 import Modal from 'react-native-modal';
+import {useNavigation} from '@react-navigation/native';
+import AxiosInstance from '../../../../constants/AxiosInstance';
+import AppHeader from '../../../../components/AppHeader';
+import {showToastMessage} from '../../../../utils/utils';
+import FailModal from '../../../../components/Profile/Modal/FailModal';
+import CheckBox from '@react-native-community/checkbox';
+import SwitchToggle from 'react-native-switch-toggle';
 
 const DetailInListCar = props => {
-  const {navigation} = props;
+  const navigation = useNavigation();
+  const {id, price, status} = props.route.params;
+  const [data, setData] = useState('');
   const goBack = () => {
     navigation.goBack('Profile');
   };
-  const goInfor = () => {
-    navigation.navigate('GeneralInformation');
-  };
   const layout = useWindowDimensions();
-  const FirstRoute = () => (
-    <View style={{flex: 1, padding: 10}}>
-      <AppProfile
-        icon={ICON.Trip}
-        text="Giá cho thuê"
-        onPress={() => navigation.navigate('RentCost')}
-      />
-      <AppProfile
-        icon={ICON.Calendar}
-        text="Lịch xe"
-        onPress={() => navigation.navigate('CalendarOfCar')}
-      />
-      <AppProfile
-        icon={ICON.Heart}
-        text="Giao xe tận nơi"
-        onPress={() => navigation.navigate('CarDelivery')}
-      />
-      <AppProfile
-        icon={ICON.Card}
-        text="Phụ phí"
-        onPress={() => navigation.navigate('Surcharge')}
-      />
-    </View>
-  );
+  const [isSelected, setSelection] = useState(false);
+  //api getDetail
+  const getDetailCarByIdUser = async () => {
+    try {
+      const response = await AxiosInstance().get(
+        '/car/api/get-by-id-car?idCar=' + id,
+      );
+      if (response.result) {
+        // console.log(response.car);
+        // console.log(response.car.Booking[0] == null);
 
-  const SecondRoute = () => (
-    <View
-      style={[appStyle.main, {marginTop: 20, justifyContent: 'space-evenly'}]}>
-      <AppInput placeholder={'Nhập tên của bạn'} />
+        setData(response.car);
+      } else {
+        console.log('Failed to get car');
+      }
+    } catch (error) {
+      console.log('=========>', error);
+    }
+  };
+  // api delete car
+  const deleteCarById = async () => {
+    try {
+      const response = await AxiosInstance().delete(
+        '/car/api/delete?idCar=' + id,
+      );
+      if (response.result) {
+        showToastMessage('', 'Xóa xe thành công');
+        goBack();
+      } else {
+        showToastMessage('', 'Xóa xe thất bại', ICON.cancelWhite);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-      <AppInput placeholder={'Nhập CCCD'} />
+  useEffect(() => {
+    console.log(id);
+    getDetailCarByIdUser();
+  }, []);
 
-      <AppInput placeholder={'Nhập sdt'} />
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          marginTop: 20,
-        }}>
-        <View style={styles.upLoadImage}>
-          <Text style={{textAlign: 'center'}}>
-            Vui lòng chụp mặt trước của bằng lái
-          </Text>
-          <FastImage
-            style={{width: 30, height: 30, marginTop: 10}}
-            source={ICON.Picture}
-          />
-        </View>
-        <View style={styles.upLoadImage}>
-          <Text style={{textAlign: 'center'}}>
-            Vui lòng chụp mặt sau của bằng lái
-          </Text>
-          <FastImage
-            style={{width: 30, height: 30, marginTop: 10}}
-            source={ICON.Picture}
-          />
-        </View>
-      </View>
-      <TouchableOpacity style={styles.btn}>
-        <Text
-          style={[
-            appStyle.text16Bold,
-            {color: COLOR.white, textAlign: 'center'},
-          ]}>
-          ĐĂNG KÝ
-        </Text>
-      </TouchableOpacity>
-    </View>
-  );
-  const renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute,
-  });
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    { key: 'first', title: 'XE TỰ LÁI' },
-    { key: 'second', title: 'XE CÓ TÀI XẾ' },
-  ]);
-  const renderTabBar = props => (
-    <TabBar
-      {...props}
-      indicatorStyle={{ backgroundColor: COLOR.primary }}
-      style={{ backgroundColor: COLOR.white }}
-      labelStyle={{ color: COLOR.black }}
-    />
-  );
   const [modalVisible, setModalVisible] = useState(false);
-
+  const isImageUrlValid = /^https?:\/\/.*\.(png|jpg)$/i.test(
+    data.imageThumbnail,
+  );
   return (
     <SafeAreaView style={appStyle.container}>
-      <Modal animationType="slide" transparent={true} visible={modalVisible}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={appStyle.text16Bold}>Xác nhận xóa xe</Text>
-            <View
-              style={{flexDirection: 'row', justifyContent: 'space-between',marginTop:20}}>
-              <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
-                <Text style={[appStyle.text14, {color: COLOR.red}]}>Hủy</Text>
-              </TouchableOpacity>
-              <View
-                style={{
-                  width: 1,
-                  height: 20,
-                  backgroundColor: COLOR.borderColor2,
-                }}
-              />
-              <TouchableOpacity>
-                <Text style={[appStyle.text14, {color: COLOR.green}]}>
-                  Đồng ý
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
-      <TouchableOpacity onPress={goBack}>
-        <FastImage
-          source={require('../../../../assets/icon/ic_left.png')}
-          style={{
-            position: 'absolute',
-            left: 10,
-            top: 20,
-            width: 20,
-            height: 20,
-          }}
-        />
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => setModalVisible(true)}>
-        <FastImage
-          source={require('../../../../assets/icon/ic_garbage.png')}
-          style={{
-            position: 'absolute',
-            right: 10,
-            top: 20,
-            width: 20,
-            height: 20,
-          }}
-        />
-      </TouchableOpacity>
+      <FailModal
+        title="Xóa xe"
+        text="Bạn chắc chắn xóa xe này?"
+        nextStep="Xóa"
+        isVisible={modalVisible}
+        onCheckBalance={() => deleteCarById()}
+        onCancel={() => setModalVisible(false)}
+      />
       <FastImage
         style={styles.image}
         source={require('../../../../assets/image/bg2.jpg')}
       />
-      <View style={styles.viewTitle}>
-        <Text style={styles.title}>FORD ESCAPE 2023</Text>
-      </View>
-      <View style={{ padding: 14 }}>
+      <AppHeader
+        title={'Chi tiết xe'}
+        icon={ICON.Delete}
+        onPressRight={() => setModalVisible(true)}
+      />
+      <View style={{padding: 14}}>
         <View style={styles.line1}>
-          <FastImage
-            style={styles.imageCar}
-            source={require('../../../../assets/image/logo-fb.png')}></FastImage>
-          <View style={{ marginLeft: 10 }}>
-            <Text style={[appStyle.text16Bold]}>FORD ESCAPE 2023</Text>
-            <TouchableOpacity onPress={()=> 
-            //  onPress={goInfor}
-              navigation.navigate('GeneralInformation')}>
-              <Text
-                style={[
-                  appStyle.text14Bold,
-                  { marginTop: 10, color: COLOR.primary },
-                ]}>
-                Thông tin chung {'>'}{' '}
-              </Text>
-            </TouchableOpacity>
-
+          {!isImageUrlValid ? (
+            <FastImage
+              style={styles.imageCar}
+              resizeMode="stretch"
+              source={require('../../../../assets/image/bgCar.jpg')}
+            />
+          ) : (
+            <FastImage
+              style={styles.imageCar}
+              resizeMode={'stretch'}
+              source={{uri: data.imageThumbnail}}
+            />
+          )}
+          <View style={{marginLeft: 20, justifyContent: 'space-evenly'}}>
+            <Text style={[appStyle.text16Bold]}>{data.name}</Text>
+            <View style={styles.checkboxContainer}>
+              <SwitchToggle
+                onPress={() => setSelection(!isSelected)}
+                switchOn={isSelected}
+                circleColorOff={COLOR.background}
+                circleColorOn={COLOR.background}
+                backgroundColorOn={COLOR.primary}
+                backgroundColorOff="#C4C4C4"
+                containerStyle={{
+                  width: 42,
+                  height: 24,
+                  borderRadius: 25,
+                  padding: 2,
+                  marginTop: 6,
+                }}
+                circleStyle={{
+                  width: 21,
+                  height: 20,
+                  borderRadius: 20,
+                }}
+              />
+              <Text style={styles.label}>Cho thuê xe</Text>
+            </View>
           </View>
         </View>
       </View>
-      <TabView
-        navigationState={{ index, routes }}
-        renderTabBar={renderTabBar}
-        renderScene={renderScene}
-        onIndexChange={setIndex}
-        initialLayout={{ width: layout.width }}
-      />
+
+      <View style={{flex: 1, padding: 10, marginTop: 22}}>
+        <View style={{flex: 1}}>
+          <AppProfile
+            icon={ICON.car}
+            text="Giao xe tận nơi"
+            onPress={() => navigation.navigate('CarDelivery', {id: id})}
+          />
+          <AppProfile
+            icon={ICON.like1}
+            text="Giá xe"
+            onPress={() =>
+              navigation.navigate('RentCost', {price: data.price, id: data.id})
+            }
+          />
+          <AppProfile
+            icon={ICON.wallet}
+            text="Phụ phí"
+            onPress={() => navigation.navigate('Surcharge', {id: id})}
+          />
+          <AppProfile
+            icon={ICON.infocirlce}
+            text="Thông tin xe"
+            onPress={() => navigation.navigate('InforOfCar', {data: data})}
+          />
+          <AppProfile
+            icon={ICON.document}
+            text="Giấy tờ xe & Bảo hiểm"
+            onPress={() => navigation.navigate('ExhibitOfCar', {id: data.id})}
+          />
+          <AppProfile
+            icon={ICON.location}
+            text="GPS"
+            onPress={() => navigation.navigate('GPSMarker', {data: data})}
+            borderBottomWidth={0}
+          />
+        </View>
+        <View
+          style={{
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            height: 120,
+          }}>
+          <Text style={appStyle.text165}>Trạng thái</Text>
+          {status == 1 ? (
+            <View style={styles.statusContainer}>
+              <Text style={styles.statusText}>Chờ duyệt</Text>
+            </View>
+          ) : status == 2 ? (
+            <View
+              style={[styles.statusContainer, {backgroundColor: COLOR.green}]}>
+              <Text style={styles.statusText}>Đã duyệt</Text>
+            </View>
+          ) : status == 3 ? (
+            <View
+              style={[styles.statusContainer, {backgroundColor: COLOR.red}]}>
+              <Text style={styles.statusText}>Từ chối duyệt</Text>
+            </View>
+          ) : null}
+        </View>
+      </View>
     </SafeAreaView>
   );
 };
@@ -277,5 +276,32 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+  },
+  statusContainer: {
+    backgroundColor: 'rgba(65, 207, 242, 0.8)',
+    borderRadius: 8,
+    padding: 5,
+    justifyContent: 'center',
+    height: 30,
+    width: 100,
+  },
+  statusText: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    marginLeft: -4,
+  },
+  checkbox: {
+    alignSelf: 'center',
+  },
+  label: {
+    margin: 8,
+    color: COLOR.fifth,
+    fontStyle: 'italic',
+    fontSize: 14,
+    fontWeight: 'bold',
   },
 });

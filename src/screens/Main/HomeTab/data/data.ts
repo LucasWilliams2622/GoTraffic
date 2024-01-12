@@ -18,23 +18,28 @@ import {AmenitiesIconMapping} from '../../../../types';
 export const promotionData = [
   {
     id: 1,
-    image: 'https://i.imgur.com/UYiroysl.jpg',
+    image:
+      'https://vinfast-auto-vn.net/wp-content/uploads/2021/10/bang-gia-xe-o-to-vinfast.jpg',
   },
   {
     id: 2,
-    image: 'https://i.imgur.com/UPrs1EWl.jpg',
+    image:
+      'https://khuyenmaimitsu.com/domains/khuyenmaimitsu.com/files/KM%20THANG%2010/km_t10_optimized.jpg',
   },
   {
     id: 3,
-    image: 'https://i.imgur.com/MABUbpDl.jpg',
+    image:
+      'https://xevietanh.com/userfiles/images/thue-xe-du-lich-cao-cap-2.jpg',
   },
   {
     id: 4,
-    image: 'https://i.imgur.com/KZsmUi2l.jpg',
+    image:
+      'https://hyundaibinhthuan.vn/wp-content/uploads/2020/07/Banner-1200x628-V2.jpg',
   },
   {
     id: 5,
-    image: 'https://i.imgur.com/2nCt3Sbl.jpg',
+    image:
+      'https://vinfastotomiennam.com/uploads/details/2021/07/images/162192596_1459086867775421_8609258786462168109_n.jpg',
   },
 ];
 
@@ -80,31 +85,36 @@ export const featuredLocationData = [
   {
     id: 1,
     title: 'Sài Gòn',
-    image: 'https://i.imgur.com/UYiroysl.jpg',
+    image:
+      'https://images.unsplash.com/photo-1636119265236-a8f8bdbf925b?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     totalCar: 3250,
   },
   {
     id: 2,
     title: 'Hà Nội',
-    image: 'https://i.imgur.com/UPrs1EWl.jpg',
+    image:
+      'https://images.pexels.com/photos/12506951/pexels-photo-12506951.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     totalCar: 1432,
   },
   {
     id: 3,
     title: 'Đà Nẵng',
-    image: 'https://i.imgur.com/MABUbpDl.jpg',
+    image:
+      'https://images.pexels.com/photos/14435439/pexels-photo-14435439.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     totalCar: 865,
   },
   {
     id: 4,
     title: 'Nha Trang',
-    image: 'https://i.imgur.com/KZsmUi2l.jpg',
+    image:
+      'https://images.unsplash.com/photo-1689326232214-7b5d2f397276?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     totalCar: 721,
   },
   {
     id: 5,
     title: 'Hải Phòng',
-    image: 'https://i.imgur.com/2nCt3Sbl.jpg',
+    image:
+      'https://images.unsplash.com/photo-1670121180530-cfcba4438038?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     totalCar: 598,
   },
 ];
@@ -113,19 +123,22 @@ export const AirportData = [
   {
     id: 1,
     title: 'Tân Sơn Nhất',
-    image: 'https://i.imgur.com/UYiroysl.jpg',
-    totalCar: 3250,
+    image:
+      'https://static.vinwonders.com/production/san-bay-quoc-te-tan-son-nhat.jpg',
+    totalCar: 1432,
   },
   {
     id: 2,
     title: 'Nội Bài',
-    image: 'https://i.imgur.com/UPrs1EWl.jpg',
+    image:
+      'https://cdn.vntrip.vn/cam-nang/wp-content/uploads/2020/07/san-bay-noi-bai1.jpg',
     totalCar: 1432,
   },
   {
     id: 3,
     title: 'Đà Nẵng',
-    image: 'https://i.imgur.com/MABUbpDl.jpg',
+    image:
+      'https://media.doisongphapluat.com/thumb_x600x600/2018/09/29/san_bay_da_nang_nguoi_dua_tin.jpg',
     totalCar: 865,
   },
   {
@@ -145,23 +158,19 @@ export const AirportData = [
 export const benefitData = [
   {
     id: 1,
-    image: 'https://i.imgur.com/2nCt3Sbl.jpg',
+    image: require('../../../../assets/image/benefit1.jpg'),
   },
   {
     id: 2,
-    image: 'https://i.imgur.com/2nCt3Sbl.jpg',
+    image: require('../../../../assets/image/benefit2.jpg'),
   },
   {
     id: 3,
-    image: 'https://i.imgur.com/2nCt3Sbl.jpg',
+    image: require('../../../../assets/image/benefit3.jpg'),
   },
   {
     id: 4,
-    image: 'https://i.imgur.com/2nCt3Sbl.jpg',
-  },
-  {
-    id: 5,
-    image: 'https://i.imgur.com/2nCt3Sbl.jpg',
+    image: require('../../../../assets/image/benefit4.jpg'),
   },
 ];
 

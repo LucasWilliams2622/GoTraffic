@@ -7,36 +7,56 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import FastImage from 'react-native-fast-image';
-import {COLOR} from '../../constants/Theme';
+import {COLOR, ICON} from '../../constants/Theme';
 import {Code} from 'native-base';
-import {appStyle} from '../../constants/AppStyle';
+import {appStyle, windowHeight, windowWidth} from '../../constants/AppStyle';
 import Modal from 'react-native-modal';
-
+import Moment from 'moment';
 const ItemNotification = props => {
-  const {data} = props;
+  const {data, handleRead, imagelogo} = props;
   const {image, title, content, time, poster, id} = data;
   const [isModalVisible, setModalVisible] = useState(false);
-
+  const isImageUrlValid = /^https?:\/\/.*\.(png|jpg)$/i.test(data.image);
   const toggleModal = () => {
+    handleRead(data.id);
     setModalVisible(!isModalVisible);
   };
+  let color;
+  if (data.isRead == 0) {
+    color = '#f0faff';
+  } else {
+    color = 'white';
+  }
+
   return (
-    <TouchableOpacity style={styles.container} onPress={toggleModal}>
+    <TouchableOpacity
+      style={[styles.container, {backgroundColor: color}]}
+      onPress={toggleModal}>
       <View style={[{alignSelf: 'flex-start'}]}>
-        <FastImage style={styles.logo} resizeMode={'stretch'} source={image} />
+        <FastImage
+          style={styles.logo}
+          resizeMode={'stretch'}
+          source={imagelogo}
+        />
       </View>
       <View
         style={{
           justifyContent: 'space-between',
-          width: '80%',
+          width: '90%',
           paddingLeft: 12,
         }}
         numberOfLines={2}>
-        <Text style={appStyle.text16Bold}>{title}</Text>
-        <Text style={[appStyle.text12, {paddingVertical: 8}]} numberOfLines={2}>
-          {content}
-        </Text>
-        <Text style={[appStyle.text12, {color: '#787878'}]}>{time}</Text>
+        <View style={{flex: 1}}>
+          <Text style={appStyle.text16Bold}>{title}</Text>
+          <Text style={[appStyle.text12, {lineHeight: 20}]} numberOfLines={2}>
+            {content}
+          </Text>
+        </View>
+        <View style={{height: 15}}>
+          <Text style={[appStyle.text12, {color: '#787878', marginTop: 0}]}>
+            {Moment(data.createdAt).format('HH:mm, DD/MM ')}
+          </Text>
+        </View>
       </View>
       <Modal
         animationType="fade"
@@ -48,31 +68,62 @@ const ItemNotification = props => {
             <FastImage
               style={styles.imageInModal}
               resizeMode={'stretch'}
-              source={poster}
+              source={{uri: data.image}}
             />
             <Text
               style={[
                 appStyle.text16Bold,
                 {width: '90%', textAlign: 'center', marginTop: 10},
               ]}>
-              ⚡️GIẢM 300K CHO LẦN ĐẦU THUÊ XE 7 CHỖ TẠI MIOTO
+              ⚡️ {title.toUpperCase()}
             </Text>
             <View style={styles.line} />
             <Text
               style={[
-                [appStyle.text14, {lineHeight: 30, paddingHorizontal: 20}],
+                [appStyle.text16, {lineHeight: 30, paddingHorizontal: 10}],
               ]}>
-              🚘Cần tìm chân ái để cả nhà mình di chuyển thoải mái? {'\n'}
-              📲Mở Mioto,thuê ngay xe 7 chỗ rộng rãi. Nhà bao nhiêu người, Mioto
-              cũng chiều đúng ý.{'\n'} 🌟Đặc biệt, Mioto tung ưu đãi giảm 300k
-              cho lần đầu thuê xe 7 chỗ trên ứng dụng. Ưu đãi được áp dụng đến
-              hết tháng 10. {'\n'}👨‍👩‍👧‍👦Mở Mioto chớp ngay ưu đãi. Thuê liền xe,
-              rong chơi không cần nghĩ ngợi!
+              {content}
             </Text>
+            <Text
+              style={[
+                [appStyle.text14, {lineHeight: 30, paddingHorizontal: 10}],
+              ]}>
+              Hi vọng bạn sẽ có nhiều trải nghiệp tuyệt vời cùng Go Traffic
+            </Text>
+            <View
+              style={{
+                height: 50,
+                width: '100%',
+                backgroundColor: '#d2eaf5',
+                justifyContent: 'center',
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+              }}>
+              <Text
+                style={[
+                  [
+                    appStyle.text14,
+                    {
+                      lineHeight: 30,
+                      paddingHorizontal: 20,
+                      fontStyle: 'bold',
+                      color: '#219EBC',
+                      textAlign: 'center',
+                    },
+                  ],
+                ]}>
+                Cảm ơn đã sử dụng dịch vụ GoTraffic
+              </Text>
+            </View>
+
             <Pressable
               style={styles.buttonClose}
               onPress={() => setModalVisible(!isModalVisible)}>
-              <Text style={{fontSize:15,textAlign:'center',color:COLOR.black}}>X</Text>
+              <FastImage
+                source={ICON.Close}
+                style={[appStyle.iconMedium, {marginTop: 7}]}
+                tintColor={COLOR.white}
+              />
             </Pressable>
           </View>
         </View>
@@ -85,7 +136,6 @@ export default ItemNotification;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f0faff',
     flexDirection: 'row',
     paddingVertical: 16,
     paddingHorizontal: 10,
@@ -93,24 +143,30 @@ const styles = StyleSheet.create({
     borderBottomColor: COLOR.borderColor,
   },
   logo: {
-    width: 36,
-    height: 36,
+    width: 42,
+    height: 37,
     alignSelf: 'flex-start',
   },
   imageInModal: {
     width: '100%',
-    height: '30%',
+    height: '40%',
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10,
   },
   centeredView: {
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
+    margin:-21,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    padding:20
   },
   modalView: {
     justifyContent: 'space-between',
     width: '100%',
-    height: '98%',
-    margin: 20,
+    height: windowHeight * 0.65,
+   
+    marginTop: 80,
     backgroundColor: 'white',
     alignItems: 'center',
     shadowColor: '#000',
@@ -121,21 +177,23 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 0,
     elevation: 5,
+    borderRadius: 10,
   },
   line: {
     height: 2,
-    width: '30%',
-    backgroundColor: COLOR.primary,
+    width: '40%',
+    backgroundColor: COLOR.fifth,
     marginBottom: 16,
     marginTop: 16,
   },
   buttonClose: {
     borderRadius: 50,
-    backgroundColor: COLOR.gray,
-    width: 20,
-    height: 20,
-    position:'absolute',
-    top:5,
-    right:5
+    backgroundColor: '#8e8e8e',
+    width: 32,
+    height: 32,
+    position: 'absolute',
+    top: 5,
+    right: 5,
+    alignItems: 'center',
   },
 });

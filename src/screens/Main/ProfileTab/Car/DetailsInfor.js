@@ -1,93 +1,109 @@
-import { SafeAreaView, StyleSheet, Text, View, ScrollView, TouchableOpacity, Modal, PermissionsAndroid } from 'react-native'
-import React, { useState, useEffect } from 'react'
-import { appStyle, windowHeight, windowWidth } from '../../../../constants/AppStyle';
-import Header from '../../../../components/Header';
-import { COLOR, ICON } from '../../../../constants/Theme';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Modal,
+} from 'react-native';
+import React, {useState, useEffect, useRef, useContext} from 'react';
+import {
+  appStyle,
+  windowHeight,
+  windowWidth,
+} from '../../../../constants/AppStyle';
+import {COLOR, ICON} from '../../../../constants/Theme';
 import AppButton from '../../../../components/AppButton';
 import SwitchToggle from 'react-native-switch-toggle';
 import AppInput from '../../../../components/AppInput';
-import FastImage from 'react-native-fast-image';
 import ItemFeature from '../../../../components/Profile/ItemFeature';
 import axios from 'axios';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import AppDropdown from '../../../../components/AppDropdown';
-import { features } from '../../../../components/Profile/data/DataCar';
+import {formatPriceWithUnit, showToastMessage} from '../../../../utils/utils';
+import AppHeader from '../../../../components/AppHeader';
+import {Switch} from 'native-base';
+import Slider from '@react-native-community/slider';
+import {AppContext} from '../../../../utils/AppContext';
+import {TextInput} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
-
-const DetailsInfor = (props) => {
-  const { navigation, route } = props;
-  const cardInfo = route.params;
-  console.log("DAY LAF DATA", cardInfo);
-
-  const [cars, setCars] = useState([]);
+const DetailsInfor = props => {
+  const navigation = useNavigation();
+  const {carInfo, addressCar, markerPosition} = props.route.params;
+  const {infoUser} = useContext(AppContext);
+  // console.log('markerPosition', markerPosition);
   const [description, setDescription] = useState(null);
   const [fuelConsumption, setFuelConsumption] = useState(null);
   const [price, setPrice] = useState(null);
   const [selectedFeatures, setSelectedFeatures] = useState([]);
 
+  const userAddress =
+    infoUser.address.address +
+    ', ' +
+    infoUser.address.street +
+    ', ' +
+    infoUser.address.ward +
+    ', ' +
+    infoUser.address.district +
+    ',' +
+    infoUser.address.city;
   // địa chỉ
   const [openAddress, setOpenAddress] = useState(false);
   const [provinces, setProvinces] = useState([]);
-  const [selectedProvince, setSelectedProvince] = useState(null);
+  const [selectedProvince, setSelectedProvince] = useState(
+    infoUser.address.city,
+  );
   const [districts, setDistricts] = useState([]);
-  const [selectedDistrict, setSelectedDistrict] = useState(null);
+  const [selectedDistrict, setSelectedDistrict] = useState(
+    infoUser.address.district,
+  );
   const [wards, setWards] = useState([]);
-  const [selectedWard, setSelectedWard] = useState(null);
-  const [address, setAddress] = useState(null);
-  const [location, setLocation] = useState(null);
+  const [selectedWard, setSelectedWard] = useState(infoUser.address.ward);
+  const [address, setAddress] = useState(infoUser.address.address);
+  const [location, setLocation] = useState(
+    addressCar == null ? userAddress : addressCar,
+  );
+
+  useEffect(() => {
+    if (addressCar !== null) {
+      setLocation(addressCar == null ? userAddress : addressCar);
+    }
+  }, [addressCar]);
 
   const [onSwitch, setonSwitch] = useState(false);
+  const [onSwitch2, setonSwitch2] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [isCameraModalVisible, setIsCameraModalVisible] = useState(false);
-  const [selectedImageType, setSelectedImageType] = useState(null);
-  const [carImages, setCarImages] = useState({
-    front: null,
-    back: null,
-    left: null,
-    right: null,
-  });
-
-  const handleComplete = () => {
-    const combinedInfo = {
-      ...cardInfo,
-      // districts,
-      //provinces,
-      location,
-      description,
-      fuelConsumption,
-      price,
-      selectedFeatures,
-      images: carImages,
-      // mainImageType: 'front',
-    };
-    // const updatedCarInfo = [...cars];
-
-    // updatedCarInfo.push(combinedInfo);
-    // setCars(updatedCarInfo);
-    console.log('DetailInfo =====>', combinedInfo);
-    navigation.navigate('ListCar', { updatedCarInfo: [combinedInfo] });
-
-  };
-
+  const [isModalVisible2, setModalVisible2] = useState(false);
+  const [isEnabled, setEnabled] = useState(false);
+  const [isEnabledLimitKm, setEnabledLimitKm] = useState(false);
+  const [first, setfirst] = useState(0);
+  const [second, setsecond] = useState(0);
+  const [third, setthird] = useState(0);
+  const [fourth, setfourth] = useState(0);
+  const [fifth, setfifth] = useState(0);
   // api địa chỉ
   useEffect(() => {
     fetch('https://provinces.open-api.vn/api/p/')
-      .then((response) => response.json())
-      .then((data) => {
+      .then(response => response.json())
+      .then(data => {
         setProvinces(data);
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('Lỗi khi lấy dữ liệu từ API: ', error);
       });
   }, []);
 
   useEffect(() => {
     if (selectedProvince) {
-      axios.get(`https://provinces.open-api.vn/api/p/${selectedProvince.code}?depth=2`)
-        .then((response) => {
+      axios
+        .get(
+          `https://provinces.open-api.vn/api/p/${selectedProvince.code}?depth=2`,
+        )
+        .then(response => {
           setDistricts(response.data.districts);
         })
-        .catch((error) => {
+        .catch(error => {
           console.error(error);
         });
     }
@@ -95,35 +111,39 @@ const DetailsInfor = (props) => {
 
   useEffect(() => {
     if (selectedDistrict) {
-      axios.get(`https://provinces.open-api.vn/api/d/${selectedDistrict.code}?depth=2`)
-        .then((response) => {
+      axios
+        .get(
+          `https://provinces.open-api.vn/api/d/${selectedDistrict.code}?depth=2`,
+        )
+        .then(response => {
           setWards(response.data.wards);
         })
-        .catch((error) => {
+        .catch(error => {
           console.error(error);
         });
     }
   }, [selectedDistrict]);
 
   // feature
-  const handleFeatureSelection = (featureName) => {
+  const handleFeatureSelection = featureName => {
+    // console.log(featureName);
     if (selectedFeatures.includes(featureName)) {
-      setSelectedFeatures((prevSelectedFeatures) =>
-        prevSelectedFeatures.filter((feature) => feature !== featureName)
+      setSelectedFeatures(prevSelectedFeatures =>
+        prevSelectedFeatures.filter(feature => feature !== featureName),
       );
     } else {
-      setSelectedFeatures((prevSelectedFeatures) => [...prevSelectedFeatures, featureName]);
+      setSelectedFeatures(prevSelectedFeatures => [
+        ...prevSelectedFeatures,
+        featureName,
+      ]);
     }
   };
-
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
-
-  const cameraModal = (imageType) => {
-    setSelectedImageType(imageType);
-    setIsCameraModalVisible(true);
+  const toggleModal2 = () => {
+    setModalVisible2(!isModalVisible2);
   };
 
   const handleSwitchToggle = () => {
@@ -133,7 +153,13 @@ const DetailsInfor = (props) => {
       setonSwitch(!onSwitch);
     }
   };
-
+  const handleSwitchToggle2 = () => {
+    if (!onSwitch2) {
+      setModalVisible2(true);
+    } else {
+      setonSwitch2(!onSwitch2);
+    }
+  };
   // địa chỉ
   const handleAddressClick = () => {
     setOpenAddress(!openAddress);
@@ -148,125 +174,80 @@ const DetailsInfor = (props) => {
     setonSwitch(true);
     toggleModal();
   };
-
-  //Chụp ảnh
-  const requestCameraPermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.CAMERA,
-        {
-          title: "App Camera Permission",
-          message: "App needs access to your camera ",
-          buttonNeutral: "Ask Me Later",
-          buttonNegative: "Cancel",
-          buttonPositive: "OK"
-        }
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log("Camera permission given");
-        const result = await launchCamera();
-
-        switch (selectedImageType) {
-          case 'front':
-            setCarImages((prevImages) => ({
-              ...prevImages,
-              front: result.assets[0].uri,
-            }));
-            console.log(result.assets[0].uri);
-            break;
-          case 'left':
-            setCarImages((prevImages) => ({
-              ...prevImages,
-              left: result.assets[0].uri,
-            }));
-            console.log(result.assets[0].uri);
-            break;
-          case 'right':
-            setCarImages((prevImages) => ({
-              ...prevImages,
-              right: result.assets[0].uri,
-            }));
-            console.log(result.assets[0].uri);
-            break;
-          case 'back':
-            setCarImages((prevImages) => ({
-              ...prevImages,
-              back: result.assets[0].uri,
-            }));
-            console.log(result.assets[0].uri);
-            break;
-          default:
-            break;
-        }
-        setIsCameraModalVisible(false);
-      } else {
-        console.log("Camera permission denied");
-      }
-    } catch (err) {
-      console.warn(err);
-    }
+  const handleConfirm2 = () => {
+    setonSwitch2(true);
+    toggleModal2();
   };
+  const handleNext = () => {
+    const jsonString = JSON.stringify(selectedFeatures);
+    const jsonStringWithQuotes = `\'${jsonString}\'`;
+    console.log('jsonStringWithQuotes', jsonStringWithQuotes);
+    const carInfo2 = {
+      ...carInfo,
+      locationCar: location,
+      city: selectedProvince,
+      district: selectedDistrict,
+      ward: selectedWard,
+      address: address,
+      description,
+      fuelConsumption,
+      price,
+      longitude: markerPosition?.longitude
+        ? markerPosition?.longitude
+        : 106.628345,
 
-  // Chọn ảnh từ thư viện
-  const chooseImage = () => {
-    const options = {
-      mediaType: 'photo',
+      latitude: markerPosition?.latitude ? markerPosition?.latitude : 10.853747,
+      selectedFeatures: jsonStringWithQuotes,
+      isDelivery: isEnabled,
+      deliveryWithin: Math.floor(first * 100),
+      deliveryFee: Math.floor(second * 10 * 5),
+      freeDeliveryWithin: Math.floor(third * 10),
+
+      limitKmStatus: isEnabledLimitKm,
+      maxKm: Math.floor(fourth * 100 * 8),
+      exceededFee: Math.floor(fifth * 10),
+
+      withDriver: onSwitch2,
     };
+    // navigation.navigate('FinalStep', {
+    //   carInfo: carInfo,
+    //   carInfo2: carInfo2,
+    // });
 
-    launchImageLibrary(options, (response) => {
-      if (response.didCancel) {
-        console.log('Hủy chọn ảnh');
-      } else if (response.error) {
-        console.log('Lỗi:', response.error);
+    if (
+      description == null ||
+      fuelConsumption == null ||
+      price == null ||
+      selectedFeatures == null
+    ) {
+      showToastMessage('error', 'Vui lòng nhập đầy đủ thông tin xe');
+    } else {
+      if (fuelConsumption < 10) {
+        showToastMessage('error', 'Mức tiêu thụ nhiên liệu phải lớn hơn 10L');
       } else {
-        console.log(response.assets[0].uri);
-        switch (selectedImageType) {
-          case 'front':
-            setCarImages((prevImages) => ({
-              ...prevImages,
-              front: response.assets[0].uri,
-            }));
-            setIsCameraModalVisible(false);
-            break;
-          case 'left':
-            setCarImages((prevImages) => ({
-              ...prevImages,
-              left: response.assets[0].uri,
-            }));
-            setIsCameraModalVisible(false);
-            break;
-          case 'right':
-            setCarImages((prevImages) => ({
-              ...prevImages,
-              right: response.assets[0].uri,
-            }));
-            setIsCameraModalVisible(false);
-            break;
-          case 'back':
-            setCarImages((prevImages) => ({
-              ...prevImages,
-              back: response.assets[0].uri,
-            }));
-            setIsCameraModalVisible(false);
-            break;
-          default:
-            break;
+        if (price < 300000) {
+          showToastMessage('error', 'Giá tiền phải lớn hơn 300K');
+        } else {
+          if (selectedFeatures.length < 4) {
+            showToastMessage('error', 'Vui lòng chọn nhiều hơn 4 chức năng');
+          } else {
+            navigation.navigate('FinalStep', {
+              carInfo: carInfo2,
+              // carInfo2: carInfo2,
+            });
+          }
         }
       }
-    });
+    }
   };
 
   return (
     <SafeAreaView style={appStyle.container}>
-      <Header
-        text="Thông tin chi tiết"
-        icon={ICON.Back}
-        onPress={() => navigation.navigate('BasicInfor')}
-      />
-      <View style={{ flex: 1, paddingHorizontal: 10 }} >
-        <ScrollView style={{ flex: 1, width: '100%', marginBottom: 20 }}
+      <AppHeader title="Thông tin chi tiết" />
+      <View style={{flex: 1, paddingHorizontal: 10, marginBottom: 74}}>
+        <ScrollView
+          style={{flex: 1, width: '100%', marginBottom: 10}}
           showsVerticalScrollIndicator={false}>
-
           {/* Địa chỉ */}
           <View style={appStyle.cardInfo}>
             <View style={appStyle.rowContent}>
@@ -275,17 +256,31 @@ const DetailsInfor = (props) => {
                 style={{
                   backgroundColor: COLOR.bgHeader,
                   borderRadius: 5,
-                  paddingHorizontal: 7
+                  paddingHorizontal: 7,
                 }}
-                onPress={() => handleAddressClick()}
-              >
-                <Text style={[appStyle.text12Bold, { color: COLOR.fifth, margin: 3 }]}>Thay đổi</Text>
+                // onPress={() => handleAddressClick()}
+                onPress={() =>
+                  navigation.navigate('PickLocation', {carInfo: carInfo})
+                }>
+                <Text
+                  style={[
+                    appStyle.text12Bold,
+                    {color: COLOR.fifth, margin: 3},
+                  ]}>
+                  Thay đổi
+                </Text>
               </TouchableOpacity>
             </View>
-            <Text>{location ? location : 'Chưa có địa chỉ'}</Text>
+            <Text>{location ? location : userAddress}</Text>
 
             {openAddress && (
-              <View style={{ width: '100%', height: windowHeight * 0.4, justifyContent: 'space-evenly', alignItems: 'center' }}>
+              <View
+                style={{
+                  width: '100%',
+                  height: windowHeight * 0.4,
+                  justifyContent: 'space-evenly',
+                  alignItems: 'center',
+                }}>
                 <AppDropdown
                   width={windowWidth * 0.7}
                   height={40}
@@ -294,7 +289,7 @@ const DetailsInfor = (props) => {
                   placeholder="Tỉnh/Thành phố"
                   data={provinces}
                   value={selectedProvince?.name}
-                  onChange={(val) => {
+                  onChange={val => {
                     setSelectedProvince(val);
                     setSelectedDistrict(null);
                     setSelectedWard(null);
@@ -308,7 +303,7 @@ const DetailsInfor = (props) => {
                   placeholder="Quận Huyện"
                   data={districts}
                   value={selectedDistrict?.name}
-                  onChange={(val) => {
+                  onChange={val => {
                     setSelectedDistrict(val);
                     setSelectedWard(null);
                   }}
@@ -321,7 +316,7 @@ const DetailsInfor = (props) => {
                   placeholder="Phường Xã"
                   data={wards}
                   value={selectedWard?.name}
-                  onChange={(val) => {
+                  onChange={val => {
                     setSelectedWard(val);
                   }}
                 />
@@ -330,7 +325,7 @@ const DetailsInfor = (props) => {
                   height={40}
                   placeholder="Nhập địa chỉ"
                   value={address}
-                  onChangeText={(text) => setAddress(text)}
+                  onChangeText={text => setAddress(text)}
                 />
                 <AppButton
                   title="Lưu"
@@ -352,7 +347,7 @@ const DetailsInfor = (props) => {
                 circleColorOff={COLOR.background}
                 circleColorOn={COLOR.background}
                 backgroundColorOn={COLOR.primary}
-                backgroundColorOff='#C4C4C4'
+                backgroundColorOff="#C4C4C4"
                 containerStyle={{
                   width: 42,
                   height: 24,
@@ -367,46 +362,84 @@ const DetailsInfor = (props) => {
               />
             </View>
             {onSwitch && (
-              <View style={{ marginTop: 10 }}>
-                <Text>Yêu cầu thuê xe sẽ được tự động đồng ý trong khoảng thời gian cài đặt</Text>
-                <View style={[
-                  {
-                    marginTop: 10,
+              <View style={{marginTop: 10}}>
+                <Text>
+                  Yêu cầu thuê xe sẽ được tự động đồng ý trong khoảng thời gian
+                  cài đặt
+                </Text>
+                <View
+                  style={[
+                    {
+                      marginTop: 10,
+                      paddingVertical: 20,
+                      width: windowWidth * 0.78,
+                      alignSelf: 'center',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      borderBottomWidth: 0.5,
+                    },
+                  ]}>
+                  <Text>Giới hạn từ</Text>
+                  <Text>6 giờ tới</Text>
+                </View>
+                <View
+                  style={{
                     paddingVertical: 20,
                     width: windowWidth * 0.78,
                     alignSelf: 'center',
                     flexDirection: 'row',
                     justifyContent: 'space-between',
-                    borderBottomWidth: 0.5
-                  }]}>
-                  <Text>Giới hạn từ</Text>
-                  <Text>6 giờ tới</Text>
-                </View>
-                <View style={{
-                  paddingVertical: 20,
-                  width: windowWidth * 0.78,
-                  alignSelf: 'center',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}>
+                  }}>
                   <Text>Cho đến</Text>
                   <Text>1 tuần</Text>
                 </View>
               </View>
             )}
           </View>
-
+          {/* Xe có tài xế*/}
+          <View style={appStyle.cardInfo}>
+            <View style={appStyle.rowContent}>
+              <Text style={appStyle.text165}>Xe có tài xế</Text>
+              <SwitchToggle
+                switchOn={onSwitch2}
+                onPress={handleSwitchToggle2}
+                circleColorOff={COLOR.background}
+                circleColorOn={COLOR.background}
+                backgroundColorOn={COLOR.primary}
+                backgroundColorOff="#C4C4C4"
+                containerStyle={{
+                  width: 42,
+                  height: 24,
+                  borderRadius: 25,
+                  padding: 2,
+                }}
+                circleStyle={{
+                  width: 21,
+                  height: 20,
+                  borderRadius: 20,
+                }}
+              />
+            </View>
+          </View>
           {/* Mô tả */}
           <View style={appStyle.cardInfo}>
             <Text style={appStyle.text165}>Mô tả xe</Text>
-            <AppInput
+            <View style={[appStyle.inputBig]}>
+              <TextInput
+                style={{paddingVertical: 0, alignSelf: 'flex-start'}}
+                placeholder="Mô tả xe của bạn"
+                value={description}
+                multiline
+                onChangeText={text => setDescription(text)}
+              />
+            </View>
+            {/* <AppInput
               height={windowHeight * 0.17}
               marginTop={8}
               placeholder="Mô tả xe của bạn"
               value={description}
-              onChangeText={(text) => setDescription(text)}
-
-            />
+              onChangeText={text => setDescription(text)}
+            /> */}
           </View>
 
           {/* Nhiên liệu */}
@@ -416,25 +449,157 @@ const DetailsInfor = (props) => {
               <View style={appStyle.inputRight}>
                 <AppInput
                   placeholder="0"
-                  width={windowWidth * 0.15}
+                  width={windowWidth * 0.3}
                   borderWidth={0}
                   value={fuelConsumption}
-                  onChangeText={(text) => setFuelConsumption(text)}
+                  textAlign={'right'}
+                  keyboardType={'numeric'}
+                  onChangeText={text => setFuelConsumption(text)}
                 />
                 <Text>lít/100 km</Text>
               </View>
             </View>
           </View>
 
+          {/* Giao xe tan noi */}
+          <View style={appStyle.cardInfo}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                height: 50,
+              }}>
+              <Text style={appStyle.text165}>Giao nhận xe tận nơi</Text>
+              <Switch
+                style={{alignSelf: 'center', marginTop: -20}}
+                value={isEnabled}
+                onValueChange={value => setEnabled(value)}
+              />
+            </View>
+            {isEnabled ? (
+              <View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                  <Text>Trong vòng</Text>
+                  <Text>{Math.floor(first * 100)} km</Text>
+                </View>
+                <Slider
+                  style={{width: '100%', height: 40}}
+                  minimumValue={0}
+                  maximumValue={1}
+                  minimumTrackTintColor="#41cff2"
+                  maximumTrackTintColor="#000000"
+                  onValueChange={value => setfirst(value)}
+                />
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                  <Text>Phí</Text>
+                  <Text>{Math.floor(second * 10 * 5)} K/km</Text>
+                </View>
+                <Slider
+                  style={{width: '100%', height: 40}}
+                  minimumValue={0}
+                  maximumValue={1}
+                  minimumTrackTintColor="#41cff2"
+                  maximumTrackTintColor="#000000"
+                  onValueChange={value => setsecond(value)}
+                />
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                  <Text>Miễn phí trong vòng</Text>
+                  <Text>{Math.floor(third * 10)} km</Text>
+                </View>
+                <Slider
+                  style={{width: '100%', height: 40}}
+                  minimumValue={0}
+                  maximumValue={1}
+                  minimumTrackTintColor="#41cff2"
+                  maximumTrackTintColor="#000000"
+                  onValueChange={value => setthird(value)}
+                />
+              </View>
+            ) : null}
+          </View>
+          {/* Gioi han so km */}
+          <View style={appStyle.cardInfo}>
+            {/*Visible of LimitKilometer*/}
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                height: 50,
+              }}>
+              <Text style={[appStyle.text165, {marginRight: 10}]}>
+                Giới hạn km thuê xe
+              </Text>
+              <Switch
+                style={{alignSelf: 'center', marginTop: -20}}
+                value={isEnabledLimitKm}
+                onValueChange={value => setEnabledLimitKm(value)}
+              />
+            </View>
+            {isEnabledLimitKm ? (
+              <View style={styles.containerSlider}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                  <Text style={appStyle.text14}>Số km tối đa</Text>
+                  <Text style={appStyle.text14}>
+                    {Math.floor(fourth * 100 * 8)} km/ngày
+                  </Text>
+                </View>
+                <Slider
+                  style={{width: '100%', height: 40}}
+                  minimumValue={0}
+                  maximumValue={1}
+                  minimumTrackTintColor="#41cff2"
+                  maximumTrackTintColor="#000000"
+                  onValueChange={value => setfourth(value)}
+                />
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                  <Text style={appStyle.text14}>Phí vượt qua giới hạn</Text>
+                  <Text style={appStyle.text14}>
+                    {Math.floor(fifth * 10)} K/km
+                  </Text>
+                </View>
+                <Slider
+                  style={{width: '100%', height: 40}}
+                  minimumValue={0}
+                  maximumValue={1}
+                  minimumTrackTintColor="#41cff2"
+                  maximumTrackTintColor="#000000"
+                  onValueChange={value => setfifth(value)}
+                />
+              </View>
+            ) : null}
+          </View>
+
           {/* Tính năng */}
           <View style={appStyle.cardInfo}>
             <Text style={appStyle.text165}>Tính năng xe</Text>
-            <View style={[styles.featuresContainer, { marginTop: 10 }]}>
-              {features.map((feature) => (
+            <View style={[styles.featuresContainer, {marginTop: 10}]}>
+              {features.map(feature => (
                 <ItemFeature
                   key={feature}
-                  featureName={feature}
-                  isSelected={selectedFeatures.includes(feature)}
+                  featureName={feature.name}
+                  isSelected={selectedFeatures.includes(feature.key)}
+                  featureKey={feature.key}
+                  featureType={feature.type}
                   onPress={handleFeatureSelection}
                 />
               ))}
@@ -448,96 +613,49 @@ const DetailsInfor = (props) => {
               <View style={appStyle.inputRight}>
                 <AppInput
                   placeholder="0"
-                  width={windowWidth * 0.2}
+                  width={windowWidth * 0.35}
                   fontSize={18}
                   borderWidth={0}
                   value={price}
-                  onChangeText={(text) => setPrice(text)}
+                  textAlign={'right'}
+                  keyboardType={'numeric'}
+                  onChangeText={text => setPrice(text)}
                 />
-                <Text style={[appStyle.text18Bold, { color: COLOR.primary }]}>K</Text>
+                <Text style={[appStyle.text18Bold, {color: COLOR.primary}]}>
+                  VNĐ
+                </Text>
               </View>
             </View>
             <Text>Giá đề xuất: 960 nghìn đồng</Text>
           </View>
-
-          {/* Ảnh  */}
-          <View style={appStyle.cardInfo}>
-            <Text style={appStyle.text165}>Ảnh xe</Text>
-            <Text>
-              Bạn vui lòng đăng 4 ảnh (Trước - sau - trái - phải)
-              để tăng hiệu quả cho thuê và đủ điều kiện để đăng ký.
-            </Text>
-            <View style={[styles.featuresContainer, { paddingHorizontal: 10 }]}>
-              <TouchableOpacity onPress={() => cameraModal('front')}>
-                <View style={appStyle.viewUpload}>                  
-                {carImages.front ? (
-                  <FastImage source={{ uri: carImages.front }} style={{ width: 170, height: 100 }} />
-                ) : (
-                  <FastImage source={ICON.Picture} style={{ width: 160, height: 100 }} />
-                )}
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => cameraModal('back')}>
-                <View style={appStyle.viewUpload}>                  
-                {carImages.back ? (
-                  <FastImage source={{ uri: carImages.back }} style={{ width: 170, height: 100 }} />
-                ) : (
-                  <FastImage source={ICON.Picture} style={{ width: 160, height: 100 }} />
-                )}
-
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => cameraModal('left')}>
-                <View style={appStyle.viewUpload}>                  
-                {carImages.left ? (
-                  <FastImage source={{ uri: carImages.left }} style={{ width: 170, height: 100 }} />
-                ) : (
-                  <FastImage source={ICON.Picture} style={{ width: 160, height: 100 }} />
-                )}
-
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => cameraModal('right')}>
-                <View style={appStyle.viewUpload}>
-                  {carImages.right ? (
-                    <FastImage source={{ uri: carImages.right }} style={{ width: 170, height: 100 }} />
-                  ) : (
-                    <FastImage source={ICON.Picture} style={{ width: 160, height: 100 }} />
-                  )}
-                </View>
-              </TouchableOpacity>
-            </View>
-          </View>
         </ScrollView>
 
-        <AppButton
-          title="Hoàn tất"
-          marginBottom={70}
-          onPress={() => handleComplete()}
-        />
+        <AppButton title="Tiếp theo" onPress={() => handleNext()} />
       </View>
 
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={isModalVisible}>
+      <Modal animationType="fade" transparent={true} visible={isModalVisible}>
         <TouchableOpacity
           style={appStyle.modalBackdrop}
           onPress={toggleModal}
         />
         <View style={styles.modalContainer}>
-          <Text style={[appStyle.text20Bold, { marginVertical: 20 }]}>LƯU Ý</Text>
-          <Text style={[styles.itemText, {
-            textAlign: 'center',
-            lineHeight: 20,
-            letterSpacing: 0.5
-          }]}>
-            Nếu chủ xe hủy chuyến sau khi khách hàng đặt cọc, sẽ áp dụng chính sách
-            hủy chuyến và nhận đánh giá từ 1-3* nên chủ xe cần cập nhật lịch bận thường
-            xuyên và đảm bảo xe luôn sẵn sàng. {'\n'}Nếu có khách hàng đang "Đặt xe nhanh"
-            nhưng chủ xe thay đổi kế hoạch cho thuê hoặc chưa cập nhật lịch bận, vui lòng
-            truy cập ứng dụng để hủy chuyến trong thời gian sớm nhất, trước khi hành khách
-            đặt cọc thành công.
+          <Text style={[appStyle.text20Bold, {marginVertical: 20}]}>LƯU Ý</Text>
+          <Text
+            style={[
+              styles.itemText,
+              {
+                textAlign: 'center',
+                lineHeight: 20,
+                letterSpacing: 0.5,
+              },
+            ]}>
+            Nếu chủ xe hủy chuyến sau khi khách hàng đặt cọc, sẽ áp dụng chính
+            sách hủy chuyến và nhận đánh giá từ 1-3* nên chủ xe cần cập nhật
+            lịch bận thường xuyên và đảm bảo xe luôn sẵn sàng. {'\n'}Nếu có
+            khách hàng đang "Đặt xe nhanh" nhưng chủ xe thay đổi kế hoạch cho
+            thuê hoặc chưa cập nhật lịch bận, vui lòng truy cập ứng dụng để hủy
+            chuyến trong thời gian sớm nhất, trước khi hành khách đặt cọc thành
+            công.
           </Text>
 
           <AppButton
@@ -548,56 +666,60 @@ const DetailsInfor = (props) => {
             onPress={() => handleConfirm()}
           />
           <TouchableOpacity onPress={toggleModal}>
-            <Text style={[appStyle.text18, { marginTop: 15 }]}>HỦY</Text>
+            <Text style={[appStyle.text18, {marginTop: 15}]}>HỦY</Text>
           </TouchableOpacity>
         </View>
       </Modal>
-
-      <Modal
-        animationType='slide'
-        transparent={true}
-        visible={isCameraModalVisible}>
+      <Modal animationType="fade" transparent={true} visible={isModalVisible2}>
         <TouchableOpacity
           style={appStyle.modalBackdrop}
-          onPress={() => setIsCameraModalVisible(false)}
+          onPress={toggleModal2}
         />
-        <View style={appStyle.modalContainerCam}>
+        <View style={styles.modalContainer}>
+          <Text style={[appStyle.text20Bold, {marginVertical: 20}]}>LƯU Ý</Text>
+          <Text
+            style={[
+              styles.itemText,
+              {
+                textAlign: 'center',
+                lineHeight: 20,
+                letterSpacing: 0.5,
+              },
+            ]}>
+            Đăng ký này sẽ cập nhật xe của bạn từ trạng thái xe tự lái sang xe
+            có tài xế và tài xế sẽ phải bắt buộc cần di chuyển đến vị trí của
+            người thuê xe.
+          </Text>
+
           <AppButton
-            title="Chụp ảnh"
-            marginTop={5}
-            onPress={() => {
-              requestCameraPermission(selectedImageType);
-              setSelectedImageType(null);
-            }}
+            title="XÁC NHẬN"
+            fontSize={18}
+            fontWeight={'300'}
+            marginTop={50}
+            onPress={() => handleConfirm2()}
           />
-          <AppButton
-            title="Chọn ảnh"
-            marginTop={15}
-            backgroundColor={COLOR.background}
-            textColor={COLOR.primary}
-            onPress={() => {
-              chooseImage(selectedImageType);
-              setSelectedImageType(null);
-            }}
-          />
+          <TouchableOpacity onPress={toggleModal2}>
+            <Text style={[appStyle.text18, {marginTop: 15}]}>HỦY</Text>
+          </TouchableOpacity>
         </View>
       </Modal>
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default DetailsInfor
+export default DetailsInfor;
 
 const styles = StyleSheet.create({
-
   modalContainer: {
     backgroundColor: 'white',
     position: 'absolute',
     top: '50%',
     left: '50%',
-    transform: [{ translateX: -windowWidth * 0.45 }, { translateY: -windowHeight * 0.29 }],
+    transform: [
+      {translateX: -windowWidth * 0.45},
+      {translateY: -windowHeight * 0.29},
+    ],
     width: windowWidth * 0.9,
-    height: windowHeight * 0.58,
     borderRadius: 12,
     paddingHorizontal: 25,
     paddingBottom: 10,
@@ -609,5 +731,86 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
   },
-
-})
+  imageGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 20,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: COLOR.red,
+    justifyContent: 'space-evenly',
+  },
+  imageContainer: {
+    margin: 10,
+  },
+  image: {
+    width: 100,
+    height: 100,
+  },
+  removeText: {
+    color: 'red',
+    marginTop: 5,
+  },
+});
+const features = [
+  {
+    key: 'backup-tire',
+    name: 'Lốp dự phòng',
+    type: 'tire',
+  },
+  {
+    key: 'speed-warning',
+    name: 'Cảnh báo tốc độ',
+    type: 'speedometer',
+  },
+  {
+    key: '360-camera',
+    name: 'Camera hành trình',
+    type: 'camera',
+  },
+  {
+    key: 'airbag',
+    name: 'Túi khi an toàn',
+    type: 'airbag',
+  },
+  {
+    key: 'usb',
+    name: 'Khe cắm USB',
+    type: 'usb',
+  },
+  {
+    key: 'bluetooth',
+    name: 'BlueTooth',
+    type: 'bluetooth',
+  },
+  {
+    key: 'back-camera',
+    name: 'Camera lùi',
+    type: 'camera',
+  },
+  {
+    key: 'etc',
+    name: 'ETC',
+    type: 'ticket',
+  },
+  {
+    key: 'sunroof',
+    name: 'Cửa sổ trời',
+    type: 'car',
+  },
+  {
+    key: 'tire-sensor',
+    name: 'Cảm biến lốp',
+    type: 'tire',
+  },
+  {
+    key: 'map',
+    name: 'Bản đồ',
+    type: 'map',
+  },
+  {
+    key: 'gps',
+    name: 'Định vị GPS',
+    type: 'crosshairs-gps',
+  },
+];

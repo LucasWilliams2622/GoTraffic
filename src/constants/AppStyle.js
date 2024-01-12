@@ -4,11 +4,10 @@ import {
   Dimensions,
   PixelRatio,
 } from 'react-native';
-import { COLOR } from './Theme';
+import {COLOR} from './Theme';
 
 export const windowWidth = Dimensions.get('window').width;
 export const windowHeight = Dimensions.get('window').height;
-console.log('=========>', windowHeight);
 const scaleWidth = windowWidth / 375;
 const scaleHeight = windowHeight / 667;
 
@@ -29,13 +28,13 @@ export const appStyle = StyleSheet.create({
   main: {
     flex: 1,
     backgroundColor: COLOR.main,
-    paddingHorizontal: 14,
+    paddingHorizontal: 12,
   },
 
   // =============| ICON - IMAGE |===================
   iconSmall: {
-    width: 12,
-    height: 12,
+    width: 14,
+    height: 14,
   },
   iconMedium: {
     width: 16,
@@ -51,8 +50,8 @@ export const appStyle = StyleSheet.create({
   },
 
   avatar: {
-    width: 60,
-    height: 60,
+    width: 100,
+    height: 100,
     alignSelf: 'center',
     justifyContent: 'center',
     borderRadius: 60,
@@ -106,6 +105,12 @@ export const appStyle = StyleSheet.create({
     letterSpacing: 0.5,
     color: COLOR.text,
   },
+  text12Medium: {
+    fontSize: 12,
+    fontWeight: '500',
+    letterSpacing: 0.5,
+    color: COLOR.text,
+  },
 
   text12Bold: {
     fontSize: 12,
@@ -120,6 +125,13 @@ export const appStyle = StyleSheet.create({
     fontWeight: '400',
     fontStyle: 'normal',
     letterSpacing: 0.5,
+    color: COLOR.text,
+  },
+  text145: {
+    fontSize: 14,
+    fontWeight: '500',
+    fontStyle: 'normal',
+    letterSpacing: 0.3,
     color: COLOR.text,
   },
   text14Bold: {
@@ -159,6 +171,15 @@ export const appStyle = StyleSheet.create({
     letterSpacing: 0.5,
     color: COLOR.text,
   },
+
+  text185: {
+    fontSize: 18,
+    fontWeight: '500',
+    fontStyle: 'normal',
+    letterSpacing: 0.5,
+    color: COLOR.text,
+  },
+
   text18Bold: {
     fontSize: 18,
     fontWeight: 'bold',
@@ -218,7 +239,10 @@ export const appStyle = StyleSheet.create({
     letterSpacing: 0.5,
     color: COLOR.text,
   },
-
+  errorText: {
+    fontSize: 14,
+    color: COLOR.red,
+  },
   // ===================| ROW - COLUMN |========================
   row: {
     flexDirection: 'row',
@@ -227,7 +251,6 @@ export const appStyle = StyleSheet.create({
   rowCenter: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '100%',
   },
   rowBetween: {
     flexDirection: 'row',
@@ -285,6 +308,20 @@ export const appStyle = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
+  card: {
+    flexDirection: 'row',
+    marginTop: 20,
+    borderBottomWidth: 0.5,
+    borderBottomColor: COLOR.borderColor,
+    height: 50,
+    alignItems: 'center',
+    paddingLeft: 10,
+  },
+  viewContainer: {
+    flex: 1,
+    padding: 15,
+  },
   dropdown: {
     margin: 15,
     marginBottom: 0,
@@ -308,12 +345,12 @@ export const appStyle = StyleSheet.create({
     height: 'auto',
     paddingVertical: 16,
     borderTopWidth: 0.5,
-    borderTopColor: COLOR.borderColor2,
+    borderTopColor: COLOR.borderColor3,
   },
-  rowContent:{
-    flexDirection:'row',
-    justifyContent:'space-between',
-    alignItems:'center'
+  rowContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   modalContainerCam: {
     backgroundColor: 'white',
@@ -337,7 +374,6 @@ export const appStyle = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-
   },
 
   modalBackdrop: {
@@ -347,18 +383,27 @@ export const appStyle = StyleSheet.create({
     alignItems: 'center',
   },
 
-  viewUpload:{ 
-    width: 170, 
-    height: 100, 
-    backgroundColor: '#D9D9D9', 
-    justifyContent: 'center', 
-    alignItems: 'center', 
-    marginTop: 10 
+  viewUpload: {
+    width: 170,
+    height: 100,
+    backgroundColor: '#D9D9D9',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  inputBig: {
+    borderWidth: 1,
+    borderColor: COLOR.borderColor2,
+    borderRadius: 8,
+    height: 80,
+    alignItems:'flex-start',
+    justifyContent:'flex-start'
   },
 
-  inputRight:{ 
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    width: windowWidth * 0.4, 
-    justifyContent: 'flex-end' }
+  inputRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: windowWidth * 0.4,
+    justifyContent: 'flex-end',
+  },
 });

@@ -1,33 +1,130 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
-import {appStyle} from '../../../../../constants/AppStyle';
+import React, {useContext, useEffect, useState} from 'react';
+import {appStyle, windowHeight} from '../../../../../constants/AppStyle';
 import ItemActiveTrip from '../../../../../components/Support/ItemActiveTrip';
 import {FlatList} from 'native-base';
+import AxiosInstance from '../../../../../constants/AxiosInstance';
+import {useIsFocused} from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
+import {showToastMessage} from '../../../../../utils/utils';
+import {ICON} from '../../../../../constants/Theme';
+import {AppContext} from '../../../../../utils/AppContext';
+import SkeletonTrip from '../../../../../components/SkeletonTrip';
+import axios from 'axios';
 
 const ActiveTrip = () => {
+  const isFocused = useIsFocused();
+  const {idUser} = useContext(AppContext);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const getCarByIdUser = async () => {
+    try {
+      const response = await AxiosInstance().get(
+        '/booking/api/get-list-accepted?idOwner=' + idUser,
+      );
+      if (response.result) {
+        setData(response.booking);
+        setTimeout(() => {
+          setLoading(false);
+        }, 1500);
+      } else {
+        console.log('Failed to get car complete');
+      }
+    } catch (error) {
+      console.log('=========>', error);
+    }
+  };
+  const completeBooking = async id => {
+    try {
+      const response = await AxiosInstance().post(
+        '/booking/api/delivering?id=' + id,
+      );
+      if (response.result) {
+        showToastMessage('', 'Giao xe thành công');
+        getCarByIdUser();
+      } else {
+        showToastMessage('', 'Giao xe thất bại', ICON.cancelWhite);
+      }
+    } catch (error) {
+      console.log('=========>', error);
+    }
+  };
+  const cancelBookingByOwner = async id => {
+    try {
+      const response = await axios.post(
+        `http://103.57.129.166:3000/booking/api/cancel-by-owner?id=` + id,
+      );
+      console.log('=================', response.data);
+      if (response.data.result) {
+        showToastMessage('', 'Hủy chuyến thành công');
+        getCarByIdUser();
+      } else {
+        showToastMessage('error', 'Hủy chuyến thất bại');
+      }
+    } catch (error) {
+      console.log('=========>', error);
+    }
+  };
+  // setInterval(() => {
+  //   getCarByIdUser();
+  // }, 10000);
+  useEffect(() => {
+    getCarByIdUser();
+  }, [isFocused]);
   return (
     <View style={{flex: 1, padding: 10}}>
-      <FlatList
-        style={appStyle.main}
-        data={DATA}
-        renderItem={({item}) => <ItemActiveTrip data={item} />}
-        keyExtractor={item => item._id}
-        showsVerticalScrollIndicator={false}></FlatList>
+      {loading == true ? (
+        <View>
+          <SkeletonTrip />
+          <SkeletonTrip />
+          <SkeletonTrip />
+          <SkeletonTrip />
+        </View>
+      ) : (
+        <FlatList
+          style={[appStyle.container, {marginBottom: 70}]}
+          data={data}
+          renderItem={({item}) => (
+            <ItemActiveTrip
+              data={item}
+              handleCompelete={completeBooking}
+              cancelBookingByOwner={cancelBookingByOwner}
+            />
+          )}
+          keyExtractor={item => item._id}
+          showsVerticalScrollIndicator={false}
+          ListEmptyComponent={
+            <View
+              style={{
+                marginTop: windowHeight * 0.2,
+              }}>
+              <FastImage
+                style={styles.imageInvisible}
+                resizeMode={'stretch'}
+                source={require('../../../../../assets/image/NoTrip.png')}
+              />
+              <Text
+                style={[
+                  appStyle.text16,
+                  {textAlign: 'center', marginBottom: 10, fontStyle: 'italic'},
+                ]}>
+                Bạn chưa có chuyến đã xác nhận nào !
+              </Text>
+            </View>
+          }></FlatList>
+      )}
     </View>
   );
 };
 
 export default ActiveTrip;
 
-const styles = StyleSheet.create({});
-const DATA = [
-  {
-    id: 1,
-    image: require('../../../../../assets/image/car.jpg'),
-    time: '21/09/2023 | 20:30',
-    name: 'KIA MORNING 2022',
-    timeStart: '21h00,17/10/2023',
-    nameOfUser: 'Lê Văn Hậu',
-    phoneOfUser: '0344112222',
-  }
-];
+const styles = StyleSheet.create({
+  imageInvisible: {
+    width: 192,
+    height: 138,
+    alignSelf: 'center',
+    marginBottom: 20,
+  },
+});

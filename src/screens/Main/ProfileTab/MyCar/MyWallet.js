@@ -1,124 +1,172 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
-import {FlatList} from 'native-base';
+import {
+  Image,
+  ImageBackground,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {useContext, useState, useEffect} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {appStyle} from '../../../../constants/AppStyle';
+import {appStyle, windowHeight} from '../../../../constants/AppStyle';
 import {COLOR, ICON} from '../../../../constants/Theme';
-import FastImage from 'react-native-fast-image';
-import ItemListCar from '../../../../components/Support/ItemListCar';
-import ItemTrip from '../../../../components/Support/ItemTrip';
+import Icon, {IconType} from 'react-native-dynamic-vector-icons';
+import {useNavigation} from '@react-navigation/native';
+import {AppContext} from '../../../../utils/AppContext';
+import numeral from 'numeral';
+import AppHeader from '../../../../components/AppHeader';
+import {FlatList} from 'react-native';
+import ItemHistoryMoney from '../../../../components/Profile/ItemHistoryMoney';
+import {useIsFocused} from '@react-navigation/native';
+import AxiosInstance from '../../../../constants/AxiosInstance';
+import SkeletonItemMoney from '../../../../components/SkeletonItemMoney';
 
-const MyWallet = props => {
-  const {navigation} = props;
-  const goBack = () => {
-    navigation.goBack('HomeCar');
+const MyWallet = () => {
+  const navigation = useNavigation();
+  const [data, setData] = useState([]);
+  const isFocused = useIsFocused();
+  const {infoUser, idUser} = useContext(AppContext);
+  const [hideSurplus, setHideSurplus] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const handleButtonPress = () => {
+    setHideSurplus(!hideSurplus);
   };
+
+  const getHistoryMoney = async () => {
+    try {
+      const response = await AxiosInstance().get(
+        'http://103.57.129.166:3000/transaction/api/get-by-id-user?idUser=' +
+          idUser,
+      );
+      if (response) {
+        setData(response.transactions);
+        // console.log(response.transactions);
+        setTimeout(() => {
+          setLoading(false);
+        }, 1100);
+      } else {
+        console.log('NETWORK ERROR');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  useEffect(() => {
+    getHistoryMoney();
+  }, [isFocused]);
+
   return (
     <SafeAreaView style={appStyle.container}>
-      <View style={styles.viewTitle}>
-        <TouchableOpacity onPress={goBack}>
-          <FastImage
-            source={require('../../../../assets/icon/ic_left.png')}
-            style={{
-              position: 'absolute',
-              left: 10,
-              top: 20,
-              width: 20,
-              height: 20,
-            }}
-          />
-        </TouchableOpacity>
-        <Text style={styles.title}>Ví của tôi</Text>
-        <TouchableOpacity>
-        </TouchableOpacity>
-      </View>
-      <View style={[appStyle.main, {marginTop: 20}]}>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Text style={appStyle.text14}>Chủ ví:</Text>
-          <Text style={appStyle.text14}>Phạm Nguyễn Thế Sơn</Text>
-        </View>
-        <View style={styles.containerContent}>
-          <Text
-            style={[
-              appStyle.text14,
-              {color: COLOR.white, textAlign: 'center'},
-            ]}>
-            Tài khoản chính
-          </Text>
-          <Text
-            style={[
-              appStyle.text16Bold,
-              {color: COLOR.white, textAlign: 'center'},
-            ]}>
-            42,567đ
-          </Text>
-          <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-            <View>
-              <FastImage
-                style={{
-                  width: 30,
-                  height: 30,
-                  marginTop: 10,
-                  alignSelf: 'center',
-                }}
-                source={ICON.Wallet}
+      <AppHeader title="Ví của tôi" />
+      <ScrollView>
+        <ImageBackground
+          style={styles.imageWallet}
+          resizeMode="stretch"
+          source={require('../../../../assets/image/bg_wallet.png')}>
+          <TouchableOpacity
+            style={[appStyle.boxCenter, styles.boxSurplus]}
+            onPress={() => handleButtonPress()}>
+            <View style={{width: '8%'}} />
+            <View style={appStyle.boxCenter}>
+              <Text style={appStyle.text14Bold}>TÀI KHOẢN GỐC</Text>
+              <Text style={[appStyle.text18Bold, {marginTop: 6}]}>
+                {hideSurplus
+                  ? '*******'
+                  : numeral(infoUser.surplus).format('0,0')}{' '}
+                đ
+              </Text>
+            </View>
+
+            <Image
+              style={[appStyle.icon, {marginLeft: 10}]}
+              source={
+                !hideSurplus
+                  ? require('../../../../assets/icon/ic_visible.png')
+                  : require('../../../../assets/icon/ic_invisible.png')
+              }
+              resizeMode="stretch"
+            />
+          </TouchableOpacity>
+          <View
+            style={[appStyle.rowBetween, {width: '94%', alignSelf: 'center'}]}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Recharge')}
+              style={[
+                appStyle.boxCenter,
+                appStyle.rowCenter,
+                styles.boxSurplus,
+                {width: '47.5%', justifyContent: 'center'},
+              ]}>
+              <Icon
+                name="wallet"
+                type={IconType.FontAwesome5}
+                size={30}
+                color={COLOR.primary}
+                onPress={() => {}}
               />
-              <Text style={[appStyle.text14, {color: COLOR.white}]}>
+              <Text style={[appStyle.text16Bold, {marginLeft: 8}]}>
                 Nạp tiền
               </Text>
-            </View>
-            <View>
-              <FastImage
-                style={{
-                  width: 30,
-                  height: 30,
-                  marginTop: 10,
-                  alignSelf: 'center',
-                }}
-                source={ICON.Wallet}
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => navigation.navigate('WithdrawRequest')}
+              style={[
+                appStyle.boxCenter,
+                appStyle.rowCenter,
+                styles.boxSurplus,
+                {width: '47.5%', justifyContent: 'center'},
+              ]}>
+              <Icon
+                name="hand-coin"
+                type={IconType.MaterialCommunityIcons}
+                size={30}
+                color={COLOR.primary}
+                onPress={() => {}}
               />
-              <Text style={[appStyle.text14, {color: COLOR.white}]}>
+              <Text style={[appStyle.text16Bold, {marginLeft: 8}]}>
                 Rút tiền
               </Text>
-            </View>
-            <View>
-              <FastImage
-                style={{
-                  width: 30,
-                  height: 30,
-                  marginTop: 10,
-                  alignSelf: 'center',
-                }}
-                source={ICON.Wallet}
-              />
-              <Text style={[appStyle.text14, {color: COLOR.white}]}>
-                Lịch sử
-              </Text>
-            </View>
+            </TouchableOpacity>
           </View>
-          <View
-            style={{
-              width: '100%',
-              height: 0.5,
-              backgroundColor: COLOR.white,
-              marginTop: 20,
-            }}
+        </ImageBackground>
+        {loading == true ? (
+          <View>
+            <SkeletonItemMoney />
+            <SkeletonItemMoney />
+            <SkeletonItemMoney />
+            <SkeletonItemMoney />
+            <SkeletonItemMoney />
+            <SkeletonItemMoney />
+            <SkeletonItemMoney />
+          </View>
+        ) : (
+          <FlatList
+            style={{marginBottom: 80}}
+            data={data}
+            renderItem={({item}) => <ItemHistoryMoney data={item} />}
+            keyExtractor={(item, index) => index.toString()}
+            showsVerticalScrollIndicator={false}
+            ListFooterComponent={
+              <View
+                style={[
+                  appStyle.boxCenter,
+                  appStyle.rowCenter,
+                  {marginTop: 24},
+                ]}>
+                <Image
+                  style={appStyle.logo}
+                  source={require('../../../../assets/image/logo_go_traffic.png')}
+                />
+                <Text style={[appStyle.text14, {paddingHorizontal: 8}]}>
+                  Phiên bản 1.0.0
+                </Text>
+              </View>
+            }
           />
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              padding: 10,
-            }}>
-            <Text style={[appStyle.text14, {color: COLOR.white}]}>
-              Lịch sử rút
-            </Text>
-            <Text style={[appStyle.text14, {color: COLOR.white}]}>
-              0đ {' >'}
-            </Text>
-          </View>
-        </View>
-      </View>
+        )}
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -126,53 +174,22 @@ const MyWallet = props => {
 export default MyWallet;
 
 const styles = StyleSheet.create({
-  viewTitle: {
+  boxSurplus: {
+    backgroundColor: 'white',
+    justifyContent: 'space-around',
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderBottomWidth: 0.5,
+    width: '94%',
+    alignSelf: 'center',
+    paddingVertical: 16,
+    borderRadius: 16,
+    opacity: 0.9,
   },
-  image: {
+  imageWallet: {
+    height: windowHeight * 0.25,
     width: '100%',
-    height: '30%',
-    position: 'absolute',
-    borderBottomRightRadius: 10,
-    borderBottomLeftRadius: 10,
-  },
-  title: {
-    fontSize: 24,
-    textAlign: 'center',
-    color: COLOR.black,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    marginTop: 14,
-  },
-  containerContent: {
-    height: '30%',
-    width: '100%',
-    backgroundColor: COLOR.blue,
-    borderRadius: 10,
-    marginTop: 20,
-    justifyContent: 'space-evenly',
-    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    justifyContent: 'space-around',
+    paddingVertical: 12,
   },
 });
-const DATA = [
-  {
-    id: 1,
-    image: require('../../../../assets/image/car.jpg'),
-    time: '21/09/2023 | 20:30',
-    name: 'KIA MORNING 2022',
-    timeStart: '21h00,17/10/2023',
-    timeEnd: '21h00,18/10/2023',
-    price: '1.600.666đ',
-  },
-  {
-    id: 2,
-    image: require('../../../../assets/image/car.jpg'),
-    time: '21/09/2023 | 20:30',
-    name: 'KIA MORNING 2022',
-    timeStart: '21h00,17/10/2023',
-    timeEnd: '21h00,18/10/2023',
-    price: '1.600.666đ',
-  },
-];

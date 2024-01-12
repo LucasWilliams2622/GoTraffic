@@ -1,15 +1,12 @@
+import {DayProps} from 'react-native-calendars/src/calendar/day';
 import {SvgProps} from 'react-native-svg';
 
 export type CarDetailProps = {
-  // route: {
-  //   params: {
-  //     car_id?: number;
-  //     navigation: any;
-  //   };
-  // };
   car_id: number;
   close: () => void;
   setSwipeEnabled: (enabled: boolean) => void;
+  viewedCars?: Car[];
+  setViewedCars?: (viewedCars: Car[]) => void;
 };
 
 export type Feature = {
@@ -22,7 +19,7 @@ export type Feature = {
 export type Car = {
   id: number;
   images: string[];
-  title: string;
+  name: string;
   price: number;
   licensePlate: string;
   rating: RatingItem[];
@@ -32,6 +29,7 @@ export type Car = {
   description: string;
   amenities?: string[];
   owner: Owner;
+  isFavorite: boolean;
 };
 
 export interface CarLocationProps {
@@ -159,11 +157,20 @@ export interface InputFieldProps {
   value?: string;
   navigation: any;
   navigateTo: string;
+  selectedTime?: any;
+  setSelectedTime?: any;
+  location?: string;
+  setLocation?: any;
 }
 
 export interface ViewProps {
   timeString: string;
   navigation?: any;
+  route?: any;
+  selectedTime?: any;
+  setSelectedTime?: any;
+  location?: any;
+  setLocation?: any;
 }
 
 export interface RadioButtonProps {
@@ -173,17 +180,21 @@ export interface RadioButtonProps {
 }
 
 export interface CarCardItemProps {
-  id: number;
-  title: string;
+  id: string;
+  name: string;
   image: string;
-  location: string;
-  benefit?: string;
-  type: string;
+  imageThumbnail: string;
+  locationCar: string;
+  isDelivery?: string;
+  gear: string;
   originalPrice?: number;
   price: number;
   rating: number;
-  totalRide: number;
+  numberOfBooked: number;
+  isFavorite: boolean;
+  width?: number;
   onPress: () => void;
+  removeFromFavorites?: () => void;
 }
 
 export interface FeaturedLocationProps {
@@ -191,6 +202,8 @@ export interface FeaturedLocationProps {
   title: string;
   image: string;
   totalCar: number;
+  selectedTime: any;
+  setSelectedTime: any;
 }
 
 export interface FeaturedLocationFrameProps extends SvgProps {
@@ -203,17 +216,27 @@ export interface PromotionProps {
   height: number;
 }
 
+export interface BenefitProps {
+  image?: any;
+  width: number;
+  height: number;
+}
+
 export interface AirportPickingProps {
   id: number;
   title: string;
   image: string;
   totalCar: number;
+  selectedTime: any;
+  setSelectedTime: any;
 }
 
 export interface RenderListProps<T> {
   data: T[];
   renderItem: ({item}: {item: T}) => JSX.Element;
   snapToInterval: number;
+  emptyComponent?: JSX.Element;
+  reverse?: boolean;
 }
 
 export interface SectionProps {
@@ -221,9 +244,31 @@ export interface SectionProps {
   data: any[];
   renderItem: ({item}: {item: any}) => JSX.Element;
   snapToInterval: number;
+  reverse?: boolean;
 }
 
 export type StackScreenParamList = {
   Home: undefined;
   CarDetail: {car_id: number; navigation: any};
 };
+
+export type DateRange = {
+  startDate: string;
+  endDate: string;
+};
+
+export type MarkedDate = {
+  startingDay?: boolean;
+  endingDay?: boolean;
+  color: string;
+  textColor: string;
+};
+
+export interface ExtendedDayProps extends DayProps {
+  price: number;
+}
+
+export interface Location {
+  latitude: number;
+  longitude: number;
+}

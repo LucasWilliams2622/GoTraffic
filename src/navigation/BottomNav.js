@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View, Image} from 'react-native';
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {ICON, COLOR} from '../constants/Theme';
@@ -11,46 +11,56 @@ import Profile from '../screens/Main/ProfileTab/Profile';
 import Notification from '../screens/Main/NotificationTab/Notification';
 import Support from '../screens/Main/SupportTab/Support';
 import Trip from '../screens/Main/TripTab/Trip';
+import HistoryTrip from '../screens/Main/TripTab/HistoryTrip';
 import FavouriteCar from '../screens/Main/ProfileTab/FavouriteCar';
 import MyAddress from '../screens/Main/ProfileTab/Address/MyAddress';
 import ShareWithFriend from '../screens/Main/ProfileTab/ShareWithFriend';
 import ChangePassword from '../screens/Main/ProfileTab/ChangePassword';
 import UpdateProfile from '../screens/Main/ProfileTab/Account/UpdateProfile';
 import NewAddress from '../screens/Main/ProfileTab/Address/NewAddress';
+import UpdateAddress from '../screens/Main/ProfileTab/Address/UpdateAddress';
 import Account from '../screens/Main/ProfileTab/Account/Account';
 import Register from '../screens/Begin/Register';
 import Verified from '../screens/Begin/Verified';
-import MyCard from '../screens/Main/ProfileTab/Payment/MyCard';
-import TimePicking from '../screens/Main/HomeTab/TimePicking';
+import EmailCheck from '../screens/Begin/EmailCheck';
 import LocationPicking from '../screens/Main/HomeTab/LocationPicking';
 import NewCard from '../screens/Main/ProfileTab/Payment/NewCard';
 import CarDetail from '../screens/Main/HomeTab/CarDetail';
-// import MyPromotion from '../screens/Main/ProfileTab/Gift/MyPromotion';
 import HomeCar from '../screens/Main/ProfileTab/MyCar/HomeCar';
 import DetailInListCar from '../screens/Main/ProfileTab/MyCar/DetailInListCar';
-import GeneralInformation from '../screens/Main/ProfileTab/MyCar/GeneralInformation';
 import RentCost from '../screens/Main/ProfileTab/MyCar/RentCost';
-import CalendarOfCar from '../screens/Main/ProfileTab/MyCar/CalendarOfCar';
 import CarDelivery from '../screens/Main/ProfileTab/MyCar/CarDelivery';
 import Surcharge from '../screens/Main/ProfileTab/MyCar/Surcharge';
 import TripOfCar from '../screens/Main/ProfileTab/MyCar/TripOfCar';
 import InforOfCar from '../screens/Main/ProfileTab/MyCar/InforOfCar';
+import GPSMarker from '../screens/Main/ProfileTab/MyCar/GPSMarker';
 import ExhibitOfCar from '../screens/Main/ProfileTab/MyCar/ExhibitOfCar';
 import MyWallet from '../screens/Main/ProfileTab/MyCar/MyWallet';
-import UpdateCar from '../screens/Main/ProfileTab/MyCar/UpdateCar';
-
 import HandOverReport from '../screens/Main/ProfileTab/MyCar/Contract/HandOverReport';
 import SampleContract from '../screens/Main/ProfileTab/MyCar/Contract/SampleContract';
 import LeaseCar from '../screens/Main/ProfileTab/MyCar/Contract/LeaseCar';
 import BasicInfor from '../screens/Main/ProfileTab/Car/BasicInfor';
 import DetailsInfor from '../screens/Main/ProfileTab/Car/DetailsInfor';
-import ListCar from '../screens/Main/ProfileTab/Car/ListCar';
-import MyCar from '../screens/Main/ProfileTab/MyCar';
+import FinalStep from '../screens/Main/ProfileTab/Car/FinalStep';
+import PickLocation from '../screens/Main/ProfileTab/Car/PickLocation';
 
+import ListCar from '../screens/Main/ProfileTab/Car/ListCar';
+import VerifyLicense from '../screens/Main/ProfileTab/Account/VerifyLicense';
+import ListCarCity from '../components/Home/Home/ListCarCity';
+import Test2 from '../test/Test2';
+import RatingTrip from '../screens/Main/TripTab/RatingTrip';
+import Recharge from '../screens/Main/ProfileTab/MyCar/Recharge';
+import FindingCar from '../screens/Main/HomeTab/FindingCar';
+import ChangeBooking from '../screens/Main/HomeTab/ChangeBooking';
+import {appStyle, windowHeight} from '../constants/AppStyle';
+import {Badge} from 'react-native-elements';
+import {useIsFocused} from '@react-navigation/native';
+import WithdrawRequest from '../screens/Main/ProfileTab/MyCar/WithdrawRequest';
+import MapCars from '../screens/Main/ProfileTab/MyCar/MapCars';
+import ChartCar from '../screens/Main/ProfileTab/MyCar/ChartCar';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-
 const StackBegin = () => {
   return (
     <Stack.Navigator
@@ -58,11 +68,13 @@ const StackBegin = () => {
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Verified" component={Verified} />
+      <Stack.Screen name="EmailCheck" component={EmailCheck} />
       <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="BottomNav" component={BottomTabNav} />
     </Stack.Navigator>
   );
 };
+
 const StackHome = () => {
   return (
     <Stack.Navigator
@@ -79,13 +91,26 @@ const StackHome = () => {
         }}
       />
       <Stack.Screen
-        name="TimePicking"
-        component={TimePicking}
+        name="CarDetail"
+        component={CarDetail}
         options={{animationEnabled: true, animation: 'slide_from_bottom'}}
       />
       <Stack.Screen
-        name="CarDetail"
-        component={CarDetail}
+        name="ListCarCity"
+        component={ListCarCity}
+        options={{animationEnabled: true, animation: 'slide_from_bottom'}}
+      />
+      <Stack.Screen
+        name="FindingCar"
+        component={FindingCar}
+        options={{
+          animationEnabled: true,
+          animation: 'slide_from_right',
+        }}
+      />
+      <Stack.Screen
+        name="ChangeBooking"
+        component={ChangeBooking}
         options={{animationEnabled: true, animation: 'slide_from_bottom'}}
       />
     </Stack.Navigator>
@@ -101,15 +126,24 @@ const StackNotification = () => {
     </Stack.Navigator>
   );
 };
+
 const StackTrip = () => {
   return (
     <Stack.Navigator
       initialRouteName="Trip"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="Trip" component={Trip} />
+      <Stack.Screen name="HistoryTrip" component={HistoryTrip} />
+      <Stack.Screen name="RatingTrip" component={RatingTrip} />
+      <Stack.Screen
+        name="CarDetail"
+        component={CarDetail}
+        options={{animationEnabled: true, animation: 'slide_from_bottom'}}
+      />
     </Stack.Navigator>
   );
 };
+
 const StackSupport = () => {
   return (
     <Stack.Navigator
@@ -119,7 +153,10 @@ const StackSupport = () => {
     </Stack.Navigator>
   );
 };
+
 const StackProfile = () => {
+  const isFocused = useIsFocused();
+
   return (
     <Stack.Navigator
       initialRouteName="Profile"
@@ -130,40 +167,52 @@ const StackProfile = () => {
       <Stack.Screen name="HomeCar" component={HomeCar} />
       <Stack.Screen name="ListCar" component={ListCar} />
       <Stack.Screen name="DetailInListCar" component={DetailInListCar} />
-      <Stack.Screen name="GeneralInformation" component={GeneralInformation} />
       <Stack.Screen name="RentCost" component={RentCost} />
-      <Stack.Screen name="CalendarOfCar" component={CalendarOfCar} />
       <Stack.Screen name="CarDelivery" component={CarDelivery} />
       <Stack.Screen name="Surcharge" component={Surcharge} />
       <Stack.Screen name="TripOfCar" component={TripOfCar} />
       <Stack.Screen name="InforOfCar" component={InforOfCar} />
+      <Stack.Screen name="GPSMarker" component={GPSMarker} />
       <Stack.Screen name="ExhibitOfCar" component={ExhibitOfCar} />
       <Stack.Screen name="MyWallet" component={MyWallet} />
       <Stack.Screen name="MyAddress" component={MyAddress} />
+      <Stack.Screen name="UpdateAddress" component={UpdateAddress} />
       <Stack.Screen name="ShareWithFriend" component={ShareWithFriend} />
       <Stack.Screen name="ChangePassword" component={ChangePassword} />
       <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
       <Stack.Screen name="NewAddress" component={NewAddress} />
-      <Stack.Screen name="MyCard" component={MyCard} />
       <Stack.Screen name="NewCard" component={NewCard} />
-      {/* <Stack.Screen name="MyPromotion" component={MyPromotion}/> */}
-      <Stack.Screen name="BasicInfor" component={BasicInfor}/>
-      <Stack.Screen name="DetailsInfor" component={DetailsInfor}/>
-      <Stack.Screen name="LeaseCar" component={LeaseCar}/>
-      <Stack.Screen name="SampleContract" component={SampleContract}/>
-      <Stack.Screen name="HandOverReport" component={HandOverReport}/>
-
-
-
-
+      <Stack.Screen name="BasicInfor" component={BasicInfor} />
+      <Stack.Screen name="DetailsInfor" component={DetailsInfor} />
+      <Stack.Screen name="FinalStep" component={FinalStep} />
+      <Stack.Screen
+        name="LeaseCar"
+        component={LeaseCar}
+        options={{tabBarVisible: false}}
+      />
+      <Stack.Screen name="SampleContract" component={SampleContract} />
+      <Stack.Screen name="HandOverReport" component={HandOverReport} />
+      <Stack.Screen name="VerifyLicense" component={VerifyLicense} />
+      <Stack.Screen name="Test2" component={Test2} />
+      <Stack.Screen name="Recharge" component={Recharge} />
+      <Stack.Screen name="WithdrawRequest" component={WithdrawRequest} />
+      <Stack.Screen name="PickLocation" component={PickLocation} />
+      <Stack.Screen name="MapCars" component={MapCars} />
+      <Stack.Screen name="ChartCar" component={ChartCar} />
 
     </Stack.Navigator>
   );
 };
-const Main = () => {
-  const {infoUser, idUser, showWebView, setShowWebView} =
-    useContext(AppContext);
 
+const Main = () => {
+  const {
+    infoUser,
+    idUser,
+    showWebView,
+    setShowWebView,
+    setNotificationCount,
+    notificationCount,
+  } = useContext(AppContext);
   return (
     <Tab.Navigator
       initialRouteName="StackHome"
@@ -174,8 +223,46 @@ const Main = () => {
             iconName = focused ? ICON.HomeFocus : ICON.Home;
             label = 'Trang chủ';
           } else if (route.name === 'StackNotification') {
-            iconName = focused ? ICON.NotificationFocus : ICON.Notification;
-            label = 'Thông báo';
+            // ... Các thiết lập khác
+            return (
+              <View style={[{flex: 1, alignItems: 'center', marginTop: 10}]}>
+                <Image
+                  source={
+                    (iconName = focused
+                      ? ICON.NotificationFocus
+                      : ICON.Notification)
+                  }
+                  style={{
+                    width: 26,
+                    height: 26,
+                    resizeMode: 'stretch',
+                    tintColor: focused ? COLOR.focus : COLOR.notFocus,
+                  }}
+                />
+                {notificationCount > 0 && (
+                  <Badge
+                    value={notificationCount}
+                    containerStyle={{position: 'absolute', top: -6, right: 4}}
+                    badgeStyle={{backgroundColor: 'red'}}
+                  />
+                )}
+
+                <Text
+                  style={[
+                    appStyle.text8,
+
+                    {
+                      marginTop: 4,
+                      textAlign: 'center',
+                      fontSize: 10,
+                      fontWeight: '600',
+                      color: focused ? COLOR.focus : COLOR.notFocus,
+                    },
+                  ]}>
+                  Thông báo
+                </Text>
+              </View>
+            );
           } else if (route.name === 'StackTrip') {
             iconName = focused ? ICON.TripFocus : ICON.Trip;
             label = 'Chuyến đi';
@@ -192,25 +279,24 @@ const Main = () => {
               style={{
                 flex: 1,
                 alignItems: 'center',
-                justifyContent: 'center',
-                width: 60,
+                marginTop: 10,
               }}>
-              <Animatable.View animation="zoomIn" duration={2000}>
+              <View>
                 <Image
                   source={iconName}
                   style={{
-                    width: focused ? 26 : 24,
-                    height: focused ? 26 : 24,
+                    width: 26,
+                    height: 26,
 
                     resizeMode: 'stretch',
                     tintColor: focused ? COLOR.focus : COLOR.notFocus,
                   }}
                 />
-              </Animatable.View>
+              </View>
               <Text
                 style={{
-                  fontSize: focused ? 10 : 0,
-                  fontWeight: focused ? '600' : '100',
+                  fontSize: 10,
+                  fontWeight: 600,
                   marginTop: 4,
                   color: focused ? COLOR.focus : COLOR.notFocus,
                 }}>
@@ -224,7 +310,7 @@ const Main = () => {
         headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: {
-          height: 65,
+          height: windowHeight * 0.075,
           position: 'absolute',
           backgroundColor: COLOR.background,
         },
@@ -239,13 +325,10 @@ const Main = () => {
 };
 
 const BottomTabNav = () => {
-  // const [isLogin, setfirst] = useState(true)
   const {isLogin, infoUser} = useContext(AppContext);
-  // console.log("isLogin Bottom Tabs=================>", isLogin);
-  // console.log("infoUser Bottom Tabs=========>", infoUser);
-  return <>{isLogin == false ? <StackBegin /> : <Main />}</>;
+  return <>{isLogin ? <Main /> : <StackBegin />}</>;
 };
-//ADMIN
+
 export default BottomTabNav;
 
 const styles = StyleSheet.create({});

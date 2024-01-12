@@ -5,11 +5,15 @@ import { COLOR } from '../constants/Theme';
 import FastImage from 'react-native-fast-image';
 
 const AppProfile = (props) => {
-  const { text, icon, onPress, borderBottomWidth } = props;
+  const { text, icon, onPress, borderBottomWidth, tintColor } = props;
+  const iconTintColor = tintColor ? tintColor : 'black';
   return (
     <TouchableOpacity onPress={onPress}>
-      <View style={{ flexDirection: 'row', alignItems: 'center' ,width: '100%',height: 55}}>
-        <FastImage style={[appStyle.icon, {marginRight: 10}]} source={icon} resizeMode='stretch' />
+      <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%', height: 55 }}>
+        <FastImage style={[appStyle.icon, { marginRight: 10 }]}
+          source={icon}
+          tintColor={iconTintColor}
+          resizeMode='stretch' />
         <View style={[styles.container, {
           borderBottomWidth: borderBottomWidth == null ? 2 : borderBottomWidth
         }]}>
@@ -32,7 +36,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#efefef',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center', 
+    alignItems: 'center',
     marginLeft: 10
   },
 })

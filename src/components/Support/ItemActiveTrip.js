@@ -1,74 +1,261 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import FastImage from 'react-native-fast-image';
-import {COLOR} from '../../constants/Theme';
+import {COLOR, ICON} from '../../constants/Theme';
 import {Code} from 'native-base';
-import {appStyle} from '../../constants/AppStyle';
-
+import {appStyle, windowHeight, windowWidth} from '../../constants/AppStyle';
+import AxiosInstance from '../../constants/AxiosInstance';
+import Moment from 'moment';
+import {formatPrice, squareImageSize} from '../../utils/utils';
+import AppButton from '../AppButton';
 const ItemActiveTrip = props => {
-  const {data} = props;
-  const {image, name, time, nameOfUser, phoneOfUser, timeStart, id} = data;
+  const {data, handleCompelete, cancelBookingByOwner} = props;
+  const isImageUrlValid = /^https?:\/\/.*\.(png|jpg)$/i.test(
+    data.Car.imageThumbnail,
+  );
+  const confirmComplete = () => {
+    handleCompelete(data.id);
+  };
+  const confirmCancel = () => {
+    cancelBookingByOwner(data.id);
+  };
 
+  const [openDetail, setOpenDetail] = useState(false);
+  const checkStatus = () => {
+    setOpenDetail(!openDetail);
+  };
+  const [checkBtn, setCheckBtn] = useState(false);
+  const handleDeliveryCar = id => {
+    handleCompelete(id);
+    setCheckBtn(true);
+  };
   return (
-    <View>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          padding: 10,
-        }}>
-        <View style={{flexDirection: 'row'}}>
-          <FastImage
-            style={{width: 20, height: 20}}
-            resizeMode={'stretch'}
-            source={require('../../assets/icon/ic_warning.png')}
-          />
-          <Text style={[appStyle.text14, {marginLeft: 5}]}>Đang trong chuyến</Text>
-        </View>
-        <Text style={[appStyle.text14Bold]}>{time}</Text>
-      </View>
-      <TouchableOpacity style={styles.container}>
-        <View style={[{alignSelf: 'flex-start'}]}>
-          <FastImage
-            style={styles.image}
-            resizeMode={'stretch'}
-            source={image}
-          />
-        </View>
-        <View
-          style={{
-            justifyContent: 'space-between',
-          }}>
-          <View style={{flexDirection: 'row'}}>
-            <FastImage
-              style={styles.logoMap}
-              resizeMode={'stretch'}
-              source={require('../../assets/image/logoMap.png')}
-            />
-            <Text style={[appStyle.text10, {marginLeft: 5}]}>Tự lái</Text>
+    <>
+      {openDetail == false ? (
+        <TouchableOpacity
+          onPress={() => checkStatus()}
+          style={styles.container}>
+          <View style={[{justifyContent: 'center'}]}>
+            {!isImageUrlValid ? (
+              <FastImage
+                style={styles.image}
+                resizeMode="stretch"
+                source={require('../../assets/image/bgCar.jpg')}
+              />
+            ) : (
+              <FastImage
+                style={styles.image}
+                resizeMode={'stretch'}
+                source={{uri: data.Car.imageThumbnail}}
+              />
+            )}
           </View>
-          <Text style={[appStyle.text16Bold]}>{name}</Text>
-          <Text
-            style={[appStyle.text16Bold, {width: 160, color: COLOR.orange}]}>
-            <Text style={{color: COLOR.black}}>Tên người thuê: </Text>
-            {nameOfUser}
-          </Text>
+          <View
+            style={[styles.statusContainer, {backgroundColor: COLOR.primary}]}>
+            <Text style={styles.statusText}>Trong chuyến</Text>
+          </View>
+          <View
+            style={{
+              justifyContent: 'space-between',
+              flex: 1,
+              marginLeft: 10,
+            }}>
+            <View style={appStyle.rowBetween}>
+              <Text
+                style={[appStyle.text16Bold, {width: '65%'}]}
+                numberOfLines={1}>
+                {data.Car.name}
+              </Text>
+              <View style={appStyle.rowCenter}>
+                <FastImage
+                  style={appStyle.iconSmall}
+                  source={ICON.SteeringWheel}
+                  tintColor={COLOR.primary}
+                />
+                <Text style={[appStyle.text10, {marginLeft: 4}]}>
+                  {data.Car.isDelivery ? 'Tự lái' : 'Xe có tài'}
+                </Text>
+              </View>
+            </View>
+
+            <Text style={[appStyle.text12, {}]}>
+              Bắt đầu:{' '}
+              <Text style={{fontWeight: '500'}}>
+                {Moment(data.timeFrom).format('HH:mm, DD/MM/YYYY ')}
+              </Text>
+            </Text>
+            <Text style={[appStyle.text12, {}]}>
+              Kết thúc:{' '}
+              <Text style={{fontWeight: '500'}}>
+                {Moment(data.timeTo).format('HH:mm, DD/MM/YYYY ')}
+              </Text>
+            </Text>
+            <View
+              style={{
+                height: 0.5,
+                width: '100%',
+                backgroundColor: '#787878',
+              }}
+            />
+            <Text style={[appStyle.text12, {}]}>
+              SĐT:
+              <Text style={[appStyle.text12, {fontWeight: 500}]}>
+                {' '}
+                {data.User.phone}
+              </Text>
+            </Text>
+
+            <View style={appStyle.rowBetween}>
+              <Text
+                style={{
+                  color: COLOR.primary,
+                  fontSize: 14,
+                  fontWeight: 'bold',
+                }}>
+                <Text style={{color: COLOR.black, fontWeight: '400'}}>
+                  Tổng tiền:{' '}
+                </Text>
+                {formatPrice(data.totalMoney)}
+              </Text>
+              {checkBtn == false ? (
+                <AppButton
+                  title="Giao xe"
+                  width="46%"
+                  paddingVertical={6}
+                  fontSize={12}
+                  onPress={() => handleDeliveryCar(data.id)}
+                />
+              ) : null}
+            </View>
+          </View>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
+          onPress={() => checkStatus()}
+          style={styles.containerDetail}>
+          {!isImageUrlValid ? (
+            <FastImage
+              style={styles.imageDetail}
+              resizeMode="stretch"
+              source={require('../../assets/image/bgCar.jpg')}>
+              <View
+                style={{
+                  backgroundColor: 'black',
+                  justifyContent: 'center',
+                  paddingVertical: 6,
+                  opacity: 0.8,
+                }}>
+                <Text
+                  style={[
+                    appStyle.text16Bold,
+                    {color: COLOR.white, textAlign: 'center'},
+                  ]}>
+                  {data.Car.name}
+                </Text>
+              </View>
+            </FastImage>
+          ) : (
+            <FastImage
+              style={[styles.imageDetail, {justifyContent: 'flex-end'}]}
+              resizeMode={'stretch'}
+              source={{uri: data.Car.imageThumbnail}}>
+              <View
+                style={{
+                  backgroundColor: 'black',
+                  justifyContent: 'center',
+                  paddingVertical: 6,
+                  opacity: 0.8,
+                }}>
+                <Text
+                  style={[
+                    appStyle.text16Bold,
+                    {color: COLOR.white, textAlign: 'center'},
+                  ]}>
+                  {data.Car.name}
+                </Text>
+              </View>
+            </FastImage>
+          )}
+          <View
+            style={[styles.statusContainer, {backgroundColor: COLOR.primary}]}>
+            <Text style={styles.statusText}>Trong chuyến</Text>
+          </View>
+
+          <View style={[appStyle.rowCenter, {marginTop: 8}]}>
+            <View
+              style={{
+                width: '50%',
+                borderRightWidth: 0.5,
+                borderColor: '#787878',
+              }}>
+              <Text style={[appStyle.text12, {}]}>
+                Bắt đầu:{' '}
+                <Text style={{fontWeight: '500'}}>
+                  {Moment(data.timeFrom).format('HH:mm, DD/MM/YYYY ')}
+                </Text>
+              </Text>
+              <Text style={[appStyle.text12, {marginTop: 4}]}>
+                Kết thúc:{' '}
+                <Text style={{fontWeight: '500'}}>
+                  {Moment(data.timeTo).format('HH:mm, DD/MM/YYYY ')}
+                </Text>
+              </Text>
+              <Text style={[appStyle.text12, {marginTop: 4}]}>
+                Loại thuê: <Text style={{fontWeight: 500}}>Tự lái</Text>
+              </Text>
+            </View>
+
+            <View style={{paddingLeft: 12}}>
+              <Text style={[appStyle.text12, {}]}>
+                Người thuê:{' '}
+                <Text style={{fontWeight: '500'}}>{data.User.name}</Text>
+              </Text>
+              <Text style={[appStyle.text12, {marginTop: 4}]}>
+                SĐT: <Text style={{fontWeight: '500'}}>{data.User.phone}</Text>
+              </Text>
+              <Text style={[appStyle.text12, {marginTop: 4}]}>
+                Loại nhận: <Text style={{fontWeight: 500}}>Tự tới lấy</Text>
+              </Text>
+            </View>
+          </View>
           <Text
             style={{
-              color: '#219EBC',
-              fontWeight: '700',
+              fontWeight: '500',
               fontSize: 16,
-              marginTop: 10,
+              color: COLOR.black,
+              marginVertical: 16,
             }}>
-            <Text style={{color: COLOR.black}}>SĐT: </Text>
-            {phoneOfUser}
+            Tổng tiền:
+            <Text style={{color: COLOR.primary, fontWeight: '600'}}>
+              {' '}
+              {formatPrice(data.totalMoney)}
+            </Text>
           </Text>
-          <Text style={[appStyle.text12, {marginTop: 5}]}>
-            📅 Bắt đầu: {timeStart}
-          </Text>
-        </View>
-      </TouchableOpacity>
-    </View>
+          <View style={appStyle.rowBetween}>
+            {checkBtn == false ? (
+              <>
+                <AppButton
+                  title="Hủy chuyến"
+                  borderColor={COLOR.red}
+                  noShadow
+                  icon={ICON.closecircle}
+                  backgroundColor={COLOR.red}
+                  width={'48%'}
+                  onPress={() => confirmCancel(data.id)}
+                />
+                <AppButton
+                  width="48%"
+                  title="Giao xe"
+                  noShadow
+                  icon={ICON.car}
+                  onPress={() => handleDeliveryCar(data.id)}
+                />
+              </>
+            ) : null}
+          </View>
+        </TouchableOpacity>
+      )}
+    </>
   );
 };
 
@@ -78,11 +265,31 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FFFFFF',
     flexDirection: 'row',
+    justifyContent: 'flex-start',
+    marginHorizontal: 4,
+    borderRadius: 12,
+    borderColor: COLOR.borderColor,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    marginBottom: 14,
+    marginTop: 3,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#CFCFCF',
+  },
+  containerDetail: {
+    backgroundColor: '#FFFFFF',
+    flexDirection: 'column',
     justifyContent: 'space-around',
     marginHorizontal: 4,
-    paddingVertical: 10,
-    paddingHorizontal: 5,
-    borderRadius: 14,
+    padding: 10,
+    borderRadius: 12,
     borderColor: COLOR.borderColor,
     shadowColor: '#000',
     shadowOffset: {
@@ -93,13 +300,20 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     marginBottom: 10,
+    marginTop: 2,
   },
+
   image: {
-    width: 130,
-    height: 120,
-    alignSelf: 'flex-start',
-    marginLeft: -20,
-    borderRadius: 10,
+    width: squareImageSize(0.3),
+    height: squareImageSize(0.3),
+    alignSelf: 'center',
+    borderRadius: 20,
+  },
+  imageDetail: {
+    width: '100%',
+    height: windowHeight * 0.22,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
   logoMap: {
     width: 14,
@@ -110,5 +324,47 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 1,
     color: COLOR.borderColor2,
+  },
+  statusContainer: {
+    position: 'absolute',
+    backgroundColor: 'rgba(65, 207, 242, 0.8)',
+    borderTopLeftRadius: 13,
+    borderBottomRightRadius: 13,
+    padding: 5,
+    paddingLeft: 10,
+    justifyContent: 'center',
+    left: 0,
+    top: 0,
+    opacity: 0.9,
+    width: 90,
+  },
+  statusText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 12,
+  },
+  tripContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  logo: {
+    width: 36,
+    height: 36,
+    alignSelf: 'flex-start',
+  },
+  btn: {
+    width: 120,
+    height: 40,
+    borderRadius: 50,
+    justifyContent: 'center',
+    borderColor: COLOR.borderColor,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
 });

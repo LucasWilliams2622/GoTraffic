@@ -1,6 +1,13 @@
+import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
+import IconEntypo from 'react-native-vector-icons/Entypo';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import IconAntDesign from 'react-native-vector-icons/AntDesign';
+import IconIonicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 export const COLOR = {
   primary: '#41cff2',
   secondary: '#8ECAE6',
+  secondary50: '#8ECAE650',
   third: '#FFB703',
   forth: '#023047',
   fifth: '#219EBC',
@@ -32,11 +39,14 @@ export const COLOR = {
   title: '#023047',
   text2: '#595959',
   textWarn: '#FF0303',
-
+  lightGray: '#F4F4F4',
+  textGray: '#787878',
   // find color : https://colorhunt.co
   white: '#ffffff',
   black: '#000000',
   red: '#cc0000',
+
+  red2: '#F36538',
   redOrange: '#ff3300',
   blue: '#003399',
 
@@ -45,13 +55,15 @@ export const COLOR = {
   blueHeader2: '#c4ecff',
   blueViolet: '#000066',
   yellow: '#ffff00',
-  green: '#339900',
+  green: '#4aa15b',
   violet: '#660066',
   orange: '#ff6600',
   lightBlue: '#8ce0f5',
   lightYellow: '#FFEEDB',
-  lightGreen: '#D8F2E1',
+  lightGreen: '#57b36a',
+  lightGreen2: '#D8F2E1',
   exit: '#F25F57',
+  warn: '#fce7e6',
 };
 
 export const ICON = {
@@ -84,8 +96,6 @@ export const ICON = {
   Card: require('../assets/icon/ic_card.png'),
   Wallet: require('../assets/icon/ic_wallet.png'),
   Add: require('../assets/icon/ic_add.png'),
-  MasterCard: require('../assets/image/guide/img_mastercard.png'),
-  Tech: require('../assets/image/guide/img_tech.png'),
   Copy: require('../assets/icon/ic_copy.png'),
   Send: require('../assets/icon/ic_send.png'),
   Delete: require('../assets/icon/ic_delete.png'),
@@ -93,6 +103,51 @@ export const ICON = {
   DropDown: require('../assets/icon/ic_down.png'),
   Picture: require('../assets/icon/ic_picture.png'),
   Star: require('../assets/icon/ic_star.png'),
+  UnStar: require('../assets/icon/icon-unstar.png'),
   Calendar: require('../assets/icon/ic_calendar.png'),
-  Lease1: require('../assets/image/lease1.jpg'),
+  Ban: require('../assets/icon/ic_ban.png'),
+  Phone: require('../assets/icon/ic_phone_outline.png'),
+  Luggage: require('../assets/icon/ic_luggage.png'),
+  License: require('../assets/image/img_license.png'),
+  Poster: require('../assets/image/poster.jpg'),
+  Done: require('../assets/icon/ic_done.png'),
+  Plane: require('../assets/icon/ic_plane.png'),
+  Search: require('../assets/icon/ic_search.png'),
+  Refresh: require('../assets/icon/ic_refresh.png'),
+  Promotion: require('../assets/icon/ic_promotion.png'),
+  cancelWhite: require('../assets/icon/ic_cancel_white.png'),
+  checkWhite: require('../assets/icon/ic_check_white.png'),
+
+  /**
+   * Chỉ dùng getImageSourceSync, không dùng getImageSourceSync sẽ gây lỗi trên iOS
+   */
+  star: IconAntDesign.getImageSourceSync('star', 20, '#FFE814'),
+  staro: IconAntDesign.getImageSourceSync('staro', 20, 'black'),
+  review: MaterialIcons.getImageSourceSync('rate-review', 20, 'black'),
+  like1: IconAntDesign.getImageSourceSync('like1', 20, 'black'),
+  car: IconIonicons.getImageSourceSync('car-sport', 20, 'black'),
+  car2: IconIonicons.getImageSourceSync('car', 20, 'black'),
+
+  contacts: MaterialCommunityIcons.getImageSourceSync('contacts', 20, 'black'),
+  tag: IconAntDesign.getImageSourceSync('tag', 20, 'black'),
+  infocirlce: IconAntDesign.getImageSourceSync('infocirlce', 20, 'black'),
+  document: IconEntypo.getImageSourceSync('text-document-inverted', 20, 'black'),
+  piechart: IconAntDesign.getImageSourceSync('piechart', 20, 'black'),
+  areachart: IconAntDesign.getImageSourceSync('areachart', 20, 'black'),
+  wallet: IconEntypo.getImageSourceSync('wallet', 20, 'black'),
+  location: IconEntypo.getImageSourceSync('location', 20, 'black'),
+
+  closecircle: IconAntDesign.getImageSourceSync('closecircle', 20, 'black'),
+  save: IconEntypo.getImageSourceSync('save', 20, 'black'),
+  archive: IconEntypo.getImageSourceSync('archive', 20, 'black'),
+
+  dislike1: IconAntDesign.getImageSourceSync('dislike1', 20, 'black'),
+  Download: MaterialIcons.getImageSource('file-download', 20, 'black')
+
+    .then(source => {
+      ICON.Download = source;
+    })
+    .catch(error => {
+      console.error('Error loading icon:', error);
+    }),
 };

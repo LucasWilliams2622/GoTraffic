@@ -1,49 +1,80 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
 import {appStyle} from '../../../../constants/AppStyle';
 import {COLOR, ICON} from '../../../../constants/Theme';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import FastImage from 'react-native-fast-image';
-import {Icon} from 'native-base';
-import AppProfile from '../../../../components/AppProfile';
 import AppHomeCar from '../../../../components/AppHomeCar';
+import {AppContext} from '../../../../utils/AppContext';
+import numeral from 'numeral';
+import {useNavigation} from '@react-navigation/native';
+import AppHeader from '../../../../components/AppHeader';
+import AxiosInstance from '../../../../constants/AxiosInstance';
+import {useIsFocused} from '@react-navigation/native';
 
 const HomeCar = props => {
-  const {navigation} = props;
-  const [isShow, setIsShow] = useState(true);
-  const goBack = () => {
-    navigation.goBack('Profile');
+  const navigation = useNavigation();
+  const isFocused = useIsFocused();
+  const {infoUser, idUser} = useContext(AppContext);
+  const [hideSurplus, setHideSurplus] = useState(true);
+  const [data, setData] = useState([]);
+  const handleButtonPress = () => {
+    setHideSurplus(!hideSurplus);
   };
+  const goBack = () => {
+    navigation.goBack();
+  };
+  const getCarByIdUser = async () => {
+    try {
+      const response = await AxiosInstance().get(
+        `/car/api/list-by-id-user?idUser=${idUser}`,
+      );
+      // console.log(response);
+      if (response.result) {
+        setData(response.listCar);
+      } else {
+        console.log('Failed to get car');
+      }
+    } catch (error) {
+      console.log('=========>', error);
+    }
+  };
+  useEffect(() => {
+    getCarByIdUser();
+  }, [isFocused]);
   return (
     <SafeAreaView style={appStyle.container}>
       <FastImage
         style={styles.image}
-        source={require('../../../../assets/image/bg_homecar.jpg')}
+        source={require('../../../../assets/image/background.png')}
       />
-      <TouchableOpacity onPress={goBack}>
-        <FastImage
-          source={require('../../../../assets/icon/ic_left.png')}
-          style={{
-            position: 'absolute',
-            left: 10,
-            top: 20,
-            width: 20,
-            height: 20,
-          }}
-        />
-      </TouchableOpacity>
-      <View style={styles.viewTitle}>
-        <Text style={styles.title}>Xe của tôi</Text>
-      </View>
-      <View style={{padding: 14, marginTop: 100}}>
+      <AppHeader
+        title="Xe của tôi"
+        //backgroundColor='#92D1FA'
+      />
+      <ScrollView
+        style={{padding: 14, marginTop: 100, marginBottom: 70}}
+        shouldRasterizeIOS
+        showsVerticalScrollIndicator={false}>
         <View style={styles.line1}>
           <Text style={[appStyle.text16Bold, {textAlign: 'center'}]}>
-            Số dư:********
+            Số dư:{' '}
+            {hideSurplus ? '*******' : numeral(infoUser.surplus).format('0,0')}
           </Text>
-          <TouchableOpacity onPress={setIsShow}>
+          <TouchableOpacity onPress={() => handleButtonPress()}>
             <FastImage
               style={[appStyle.icon, {marginLeft: 10}]}
-              source={ICON.Check}
+              source={
+                !hideSurplus
+                  ? require('../../../../assets/icon/ic_visible.png')
+                  : require('../../../../assets/icon/ic_invisible.png')
+              }
               resizeMode="stretch"
             />
           </TouchableOpacity>
@@ -51,22 +82,44 @@ const HomeCar = props => {
         <AppHomeCar
           icon={ICON.Trip}
           title="Danh sách xe"
-          text="Quản lí các xe đang cho thuê"
+          text="Quản lý tất cả xe của bạn"
           onPress={() => navigation.navigate('ListCar')}
         />
+
+        {data.length == 0 ? null : (
+          <AppHomeCar
+            icon={ICON.Address}
+            title="Bản đồ xe"
+            text="Bản đồ vị trí của tất cả xe của bạn"
+            onPress={() => navigation.navigate('MapCars')}
+          />
+        )}
         <AppHomeCar
-          icon={ICON.Wallet}
+          icon={ICON.tag}
+          title="Danh sách chuyến"
+          text="Lịch sử và trạng thái các chuyến"
+          onPress={() => navigation.navigate('TripOfCar')}
+        />
+        <AppHomeCar
+          icon={ICON.wallet}
           title="Ví của tôi"
-          text="Theo dõi số dư và lịch sử cho thuê"
+          borderBottomWidth={0}
+          text="Theo dõi số dư và lịch sử ví"
           onPress={() => navigation.navigate('MyWallet')}
         />
         <AppHomeCar
-          icon={ICON.Wallet}
+          icon={ICON.piechart}
+          title="Thống kê"
+          text="Thống kê xe và chuyến"
+          onPress={() => navigation.navigate('ChartCar')}
+        />
+        <AppHomeCar
+          icon={ICON.contacts}
           title="Hợp đồng mẫu"
           text="Mẫu hợp đồng cho thuê xe"
           onPress={() => navigation.navigate('SampleContract')}
         />
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

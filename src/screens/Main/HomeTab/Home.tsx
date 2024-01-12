@@ -6,7 +6,7 @@ import {
   FlatList,
   Dimensions,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import {COLOR} from '../../../constants/Theme';
 import {appStyle} from '../../../constants/AppStyle';
@@ -14,38 +14,58 @@ import {Row, Column} from 'native-base';
 import Booking from '../../../components/Home/Home/Booking';
 import {useNavigation} from '@react-navigation/native';
 import Promotion from '../../../components/Home/Home/Promotion';
-import CarCardItem from '../../../components/Home/Home/CarCardItem';
+import CarCardItem, {
+  CarCardItemPlaceholder,
+} from '../../../components/Home/Home/CarCardItem';
 import FeaturedLocation from '../../../components/Home/Home/FeaturedLocation';
 import AirportPicking from '../../../components/Home/Home/AirportPicking';
 import {
   promotionData,
-  carData,
   featuredLocationData,
   AirportData,
   benefitData,
 } from './data/data';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {
+  Car,
   RenderListProps,
   SectionProps,
   StackScreenParamList,
 } from '../../../types';
 import Modal from 'react-native-modal';
 import CarDetail from './CarDetail';
+import {AppContext} from '../../../utils/AppContext';
+import FastImage from 'react-native-fast-image';
+import BenefitHome from '../../../components/Home/Home/Benefit';
+import AxiosInstance from '../../../constants/AxiosInstance';
+import {
+  currentDay,
+  currentTimeString,
+  returnTimeString,
+  tomorrow,
+} from '../../../utils/utils';
+import {
+  ViewedCarsContext,
+  ViewedCarsContextProps,
+} from '../../../utils/ViewedCarContext';
 
 const RenderList: React.FC<RenderListProps<any>> = ({
   data,
   renderItem,
   snapToInterval,
+  reverse,
+  emptyComponent,
 }) => (
   <FlatList
     showsHorizontalScrollIndicator={false}
     data={data}
     keyExtractor={item => item.id.toString()}
     horizontal={true}
+    ListEmptyComponent={emptyComponent}
     renderItem={renderItem}
     snapToAlignment="start"
     decelerationRate={'fast'}
+    inverted={reverse}
     snapToInterval={snapToInterval}
     contentContainerStyle={styles.contentContainer}
   />
@@ -56,6 +76,7 @@ const Section: React.FC<SectionProps> = ({
   data,
   renderItem,
   snapToInterval,
+  reverse,
 }) => (
   <View style={styles.mt20}>
     <View style={[styles.contentContainer]}>
@@ -64,7 +85,9 @@ const Section: React.FC<SectionProps> = ({
     <RenderList
       data={data}
       renderItem={renderItem}
+      emptyComponent={<CarCardItemPlaceholder />}
       snapToInterval={snapToInterval}
+      reverse={reverse}
     />
   </View>
 );
@@ -76,33 +99,105 @@ const Home: React.FC = () => {
 
   const [isSwipeEnabled, setSwipeEnabled] = useState<boolean>(true);
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
+  const [selectedTime, setSelectedTime] = useState<{
+    startTime: string | null;
+    endTime: string | null;
+    startDate: Date | null;
+    endDate: Date | null;
+  }>({
+    startTime: currentTimeString,
+    endTime: returnTimeString,
+    startDate: currentDay,
+    endDate: tomorrow,
+  });
+
+  const {viewedCars, setViewedCars} = useContext(
+    ViewedCarsContext,
+  ) as ViewedCarsContextProps;
+
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const handleCarPress = (id: number) => {
     setSelectedCarId(id);
     setModalVisible(true);
   };
 
+  // =================| Get List |====================
+  const {infoUser, idUser} = useContext(AppContext);
+  const [listCar, setListCar] = useState([]);
+
+  const getAllCar = async () => {
+    try {
+      const response = await AxiosInstance().get(
+        `/car/api/list?idUser=${idUser}`,
+      );
+      if (response.result) {
+        // Add isFavorite to listCar
+        const listCar = response.listCar;
+        const responseFavorite = await AxiosInstance().get(
+          `/favorite-car/api/list-by-user?idUser=${idUser}`,
+        );
+        if (responseFavorite.result) {
+          const listFavorite = responseFavorite.data;
+          const listFavoriteId = listFavorite.map((item: any) => item.idCar);
+          const listCarWithFavorite = listCar.map((item: any) => {
+            return {
+              ...item,
+              isFavorite: listFavoriteId.includes(item.id),
+            };
+          });
+          setIsLoading(false);
+          setListCar(listCarWithFavorite);
+        }
+        setIsLoading(false);
+        setListCar(response.listCar);
+      } else {
+        console.log('Error');
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    getAllCar();
+    // setListCar(carDataTest);
+  }, []);
+
   return (
     <ScrollView style={[appStyle.container]}>
       <View style={[styles.headBg]}>
         <Row style={styles.nameAndPointWrapper}>
           <Column style={[styles.iconBG, styles.iconMarginRight]}>
-            <Icon name="user" color={COLOR.forth} size={23}></Icon>
+            <FastImage
+              style={{width: 50, height: 50, borderRadius: 99}}
+              source={
+                infoUser?.avatar
+                  ? {uri: infoUser.avatar}
+                  : require('../../../assets/image/logo_go_traffic.png')
+              }
+            />
           </Column>
           <Column>
-            <Text style={appStyle.text16Bold}>Lê Hoàng Gia Khánh</Text>
+            <Text style={appStyle.text16Bold}>{infoUser.name}</Text>
             <Row style={{alignItems: 'center'}}>
               <Icon
                 name="star"
                 color={COLOR.third}
                 solid
                 style={{marginRight: 5}}></Icon>
-              <Text style={appStyle.text12Bold}>Điểm thưởng</Text>
+              <Text style={appStyle.text12Bold}>{infoUser.point}</Text>
             </Row>
           </Column>
         </Row>
       </View>
-      <Booking navigation={navigation} />
+      <Booking
+        navigation={navigation}
+        selectedTime={selectedTime}
+        setSelectedTime={setSelectedTime}
+        viewedCars={viewedCars}
+        setViewedCars={setViewedCars}
+      />
 
       <Section
         title="Chương trình khuyến mãi"
@@ -115,7 +210,7 @@ const Home: React.FC = () => {
 
       <Section
         title="Xe dành cho bạn"
-        data={carData}
+        data={listCar}
         renderItem={({item}) => (
           <CarCardItem {...item} onPress={() => handleCarPress(item.id)} />
         )}
@@ -125,45 +220,68 @@ const Home: React.FC = () => {
       <Modal
         isVisible={isModalVisible}
         style={{margin: 0}}
-        onBackButtonPress={() => setSelectedCarId(null)}
+        onBackButtonPress={() => setModalVisible(false)}
         swipeThreshold={50}>
         {selectedCarId && (
           <CarDetail
             car_id={selectedCarId}
             close={() => setModalVisible(false)}
             setSwipeEnabled={setSwipeEnabled}
+            viewedCars={viewedCars}
+            setViewedCars={setViewedCars}
+          />
+        )}
+      </Modal>
+
+      {viewedCars.length > 0 && (
+        <Section
+          title="Xe đã xem"
+          data={viewedCars}
+          renderItem={({item}) => (
+            <CarCardItem {...item} onPress={() => handleCarPress(item.id)} />
+          )}
+          snapToInterval={350}
+        />
+      )}
+
+      <Modal
+        isVisible={isModalVisible}
+        style={{margin: 0}}
+        onBackButtonPress={() => setModalVisible(false)}
+        swipeThreshold={50}>
+        {selectedCarId && (
+          <CarDetail
+            car_id={selectedCarId}
+            close={() => setModalVisible(false)}
+            setSwipeEnabled={setSwipeEnabled}
+            viewedCars={viewedCars}
+            setViewedCars={setViewedCars}
           />
         )}
       </Modal>
 
       <Section
-        title="Xe đã xem"
-        data={carData}
-        renderItem={({item}) => (
-          <CarCardItem
-            {...item}
-            onPress={() =>
-              navigation.navigate('CarDetail', {
-                car_id: item.id,
-                navigation: navigation,
-              })
-            }
-          />
-        )}
-        snapToInterval={350}
-      />
-
-      <Section
         title="Địa điểm nổi bật"
         data={featuredLocationData}
-        renderItem={({item}) => <FeaturedLocation {...item} />}
+        renderItem={({item}) => (
+          <FeaturedLocation
+            {...item}
+            selectedTime={selectedTime}
+            setSelectedTime={setSelectedTime}
+          />
+        )}
         snapToInterval={224}
       />
-
       <Section
         title="Đón xe sân bay"
         data={AirportData}
-        renderItem={({item}) => <AirportPicking {...item} />}
+        renderItem={({item}) => (
+          <AirportPicking
+            {...item}
+            selectedTime={selectedTime}
+            setSelectedTime={setSelectedTime}
+          />
+        )}
         snapToInterval={140}
       />
 
@@ -171,7 +289,7 @@ const Home: React.FC = () => {
         title="Ưu điểm của Go Traffic"
         data={benefitData}
         renderItem={({item}) => (
-          <Promotion image={item.image} width={345} height={130} />
+          <BenefitHome image={item.image} width={345} height={130} />
         )}
         snapToInterval={365}
       />
@@ -189,7 +307,7 @@ export default Home;
 
 const styles = StyleSheet.create({
   headBg: {
-    backgroundColor: COLOR.secondary,
+    backgroundColor: COLOR.bgHeader,
     width: '100%',
     height: Dimensions.get('window').height / 3,
     borderBottomLeftRadius: 40,
@@ -205,8 +323,8 @@ const styles = StyleSheet.create({
 
   iconBG: {
     backgroundColor: COLOR.white,
-    width: 40,
-    height: 40,
+    width: 50,
+    height: 50,
     borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',

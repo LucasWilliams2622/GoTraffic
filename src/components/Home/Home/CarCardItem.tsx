@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useMemo} from 'react';
+import React, {useMemo, useState, useContext, useEffect} from 'react';
 import FastImage from 'react-native-fast-image';
 import {COLOR} from '../../../constants/Theme';
 import {appStyle} from '../../../constants/AppStyle';
@@ -19,20 +19,54 @@ import {
   calculateDiscount,
 } from '../../../utils/utils';
 import {CarCardItemProps} from '../../../types';
+import AxiosInstance from '../../../constants/AxiosInstance';
+import {AppContext} from '../../../utils/AppContext';
+import {showToastMessage} from '../../../utils/utils';
+import axios from 'axios';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import SkeletonItemCard from '../../SkeletonItemCard';
 
 const CarCardItem = ({
-  title,
+  id,
+  name,
   image,
-  location,
-  type,
-  benefit,
+  imageThumbnail,
+  locationCar,
+  gear,
+  isDelivery,
   originalPrice,
   price,
   rating,
-  totalRide,
+  isFavorite,
+  removeFromFavorites,
+  numberOfBooked,
+  width,
   onPress,
 }: CarCardItemProps) => {
-  const [isFavorite, setIsFavorite] = React.useState<boolean>(false);
+  width = width ?? 330;
+  const {idUser} = useContext(AppContext);
+  const [isFavourite, setIsFavourite] = useState(isFavorite);
+  const [thumbnail, setThumbnail] = useState('');
+  const addOrRemoveFavorite = async () => {
+    try {
+      if (isFavourite) {
+        const response = await AxiosInstance().delete(
+          `/favorite-car/api/delete?idUser=${idUser}&idCar=${id}`,
+        );
+        showToastMessage('', 'Đã gỡ yêu thích');
+        console.log(response, 'Xe đã bị xóa khỏi danh sách yêu thích');
+      } else {
+        const response = await AxiosInstance().post(
+          `/favorite-car/api/add?idUser=${idUser}&idCar=${id}`,
+        );
+        showToastMessage('', 'Xe được thêm vào yêu thích');
+        console.log(response, 'Xe được thêm vào danh sách yêu thích');
+      }
+      setIsFavourite(!isFavourite);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const formattedPrice = useMemo(() => formatPrice(price), [price]);
   const formattedOriginalPrice = useMemo(
@@ -44,10 +78,31 @@ const CarCardItem = ({
     () => calculateDiscount(originalPrice ?? 0, price),
     [originalPrice, price],
   );
-
+  useEffect(() => {
+    try {
+      // let images = JSON.parse(image.slice(1, -1));
+      // if (images.length > 0) {
+      //   setThumbnail(images[0]);
+      // } else {
+      //   setThumbnail(
+      //     'https://2.bp.blogspot.com/-muVbmju-gkA/Vir94NirTeI/AAAAAAAAT9c/VoHzHZzQmR4/s1600/placeholder-image.jpg',
+      //   );
+      // }
+      setThumbnail(imageThumbnail);
+    } catch (error) {
+      console.log('Image error:  ' + error);
+      setThumbnail(
+        'https://2.bp.blogspot.com/-muVbmju-gkA/Vir94NirTeI/AAAAAAAAT9c/VoHzHZzQmR4/s1600/placeholder-image.jpg',
+      );
+    }
+  });
   return (
-    <Pressable style={CarCardItemStyles.container} onPress={onPress}>
-      <FastImage source={{uri: image}} style={CarCardItemStyles.image} />
+    <Pressable
+      style={[CarCardItemStyles.container, {width: width}]}
+      onPress={onPress}>
+      {/* <FastImage source={{uri: image}} style={CarCardItemStyles.image} /> */}
+      <FastImage source={{uri: thumbnail}} style={CarCardItemStyles.image} />
+
       {originalPrice && (
         <View style={CarCardItemStyles.discount}>
           <Text style={[appStyle.text10, {color: COLOR.white, padding: 10}]}>
@@ -56,38 +111,42 @@ const CarCardItem = ({
         </View>
       )}
       <Pressable
-        style={CarCardItemStyles.pressable}
-        onPress={() => setIsFavorite(!isFavorite)}>
+        onPress={() => addOrRemoveFavorite()}
+        style={CarCardItemStyles.pressable}>
         <Icon
           name="heart"
-          color={isFavorite ? COLOR.fifth : COLOR.white}
+          color={isFavourite ? COLOR.fifth : COLOR.white}
           size={20}
-          solid={isFavorite}
+          solid={isFavourite}
         />
       </Pressable>
 
       <Row style={CarCardItemStyles.row}>
         <View style={CarCardItemStyles.typeView}>
-          <Text style={appStyle.text12}>{type}</Text>
+          <Text style={appStyle.text12}>{gear}</Text>
         </View>
 
-        {benefit && (
+        {isDelivery && (
           <View style={CarCardItemStyles.benefitView}>
-            <Text style={appStyle.text12}>{benefit}</Text>
+            <Text style={appStyle.text12}>Giao xe tận nơi</Text>
           </View>
         )}
       </Row>
 
       <Row style={CarCardItemStyles.row}>
         <Text style={[appStyle.text16Bold, CarCardItemStyles.title]}>
-          {title.toUpperCase()}
+          {name}
         </Text>
         <ShieldIcon color={COLOR.fifth} />
       </Row>
 
       <Row style={CarCardItemStyles.locationRow}>
         <Icon name="location-dot" color={COLOR.borderColor} size={15} />
-        <Text style={CarCardItemStyles.locationText}>{location}</Text>
+        <Text style={CarCardItemStyles.locationText}>
+          {locationCar.length > 40
+            ? locationCar.substring(0, 38) + '...'
+            : locationCar}
+        </Text>
       </Row>
 
       <View style={CarCardItemStyles.separator} />
@@ -96,7 +155,7 @@ const CarCardItem = ({
         <Row style={{alignItems: 'center'}}>
           <Icon name="star" color={COLOR.third} size={12} solid />
           <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
-            {rating}
+            {rating?.toFixed(1)}
           </Text>
           <Text
             style={[CarCardItemStyles.dot, {marginLeft: 5, marginRight: 5}]}>
@@ -104,7 +163,7 @@ const CarCardItem = ({
           </Text>
           <SuitcaseIcon color={COLOR.fifth} />
           <Text style={[CarCardItemStyles.ratingText, {marginLeft: 5}]}>
-            {totalRide} chuyến
+            {numberOfBooked} chuyến
           </Text>
         </Row>
 
@@ -135,11 +194,18 @@ const CarCardItem = ({
 
 export default CarCardItem;
 
+export const CarCardItemPlaceholder = () => {
+  return (
+    <SkeletonItemCard/>
+  );
+};
+
 export const CarCardItemStyles = StyleSheet.create({
   container: {
-    marginRight: 10,
+    backgroundColor: COLOR.white,
+    marginRight: 20,
+    marginTop: 10,
     borderRadius: 20,
-    width: 330,
     borderWidth: 0.5,
     borderColor: '#ddd',
     padding: 10,
@@ -170,14 +236,12 @@ export const CarCardItemStyles = StyleSheet.create({
   typeView: {
     backgroundColor: COLOR.sixth,
     padding: 8,
-    alignSelf: 'flex-start',
     borderRadius: 15,
     marginRight: 10,
   },
   benefitView: {
     backgroundColor: COLOR.seventh,
     padding: 8,
-    alignSelf: 'flex-start',
     borderRadius: 15,
   },
   title: {
